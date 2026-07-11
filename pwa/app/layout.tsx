@@ -1,43 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Hanken_Grotesk } from "next/font/google";
 import Splash from "./components/Splash";
 import PageTransition from "./components/PageTransition";
 import "./globals.css";
 
-const generalSans = localFont({
-  variable: "--font-general-sans",
-  src: [
-    {
-      path: "./fonts/general-sans/GeneralSans-Extralight.woff2",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "./fonts/general-sans/GeneralSans-Light.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/general-sans/GeneralSans-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/general-sans/GeneralSans-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/general-sans/GeneralSans-Semibold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "./fonts/general-sans/GeneralSans-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
+const hankenGrotesk = Hanken_Grotesk({
+  variable: "--font-hanken-grotesk",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -63,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${generalSans.variable} h-full antialiased`}>
+    <html lang="en" className={`${hankenGrotesk.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Splash>
           <PageTransition>{children}</PageTransition>
