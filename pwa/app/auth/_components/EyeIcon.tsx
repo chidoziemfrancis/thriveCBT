@@ -1,6 +1,8 @@
-export function EyeIcon() {
+type IconProps = { size?: number };
+
+export function EyeIcon({ size = 20 }: IconProps) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <path
         d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
         stroke="currentColor"
@@ -11,9 +13,9 @@ export function EyeIcon() {
   );
 }
 
-export function EyeOffIcon() {
+export function EyeOffIcon({ size = 20 }: IconProps) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <path
         d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
         stroke="currentColor"

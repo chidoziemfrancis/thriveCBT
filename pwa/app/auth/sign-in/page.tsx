@@ -11,12 +11,12 @@ export default function SignInPage() {
     <div className="flex flex-1 flex-col bg-zinc-50">
       <AuthHeader />
 
-      <div className="flex flex-1 flex-col px-6 pt-10">
-        <h1 className="text-4xl font-semibold tracking-tight text-zinc-950">
+      <div className="flex flex-1 flex-col px-5 pt-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-950">
           Welcome back.
         </h1>
 
-        <form className="mt-10 flex flex-col gap-6">
+        <form className="mt-6 flex flex-col gap-4">
           <AuthField
             label="Email"
             name="email"
@@ -28,7 +28,7 @@ export default function SignInPage() {
 
           <Link
             href="/auth/forgot-password"
-            className="text-sm text-zinc-950 underline-offset-2 hover:underline"
+            className="text-xs text-zinc-950 underline-offset-2 hover:underline"
           >
             Forgot Password?
           </Link>
@@ -40,7 +40,7 @@ export default function SignInPage() {
 
         <Link
           href="/auth/sign-up"
-          className="flex h-14 w-full items-center justify-center rounded-full border border-zinc-300 text-base font-medium text-zinc-950"
+          className="flex h-11 w-full items-center justify-center rounded-full border border-zinc-300 text-sm font-medium text-zinc-950"
         >
           Don&rsquo;t have an account?{" "}
           <span className="ml-1 font-semibold">Sign up</span>

@@ -16,14 +16,14 @@ export default function AuthField({
   endAdornment,
 }: AuthFieldProps) {
   return (
-    <fieldset className="relative rounded-2xl border border-zinc-300 px-4 pb-4">
-      <legend className="px-1 text-sm text-zinc-500">{label}</legend>
+    <fieldset className="relative rounded-xl border border-zinc-300 px-3 pb-2.5">
+      <legend className="px-1 text-xs text-zinc-500">{label}</legend>
       <input
         type={type}
         name={name}
         autoComplete={autoComplete}
         placeholder={placeholder}
-        className="w-full bg-transparent text-base text-zinc-950 outline-none placeholder:text-zinc-400"
+        className="w-full bg-transparent text-sm text-zinc-950 outline-none placeholder:text-zinc-400"
       />
       {endAdornment}
     </fieldset>

@@ -22,9 +22,9 @@ export default function PasswordField({
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Hide password" : "Show password"}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400"
         >
-          {visible ? <EyeOffIcon /> : <EyeIcon />}
+          {visible ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
         </button>
       }
     />
