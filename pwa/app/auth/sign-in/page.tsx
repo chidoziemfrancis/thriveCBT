@@ -1,53 +1,50 @@
-import Link from "next/link";
-import AuthHeader from "../_components/AuthHeader";
-import AuthField from "../_components/AuthField";
-import PasswordField from "../_components/PasswordField";
+import Logo from "../../components/Logo";
+import PillInput from "../_components/PillInput";
 import SubmitButton from "../_components/SubmitButton";
 import Divider from "../_components/Divider";
+import SocialButton from "../_components/SocialButton";
+import {
+  AppleIcon,
+  GoogleIcon,
+  FacebookIcon,
+} from "../_components/SocialIcons";
 import LegalFooter from "../_components/LegalFooter";
 
 export default function SignInPage() {
   return (
-    <div className="flex flex-1 flex-col bg-zinc-50">
-      <AuthHeader />
+    <div className="flex flex-1 flex-col bg-zinc-50 px-6 pt-16">
+      <Logo className="h-8 w-8 self-center text-zinc-950" />
 
-      <div className="flex flex-1 flex-col px-5 pt-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-950">
-          Welcome back.
+      <div className="flex flex-1 flex-col justify-center">
+        <h1 className="text-center text-2xl font-semibold tracking-tight text-zinc-950">
+          Get started with your email
         </h1>
 
-        <form className="mt-6 flex flex-col gap-4">
-          <AuthField
-            label="Email"
+        <form className="mt-8 flex flex-col gap-4">
+          <PillInput
             name="email"
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
           />
-          <PasswordField autoComplete="current-password" />
 
-          <Link
-            href="/auth/forgot-password"
-            className="text-xs text-zinc-950 underline-offset-2 hover:underline"
-          >
-            Forgot Password?
-          </Link>
-
-          <SubmitButton>Sign in</SubmitButton>
+          <SubmitButton>Continue</SubmitButton>
         </form>
 
         <Divider />
 
-        <Link
-          href="/auth/sign-up"
-          className="flex h-11 w-full items-center justify-center rounded-full border border-zinc-300 text-sm font-medium text-zinc-950"
-        >
-          Don&rsquo;t have an account?{" "}
-          <span className="ml-1 font-semibold">Sign up</span>
-        </Link>
-
-        <LegalFooter />
+        <div className="flex flex-col gap-3">
+          <SocialButton icon={<AppleIcon />}>Continue with Apple</SocialButton>
+          <SocialButton icon={<GoogleIcon />}>
+            Continue with Google
+          </SocialButton>
+          <SocialButton icon={<FacebookIcon />}>
+            Continue with Facebook
+          </SocialButton>
+        </div>
       </div>
+
+      <LegalFooter />
     </div>
   );
 }
