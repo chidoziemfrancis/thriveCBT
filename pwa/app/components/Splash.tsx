@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Logo from "./Logo";
 
 export default function Splash({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(true);
