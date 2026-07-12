@@ -17,6 +17,7 @@ function VerifyEmailForm() {
     router.push("/onboarding/what-to-expect");
   }
 
+
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 px-6 pt-6">
       <BackButton />
