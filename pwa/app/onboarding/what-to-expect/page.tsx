@@ -65,7 +65,7 @@ export default function WhatToExpectPage() {
       </div>
 
       <div className="mt-auto pb-6">
-        <SubmitButton onClick={() => router.push("/dashboard")}>
+        <SubmitButton onClick={() => router.push("/assessment/phq9/1")}>
           Continue
         </SubmitButton>
       </div>
