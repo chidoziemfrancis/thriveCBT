@@ -9,9 +9,8 @@ import MoodSnapshot from "./_components/MoodSnapshot";
 import JournalShortcut from "./_components/JournalShortcut";
 import BottomNav from "./_components/BottomNav";
 import { SESSIONS } from "../sessions/_lib/sessions";
+import { CURRENT_SESSION } from "../sessions/_lib/currentSession";
 import { getOnboardingData } from "../onboarding/_lib/onboardingStore";
-
-const CURRENT_SESSION = 1;
 
 export default function DashboardPage() {
   const router = useRouter();
