@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Logo from "../../components/Logo";
-import PillInput from "../_components/PillInput";
+import PillInput from "../../components/PillInput";
 import PasswordField from "../_components/PasswordField";
 import SubmitButton from "../../components/SubmitButton";
 import Divider from "../_components/Divider";
