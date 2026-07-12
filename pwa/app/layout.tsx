@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Hanken_Grotesk } from "next/font/google";
 import Splash from "./components/Splash";
-import PageTransition from "./components/PageTransition";
 import "./globals.css";
 
 const hankenGrotesk = Hanken_Grotesk({
@@ -34,9 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${hankenGrotesk.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <Splash>
-          <PageTransition>{children}</PageTransition>
-        </Splash>
+        <Splash>{children}</Splash>
       </body>
     </html>
   );
