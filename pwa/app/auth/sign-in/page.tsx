@@ -27,6 +27,8 @@ export default function SignInPage() {
 
     if (hasAccount) {
       // TODO: submit sign-in request with email + password
+      setUserSession({ email });
+      router.push("/dashboard");
       return;
     }
 
@@ -35,6 +37,7 @@ export default function SignInPage() {
       return;
     }
 
+    setUserSession({ email });
     router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
   }
 
