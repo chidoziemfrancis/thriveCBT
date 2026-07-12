@@ -6,10 +6,12 @@ export default function ContinueSessionCard({
   sessionNumber,
   totalSessions,
   title,
+  onResume,
 }: {
   sessionNumber: number;
   totalSessions: number;
   title: string;
+  onResume?: () => void;
 }) {
   const percent = Math.round((sessionNumber / totalSessions) * 100);
 
@@ -36,6 +38,7 @@ export default function ContinueSessionCard({
 
       <motion.button
         type="button"
+        onClick={onResume}
         whileTap={{ scale: 0.97 }}
         className="mt-5 flex h-11 w-full items-center justify-center rounded-full bg-white text-sm font-medium text-zinc-950"
       >
