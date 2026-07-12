@@ -22,12 +22,16 @@ export default function OnboardingEligibilityPage() {
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 px-6 pt-6">
-      <OnboardingHeader step={2} totalSteps={4} />
+      <OnboardingHeader step={3} totalSteps={4} />
 
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <h1 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-950">
           Are you currently an undergraduate student?
         </h1>
+        <p className="mt-2 text-sm text-zinc-500">
+          We ask this to confirm you&rsquo;re eligible to take part in this
+          study.
+        </p>
 
         <div className="mt-6 flex flex-col gap-3">
           <ChoiceButton

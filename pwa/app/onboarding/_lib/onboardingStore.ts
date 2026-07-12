@@ -2,6 +2,7 @@ const STORAGE_KEY = "onboarding";
 
 type OnboardingData = {
   name?: string;
+  dateOfBirth?: string;
   isUndergraduate?: boolean;
 };
 

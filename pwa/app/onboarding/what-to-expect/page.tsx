@@ -34,7 +34,7 @@ const TIMELINE = [
 export default function WhatToExpectPage() {
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 px-6 pt-6">
-      <OnboardingHeader step={3} totalSteps={4} />
+      <OnboardingHeader step={4} totalSteps={4} />
 
       <h1 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-950">
         What to expect

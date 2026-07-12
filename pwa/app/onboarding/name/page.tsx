@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingHeader from "../_components/OnboardingHeader";
-import PillInput from "../../components/PillInput";
+import LabeledField from "../../components/LabeledField";
 import SubmitButton from "../../components/SubmitButton";
 import { setOnboardingData } from "../_lib/onboardingStore";
 
@@ -14,7 +14,7 @@ export default function OnboardingNamePage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setOnboardingData({ name: name.trim() });
-    router.push("/onboarding/eligibility");
+    router.push("/onboarding/dob");
   }
 
   return (
@@ -25,9 +25,14 @@ export default function OnboardingNamePage() {
         <h1 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-950">
           What should we call you?
         </h1>
+        <p className="mt-2 text-sm text-zinc-500">
+          This is how we&rsquo;ll refer to you throughout your CBT journey. It
+          won&rsquo;t be shown publicly.
+        </p>
 
         <div className="mt-6">
-          <PillInput
+          <LabeledField
+            label="First name"
             name="name"
             autoComplete="given-name"
             placeholder="Your first name"
