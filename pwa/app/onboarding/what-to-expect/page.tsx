@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import OnboardingHeader from "../_components/OnboardingHeader";
 import TimelineItem from "../_components/TimelineItem";
 import {
@@ -32,6 +35,8 @@ const TIMELINE = [
 ];
 
 export default function WhatToExpectPage() {
+  const router = useRouter();
+
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 px-6 pt-6">
       <OnboardingHeader step={4} totalSteps={4} />
@@ -60,7 +65,9 @@ export default function WhatToExpectPage() {
       </div>
 
       <div className="mt-auto pb-6">
-        <SubmitButton>Continue</SubmitButton>
+        <SubmitButton onClick={() => router.push("/dashboard")}>
+          Continue
+        </SubmitButton>
       </div>
     </div>
   );
