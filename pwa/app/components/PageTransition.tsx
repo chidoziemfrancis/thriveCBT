@@ -11,17 +11,19 @@ export default function PageTransition({
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.25, ease: "easeInOut" }}
-        className="flex flex-1 flex-col"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div className="relative flex flex-1 flex-col">
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+          className="absolute inset-0 flex flex-col overflow-y-auto"
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
