@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import OnboardingHeader from "../_components/OnboardingHeader";
-import ChoiceButton from "../_components/ChoiceButton";
+import StepHeader from "../../components/StepHeader";
+import ChoiceButton from "../../components/ChoiceButton";
 import SubmitButton from "../../components/SubmitButton";
 import { setOnboardingData } from "../_lib/onboardingStore";
 
@@ -22,7 +22,7 @@ export default function OnboardingEligibilityPage() {
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 px-6 pt-6">
-      <OnboardingHeader step={3} totalSteps={4} />
+      <StepHeader step={3} totalSteps={4} />
 
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <h1 className="mt-6 text-2xl font-semibold tracking-tight text-zinc-950">
