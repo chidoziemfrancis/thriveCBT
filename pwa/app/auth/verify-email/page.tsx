@@ -14,7 +14,7 @@ function VerifyEmailForm() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    router.push("/onboarding/what-to-expect");
+    router.push("/onboarding/name");
   }
 
 
