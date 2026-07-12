@@ -15,6 +15,7 @@ import {
 } from "../_components/SocialIcons";
 import LegalFooter from "../_components/LegalFooter";
 import { accountExists } from "../_lib/mockAccounts";
+import { setUserSession } from "../_lib/userSession";
 
 export default function SignInPage() {
   const router = useRouter();
