@@ -3,22 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OnboardingHeader from "../_components/OnboardingHeader";
-import DateWheelPicker, { DateValue } from "../../components/DateWheelPicker";
+import LabeledField from "../../components/LabeledField";
 import SubmitButton from "../../components/SubmitButton";
 import { setOnboardingData } from "../_lib/onboardingStore";
 
-function defaultDate(): DateValue {
-  return { day: 1, month: 0, year: new Date().getFullYear() - 20 };
-}
-
 export default function OnboardingDobPage() {
   const router = useRouter();
-  const [date, setDate] = useState<DateValue>(defaultDate);
+  const [dateOfBirth, setDateOfBirth] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const iso = `${date.year}-${String(date.month + 1).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
-    setOnboardingData({ dateOfBirth: iso });
+    setOnboardingData({ dateOfBirth });
     router.push("/onboarding/eligibility");
   }
 
@@ -35,13 +30,21 @@ export default function OnboardingDobPage() {
           study. It won&rsquo;t be shown publicly.
         </p>
 
-        <p className="mt-6 text-sm text-zinc-500">Birthday</p>
-        <div className="mt-2">
-          <DateWheelPicker value={date} onChange={setDate} />
+        <div className="mt-6">
+          <LabeledField
+            label="Birthday"
+            name="dateOfBirth"
+            type="date"
+            autoComplete="bday"
+            value={dateOfBirth}
+            onChange={setDateOfBirth}
+          />
         </div>
 
         <div className="mt-auto pb-6">
-          <SubmitButton>Continue</SubmitButton>
+          <SubmitButton disabled={dateOfBirth.trim().length === 0}>
+            Continue
+          </SubmitButton>
         </div>
       </form>
     </div>
