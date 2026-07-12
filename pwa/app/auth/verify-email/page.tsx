@@ -2,8 +2,8 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import BackButton from "../_components/BackButton";
-import SubmitButton from "../_components/SubmitButton";
+import BackButton from "../../components/BackButton";
+import SubmitButton from "../../components/SubmitButton";
 import ResendCodeButton from "../_components/ResendCodeButton";
 
 function VerifyEmailForm() {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AuthHeader from "../_components/AuthHeader";
 import AuthField from "../_components/AuthField";
-import SubmitButton from "../_components/SubmitButton";
+import SubmitButton from "../../components/SubmitButton";
 
 export default function ForgotPasswordPage() {
   return (

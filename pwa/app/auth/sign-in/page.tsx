@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Logo from "../../components/Logo";
 import PillInput from "../_components/PillInput";
 import PasswordField from "../_components/PasswordField";
-import SubmitButton from "../_components/SubmitButton";
+import SubmitButton from "../../components/SubmitButton";
 import Divider from "../_components/Divider";
 import SocialButton from "../_components/SocialButton";
 import {

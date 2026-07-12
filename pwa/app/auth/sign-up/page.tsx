@@ -2,7 +2,7 @@ import Link from "next/link";
 import AuthHeader from "../_components/AuthHeader";
 import AuthField from "../_components/AuthField";
 import PasswordField from "../_components/PasswordField";
-import SubmitButton from "../_components/SubmitButton";
+import SubmitButton from "../../components/SubmitButton";
 import Divider from "../_components/Divider";
 import LegalFooter from "../_components/LegalFooter";
 
