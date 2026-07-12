@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import Avatar from "../../components/Avatar";
 import EmergencyButton from "./EmergencyButton";
 
 export default function DashboardHeader({ name }: { name: string }) {
@@ -11,9 +13,12 @@ export default function DashboardHeader({ name }: { name: string }) {
       transition={{ duration: 0.3 }}
       className="flex items-center justify-between"
     >
-      <p className="text-lg font-semibold text-zinc-950">
-        Hi, {name || "there"} 👋
-      </p>
+      <Link href="/profile" className="flex items-center gap-3">
+        <Avatar name={name || "?"} size={36} />
+        <p className="text-lg font-semibold text-zinc-950">
+          Hi, {name || "there"} 👋
+        </p>
+      </Link>
       <EmergencyButton />
     </motion.div>
   );
