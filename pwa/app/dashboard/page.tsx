@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import DashboardHeader from "./_components/DashboardHeader";
 import ContinueSessionCard from "./_components/ContinueSessionCard";
 import WeeklyChecklist from "./_components/WeeklyChecklist";
 import MoodSnapshot from "./_components/MoodSnapshot";
 import JournalShortcut from "./_components/JournalShortcut";
 import BottomNav from "./_components/BottomNav";
-import { SESSIONS } from "./_lib/sessions";
+import { SESSIONS } from "../sessions/_lib/sessions";
 import { getOnboardingData } from "../onboarding/_lib/onboardingStore";
 
-const CURRENT_SESSION = 3;
+const CURRENT_SESSION = 1;
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [name, setName] = useState("");
 
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function DashboardPage() {
           sessionNumber={CURRENT_SESSION}
           totalSessions={SESSIONS.length}
           title={currentSession.title}
+          onResume={() => router.push(`/sessions/${CURRENT_SESSION}`)}
         />
         <WeeklyChecklist tasks={weeklyTasks} />
         <MoodSnapshot />
