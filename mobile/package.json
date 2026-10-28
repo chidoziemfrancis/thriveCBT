@@ -5,11 +5,13 @@
   "dependencies": {
     "@expo-google-fonts/nunito": "^0.4.2",
     "@expo/ui": "~58.0.24",
+    "@react-native-community/datetimepicker": "9.2.1",
     "expo": "~58.0.20",
     "expo-constants": "~58.0.13",
     "expo-device": "~58.0.5",
     "expo-font": "~58.0.10",
     "expo-glass-effect": "~58.0.5",
+    "expo-haptics": "~58.0.7",
     "expo-image": "~58.0.17",
     "expo-linking": "~58.0.14",
     "expo-router": "~58.0.27",
