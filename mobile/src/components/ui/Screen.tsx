@@ -25,7 +25,7 @@ export default function Screen({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[styles.content, insideTabs && styles.contentInTabs]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -41,5 +41,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   flex: { flex: 1 },
   content: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 12, paddingBottom: 24 },
+  // Room for the floating chat button, so it never covers the last card or button.
+  contentInTabs: { paddingBottom: 104 },
   footer: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 12, gap: 12 },
 });
