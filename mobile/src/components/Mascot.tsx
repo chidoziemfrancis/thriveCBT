@@ -4,7 +4,6 @@ import { colors } from '@/theme';
 
 type Mood = 'happy' | 'calm' | 'cheer';
 
-// "Sprout", ThriveCBT's buddy: a round seedling that grows with the student.
 export default function Mascot({ size = 120, mood = 'happy' }: { size?: number; mood?: Mood }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 120 120" accessibilityElementsHidden>
