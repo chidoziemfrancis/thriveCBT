@@ -1,56 +1,49 @@
-# Welcome to your Expo app 👋
+# ThriveCBT mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The ThriveCBT mobile app: an 8-week digital CBT programme for undergraduate students, with weekly researcher support. Built with Expo and Expo Router.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run it
 
 ```bash
-npm run reset-project
+npm install
+npx expo start -c
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Scan the QR code with Expo Go (iPhone camera or the Expo Go app on Android), or press `i` / `a` for a simulator. Haptics only work on a real phone.
 
-### Other setup steps
+## Scripts
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Script | What it does |
+|---|---|
+| `npm run lint` | ESLint plus a Prettier check of `src` and `test` |
+| `npm run format` | Prettier on `src` and `test` |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm test` | Jest unit tests |
+| `npm run build` | Exports the iOS and Android bundles to `dist/` |
 
-## Learn more
+## Project structure
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+src/
+  app/          Expo Router routes. Each file only re-exports a screen, so URLs live here
+                and screen code lives in features/.
+  features/     One folder per product area. A feature owns its screens, its components
+                and its data (stores, constants, pure logic).
+    auth/         Sign-in, email verification, the user session
+    onboarding/   Welcome, name, birthday, eligibility, what to expect
+    assessment/   PHQ-9 questions, scoring and results
+    home/         Home screen
+  components/   Shared UI used by more than one feature
+    ui/           Buttons, fields, screen wrapper, step header
+    icons/        SVG icons
+    mascot/       Sprout and the speech bubble
+  lib/          Shared helpers with no UI: on-device storage, haptics, dates
+  theme/        Colours, fonts, radii and type styles
+test/           Unit tests, mirroring src/ (test/features/…, test/lib/…)
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**Where new code goes:**
+- A new screen goes in `src/features/<area>/screens/`, plus a one-line route file in `src/app/` that re-exports it.
+- A component used by one feature stays in that feature's `components/`. It moves to `src/components/` once a second feature needs it.
+- Logic with no UI goes next to the feature that owns it, or in `src/lib/` if it's shared. Give it a unit test in the matching `test/` folder.
+- Import with the `@/` alias (`@/features/assessment/phq9`, `@/components/ui/Button`) rather than relative paths across folders. Tests use it too.
