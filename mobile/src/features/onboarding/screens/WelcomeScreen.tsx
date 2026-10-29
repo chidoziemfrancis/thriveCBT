@@ -1,11 +1,13 @@
-import { router } from 'expo-router';
-import { useEffect } from 'react';
+import { Redirect, router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
 import { useSplashRevealed } from '@/components/splash/AnimatedSplash';
+import { hasPin } from '@/features/auth/pinStore';
+import { getUserSession } from '@/features/auth/userSession';
 import Screen from '@/components/ui/Screen';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
@@ -15,12 +17,16 @@ const MASCOT_LANDS_MS = 450;
 
 export default function WelcomeScreen() {
   const revealed = useSplashRevealed();
+  const [signedIn] = useState(() => hasPin() && Boolean(getUserSession().email));
 
   useEffect(() => {
-    if (!revealed) return;
+    if (!revealed || signedIn) return;
     const timer = setTimeout(haptics.heartbeat, MASCOT_LANDS_MS);
     return () => clearTimeout(timer);
-  }, [revealed]);
+  }, [revealed, signedIn]);
+
+  // Anyone already signed in on this device goes straight to the PIN screen.
+  if (signedIn) return <Redirect href="/auth/unlock" />;
 
   return (
     <Screen

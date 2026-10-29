@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
 import { accountExists, signIn } from '@/features/auth/mockAccounts';
+import { hasPin } from '@/features/auth/pinStore';
 import { homeFor } from '@/features/auth/roles';
 import { setUserSession } from '@/features/auth/userSession';
 import { haptics } from '@/lib/haptics';
@@ -57,7 +58,8 @@ export default function SignInScreen() {
 
     haptics.success();
     setUserSession({ email: trimmed, role });
-    router.replace(homeFor(role));
+    // A new device has no PIN yet, so set one up once before going in.
+    router.replace(hasPin() ? homeFor(role) : '/auth/create-pin');
   }
 
   return (

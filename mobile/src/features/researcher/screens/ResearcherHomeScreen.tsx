@@ -3,14 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { clearUserSession, getUserSession } from '@/features/auth/userSession';
+import { signOut } from '@/features/auth/signOut';
+import { getUserSession } from '@/features/auth/userSession';
 import { colors, fonts, radius, type } from '@/theme';
 
 export default function ResearcherHomeScreen() {
   const { email } = getUserSession();
 
-  function handleSignOut() {
-    clearUserSession();
+  async function handleSignOut() {
+    await signOut();
     router.replace('/');
   }
 
