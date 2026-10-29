@@ -7,7 +7,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { DAYS_IN_WINDOW } from '@/lib/frequency';
+import { DAYS_IN_WINDOW } from '@/features/assessment/frequency';
 import { colors } from '@/theme';
 
 const STAGGER_MS = 25;

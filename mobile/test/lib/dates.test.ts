@@ -8,7 +8,7 @@ import {
   parseIsoDate,
   toIsoDate,
   withValidDay,
-} from '../src/lib/dates';
+} from '@/lib/dates';
 
 const today = new Date(2026, 9, 29);
 

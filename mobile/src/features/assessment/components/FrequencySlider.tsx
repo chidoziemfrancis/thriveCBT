@@ -3,7 +3,7 @@ import { LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-import { stopForPosition } from '@/lib/frequency';
+import { stopForPosition } from '@/features/assessment/frequency';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

@@ -1,4 +1,4 @@
-import { readJson, writeJson } from './storage';
+import { readJson, writeJson } from '@/lib/storage';
 
 const STORAGE_KEY = 'onboarding';
 
