@@ -4,9 +4,9 @@ export const PHQ9_QUESTIONS = [
   'Trouble falling or staying asleep, or sleeping too much',
   'Feeling tired or having little energy',
   'Poor appetite or overeating',
-  'Feeling bad about yourself — or that you are a failure, or have let yourself or your family down',
+  'Feeling bad about yourself, or that you are a failure, or have let yourself or your family down',
   'Trouble concentrating on things, such as reading or watching television',
-  'Moving or speaking so slowly that other people could have noticed — or the opposite, being so fidgety or restless that you have been moving around a lot more than usual',
+  'Moving or speaking so slowly that other people could have noticed, or the opposite, being so fidgety or restless that you have been moving around a lot more than usual',
   'Thoughts that you would be better off dead, or of hurting yourself in some way',
 ];
 
