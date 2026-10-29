@@ -26,10 +26,10 @@ export const colors = {
 } as const;
 
 export const fonts = {
-  regular: 'Nunito_400Regular',
-  medium: 'Nunito_600SemiBold',
-  bold: 'Nunito_700Bold',
-  heavy: 'Nunito_800ExtraBold',
+  regular: 'Geist_400Regular',
+  medium: 'Geist_500Medium',
+  bold: 'Geist_600SemiBold',
+  heavy: 'Geist_700Bold',
 } as const;
 
 export const radius = {
@@ -40,8 +40,20 @@ export const radius = {
 } as const;
 
 export const type = {
-  display: { fontFamily: fonts.heavy, fontSize: 30, lineHeight: 36, color: colors.ink },
-  title: { fontFamily: fonts.heavy, fontSize: 26, lineHeight: 32, color: colors.ink },
+  display: {
+    fontFamily: fonts.heavy,
+    fontSize: 30,
+    lineHeight: 36,
+    letterSpacing: -0.6,
+    color: colors.ink,
+  },
+  title: {
+    fontFamily: fonts.heavy,
+    fontSize: 26,
+    lineHeight: 32,
+    letterSpacing: -0.5,
+    color: colors.ink,
+  },
   body: { fontFamily: fonts.regular, fontSize: 16, lineHeight: 23, color: colors.inkMuted },
   label: { fontFamily: fonts.bold, fontSize: 16, color: colors.ink },
   caption: { fontFamily: fonts.medium, fontSize: 13, lineHeight: 18, color: colors.inkMuted },

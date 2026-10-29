@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
-    "@expo-google-fonts/nunito": "^0.4.2",
+    "@expo-google-fonts/geist": "^0.4.2",
     "@expo/ui": "~58.0.24",
     "expo": "~58.0.20",
     "expo-constants": "~58.0.13",
