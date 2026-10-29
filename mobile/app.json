@@ -41,7 +41,8 @@
           "microphonePermission": "ThriveCBT uses your microphone so your researcher can hear you during video check-ins. Calls are never recorded.",
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
