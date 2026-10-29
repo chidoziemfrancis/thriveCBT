@@ -33,7 +33,15 @@
           "imageWidth": 120
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "ThriveCBT uses your camera for video check-ins with your researcher. Calls are never recorded.",
+          "microphonePermission": "ThriveCBT uses your microphone so your researcher can hear you during video check-ins. Calls are never recorded.",
+          "recordAudioAndroid": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
