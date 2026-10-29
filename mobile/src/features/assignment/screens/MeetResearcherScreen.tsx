@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
-import { HeartHandIcon, PhoneIcon, VideoIcon } from '@/components/icons';
+import Emoji from '@/components/icons/Emoji';
+import type { EmojiName } from '@/components/icons/emojiSources';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { initials } from '@/features/assignment/assign';
@@ -31,10 +32,10 @@ export default function MeetResearcherScreen() {
   if (!researcher) return <Redirect href="/assignment/finding" />;
 
   const name = firstName(researcher.name);
-  const support = [
-    { Icon: VideoIcon, text: 'A short video check-in every week' },
-    { Icon: PhoneIcon, text: `Message ${name} in the app whenever you need` },
-    { Icon: HeartHandIcon, text: 'Someone looking out for you if things feel heavy' },
+  const support: { emoji: EmojiName; text: string }[] = [
+    { emoji: 'videoCamera', text: 'A short video check-in every week' },
+    { emoji: 'speechBalloon', text: `Message ${name} in the app whenever you need` },
+    { emoji: 'growingHeart', text: 'Someone looking out for you if things feel heavy' },
   ];
 
   return (
@@ -56,10 +57,10 @@ export default function MeetResearcherScreen() {
 
         <Animated.View entering={FadeInDown.delay(350).duration(400)} style={styles.card}>
           <Text style={styles.cardTitle}>How {name} will support you</Text>
-          {support.map(({ Icon, text }) => (
+          {support.map(({ emoji, text }) => (
             <View key={text} style={styles.row}>
               <View style={styles.rowIcon}>
-                <Icon size={18} color={colors.lavenderInk} />
+                <Emoji name={emoji} size={26} />
               </View>
               <Text style={styles.rowText}>{text}</Text>
             </View>
@@ -115,10 +116,10 @@ const styles = StyleSheet.create({
   cardTitle: { fontFamily: fonts.heavy, fontSize: 16, color: colors.ink },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   rowIcon: {
-    width: 36,
-    height: 36,
+    width: 44,
+    height: 44,
     borderRadius: radius.sm,
-    backgroundColor: colors.lavender,
+    backgroundColor: colors.surfaceMuted,
     alignItems: 'center',
     justifyContent: 'center',
   },
