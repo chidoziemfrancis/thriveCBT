@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { colors } from '@/theme';
-import { ChevronLeftIcon } from './Icons';
+import { ChevronLeftIcon } from '@/components/icons';
 
 export default function BackButton() {
   return (

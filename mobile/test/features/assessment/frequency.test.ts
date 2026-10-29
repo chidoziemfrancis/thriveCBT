@@ -5,8 +5,8 @@ import {
   FREQUENCY_COLORS,
   illustratedDays,
   stopForPosition,
-} from '../src/lib/frequency';
-import { PHQ9_OPTIONS } from '../src/lib/phq9';
+} from '@/features/assessment/frequency';
+import { PHQ9_OPTIONS } from '@/features/assessment/phq9';
 
 describe('stopForPosition', () => {
   const width = 300;

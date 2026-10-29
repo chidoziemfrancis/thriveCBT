@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
-import { CheckIcon } from './Icons';
+import { CheckIcon } from '@/components/icons';
 
 export default function ChoiceButton({
   selected,

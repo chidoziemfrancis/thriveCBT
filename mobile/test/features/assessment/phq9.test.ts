@@ -5,7 +5,7 @@ import {
   PHQ9_QUESTIONS,
   SUICIDAL_IDEATION_INDEX,
   severityBand,
-} from '../src/lib/phq9';
+} from '@/features/assessment/phq9';
 
 describe('severityBand', () => {
   it.each([
