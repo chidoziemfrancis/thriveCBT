@@ -13,6 +13,7 @@ export const haptics = {
   tap: () => run(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)),
   tick: () => run(() => Haptics.selectionAsync()),
   success: () => run(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)),
+  error: () => run(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)),
 
   heartbeat() {
     run(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft));

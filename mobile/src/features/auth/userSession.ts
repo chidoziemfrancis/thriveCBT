@@ -1,8 +1,10 @@
 import { readJson, removeKey, writeJson } from '@/lib/storage';
 
+import type { Role } from './roles';
+
 const STORAGE_KEY = 'user_session';
 
-type UserSession = { email?: string };
+type UserSession = { email?: string; role?: Role };
 
 export function getUserSession(): UserSession {
   return readJson<UserSession>(STORAGE_KEY, {});
