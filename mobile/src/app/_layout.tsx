@@ -43,6 +43,8 @@ export default function RootLayout() {
         >
           <Stack.Screen name="index" options={{ animation: 'fade' }} />
           <Stack.Screen name="assessment/phq9/results" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="assignment/finding" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="assignment/meet" options={{ gestureEnabled: false }} />
         </Stack>
       </SplashRevealedProvider>
       {!splashDone && <AnimatedSplash onReveal={revealApp} onFinish={finishSplash} />}

@@ -44,7 +44,7 @@ export default function SignInScreen() {
         return;
       }
       setUserSession({ email: trimmed, role: 'student' });
-      router.push({ pathname: '/auth/verify-email', params: { email: trimmed } });
+      router.push({ pathname: '/auth/create-password', params: { email: trimmed } });
       return;
     }
 

@@ -38,7 +38,7 @@ export default function Phq9ResultsScreen() {
 
   function handleContinue() {
     clearAnswers();
-    router.replace('/dashboard');
+    router.replace('/assignment/finding');
   }
 
   if (needsSupport) {
@@ -77,7 +77,7 @@ export default function Phq9ResultsScreen() {
   const bandIndex = BANDS.indexOf(band);
 
   return (
-    <Screen footer={<Button onPress={handleContinue}>Start my first session</Button>}>
+    <Screen footer={<Button onPress={handleContinue}>Meet my researcher</Button>}>
       <View style={styles.body}>
         <Animated.View entering={FadeInUp.duration(500)} style={styles.center}>
           <Mascot size={112} mood="cheer" />
