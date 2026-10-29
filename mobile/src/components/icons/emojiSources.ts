@@ -13,6 +13,15 @@ export const EMOJI = {
   faceNeutral: require('@/assets/images/emoji/face-neutral.png'),
   faceSlightlySmiling: require('@/assets/images/emoji/face-slightly-smiling.png'),
   faceGrinning: require('@/assets/images/emoji/face-grinning.png'),
+  brain: require('@/assets/images/emoji/brain.png'),
+  cloudRain: require('@/assets/images/emoji/cloud-rain.png'),
+  graduationCap: require('@/assets/images/emoji/graduation-cap.png'),
+  seedling: require('@/assets/images/emoji/seedling.png'),
+  partyPopper: require('@/assets/images/emoji/party-popper.png'),
+  memo: require('@/assets/images/emoji/memo.png'),
+  lightBulb: require('@/assets/images/emoji/light-bulb.png'),
+  barChart: require('@/assets/images/emoji/bar-chart.png'),
+  clapper: require('@/assets/images/emoji/clapper.png'),
 } satisfies Record<string, ImageSource>;
 
 export type EmojiName = keyof typeof EMOJI;
