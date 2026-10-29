@@ -78,7 +78,8 @@ export default function Phq9ResultsScreen() {
         <View style={styles.copy}>
           <Text style={[type.title, styles.centerText]}>Check-in complete</Text>
           <Text style={[type.body, styles.centerText]}>
-            Thanks for answering honestly. This is your starting point, and we’ll check in again at the end.
+            Thanks for answering honestly. This is your starting point, and we’ll check in again at
+            the end.
           </Text>
         </View>
 

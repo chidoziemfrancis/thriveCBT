@@ -40,10 +40,16 @@ export default function OnboardingEligibilityScreen() {
         </View>
 
         <View accessibilityRole="radiogroup" style={styles.options}>
-          <ChoiceButton selected={isUndergraduate === true} onPress={() => setIsUndergraduate(true)}>
+          <ChoiceButton
+            selected={isUndergraduate === true}
+            onPress={() => setIsUndergraduate(true)}
+          >
             Yes, I am
           </ChoiceButton>
-          <ChoiceButton selected={isUndergraduate === false} onPress={() => setIsUndergraduate(false)}>
+          <ChoiceButton
+            selected={isUndergraduate === false}
+            onPress={() => setIsUndergraduate(false)}
+          >
             No, I’m not
           </ChoiceButton>
         </View>

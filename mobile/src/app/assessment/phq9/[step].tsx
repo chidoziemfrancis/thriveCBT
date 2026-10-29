@@ -45,7 +45,9 @@ export default function Phq9QuestionScreen() {
 
       <Animated.View entering={FadeIn.duration(250)} style={styles.body}>
         <View style={styles.copy}>
-          <Text style={type.eyebrow}>Over the last 2 weeks, how often have you been bothered by…</Text>
+          <Text style={type.eyebrow}>
+            Over the last 2 weeks, how often have you been bothered by…
+          </Text>
           <Text style={type.title}>{PHQ9_QUESTIONS[index]}</Text>
         </View>
 
