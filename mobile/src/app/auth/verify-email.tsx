@@ -15,7 +15,7 @@ export default function VerifyEmailScreen() {
   const { email = '' } = useLocalSearchParams<{ email?: string }>();
   const [code, setCode] = useState('');
   const [secondsLeft, setSecondsLeft] = useState(COOLDOWN_SECONDS);
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<React.ComponentRef<typeof TextInput>>(null);
 
   useEffect(() => {
     if (secondsLeft === 0) return;
@@ -53,7 +53,10 @@ export default function VerifyEmailScreen() {
           {digits.map((digit, index) => {
             const active = index === Math.min(code.length, CODE_LENGTH - 1);
             return (
-              <View key={index} style={[styles.box, digit && styles.boxFilled, active && styles.boxActive]}>
+              <View
+                key={index}
+                style={[styles.box, digit && styles.boxFilled, active && styles.boxActive]}
+              >
                 <Text style={styles.digit}>{digit}</Text>
               </View>
             );

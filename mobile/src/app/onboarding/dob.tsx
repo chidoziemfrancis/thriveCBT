@@ -32,11 +32,19 @@ export default function OnboardingDobScreen() {
   const age = date ? calculateAge(date) : null;
 
   return (
-    <Screen footer={<Button disabled={!date} onPress={handleContinue}>Continue</Button>}>
+    <Screen
+      footer={
+        <Button disabled={!date} onPress={handleContinue}>
+          Continue
+        </Button>
+      }
+    >
       <StepHeader step={2} totalSteps={4} />
 
       <View style={styles.body}>
-        <SpeechBubble>No birthday surprises, promise. This just checks you can join the study.</SpeechBubble>
+        <SpeechBubble>
+          No birthday surprises, promise. This just checks you can join the study.
+        </SpeechBubble>
 
         <View style={styles.copy}>
           <Text style={type.title}>When’s your birthday?</Text>
@@ -64,7 +72,11 @@ export default function OnboardingDobScreen() {
             >
               <Text style={[styles.fieldText, !date && { color: colors.inkFaint }]}>
                 {date
-                  ? date.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })
+                  ? date.toLocaleDateString(undefined, {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })
                   : 'Tap to choose a date'}
               </Text>
             </Pressable>

@@ -21,7 +21,13 @@ export default function OnboardingNameScreen() {
   }
 
   return (
-    <Screen footer={<Button disabled={!canContinue} onPress={handleContinue}>Continue</Button>}>
+    <Screen
+      footer={
+        <Button disabled={!canContinue} onPress={handleContinue}>
+          Continue
+        </Button>
+      }
+    >
       <StepHeader step={1} totalSteps={4} />
 
       <View style={styles.body}>
@@ -29,7 +35,9 @@ export default function OnboardingNameScreen() {
 
         <View style={styles.copy}>
           <Text style={type.title}>What should we call you?</Text>
-          <Text style={type.body}>Just your first name or a nickname. Only you and your researcher see it.</Text>
+          <Text style={type.body}>
+            Just your first name or a nickname. Only you and your researcher see it.
+          </Text>
         </View>
 
         <TextField

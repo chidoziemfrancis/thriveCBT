@@ -4,7 +4,6 @@ import { colors } from '@/theme';
 
 type Mood = 'happy' | 'calm' | 'cheer';
 
-// "Sprout", ThriveCBT's buddy: a round seedling that grows with the student.
 export default function Mascot({ size = 120, mood = 'happy' }: { size?: number; mood?: Mood }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 120 120" accessibilityElementsHidden>
@@ -17,8 +16,20 @@ export default function Mascot({ size = 120, mood = 'happy' }: { size?: number; 
 
       {mood === 'calm' ? (
         <>
-          <Path d="M41 70q5 4 10 0" stroke={colors.ink} strokeWidth={3} strokeLinecap="round" fill="none" />
-          <Path d="M69 70q5 4 10 0" stroke={colors.ink} strokeWidth={3} strokeLinecap="round" fill="none" />
+          <Path
+            d="M41 70q5 4 10 0"
+            stroke={colors.ink}
+            strokeWidth={3}
+            strokeLinecap="round"
+            fill="none"
+          />
+          <Path
+            d="M69 70q5 4 10 0"
+            stroke={colors.ink}
+            strokeWidth={3}
+            strokeLinecap="round"
+            fill="none"
+          />
         </>
       ) : (
         <>
@@ -35,7 +46,13 @@ export default function Mascot({ size = 120, mood = 'happy' }: { size?: number; 
       {mood === 'cheer' ? (
         <Path d="M50 80q10 12 20 0z" fill={colors.ink} />
       ) : (
-        <Path d="M52 81q8 6 16 0" stroke={colors.ink} strokeWidth={3} strokeLinecap="round" fill="none" />
+        <Path
+          d="M52 81q8 6 16 0"
+          stroke={colors.ink}
+          strokeWidth={3}
+          strokeLinecap="round"
+          fill="none"
+        />
       )}
     </Svg>
   );

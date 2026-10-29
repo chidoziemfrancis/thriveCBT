@@ -5,7 +5,13 @@ type IconProps = { size?: number; color: string };
 export function ChevronLeftIcon({ size = 20, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M15 4l-8 8 8 8" stroke={color} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
+      <Path
+        d="M15 4l-8 8 8 8"
+        stroke={color}
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
@@ -13,7 +19,13 @@ export function ChevronLeftIcon({ size = 20, color }: IconProps) {
 export function CheckIcon({ size = 14, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M5 13l4 4L19 7" stroke={color} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+      <Path
+        d="M5 13l4 4L19 7"
+        stroke={color}
+        strokeWidth={3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
@@ -36,7 +48,13 @@ export function ClipboardIcon({ size = 22, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Rect x={5} y={4} width={14} height={17} rx={3} stroke={color} strokeWidth={2} />
-      <Path d="M9 12l2 2 4-4" stroke={color} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+      <Path
+        d="M9 12l2 2 4-4"
+        stroke={color}
+        strokeWidth={2.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
@@ -67,7 +85,12 @@ export function FlagIcon({ size = 22, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M6 21V4" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
-      <Path d="M6 4.5h11l-2.8 3.5L17 11.5H6" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+      <Path
+        d="M6 4.5h11l-2.8 3.5L17 11.5H6"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
@@ -101,7 +124,12 @@ export function PhoneIcon({ size = 20, color }: IconProps) {
 export function ShieldIcon({ size = 18, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+      <Path
+        d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
       <Circle cx={12} cy={11} r={2} fill={color} />
     </Svg>
   );

@@ -45,5 +45,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   fill: { height: '100%', borderRadius: radius.pill, backgroundColor: colors.primary },
-  count: { fontFamily: fonts.bold, fontSize: 14, color: colors.inkMuted, minWidth: 32, textAlign: 'right' },
+  count: {
+    fontFamily: fonts.bold,
+    fontSize: 14,
+    color: colors.inkMuted,
+    minWidth: 32,
+    textAlign: 'right',
+  },
 });

@@ -21,7 +21,6 @@ export default function SignInScreen() {
 
   function handleSubmit() {
     if (hasAccount) {
-      // TODO: submit sign-in request with email + password
       setUserSession({ email });
       router.replace('/dashboard');
       return;
