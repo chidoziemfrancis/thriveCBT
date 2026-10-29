@@ -5,6 +5,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
+import { useSplashRevealed } from '@/components/splash/AnimatedSplash';
 import Screen from '@/components/ui/Screen';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
@@ -13,10 +14,13 @@ import { colors, fonts, type } from '@/theme';
 const MASCOT_LANDS_MS = 450;
 
 export default function WelcomeScreen() {
+  const revealed = useSplashRevealed();
+
   useEffect(() => {
+    if (!revealed) return;
     const timer = setTimeout(haptics.heartbeat, MASCOT_LANDS_MS);
     return () => clearTimeout(timer);
-  }, []);
+  }, [revealed]);
 
   return (
     <Screen
@@ -34,17 +38,21 @@ export default function WelcomeScreen() {
       }
     >
       <View style={styles.hero}>
-        <Animated.View entering={FadeInUp.duration(600).springify()}>
-          <Mascot size={168} mood="cheer" />
-        </Animated.View>
-        <Animated.View entering={FadeInDown.delay(150).duration(500)} style={styles.copy}>
-          <Text style={styles.brand}>
-            Thrive<Text style={{ color: colors.primary }}>CBT</Text>
-          </Text>
-          <Text style={[type.body, styles.tagline]}>
-            Your pocket guide for tough weeks. 8 short sessions, built for students.
-          </Text>
-        </Animated.View>
+        {revealed && (
+          <>
+            <Animated.View entering={FadeInUp.duration(600).springify()}>
+              <Mascot size={168} mood="cheer" />
+            </Animated.View>
+            <Animated.View entering={FadeInDown.delay(150).duration(500)} style={styles.copy}>
+              <Text style={styles.brand}>
+                Thrive<Text style={{ color: colors.primary }}>CBT</Text>
+              </Text>
+              <Text style={[type.body, styles.tagline]}>
+                Your pocket guide for tough weeks. 8 short sessions, built for students.
+              </Text>
+            </Animated.View>
+          </>
+        )}
       </View>
     </Screen>
   );
