@@ -15,7 +15,7 @@ export default function VerifyEmailScreen() {
   const { email = '' } = useLocalSearchParams<{ email?: string }>();
   const [code, setCode] = useState('');
   const [secondsLeft, setSecondsLeft] = useState(COOLDOWN_SECONDS);
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<React.ComponentRef<typeof TextInput>>(null);
 
   useEffect(() => {
     if (secondsLeft === 0) return;
