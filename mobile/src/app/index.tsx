@@ -1,13 +1,23 @@
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import Button from '@/components/Button';
 import Mascot from '@/components/Mascot';
 import Screen from '@/components/Screen';
+import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
+// Lands the heartbeat as Sprout's spring-in settles.
+const MASCOT_LANDS_MS = 450;
+
 export default function WelcomeScreen() {
+  useEffect(() => {
+    const timer = setTimeout(haptics.heartbeat, MASCOT_LANDS_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Screen
       footer={

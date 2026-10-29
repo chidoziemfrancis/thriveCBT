@@ -1,6 +1,6 @@
-import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 import { CheckIcon } from './Icons';
 
@@ -18,7 +18,7 @@ export default function ChoiceButton({
       accessibilityRole="radio"
       accessibilityState={{ selected }}
       onPress={() => {
-        Haptics.selectionAsync();
+        haptics.tick();
         onPress();
       }}
       style={({ pressed }) => [

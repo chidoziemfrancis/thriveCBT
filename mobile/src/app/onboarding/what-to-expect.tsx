@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 
@@ -6,6 +7,7 @@ import Button from '@/components/Button';
 import { BookIcon, ClipboardIcon, FlagIcon, VideoIcon } from '@/components/Icons';
 import Screen from '@/components/Screen';
 import StepHeader from '@/components/StepHeader';
+import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
 const JOURNEY = [
@@ -39,7 +41,11 @@ const JOURNEY = [
   },
 ];
 
+const entranceDelay = (index: number) => 100 + index * 90;
+
 export default function WhatToExpectScreen() {
+  useEffect(() => haptics.ripple(JOURNEY.map((_, index) => entranceDelay(index))), []);
+
   return (
     <Screen
       footer={<Button onPress={() => router.push('/assessment/phq9/1')}>Start my check-in</Button>}
@@ -58,7 +64,7 @@ export default function WhatToExpectScreen() {
             return (
               <Animated.View
                 key={title}
-                entering={FadeInRight.delay(100 + index * 90).duration(400)}
+                entering={FadeInRight.delay(entranceDelay(index)).duration(400)}
                 style={styles.item}
               >
                 <View style={styles.rail}>
