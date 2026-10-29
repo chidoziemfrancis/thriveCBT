@@ -4,21 +4,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 import Button from '@/components/ui/Button';
-import { HeartHandIcon, PhoneIcon, ShieldIcon } from '@/components/icons';
 import Mascot from '@/components/mascot/Mascot';
 import Screen from '@/components/ui/Screen';
 import { clearAnswers, getAnswers } from '@/features/assessment/assessmentStore';
+import { SUPPORT_OPTIONS } from '@/features/support/supportOptions';
 import { haptics } from '@/lib/haptics';
 import { PHQ9_QUESTIONS, SUICIDAL_IDEATION_INDEX, severityBand } from '@/features/assessment/phq9';
 import { colors, fonts, radius, type } from '@/theme';
 
 const BANDS = ['Minimal', 'Mild', 'Moderate', 'Moderately severe', 'Severe'];
-
-const SUPPORT_OPTIONS = [
-  { label: 'Your campus counselling centre', Icon: ShieldIcon },
-  { label: 'A local crisis helpline', Icon: PhoneIcon },
-  { label: 'The research team supporting this study', Icon: HeartHandIcon },
-];
 
 export default function Phq9ResultsScreen() {
   const [{ score, needsSupport }] = useState(() => {
