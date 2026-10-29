@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
@@ -8,6 +8,7 @@ import { HeartHandIcon, PhoneIcon, ShieldIcon } from '@/components/Icons';
 import Mascot from '@/components/Mascot';
 import Screen from '@/components/Screen';
 import { clearAnswers, getAnswers } from '@/lib/assessmentStore';
+import { haptics } from '@/lib/haptics';
 import { PHQ9_QUESTIONS, SUICIDAL_IDEATION_INDEX, severityBand } from '@/lib/phq9';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -27,6 +28,13 @@ export default function Phq9ResultsScreen() {
       needsSupport: (answers[SUICIDAL_IDEATION_INDEX] ?? 0) > 0,
     };
   });
+
+  // The crisis screen stays still on purpose: a celebratory buzz there would feel wrong.
+  useEffect(() => {
+    if (needsSupport) return;
+    const timer = setTimeout(haptics.heartbeat, 300);
+    return () => clearTimeout(timer);
+  }, [needsSupport]);
 
   function handleContinue() {
     clearAnswers();

@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
 type Variant = 'primary' | 'secondary' | 'ghost';
@@ -22,6 +23,7 @@ export default function Button({
       <Pressable
         accessibilityRole="button"
         onPress={onPress}
+        onPressIn={haptics.tick}
         disabled={disabled}
         style={({ pressed }) => [styles.ghost, pressed && { opacity: 0.6 }]}
       >
@@ -39,6 +41,7 @@ export default function Button({
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       onPress={onPress}
+      onPressIn={haptics.tap}
       disabled={disabled}
       style={[styles.base, { backgroundColor: edge }, disabled && styles.disabled]}
     >

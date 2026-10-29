@@ -6,6 +6,7 @@ import BackButton from '@/components/BackButton';
 import Button from '@/components/Button';
 import { RefreshIcon } from '@/components/Icons';
 import Screen from '@/components/Screen';
+import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
 const CODE_LENGTH = 6;
@@ -22,6 +23,13 @@ export default function VerifyEmailScreen() {
     const timer = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
     return () => clearTimeout(timer);
   }, [secondsLeft]);
+
+  function handleCodeChange(value: string) {
+    const next = value.replace(/\D/g, '').slice(0, CODE_LENGTH);
+    if (next.length === CODE_LENGTH && code.length < CODE_LENGTH) haptics.success();
+    else if (next.length > code.length) haptics.tick();
+    setCode(next);
+  }
 
   const digits = Array.from({ length: CODE_LENGTH }, (_, i) => code[i] ?? '');
 
@@ -65,7 +73,7 @@ export default function VerifyEmailScreen() {
         <TextInput
           ref={inputRef}
           value={code}
-          onChangeText={(value) => setCode(value.replace(/\D/g, '').slice(0, CODE_LENGTH))}
+          onChangeText={handleCodeChange}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           autoComplete="one-time-code"
