@@ -42,19 +42,17 @@ export function daysInMonth(year: number, month: number): number {
   return new Date(year, month + 1, 0).getDate();
 }
 
-/** Blank cells before day 1 in a Monday-first calendar grid. */
-export function leadingBlanks(year: number, month: number): number {
-  return (new Date(year, month, 1).getDay() + 6) % 7;
+/** Rolls a day back to the month's last day when it no longer exists, e.g. 31 in April. */
+export function clampDay(year: number, month: number, day: number): number {
+  return Math.min(day, daysInMonth(year, month));
 }
 
-export function isFutureDate(year: number, month: number, day: number, now = new Date()): boolean {
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  return new Date(year, month, day) > today;
-}
+export const OLDEST_BIRTH_AGE = 80;
+export const YOUNGEST_BIRTH_AGE = 10;
 
-/** Drops the day when a new year or month makes it impossible, e.g. 31 after picking April. */
-export function withValidDay(parts: DateParts): DateParts {
-  const { year, month, day } = parts;
-  if (year === undefined || month === undefined || day === undefined) return parts;
-  return day > daysInMonth(year, month) ? { year, month } : parts;
+// Bounded at both ends so the wheel stays short and can never land on a future date.
+export function birthYears(now = new Date()): number[] {
+  const latest = now.getFullYear() - YOUNGEST_BIRTH_AGE;
+  const earliest = now.getFullYear() - OLDEST_BIRTH_AGE;
+  return Array.from({ length: latest - earliest + 1 }, (_, i) => earliest + i);
 }

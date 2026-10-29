@@ -1,13 +1,14 @@
 import { describe, expect, it } from '@jest/globals';
 
 import {
+  OLDEST_BIRTH_AGE,
+  YOUNGEST_BIRTH_AGE,
+  birthYears,
   calculateAge,
+  clampDay,
   daysInMonth,
-  isFutureDate,
-  leadingBlanks,
   parseIsoDate,
   toIsoDate,
-  withValidDay,
 } from '@/lib/dates';
 
 const today = new Date(2026, 9, 29);
@@ -59,34 +60,24 @@ describe('daysInMonth', () => {
   });
 });
 
-describe('leadingBlanks', () => {
-  it('counts blank cells before day 1 in a Monday-first grid', () => {
-    expect(leadingBlanks(2026, 5)).toBe(0); // 1 June 2026 is a Monday
-    expect(leadingBlanks(2026, 10)).toBe(6); // 1 November 2026 is a Sunday
-    expect(leadingBlanks(2026, 9)).toBe(3); // 1 October 2026 is a Thursday
+describe('clampDay', () => {
+  it('rolls a day back to the last day of a shorter month', () => {
+    expect(clampDay(2005, 3, 31)).toBe(30);
+    expect(clampDay(2005, 1, 31)).toBe(28);
+    expect(clampDay(2004, 1, 31)).toBe(29);
+  });
+
+  it('keeps a day that still exists', () => {
+    expect(clampDay(2005, 0, 31)).toBe(31);
+    expect(clampDay(2005, 1, 14)).toBe(14);
   });
 });
 
-describe('isFutureDate', () => {
-  it('allows today and the past, rejects tomorrow', () => {
-    expect(isFutureDate(2026, 9, 29, today)).toBe(false);
-    expect(isFutureDate(2005, 0, 1, today)).toBe(false);
-    expect(isFutureDate(2026, 9, 30, today)).toBe(true);
-  });
-});
-
-describe('withValidDay', () => {
-  it('drops a day that no longer exists after the month changes', () => {
-    expect(withValidDay({ year: 2005, month: 3, day: 31 })).toEqual({ year: 2005, month: 3 });
-    expect(withValidDay({ year: 2005, month: 1, day: 29 })).toEqual({ year: 2005, month: 1 });
-  });
-
-  it('keeps a day that is still valid, and leaves partial dates alone', () => {
-    expect(withValidDay({ year: 2004, month: 1, day: 29 })).toEqual({
-      year: 2004,
-      month: 1,
-      day: 29,
-    });
-    expect(withValidDay({ year: 2005 })).toEqual({ year: 2005 });
+describe('birthYears', () => {
+  it('runs oldest to youngest and never reaches a future year', () => {
+    const years = birthYears(today);
+    expect(years[0]).toBe(2026 - OLDEST_BIRTH_AGE);
+    expect(years[years.length - 1]).toBe(2026 - YOUNGEST_BIRTH_AGE);
+    expect(years).toHaveLength(OLDEST_BIRTH_AGE - YOUNGEST_BIRTH_AGE + 1);
   });
 });
