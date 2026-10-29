@@ -26,10 +26,10 @@ export const colors = {
 } as const;
 
 export const fonts = {
-  regular: 'Geist_400Regular',
-  medium: 'Geist_500Medium',
-  bold: 'Geist_600SemiBold',
-  heavy: 'Geist_700Bold',
+  regular: 'Figtree_400Regular',
+  medium: 'Figtree_500Medium',
+  bold: 'Figtree_700Bold',
+  heavy: 'Figtree_800ExtraBold',
 } as const;
 
 export const radius = {
