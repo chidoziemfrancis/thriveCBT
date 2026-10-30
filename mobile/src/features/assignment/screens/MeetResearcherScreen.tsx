@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
-import Emoji from '@/components/icons/Emoji';
-import type { EmojiName } from '@/components/icons/emojiSources';
+import Icon3D from '@/components/icons/Icon3D';
+import type { Icon3DName } from '@/components/icons/icon3dSources';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { firstName, initials } from '@/features/assignment/assign';
@@ -28,10 +28,10 @@ export default function MeetResearcherScreen() {
   if (!researcher) return <Redirect href="/assignment/finding" />;
 
   const name = firstName(researcher.name);
-  const support: { emoji: EmojiName; text: string }[] = [
-    { emoji: 'videoCamera', text: 'A short video check-in every week' },
-    { emoji: 'speechBalloon', text: `Message ${name} in the app whenever you need` },
-    { emoji: 'growingHeart', text: 'Someone looking out for you if things feel heavy' },
+  const support: { image: Icon3DName; text: string }[] = [
+    { image: 'videoCamera', text: 'A short video check-in every week' },
+    { image: 'chatBubble', text: `Message ${name} in the app whenever you need` },
+    { image: 'heart', text: 'Someone looking out for you if things feel heavy' },
   ];
 
   return (
@@ -55,10 +55,10 @@ export default function MeetResearcherScreen() {
 
         <Animated.View entering={FadeInDown.delay(350).duration(400)} style={styles.card}>
           <Text style={styles.cardTitle}>How {name} will support you</Text>
-          {support.map(({ emoji, text }) => (
+          {support.map(({ image, text }) => (
             <View key={text} style={styles.row}>
               <View style={styles.rowIcon}>
-                <Emoji name={emoji} size={26} />
+                <Icon3D name={image} size={26} />
               </View>
               <Text style={styles.rowText}>{text}</Text>
             </View>

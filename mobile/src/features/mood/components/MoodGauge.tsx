@@ -9,7 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle, Line, Path } from 'react-native-svg';
 
-import Emoji from '@/components/icons/Emoji';
+import MoodFace from '@/features/mood/components/MoodFace';
 import {
   moodToRotation,
   pointOnArc,
@@ -135,7 +135,7 @@ export default function MoodGauge({
                     pointerEvents="none"
                     style={[styles.face, { left: point.x - FACE / 2, top: point.y - FACE / 2 }]}
                   >
-                    <Emoji name={m.emoji} size={FACE} />
+                    <MoodFace mood={i} size={FACE} filled={false} />
                   </View>
                 );
               })}
@@ -176,7 +176,7 @@ export default function MoodGauge({
       <Animated.View key={value ?? 'none'} entering={FadeIn.duration(200)} style={styles.readout}>
         {mood ? (
           <>
-            <Emoji name={mood.emoji} size={30} />
+            <MoodFace mood={value ?? 0} size={30} />
             <Text style={styles.label}>{mood.label}</Text>
           </>
         ) : (

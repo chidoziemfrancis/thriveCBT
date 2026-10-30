@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 import { CheckIcon } from '@/components/icons';
-import Emoji from '@/components/icons/Emoji';
+import Icon3D from '@/components/icons/Icon3D';
 import Button from '@/components/ui/Button';
 import type { QuizQuestion } from '@/features/sessions/content/types';
 import { quizScore } from '@/features/sessions/sessionLogic';
@@ -31,7 +31,7 @@ export default function QuizModule({
     const score = quizScore(questions, answers);
     return (
       <Animated.View entering={FadeIn} style={styles.result}>
-        <Emoji name={score === questions.length ? 'partyPopper' : 'lightBulb'} size={96} />
+        <Icon3D name={score === questions.length ? 'trophy' : 'bulb'} size={96} />
         <Text style={[type.title, styles.center]}>
           {score} of {questions.length} right
         </Text>

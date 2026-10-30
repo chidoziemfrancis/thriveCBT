@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import Emoji from '@/components/icons/Emoji';
+import Icon3D from '@/components/icons/Icon3D';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
@@ -12,6 +12,7 @@ import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { formatDuration } from '@/features/checkin/checkinLogic';
 import { completeCheckIn, getNextCheckIn } from '@/features/checkin/checkinStore';
+import MoodFace from '@/features/mood/components/MoodFace';
 import { MOODS } from '@/features/mood/moods';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
@@ -55,7 +56,7 @@ export default function CallFeedbackScreen() {
     >
       <View style={styles.body}>
         <Animated.View entering={FadeInDown.duration(350)} style={styles.header}>
-          <Emoji name="growingHeart" size={72} />
+          <Icon3D name="heart" size={72} />
           <Text style={type.eyebrow}>Call ended · {formatDuration(seconds)}</Text>
           <Text style={[type.title, styles.center]}>How did that feel?</Text>
           <Text style={[type.body, styles.center]}>
@@ -83,7 +84,7 @@ export default function CallFeedbackScreen() {
                 ]}
               >
                 <View style={{ opacity: rating === null || selected ? 1 : 0.45 }}>
-                  <Emoji name={mood.emoji} size={selected ? 40 : 34} />
+                  <MoodFace mood={index} size={selected ? 40 : 34} />
                 </View>
                 <Text style={[styles.faceLabel, selected && { color: colors.ink }]}>
                   {mood.label}
