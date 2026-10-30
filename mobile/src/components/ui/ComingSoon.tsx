@@ -1,24 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import Emoji from '@/components/icons/Emoji';
-import type { EmojiName } from '@/components/icons/emojiSources';
+import Icon3D from '@/components/icons/Icon3D';
+import type { Icon3DName } from '@/components/icons/icon3dSources';
 import Screen from '@/components/ui/Screen';
 import { type } from '@/theme';
 
 export default function ComingSoon({
   title,
   description,
-  emoji,
+  image,
 }: {
   title: string;
   description: string;
-  emoji: EmojiName;
+  image: Icon3DName;
 }) {
   return (
     <Screen insideTabs>
       <Text style={type.title}>{title}</Text>
       <View style={styles.body}>
-        <Emoji name={emoji} size={88} />
+        <Icon3D name={image} size={88} />
         <Text style={[type.body, styles.center]}>{description}</Text>
       </View>
     </Screen>

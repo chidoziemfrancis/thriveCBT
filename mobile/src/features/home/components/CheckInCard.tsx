@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CameraIcon, ChatIcon } from '@/components/icons';
-import Emoji from '@/components/icons/Emoji';
+import Icon3D from '@/components/icons/Icon3D';
 import { Researcher, firstName, initials } from '@/features/assignment/assign';
 import { useChat } from '@/features/chat/chatStore';
 import {
@@ -45,7 +45,7 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
     return (
       <View style={styles.card}>
         <View style={styles.top}>
-          <Emoji name="videoCamera" size={40} />
+          <Icon3D name="videoCamera" size={40} />
           <View style={styles.text}>
             <Text style={styles.title}>Weekly check-in</Text>
             <Text style={styles.meta}>
@@ -77,7 +77,7 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
             <Text style={styles.meta}>{name} will message you to book a time.</Text>
           )}
         </View>
-        <Emoji name="videoCamera" size={34} />
+        <Icon3D name="videoCamera" size={34} />
       </View>
 
       <View style={styles.actions}>

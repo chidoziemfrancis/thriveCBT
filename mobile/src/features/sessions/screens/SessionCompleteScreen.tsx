@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { CheckIcon } from '@/components/icons';
-import Emoji from '@/components/icons/Emoji';
+import Icon3D from '@/components/icons/Icon3D';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { sessionContent } from '@/features/sessions/content';
@@ -32,7 +32,7 @@ export default function SessionCompleteScreen() {
     <Screen footer={<Button onPress={() => router.replace('/dashboard')}>Back to home</Button>}>
       <View style={styles.body}>
         <Animated.View entering={ZoomIn.springify().damping(10)} style={styles.center}>
-          <Emoji name="partyPopper" size={120} />
+          <Icon3D name="trophy" size={120} />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(150).duration(400)} style={styles.header}>
@@ -58,7 +58,7 @@ export default function SessionCompleteScreen() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(350).duration(400)} style={styles.practice}>
-          <Emoji name="seedling" size={40} />
+          <Icon3D name="sun" size={40} />
           <View style={styles.practiceText}>
             <Text style={styles.cardTitle}>This week’s practice</Text>
             <Text style={styles.rowText}>{content.practice}</Text>
