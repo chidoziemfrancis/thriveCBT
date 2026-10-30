@@ -27,6 +27,10 @@ export function getNextCheckIn(researcherId: string | undefined, now = new Date(
   return created;
 }
 
+export function getCheckInHistory(): CheckInFeedback[] {
+  return readJson<CheckInFeedback[]>(FEEDBACK_KEY, []);
+}
+
 /** Saves how the call felt and books the same slot next week. */
 export function completeCheckIn(
   checkIn: CheckIn,
