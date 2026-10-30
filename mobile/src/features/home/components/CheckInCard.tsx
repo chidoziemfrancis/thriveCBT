@@ -120,6 +120,18 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
           )}
         </Pressable>
       </View>
+
+      {/* Development builds only, so the call flow can be tried without waiting for a slot. */}
+      {__DEV__ && checkIn && !joinable && (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push('/call/lobby')}
+          style={styles.devLink}
+          hitSlop={8}
+        >
+          <Text style={styles.devLinkText}>Try a test call (dev only)</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -173,4 +185,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   badgeText: { fontFamily: fonts.heavy, fontSize: 12, color: colors.onPrimary },
+  devLink: { alignSelf: 'center' },
+  devLinkText: {
+    fontFamily: fonts.bold,
+    fontSize: 13,
+    color: colors.inkMuted,
+    textDecorationLine: 'underline',
+  },
 });

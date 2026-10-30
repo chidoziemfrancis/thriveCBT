@@ -29,6 +29,18 @@ export function checkInPhase(checkIn: CheckIn, now = new Date()): CheckInPhase {
   return 'ended';
 }
 
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+/** A missed weekly check-in moves on to the same time in the next week that hasn't ended. */
+export function rollForward(checkIn: CheckIn, now = new Date()): CheckIn {
+  if (checkInPhase(checkIn, now) !== 'ended') return checkIn;
+  const start = new Date(checkIn.startsAt).getTime();
+  const end = start + checkIn.durationMin * 60_000;
+  const weeks = Math.ceil((now.getTime() - end) / WEEK_MS);
+  const nextStart = new Date(start + weeks * WEEK_MS);
+  return { ...checkIn, id: `checkin-${nextStart.getTime()}`, startsAt: nextStart.toISOString() };
+}
+
 export function countdownLabel(startsAt: string, now = new Date()): string {
   const minutes = Math.round((new Date(startsAt).getTime() - now.getTime()) / 60_000);
   if (minutes <= 0) return 'Happening now';
