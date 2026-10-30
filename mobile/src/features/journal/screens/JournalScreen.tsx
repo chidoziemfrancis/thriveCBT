@@ -5,7 +5,7 @@ export default function JournalScreen() {
     <ComingSoon
       title="Journal"
       description="A private place to write about your week. Coming soon."
-      emoji="speechBalloon"
+      image="pencil"
     />
   );
 }

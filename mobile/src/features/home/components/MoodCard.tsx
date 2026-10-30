@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import Emoji from '@/components/icons/Emoji';
 import Button from '@/components/ui/Button';
+import MoodFace from '@/features/mood/components/MoodFace';
 import MoodGauge from '@/features/mood/components/MoodGauge';
 import type { MoodEntry } from '@/features/mood/moodLog';
 import { MOODS } from '@/features/mood/moods';
@@ -27,7 +27,7 @@ export default function MoodCard({
     const mood = MOODS[today.mood];
     return (
       <Animated.View entering={FadeIn} style={[styles.card, styles.logged]}>
-        <Emoji name={mood.emoji} size={44} />
+        <MoodFace mood={today.mood} size={44} />
         <View style={styles.loggedText}>
           <Text style={styles.title}>Feeling {mood.label.toLowerCase()} today</Text>
           <Text style={styles.meta}>Logged at {timeOf(today.at)}. Thanks for checking in.</Text>

@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -17,6 +17,8 @@ import { colors, fonts, type } from '@/theme';
 type Step = 'create' | 'confirm';
 
 export default function CreatePinScreen() {
+  // "change" comes from Profile after the current PIN was confirmed, and returns there.
+  const { mode } = useLocalSearchParams<{ mode?: 'change' }>();
   const [step, setStep] = useState<Step>('create');
   const [first, setFirst] = useState('');
   const [pin, setPin] = useState('');
@@ -53,7 +55,8 @@ export default function CreatePinScreen() {
     setSaving(true);
     await savePin(entered);
     haptics.success();
-    router.replace(homeFor(getUserSession().role ?? 'student'));
+    if (mode === 'change') router.back();
+    else router.replace(homeFor(getUserSession().role ?? 'student'));
   }
 
   function handleDigit(digit: string) {
@@ -70,7 +73,11 @@ export default function CreatePinScreen() {
         <SproutMark width={64} leaf={colors.primary} accent={colors.primaryEdge} />
         <Animated.View key={step} entering={FadeIn.duration(220)} style={styles.copy}>
           <Text style={[type.title, styles.center]}>
-            {step === 'create' ? 'Create a 4-digit PIN' : 'Confirm your PIN'}
+            {step === 'confirm'
+              ? 'Confirm your PIN'
+              : mode === 'change'
+                ? 'Choose a new PIN'
+                : 'Create a 4-digit PIN'}
           </Text>
           <Text style={[type.body, styles.center]}>
             {step === 'create'

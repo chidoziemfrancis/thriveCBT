@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_1 } from '@/features/sessions/content/session1';
-import { MODULE_EMOJI } from '@/features/sessions/content/types';
+import { MODULE_IMAGE } from '@/features/sessions/content/types';
 import {
   modulesDone,
   nextModuleId,
@@ -70,7 +70,7 @@ describe('session 1 content', () => {
     const ids = SESSION_1.modules.map((m) => m.id);
     expect(new Set(ids).size).toBe(ids.length);
     SESSION_1.modules.forEach((m) => {
-      expect(MODULE_EMOJI[m.kind]).toBeDefined();
+      expect(MODULE_IMAGE[m.kind]).toBeDefined();
       if (m.kind === 'quiz') {
         m.questions.forEach((q) => expect(q.options[q.answer]).toBeDefined());
       }

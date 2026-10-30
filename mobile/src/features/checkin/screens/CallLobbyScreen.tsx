@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 
 import { CameraIcon, CameraOffIcon, MicIcon, MicOffIcon } from '@/components/icons';
-import Emoji from '@/components/icons/Emoji';
+import Icon3D from '@/components/icons/Icon3D';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
@@ -28,7 +28,7 @@ function PermissionAsk({ canAskAgain, onAllow }: { canAskAgain: boolean; onAllow
     >
       <BackButton />
       <View style={styles.permission}>
-        <Emoji name="videoCamera" size={96} />
+        <Icon3D name="videoCamera" size={96} />
         <Text style={[type.title, styles.center]}>Camera and microphone</Text>
         <Text style={[type.body, styles.center]}>
           Your researcher needs to see and hear you during check-ins. Calls are live only and are
