@@ -38,7 +38,7 @@ export default function VerifyEmailScreen() {
       footer={
         <Button
           disabled={code.length < CODE_LENGTH}
-          onPress={() => router.push('/onboarding/name')}
+          onPress={() => router.push('/consent/study-info')}
         >
           Verify
         </Button>

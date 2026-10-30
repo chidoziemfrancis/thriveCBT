@@ -4,7 +4,7 @@ import type { Role } from './roles';
 
 const STORAGE_KEY = 'user_session';
 
-type UserSession = { email?: string; role?: Role };
+type UserSession = { email?: string; role?: Role; inviteCode?: string };
 
 export function getUserSession(): UserSession {
   return readJson<UserSession>(STORAGE_KEY, {});

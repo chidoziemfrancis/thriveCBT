@@ -55,7 +55,7 @@ export default function WhatToExpectScreen() {
       <View style={styles.body}>
         <View style={styles.copy}>
           <Text style={type.title}>Here’s your journey</Text>
-          <Text style={type.body}>About 15–20 minutes a week. Go at your own pace.</Text>
+          <Text style={type.body}>About 35–50 minutes a week. Go at your own pace.</Text>
         </View>
 
         <View>
