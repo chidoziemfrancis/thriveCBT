@@ -5,6 +5,7 @@ import {
   checkInPhase,
   countdownLabel,
   formatDuration,
+  rollForward,
 } from '@/features/checkin/checkinLogic';
 import { completeCheckIn, getNextCheckIn } from '@/features/checkin/checkinStore';
 
@@ -37,6 +38,27 @@ describe('checkInPhase', () => {
   });
 });
 
+describe('rollForward', () => {
+  it('leaves an upcoming or joinable check-in alone', () => {
+    expect(rollForward(checkIn, at(-60))).toBe(checkIn);
+    expect(rollForward(checkIn, at(10))).toBe(checkIn);
+  });
+
+  it('moves a missed check-in to the same time next week', () => {
+    const next = rollForward(checkIn, at(31));
+    expect(new Date(next.startsAt).getTime() - start.getTime()).toBe(7 * 24 * 60 * 60 * 1000);
+    expect(next.id).not.toBe(checkIn.id);
+  });
+
+  it('skips every week that has already passed', () => {
+    const threeWeeksLater = at(3 * 7 * 24 * 60 + 60);
+    const next = rollForward(checkIn, threeWeeksLater);
+    expect(checkInPhase(next, threeWeeksLater)).toBe('upcoming');
+    expect(new Date(next.startsAt).getDay()).toBe(start.getDay());
+    expect(new Date(next.startsAt).getHours()).toBe(16);
+  });
+});
+
 describe('countdownLabel', () => {
   it('uses the most natural unit', () => {
     expect(countdownLabel(checkIn.startsAt, at(-12))).toBe('Starts in 12 min');
@@ -65,6 +87,16 @@ describe('mock check-in schedule', () => {
     const first = getNextCheckIn('r-tunde', now);
     expect(first && checkInPhase(first, now)).toBe('joinable');
     expect(getNextCheckIn('r-tunde', new Date(2026, 9, 29, 9, 2))).toEqual(first);
+  });
+
+  it('rolls a missed mock check-in forward instead of staying stuck', () => {
+    const first = getNextCheckIn('r-tunde', new Date(2026, 9, 29, 9, 0))!;
+    const later = new Date(2026, 9, 30, 12, 0);
+    const next = getNextCheckIn('r-tunde', later)!;
+    expect(checkInPhase(next, later)).toBe('upcoming');
+    expect(new Date(next.startsAt).getTime() - new Date(first.startsAt).getTime()).toBe(
+      7 * 24 * 60 * 60 * 1000
+    );
   });
 
   it('books the same slot next week after the call, and keeps the feedback', () => {
