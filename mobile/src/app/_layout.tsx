@@ -51,6 +51,7 @@ export default function RootLayout() {
           <Stack.Screen name="assignment/meet" options={{ gestureEnabled: false }} />
           <Stack.Screen name="(tabs)" options={{ gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="support" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="profile/withdrawn" options={{ gestureEnabled: false }} />
           <Stack.Screen name="call/live" options={{ gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="call/feedback" options={{ gestureEnabled: false }} />
           <Stack.Screen name="session/[id]/complete" options={{ gestureEnabled: false }} />

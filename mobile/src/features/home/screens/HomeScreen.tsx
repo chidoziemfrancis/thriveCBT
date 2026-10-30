@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
@@ -7,6 +8,7 @@ import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { firstName } from '@/features/assignment/assign';
 import CheckInCard from '@/features/home/components/CheckInCard';
+import EmergencyContactCard from '@/features/home/components/EmergencyContactCard';
 import HomeHeader from '@/features/home/components/HomeHeader';
 import MoodCard from '@/features/home/components/MoodCard';
 import SessionCard from '@/features/home/components/SessionCard';
@@ -23,15 +25,19 @@ import { haptics } from '@/lib/haptics';
 
 const stagger = (index: number) => FadeInDown.delay(60 * index).duration(380);
 
+function readBasics() {
+  const assignment = getAssignment();
+  return {
+    name: getOnboardingData().name,
+    week: currentStudyWeek(),
+    researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
+  };
+}
+
 export default function HomeScreen() {
-  const [{ name, week, researcher }] = useState(() => {
-    const assignment = getAssignment();
-    return {
-      name: getOnboardingData().name,
-      week: currentStudyWeek(),
-      researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
-    };
-  });
+  const [{ name, week, researcher }, setBasics] = useState(readBasics);
+  // Re-read on focus so a name changed in Profile, or a new study week, shows straight away.
+  useFocusEffect(useCallback(() => setBasics(readBasics()), []));
   const [mood, setMood] = useState(() => todaysMood());
 
   const progress = useSessionProgress();
@@ -63,6 +69,7 @@ export default function HomeScreen() {
         <Animated.View entering={stagger(0)}>
           <HomeHeader name={name} week={week} />
         </Animated.View>
+        <EmergencyContactCard />
         <Animated.View entering={stagger(1)}>
           <SessionCard
             session={session}
