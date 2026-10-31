@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Mascot from '@/components/mascot/Mascot';
 import BackButton from '@/components/ui/BackButton';
-import { Researcher, firstName, initials } from '@/features/assignment/assign';
+import { Researcher, firstName } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { ChatRow, toChatRows } from '@/features/chat/chatLogic';
@@ -23,6 +23,7 @@ import ChatComposer from '@/features/chat/components/ChatComposer';
 import MessageBubble from '@/features/chat/components/MessageBubble';
 import TypingBubble from '@/features/chat/components/TypingBubble';
 import { haptics } from '@/lib/haptics';
+import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius, type } from '@/theme';
 
 const REPLY_HOURS = 'Usually replies within a day';
@@ -43,7 +44,7 @@ function Header({ researcher, typing }: { researcher: Researcher; typing: boolea
     <View style={styles.header}>
       <BackButton />
       <View style={styles.headerAvatar}>
-        <Text style={styles.headerAvatarText}>{initials(researcher.name)}</Text>
+        <ResearcherPhoto researcher={researcher} initialsStyle={styles.headerAvatarText} />
       </View>
       <View style={styles.headerText}>
         <Text style={styles.headerName} numberOfLines={1}>
@@ -68,7 +69,7 @@ function EmptyChat({
   return (
     <Animated.View entering={FadeInDown.duration(350)} style={styles.empty}>
       <View style={styles.emptyAvatar}>
-        <Text style={styles.emptyAvatarText}>{initials(researcher.name)}</Text>
+        <ResearcherPhoto researcher={researcher} initialsStyle={styles.emptyAvatarText} />
       </View>
       <Text style={[type.title, styles.center]}>Say hi to {name}</Text>
       <Text style={[type.body, styles.center]}>
@@ -191,6 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lavender,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   headerAvatarText: { fontFamily: fonts.heavy, fontSize: 15, color: colors.lavenderInk },
   headerText: { flex: 1 },
@@ -213,6 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 4,
+    overflow: 'hidden',
   },
   emptyAvatarText: { fontFamily: fonts.heavy, fontSize: 30, color: colors.lavenderInk },
   openers: { alignSelf: 'stretch', gap: 8, marginTop: 8 },

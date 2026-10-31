@@ -7,10 +7,11 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { firstName, initials } from '@/features/assignment/assign';
+import { firstName } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { haptics } from '@/lib/haptics';
+import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius, type } from '@/theme';
 
 const AVATAR = 112;
@@ -40,7 +41,7 @@ export default function MeetResearcherScreen() {
     >
       <View style={styles.body}>
         <Animated.View entering={ZoomIn.springify().damping(12)} style={styles.avatar}>
-          <Text style={styles.avatarText}>{initials(researcher.name)}</Text>
+          <ResearcherPhoto researcher={researcher} initialsStyle={styles.avatarText} />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(150).duration(400)} style={styles.header}>
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
     borderColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   avatarText: { fontFamily: fonts.heavy, fontSize: 38, color: colors.lavenderInk },
   header: { alignItems: 'center', gap: 4 },

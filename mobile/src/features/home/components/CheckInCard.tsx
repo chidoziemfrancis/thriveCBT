@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CameraIcon, ChatIcon } from '@/components/icons';
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { Researcher, firstName, initials } from '@/features/assignment/assign';
+import { Researcher, firstName } from '@/features/assignment/assign';
 import { useChat } from '@/features/chat/chatStore';
 import {
   CheckIn,
@@ -15,6 +15,7 @@ import {
 } from '@/features/checkin/checkinLogic';
 import { getNextCheckIn } from '@/features/checkin/checkinStore';
 import { haptics } from '@/lib/haptics';
+import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius } from '@/theme';
 
 const TICK_MS = 30_000;
@@ -64,7 +65,7 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
     <View style={styles.card}>
       <View style={styles.top}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{initials(researcher.name)}</Text>
+          <ResearcherPhoto researcher={researcher} initialsStyle={styles.avatarText} />
         </View>
         <View style={styles.text}>
           <Text style={styles.title}>Weekly check-in with {name}</Text>
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lavender,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   avatarText: { fontFamily: fonts.heavy, fontSize: 17, color: colors.lavenderInk },
   text: { flex: 1, gap: 2 },
