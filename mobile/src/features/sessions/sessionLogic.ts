@@ -1,9 +1,7 @@
-import type { QuizQuestion, SessionContent, SessionStep, StepAnswer } from './content/types';
+import type { SessionContent, SessionStep, StepAnswer } from './content/types';
 
 export type SessionRecord = {
   done: string[];
-  ratings?: Record<string, number>;
-  quizAnswers?: Record<string, number>;
   /** Each step's answer, keyed by step id. */
   answers?: Record<string, StepAnswer>;
   completedAt?: string;
@@ -31,13 +29,17 @@ export function modulesDone(content: SessionContent, record: SessionRecord | und
   return content.modules.filter((m) => record?.done.includes(m.id)).length;
 }
 
-export function quizScore(questions: QuizQuestion[], answers: Record<string, number>) {
-  return questions.filter((q) => answers[q.id] === q.answer).length;
-}
-
 /** How many multiple-choice steps were answered correctly. */
 export function choiceScore(steps: SessionStep[], answers: Record<string, StepAnswer> = {}) {
   return steps.filter((s) => s.kind === 'choice' && answers[s.id] === s.answer).length;
+}
+
+/** Where a step sits in the whole session, for one progress bar across every part. */
+export function stepPosition(content: SessionContent, moduleId: string, stepIndex: number) {
+  const total = content.modules.reduce((sum, m) => sum + m.steps.length, 0);
+  const index = content.modules.findIndex((m) => m.id === moduleId);
+  const before = content.modules.slice(0, index).reduce((sum, m) => sum + m.steps.length, 0);
+  return { done: before + stepIndex, total };
 }
 
 /**

@@ -2,12 +2,14 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_1 } from '@/features/sessions/content/session1';
-import { MODULE_ICON } from '@/features/sessions/content/types';
+import type { SessionStep } from '@/features/sessions/content/types';
 import {
+  choiceScore,
+  isStepReady,
   modulesDone,
   nextModuleId,
-  quizScore,
   sessionStatus,
+  stepPosition,
 } from '@/features/sessions/sessionLogic';
 
 const mockMemory = new Map<string, unknown>();
@@ -47,45 +49,85 @@ describe('module progress', () => {
   });
 });
 
-describe('quizScore', () => {
-  const quiz = SESSION_1.modules.find((m) => m.kind === 'quiz');
-  const questions = quiz && quiz.kind === 'quiz' ? quiz.questions : [];
+const allSteps = SESSION_1.modules.flatMap((m) => m.steps);
+const quizSteps = SESSION_1.modules.find((m) => m.id === 'quiz')?.steps ?? [];
 
-  it('counts correct answers', () => {
-    const allRight = Object.fromEntries(questions.map((q) => [q.id, q.answer]));
-    expect(quizScore(questions, allRight)).toBe(questions.length);
-    expect(quizScore(questions, { [questions[0].id]: questions[0].answer })).toBe(1);
-    expect(quizScore(questions, {})).toBe(0);
+describe('choiceScore', () => {
+  it('counts correct multiple-choice answers', () => {
+    const allRight = Object.fromEntries(
+      quizSteps.flatMap((s) => (s.kind === 'choice' ? [[s.id, s.answer]] : []))
+    );
+    expect(choiceScore(quizSteps, allRight)).toBe(3);
+    expect(choiceScore(quizSteps, { q1: 1 })).toBe(1);
+    expect(choiceScore(quizSteps, {})).toBe(0);
+  });
+});
+
+describe('stepPosition', () => {
+  it('counts steps across every part, for one progress bar per session', () => {
+    const total = allSteps.length;
+    expect(stepPosition(SESSION_1, 'lesson', 0)).toEqual({ done: 0, total });
+    const lessonLength = SESSION_1.modules[0].steps.length;
+    expect(stepPosition(SESSION_1, 'mood-check', 2)).toEqual({ done: lessonLength + 2, total });
+  });
+});
+
+describe('isStepReady', () => {
+  const find = (kind: SessionStep['kind']) => allSteps.find((s) => s.kind === kind)!;
+
+  it('lets reading, video and breathing steps continue straight away', () => {
+    expect(isStepReady(find('info'), undefined)).toBe(true);
+    expect(isStepReady(find('video'), undefined)).toBe(true);
+    expect(isStepReady(find('breathe'), undefined)).toBe(true);
+  });
+
+  it('waits for every card to be revealed', () => {
+    const reveal = find('reveal');
+    const ids = reveal.kind === 'reveal' ? reveal.cards.map((c) => c.id) : [];
+    expect(isStepReady(reveal, ids.slice(1))).toBe(false);
+    expect(isStepReady(reveal, ids)).toBe(true);
+  });
+
+  it('waits for an answer on checklists, myths, choices and scales', () => {
+    expect(isStepReady(find('checklist'), [])).toBe(false);
+    expect(isStepReady(find('checklist'), [-1])).toBe(true);
+    expect(isStepReady(find('mythFact'), undefined)).toBe(false);
+    expect(isStepReady(find('mythFact'), false)).toBe(true);
+    expect(isStepReady(find('choice'), 0)).toBe(true);
+    expect(isStepReady(find('scale'), undefined)).toBe(false);
+    expect(isStepReady(find('scale'), 3)).toBe(true);
+  });
+
+  it('needs some writing before a journal step continues', () => {
+    expect(isStepReady(find('journal'), '   ')).toBe(false);
+    expect(isStepReady(find('journal'), 'Sleep, mostly.')).toBe(true);
   });
 });
 
 describe('session 1 content', () => {
-  it('is registered and has the four parts from the study plan', () => {
+  it('is registered and keeps the four parts from the study plan', () => {
     expect(sessionContent(1)).toBe(SESSION_1);
-    expect(SESSION_1.modules.map((m) => m.kind)).toEqual(['lesson', 'ratings', 'quiz', 'journal']);
+    expect(SESSION_1.modules.map((m) => m.id)).toEqual(['lesson', 'mood-check', 'quiz', 'journal']);
     expect(sessionContent(2)).toBeUndefined();
   });
 
-  it('has unique part ids, valid quiz answers and an image for every part', () => {
-    const ids = SESSION_1.modules.map((m) => m.id);
+  it('has unique step ids and valid answers', () => {
+    const ids = allSteps.map((s) => s.id);
     expect(new Set(ids).size).toBe(ids.length);
-    SESSION_1.modules.forEach((m) => {
-      expect(MODULE_ICON[m.kind]).toBeDefined();
-      if (m.kind === 'quiz') {
-        m.questions.forEach((q) => expect(q.options[q.answer]).toBeDefined());
-      }
+    allSteps.forEach((s) => {
+      if (s.kind === 'choice') expect(s.options[s.answer]).toBeDefined();
     });
   });
 
+  // The lesson should be something to do, not just to read.
+  it('mixes interactive steps into the lesson', () => {
+    const kinds = new Set(SESSION_1.modules[0].steps.map((s) => s.kind));
+    ['reveal', 'checklist', 'mythFact', 'breathe'].forEach((k) => expect(kinds).toContain(k));
+  });
+
   it('rates the five mood areas named in the study plan', () => {
-    const ratings = SESSION_1.modules.find((m) => m.kind === 'ratings');
-    expect(ratings && ratings.kind === 'ratings' && ratings.items.map((i) => i.id)).toEqual([
-      'sadness',
-      'motivation',
-      'sleep',
-      'energy',
-      'concentration',
-    ]);
+    const scales = allSteps.filter((s) => s.kind === 'scale').map((s) => s.id);
+    expect(scales).toEqual(['sadness', 'motivation', 'sleep', 'energy', 'concentration']);
   });
 });
 
