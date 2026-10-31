@@ -31,6 +31,7 @@ import CallControl from '@/features/checkin/components/CallControl';
 import SelfView from '@/features/checkin/components/SelfView';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { haptics } from '@/lib/haptics';
+import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius } from '@/theme';
 
 const CALL_BACKGROUND = '#0E2B27';
@@ -97,7 +98,7 @@ export default function CallScreen() {
           <SpeakingRing delay={0} />
           <SpeakingRing delay={1100} />
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{researcher ? initials(researcher.name) : '?'}</Text>
+            <ResearcherPhoto researcher={researcher} initialsStyle={styles.avatarText} />
           </View>
         </View>
         <Text style={styles.remoteName}>{researcher?.name ?? 'Your researcher'}</Text>
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lavender,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   avatarText: { fontFamily: fonts.heavy, fontSize: 44, color: colors.lavenderInk },
   remoteName: { fontFamily: fonts.heavy, fontSize: 24, color: colors.onPrimary, marginTop: 8 },

@@ -55,6 +55,10 @@ export default function RootLayout() {
           <Stack.Screen name="call/live" options={{ gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="call/feedback" options={{ gestureEnabled: false }} />
           <Stack.Screen name="session/[id]/complete" options={{ gestureEnabled: false }} />
+          <Stack.Screen
+            name="entry/write"
+            options={{ gestureEnabled: false, animation: 'slide_from_bottom' }}
+          />
         </Stack>
       </SplashRevealedProvider>
       {!splashDone && <AnimatedSplash onReveal={revealApp} onFinish={finishSplash} />}
