@@ -1,8 +1,7 @@
 import { router } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import FeatureIcon from '@/components/icons/FeatureIcon';
-import Button from '@/components/ui/Button';
+import { ChevronRightIcon } from '@/components/icons';
 import { SESSIONS, Session } from '@/features/sessions/sessions';
 import { colors, fonts, radius } from '@/theme';
 
@@ -22,51 +21,92 @@ export default function SessionCard({
   const started = modulesDone > 0;
   const progress = modulesTotal ? modulesDone / modulesTotal : 0;
 
+  const action = completed ? 'Review session' : started ? 'Continue session' : 'Start session';
+
   return (
-    <View style={styles.card}>
-      <View style={styles.top}>
-        <View style={styles.text}>
-          <Text style={styles.eyebrow}>
-            This week · Session {session.id} of {SESSIONS.length}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`This week, session ${session.id}: ${session.title}. ${action}.`}
+      onPress={() => router.push(`/session/${session.id}`)}
+      style={({ pressed }) => [styles.card, pressed && { transform: [{ scale: 0.98 }] }]}
+    >
+      {/* Soft shapes give the card depth without adding anything to read. */}
+      <View style={[styles.blob, styles.blobLarge]} />
+      <View style={[styles.blob, styles.blobSmall]} />
+
+      <View style={styles.pill}>
+        <Text style={styles.pillText}>
+          This week · Session {session.id} of {SESSIONS.length}
+        </Text>
+      </View>
+
+      <Text style={styles.title}>{session.title}</Text>
+
+      {started && !completed ? (
+        <View style={styles.progress}>
+          <View style={styles.track}>
+            <View style={[styles.fill, { width: `${progress * 100}%` }]} />
+          </View>
+          <Text style={styles.meta}>
+            {modulesDone} of {modulesTotal} parts done
           </Text>
-          <Text style={styles.title}>{session.title}</Text>
-          <Text style={styles.focus}>{session.focus}</Text>
         </View>
-        <FeatureIcon name="book" size={52} />
-      </View>
+      ) : (
+        <Text style={styles.meta}>
+          {completed ? 'Done for this week. Nice work.' : `About ${minutes} min`}
+        </Text>
+      )}
 
-      <View
-        style={styles.track}
-        accessibilityLabel={`${modulesDone} of ${modulesTotal} parts done`}
-      >
-        <View style={[styles.fill, { width: `${progress * 100}%` }]} />
+      <View style={styles.button}>
+        <Text style={styles.buttonText}>{action}</Text>
+        <ChevronRightIcon size={16} color={colors.primary} />
       </View>
-      <Text style={styles.meta}>
-        {completed
-          ? 'Session complete · nice work'
-          : `${modulesDone} of ${modulesTotal} parts done · about ${minutes} min`}
-      </Text>
-
-      <Button variant="secondary" onPress={() => router.push(`/session/${session.id}`)}>
-        {completed ? 'Review session' : started ? 'Continue session' : 'Start session'}
-      </Button>
-    </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { gap: 12, padding: 20, borderRadius: radius.lg, backgroundColor: colors.primary },
-  top: { flexDirection: 'row', gap: 12 },
-  text: { flex: 1, gap: 4 },
-  eyebrow: { fontFamily: fonts.bold, fontSize: 13, color: 'rgba(255,255,255,0.8)' },
-  title: { fontFamily: fonts.heavy, fontSize: 22, lineHeight: 27, color: colors.onPrimary },
-  focus: { fontFamily: fonts.medium, fontSize: 14, color: 'rgba(255,255,255,0.8)' },
+  card: {
+    minHeight: 220,
+    justifyContent: 'flex-end',
+    gap: 10,
+    padding: 24,
+    borderRadius: radius.lg,
+    backgroundColor: colors.primary,
+    overflow: 'hidden',
+  },
+  blob: { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.08)' },
+  blobLarge: { width: 220, height: 220, top: -90, right: -70 },
+  blobSmall: { width: 110, height: 110, top: 50, right: 40 },
+  pill: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: radius.pill,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    marginBottom: 'auto',
+  },
+  pillText: { fontFamily: fonts.bold, fontSize: 12, color: colors.onPrimary },
+  title: { fontFamily: fonts.heavy, fontSize: 26, lineHeight: 31, color: colors.onPrimary },
+  meta: { fontFamily: fonts.medium, fontSize: 14, color: 'rgba(255,255,255,0.85)' },
+  progress: { gap: 8 },
   track: {
-    height: 8,
+    height: 6,
     borderRadius: radius.pill,
     backgroundColor: 'rgba(255,255,255,0.25)',
     overflow: 'hidden',
   },
   fill: { height: '100%', borderRadius: radius.pill, backgroundColor: colors.onPrimary },
-  meta: { fontFamily: fonts.medium, fontSize: 13, color: 'rgba(255,255,255,0.85)' },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 6,
+    height: 44,
+    paddingHorizontal: 20,
+    marginTop: 8,
+    borderRadius: radius.pill,
+    backgroundColor: colors.surface,
+  },
+  buttonText: { fontFamily: fonts.bold, fontSize: 15, color: colors.primary },
 });
