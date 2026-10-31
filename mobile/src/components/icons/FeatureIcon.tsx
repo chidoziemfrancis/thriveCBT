@@ -42,6 +42,7 @@ const GLYPHS = {
   ],
   flag: ['M5 21V4', 'M5 4h12l-2.5 4 2.5 4H5'],
   heart: ['M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z'],
+  logout: ['M14 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4', 'M9 16l-4-4 4-4', 'M5 12h10'],
   lock: [
     'M5 12a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1z',
     'M8 11V8a4 4 0 018 0v3',
@@ -82,7 +83,7 @@ const GLYPHS = {
 
 export type FeatureIconName = keyof typeof GLYPHS;
 
-const TONES = {
+export const TONES = {
   mint: { bg: colors.mint, ink: colors.mintInk },
   lavender: { bg: colors.lavender, ink: colors.lavenderInk },
   peach: { bg: colors.peach, ink: colors.peachInk },
@@ -94,7 +95,7 @@ const TONES = {
 
 export type FeatureIconTone = keyof typeof TONES;
 
-function Glyph({
+export function Glyph({
   name,
   size = 24,
   color,

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, fonts, radius } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 export type Stat = { label: string; value: string };
 
@@ -23,16 +23,7 @@ export default function StatsCard({ stats }: { stats: Stat[] }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: 18,
-    padding: 18,
-    borderRadius: radius.lg,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
+  card: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 18 },
   stat: { width: '50%', gap: 4 },
   label: {
     fontFamily: fonts.bold,

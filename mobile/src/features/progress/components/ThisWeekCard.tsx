@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colors, fonts, radius } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 const RING = 76;
 const STROKE = 8;
@@ -72,16 +72,7 @@ export default function ThisWeekCard({
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    padding: 18,
-    borderRadius: radius.lg,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 16 },
   text: { flex: 1, gap: 6 },
   title: { fontFamily: fonts.heavy, fontSize: 18, color: colors.ink },
   body: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 20, color: colors.inkMuted },

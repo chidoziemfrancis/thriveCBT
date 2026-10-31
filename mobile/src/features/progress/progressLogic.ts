@@ -1,4 +1,3 @@
-import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import { MoodEntry, moodOnDay } from '@/features/mood/moodLog';
 
 export type MoodDay = { date: Date; mood: number | null };
@@ -61,79 +60,6 @@ export function mostCommonMood(days: MoodDay[]): number | null {
     if (best === null || count >= (counts.get(best) ?? 0)) best = mood;
   }
   return best;
-}
-
-export type ProgressStats = {
-  sessionsDone: number;
-  totalSessions: number;
-  moodsLogged: number;
-  bestStreak: number;
-  checkIns: number;
-  journalEntries: number;
-};
-
-export type Badge = {
-  id: string;
-  title: string;
-  /** How to earn it, shown while it's locked. */
-  hint: string;
-  icon: FeatureIconName;
-  earned: boolean;
-};
-
-// Small, reachable goals: the point is to notice effort, not to rank anyone.
-export function badges(stats: ProgressStats): Badge[] {
-  return [
-    {
-      id: 'first-session',
-      title: 'First step',
-      hint: 'Finish your first session',
-      icon: 'play',
-      earned: stats.sessionsDone >= 1,
-    },
-    {
-      id: 'first-mood',
-      title: 'Checked in',
-      hint: 'Log your first mood',
-      icon: 'heart',
-      earned: stats.moodsLogged >= 1,
-    },
-    {
-      id: 'mood-streak',
-      title: '7-day streak',
-      hint: 'Log your mood 7 days in a row',
-      icon: 'sun',
-      earned: stats.bestStreak >= 7,
-    },
-    {
-      id: 'first-call',
-      title: 'Face to face',
-      hint: 'Join your first check-in call',
-      icon: 'video',
-      earned: stats.checkIns >= 1,
-    },
-    {
-      id: 'journal',
-      title: 'Reflector',
-      hint: 'Write 3 journal entries',
-      icon: 'book',
-      earned: stats.journalEntries >= 3,
-    },
-    {
-      id: 'halfway',
-      title: 'Halfway there',
-      hint: `Finish ${Math.ceil(stats.totalSessions / 2)} sessions`,
-      icon: 'flag',
-      earned: stats.sessionsDone >= Math.ceil(stats.totalSessions / 2),
-    },
-    {
-      id: 'finished',
-      title: 'All done',
-      hint: `Finish all ${stats.totalSessions} sessions`,
-      icon: 'trophy',
-      earned: stats.sessionsDone >= stats.totalSessions,
-    },
-  ];
 }
 
 /** "Good" and "Great". */

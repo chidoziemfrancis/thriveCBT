@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { colors, fonts, radius } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 export default function InsightCard({ text }: { text: string }) {
   return (
@@ -16,13 +16,14 @@ export default function InsightCard({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  // A quote-style line rather than a box, so it reads as a thought, not another card.
   card: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
-    padding: 16,
-    borderRadius: radius.lg,
-    backgroundColor: colors.mint,
+    paddingLeft: 14,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.primary,
   },
   text: { flex: 1, gap: 2 },
   title: { fontFamily: fonts.heavy, fontSize: 15, color: colors.mintInk },
