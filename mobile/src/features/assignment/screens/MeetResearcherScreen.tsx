@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
-import Icon3D from '@/components/icons/Icon3D';
-import type { Icon3DName } from '@/components/icons/icon3dSources';
+import FeatureIcon from '@/components/icons/FeatureIcon';
+import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { firstName, initials } from '@/features/assignment/assign';
@@ -28,10 +28,10 @@ export default function MeetResearcherScreen() {
   if (!researcher) return <Redirect href="/assignment/finding" />;
 
   const name = firstName(researcher.name);
-  const support: { image: Icon3DName; text: string }[] = [
-    { image: 'videoCamera', text: 'A short video check-in every week' },
-    { image: 'chatBubble', text: `Message ${name} in the app whenever you need` },
-    { image: 'heart', text: 'Someone looking out for you if things feel heavy' },
+  const support: { icon: FeatureIconName; text: string }[] = [
+    { icon: 'video', text: 'A short video check-in every week' },
+    { icon: 'chat', text: `Message ${name} in the app whenever you need` },
+    { icon: 'heart', text: 'Someone looking out for you if things feel heavy' },
   ];
 
   return (
@@ -55,11 +55,9 @@ export default function MeetResearcherScreen() {
 
         <Animated.View entering={FadeInDown.delay(350).duration(400)} style={styles.card}>
           <Text style={styles.cardTitle}>How {name} will support you</Text>
-          {support.map(({ image, text }) => (
+          {support.map(({ icon, text }) => (
             <View key={text} style={styles.row}>
-              <View style={styles.rowIcon}>
-                <Icon3D name={image} size={26} />
-              </View>
+              <FeatureIcon name={icon} size={44} />
               <Text style={styles.rowText}>{text}</Text>
             </View>
           ))}
@@ -113,13 +111,5 @@ const styles = StyleSheet.create({
   },
   cardTitle: { fontFamily: fonts.heavy, fontSize: 16, color: colors.ink },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  rowIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: radius.sm,
-    backgroundColor: colors.surfaceMuted,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   rowText: { flex: 1, fontFamily: fonts.medium, fontSize: 15, lineHeight: 21, color: colors.ink },
 });

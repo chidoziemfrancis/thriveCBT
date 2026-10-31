@@ -1,10 +1,10 @@
-import type { Icon3DName } from '@/components/icons/icon3dSources';
+import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 
 // Each session is data poured into a few reusable module templates, so adding sessions 2–8
 // means writing content, not new screens.
 
 export type LessonCard = {
-  image: Icon3DName;
+  icon: FeatureIconName;
   title: string;
   body?: string;
   bullets?: string[];
@@ -38,8 +38,8 @@ export type SessionContent = {
   practice: string;
 };
 
-export const MODULE_IMAGE: Record<SessionModule['kind'], Icon3DName> = {
-  lesson: 'notebook',
+export const MODULE_ICON: Record<SessionModule['kind'], FeatureIconName> = {
+  lesson: 'book',
   ratings: 'chart',
   quiz: 'bulb',
   journal: 'pencil',

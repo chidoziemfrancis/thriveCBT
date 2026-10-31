@@ -27,7 +27,7 @@ export default function NotificationSettingsScreen() {
         <SettingsGroup title="Reminders">
           <SettingsRow
             kind="toggle"
-            image="notebook"
+            icon="book"
             label="New sessions"
             detail="When this week’s session opens"
             value={preferences.notifySessions}
@@ -35,7 +35,7 @@ export default function NotificationSettingsScreen() {
           />
           <SettingsRow
             kind="toggle"
-            image="heart"
+            icon="heart"
             label="Daily mood check"
             detail="A gentle nudge to log how you feel"
             value={preferences.notifyMood}
@@ -77,7 +77,7 @@ export default function NotificationSettingsScreen() {
         <SettingsGroup title="Your researcher">
           <SettingsRow
             kind="toggle"
-            image="chatBubble"
+            icon="chat"
             label="Messages"
             detail="When your researcher replies"
             value={preferences.notifyMessages}
@@ -85,7 +85,7 @@ export default function NotificationSettingsScreen() {
           />
           <SettingsRow
             kind="toggle"
-            image="videoCamera"
+            icon="video"
             label="Check-in reminders"
             detail="The day before and 10 minutes before"
             value={preferences.notifyCheckIns}

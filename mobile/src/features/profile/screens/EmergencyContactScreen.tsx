@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
@@ -68,7 +68,7 @@ export default function EmergencyContactScreen() {
 
       <View style={styles.body}>
         <View style={styles.header}>
-          <Icon3D name="phoneRinging" size={56} />
+          <FeatureIcon name="phone" size={56} />
           <Text style={[type.title, styles.title]}>Emergency contact</Text>
         </View>
 

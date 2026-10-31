@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInLeft, FadeInRight } from 'react-native-reanimated';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import type { LessonCard } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
@@ -12,7 +12,7 @@ function Card({ card }: { card: LessonCard }) {
   return (
     <View style={styles.card}>
       <View style={styles.hero}>
-        <Icon3D name={card.image} size={96} />
+        <FeatureIcon name={card.icon} size={96} />
       </View>
       <Text style={type.title}>{card.title}</Text>
       {card.body && <Text style={styles.body}>{card.body}</Text>}

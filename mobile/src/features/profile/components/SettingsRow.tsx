@@ -1,12 +1,12 @@
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { ChevronRightIcon } from '@/components/icons';
-import Icon3D from '@/components/icons/Icon3D';
-import type { Icon3DName } from '@/components/icons/icon3dSources';
+import FeatureIcon from '@/components/icons/FeatureIcon';
+import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
-type Base = { label: string; detail?: string; image?: Icon3DName; icon?: React.ReactNode };
+type Base = { label: string; detail?: string; icon?: FeatureIconName };
 
 type Props =
   | (Base & { kind?: 'link'; onPress: () => void; danger?: boolean })
@@ -23,11 +23,7 @@ export function SettingsGroup({ title, children }: { title: string; children: Re
 }
 
 export default function SettingsRow(props: Props) {
-  const lead = (props.image || props.icon) && (
-    <View style={styles.lead}>
-      {props.image ? <Icon3D name={props.image} size={18} /> : props.icon}
-    </View>
-  );
+  const lead = props.icon && <FeatureIcon name={props.icon} size={34} />;
   const danger = props.kind !== 'toggle' && props.kind !== 'static' && props.danger;
   const text = (
     <View style={styles.text}>
@@ -106,14 +102,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.surfaceMuted,
-  },
-  lead: {
-    width: 30,
-    height: 30,
-    borderRadius: radius.sm,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   text: { flex: 1, gap: 2 },
   label: { fontFamily: fonts.bold, fontSize: 16, color: colors.ink },

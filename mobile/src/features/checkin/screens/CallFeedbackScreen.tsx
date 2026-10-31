@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
@@ -56,7 +56,7 @@ export default function CallFeedbackScreen() {
     >
       <View style={styles.body}>
         <Animated.View entering={FadeInDown.duration(350)} style={styles.header}>
-          <Icon3D name="heart" size={72} />
+          <FeatureIcon name="heart" size={72} tone="peach" />
           <Text style={type.eyebrow}>Call ended · {formatDuration(seconds)}</Text>
           <Text style={[type.title, styles.center]}>How did that feel?</Text>
           <Text style={[type.body, styles.center]}>

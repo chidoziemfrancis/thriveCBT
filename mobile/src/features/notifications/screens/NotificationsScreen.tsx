@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import { ChevronRightIcon } from '@/components/icons';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
@@ -45,7 +45,7 @@ export default function NotificationsScreen() {
 
       {items.length === 0 ? (
         <View style={styles.empty}>
-          <Icon3D name="sun" size={80} />
+          <FeatureIcon name="sun" size={80} tone="butter" />
           <Text style={[type.body, styles.center]}>You’re all caught up.</Text>
         </View>
       ) : (
@@ -64,9 +64,7 @@ export default function NotificationsScreen() {
                     pressed && { transform: [{ scale: 0.98 }] },
                   ]}
                 >
-                  <View style={styles.icon}>
-                    <Icon3D name={item.image} size={30} />
-                  </View>
+                  <FeatureIcon name={item.icon} size={44} />
                   <View style={styles.text}>
                     <Text style={styles.rowTitle}>{item.title}</Text>
                     <Text style={styles.rowBody}>{item.body}</Text>
@@ -106,14 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   rowNew: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
-  icon: {
-    width: 48,
-    height: 48,
-    borderRadius: radius.md,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   text: { flex: 1, gap: 2 },
   rowTitle: { fontFamily: fonts.heavy, fontSize: 15, color: colors.ink },
   rowBody: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 19, color: colors.inkMuted },

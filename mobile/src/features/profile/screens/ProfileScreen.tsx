@@ -96,19 +96,19 @@ export default function ProfileScreen() {
       <View style={styles.groups}>
         <SettingsGroup title="Account">
           <SettingsRow
-            image="pencil"
+            icon="pencil"
             label="Your name"
             detail={profile.name || 'Add your name'}
             onPress={() => router.push('/profile/name')}
           />
           <SettingsRow
             kind="static"
-            image="mail"
+            icon="mail"
             label="Email"
             detail={profile.email || 'Not set'}
           />
           <SettingsRow
-            image="lock"
+            icon="lock"
             label="Change PIN"
             onPress={() => router.push('/profile/change-pin')}
           />
@@ -116,19 +116,19 @@ export default function ProfileScreen() {
 
         <SettingsGroup title="Safety">
           <SettingsRow
-            image="phoneRinging"
+            icon="phone"
             label="Emergency contact"
             detail={contact ? `${contact.name} · ${contact.relationship}` : 'Not added yet'}
             onPress={() => router.push('/profile/emergency-contact')}
           />
           <SettingsRow
-            image="shield"
+            icon="shield"
             label="Help & crisis contacts"
             onPress={() => router.push('/support')}
           />
           {researcherName && (
             <SettingsRow
-              image="chat"
+              icon="chat"
               label={`Message ${researcherName}`}
               onPress={() => router.push('/chat')}
             />
@@ -137,14 +137,14 @@ export default function ProfileScreen() {
 
         <SettingsGroup title="Preferences">
           <SettingsRow
-            image="notifyHeart"
+            icon="bell"
             label="Notifications"
             detail="Reminders, messages and check-ins"
             onPress={() => router.push('/profile/notifications')}
           />
           <SettingsRow
             kind="toggle"
-            image="mobile"
+            icon="device"
             label="Vibration"
             detail="Little taps when you press and finish things"
             value={preferences.vibration}
@@ -154,12 +154,12 @@ export default function ProfileScreen() {
 
         <SettingsGroup title="Your data & the study">
           <SettingsRow
-            image="zoom"
+            icon="eye"
             label="What your researcher can see"
             onPress={() => router.push('/profile/privacy')}
           />
           <SettingsRow
-            image="tick"
+            icon="checkCircle"
             label="Your consent"
             detail={
               profile.consent

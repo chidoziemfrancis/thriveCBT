@@ -12,12 +12,12 @@ export const SESSION_1: SessionContent = {
       minutes: 10,
       cards: [
         {
-          image: 'umbrella',
+          icon: 'umbrella',
           title: 'What is depression?',
           body: 'Depression is a common mental health condition that affects how you feel, think and handle daily life. It goes beyond ordinary sadness and can last for weeks at a time.',
         },
         {
-          image: 'bulb',
+          icon: 'bulb',
           title: 'It shows up in many ways',
           body: 'Depression can affect your thoughts, emotions, behaviour and body. Common signs include:',
           bullets: [
@@ -29,7 +29,7 @@ export const SESSION_1: SessionContent = {
           ],
         },
         {
-          image: 'bag',
+          icon: 'bag',
           title: 'Common causes for students',
           body: 'Many undergraduates feel this way, often because of pressures like:',
           chips: [
@@ -41,13 +41,13 @@ export const SESSION_1: SessionContent = {
           ],
         },
         {
-          image: 'play',
+          icon: 'play',
           title: 'What happens in depression?',
           body: 'A short animated video explaining what happens in your mind and body during depression.',
           video: { title: 'What Happens in Depression?' },
         },
         {
-          image: 'sun',
+          icon: 'sun',
           title: 'It can get better',
           body: 'Depression is treatable. Over the next 8 weeks, CBT will help you notice how your thoughts, feelings and actions connect, and give you practical skills to feel better, one small step at a time.',
         },

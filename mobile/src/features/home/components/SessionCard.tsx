@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import { SESSIONS, Session } from '@/features/sessions/sessions';
 import { colors, fonts, radius } from '@/theme';
@@ -32,7 +32,7 @@ export default function SessionCard({
           <Text style={styles.title}>{session.title}</Text>
           <Text style={styles.focus}>{session.focus}</Text>
         </View>
-        <Icon3D name="notebook" size={52} />
+        <FeatureIcon name="book" size={52} />
       </View>
 
       <View

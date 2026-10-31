@@ -1,4 +1,4 @@
-import type { Icon3DName } from '@/components/icons/icon3dSources';
+import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import { MoodEntry, moodOnDay } from '@/features/mood/moodLog';
 
 export type MoodDay = { date: Date; mood: number | null };
@@ -77,7 +77,7 @@ export type Badge = {
   title: string;
   /** How to earn it, shown while it's locked. */
   hint: string;
-  image: Icon3DName;
+  icon: FeatureIconName;
   earned: boolean;
 };
 
@@ -88,49 +88,49 @@ export function badges(stats: ProgressStats): Badge[] {
       id: 'first-session',
       title: 'First step',
       hint: 'Finish your first session',
-      image: 'play',
+      icon: 'play',
       earned: stats.sessionsDone >= 1,
     },
     {
       id: 'first-mood',
       title: 'Checked in',
       hint: 'Log your first mood',
-      image: 'heart',
+      icon: 'heart',
       earned: stats.moodsLogged >= 1,
     },
     {
       id: 'mood-streak',
       title: '7-day streak',
       hint: 'Log your mood 7 days in a row',
-      image: 'sun',
+      icon: 'sun',
       earned: stats.bestStreak >= 7,
     },
     {
       id: 'first-call',
       title: 'Face to face',
       hint: 'Join your first check-in call',
-      image: 'videoCamera',
+      icon: 'video',
       earned: stats.checkIns >= 1,
     },
     {
       id: 'journal',
       title: 'Reflector',
       hint: 'Write 3 journal entries',
-      image: 'notebook',
+      icon: 'book',
       earned: stats.journalEntries >= 3,
     },
     {
       id: 'halfway',
       title: 'Halfway there',
       hint: `Finish ${Math.ceil(stats.totalSessions / 2)} sessions`,
-      image: 'flag',
+      icon: 'flag',
       earned: stats.sessionsDone >= Math.ceil(stats.totalSessions / 2),
     },
     {
       id: 'finished',
       title: 'All done',
       hint: `Finish all ${stats.totalSessions} sessions`,
-      image: 'trophy',
+      icon: 'trophy',
       earned: stats.sessionsDone >= stats.totalSessions,
     },
   ];

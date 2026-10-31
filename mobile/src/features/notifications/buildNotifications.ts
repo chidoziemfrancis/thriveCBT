@@ -1,4 +1,4 @@
-import type { Icon3DName } from '@/components/icons/icon3dSources';
+import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import { CheckInPhase, countdownLabel } from '@/features/checkin/checkinLogic';
 
 export type AppNotification = {
@@ -6,7 +6,7 @@ export type AppNotification = {
   title: string;
   body: string;
   at: string;
-  image: Icon3DName;
+  icon: FeatureIconName;
   href: string;
 };
 
@@ -43,7 +43,7 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
       body:
         input.unreadMessages === 1 ? 'Tap to read it.' : `${input.unreadMessages} unread messages`,
       at: input.lastMessageAt,
-      image: 'chatBubble',
+      icon: 'chat',
       href: '/chat',
     });
   }
@@ -56,7 +56,7 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
         title: 'Your check-in is ready',
         body: `${researcherName} is ready for your video call.`,
         at: new Date(start - JOIN_EARLY_MS).toISOString(),
-        image: 'videoCamera',
+        icon: 'video',
         href: '/call/lobby',
       });
     } else if (input.checkIn.phase === 'upcoming' && start - now.getTime() <= 24 * HOUR) {
@@ -65,7 +65,7 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
         title: 'Check-in coming up',
         body: `${countdownLabel(input.checkIn.startsAt, now)} with ${researcherName}.`,
         at: new Date(start - 24 * HOUR).toISOString(),
-        image: 'videoCamera',
+        icon: 'video',
         href: '/dashboard',
       });
     }
@@ -78,7 +78,7 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
       title: 'How are you feeling today?',
       body: 'Take 10 seconds to log your mood.',
       at: today.toISOString(),
-      image: 'heart',
+      icon: 'heart',
       href: '/dashboard',
     });
   }
@@ -89,7 +89,7 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
       title: `Session ${input.session.id} is ready`,
       body: input.session.title,
       at: input.session.opensAt ?? input.joinedAt ?? now.toISOString(),
-      image: 'notebook',
+      icon: 'book',
       href: `/session/${input.session.id}`,
     });
   }
@@ -100,7 +100,7 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
       title: 'Welcome to ThriveCBT',
       body: 'We’re glad you’re here. Your 8 weeks start now.',
       at: input.joinedAt,
-      image: 'sun',
+      icon: 'sun',
       href: '/dashboard',
     });
   }

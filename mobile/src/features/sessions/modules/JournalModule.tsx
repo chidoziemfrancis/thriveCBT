@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -23,7 +23,7 @@ export default function JournalModule({
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Icon3D name="pencil" size={56} />
+        <FeatureIcon name="pencil" size={56} />
         <Text style={[type.title, styles.prompt]}>{prompt}</Text>
       </View>
       <Text style={type.body}>{hint}</Text>

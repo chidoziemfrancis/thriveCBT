@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import Icon3D from '@/components/icons/Icon3D';
-import type { Icon3DName } from '@/components/icons/icon3dSources';
+import FeatureIcon from '@/components/icons/FeatureIcon';
+import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import { colors, fonts, radius } from '@/theme';
 
-export type Highlight = { label: string; value: string | number; image: Icon3DName };
+export type Highlight = { label: string; value: string | number; icon: FeatureIconName };
 
 export default function Highlights({ items }: { items: Highlight[] }) {
   return (
@@ -16,7 +16,7 @@ export default function Highlights({ items }: { items: Highlight[] }) {
           accessible
           accessibilityLabel={`${item.label}: ${item.value}`}
         >
-          <Icon3D name={item.image} size={30} />
+          <FeatureIcon name={item.icon} size={40} />
           <Text style={styles.value}>{item.value}</Text>
           <Text style={styles.label}>{item.label}</Text>
         </View>

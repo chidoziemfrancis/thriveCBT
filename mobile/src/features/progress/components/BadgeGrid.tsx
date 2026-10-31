@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { ZoomIn } from 'react-native-reanimated';
 
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import type { Badge } from '@/features/progress/progressLogic';
 import { colors, fonts, radius } from '@/theme';
 
@@ -28,8 +28,8 @@ export default function BadgeGrid({ items }: { items: Badge[] }) {
               badge.earned ? `${badge.title}, earned` : `${badge.title}, locked. ${badge.hint}`
             }
           >
-            <View style={[styles.medal, !badge.earned && styles.medalLocked]}>
-              <Icon3D name={badge.image} size={36} />
+            <View style={!badge.earned && styles.locked}>
+              <FeatureIcon name={badge.icon} size={56} tone={badge.earned ? 'butter' : 'neutral'} />
             </View>
             <Text style={[styles.badgeTitle, !badge.earned && { color: colors.inkMuted }]}>
               {badge.title}
@@ -57,16 +57,8 @@ const styles = StyleSheet.create({
   count: { fontFamily: fonts.bold, fontSize: 13, color: colors.inkMuted },
   grid: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 18 },
   badge: { width: '33.33%', alignItems: 'center', gap: 6, paddingHorizontal: 4 },
-  medal: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: colors.butter,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   // Locked badges stay visible but faded, so students can see what's ahead.
-  medalLocked: { backgroundColor: colors.surfaceMuted, opacity: 0.4 },
+  locked: { opacity: 0.6 },
   badgeTitle: { fontFamily: fonts.bold, fontSize: 13, color: colors.ink, textAlign: 'center' },
   hint: {
     fontFamily: fonts.medium,

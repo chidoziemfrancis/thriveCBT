@@ -4,14 +4,14 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { CheckIcon, LockIcon } from '@/components/icons';
-import Icon3D from '@/components/icons/Icon3D';
+import FeatureIcon from '@/components/icons/FeatureIcon';
 import Mascot from '@/components/mascot/Mascot';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { sessionContent } from '@/features/sessions/content';
-import { MODULE_IMAGE } from '@/features/sessions/content/types';
+import { MODULE_ICON } from '@/features/sessions/content/types';
 import { useSessionProgress } from '@/features/sessions/progressStore';
 import { nextModuleId, sessionStatus } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';
@@ -87,7 +87,7 @@ export default function SessionOverviewScreen() {
               About {minutes} minutes · {content.modules.length} parts
             </Text>
           </View>
-          <Icon3D name="notebook" size={64} />
+          <FeatureIcon name="book" size={64} />
         </View>
 
         <View style={styles.list}>
@@ -110,7 +110,7 @@ export default function SessionOverviewScreen() {
                     pressed && { transform: [{ scale: 0.98 }] },
                   ]}
                 >
-                  <Icon3D name={MODULE_IMAGE[module.kind]} size={36} />
+                  <FeatureIcon name={MODULE_ICON[module.kind]} size={40} />
                   <View style={styles.rowText}>
                     <Text style={styles.rowTitle}>{module.title}</Text>
                     <Text style={styles.rowMeta}>

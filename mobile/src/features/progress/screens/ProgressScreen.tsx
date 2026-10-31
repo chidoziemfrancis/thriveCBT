@@ -56,10 +56,10 @@ export default function ProgressScreen() {
     <Highlights
       key="highlights"
       items={[
-        { label: 'Sessions done', value: `${sessionsDone}/${SESSIONS.length}`, image: 'play' },
-        { label: 'Check-in calls', value: activity.checkIns, image: 'videoCamera' },
-        { label: 'Moods logged', value: activity.moods.length, image: 'heart' },
-        { label: 'Journal entries', value: activity.journalEntries, image: 'notebook' },
+        { label: 'Sessions done', value: `${sessionsDone}/${SESSIONS.length}`, icon: 'play' },
+        { label: 'Check-in calls', value: activity.checkIns, icon: 'video' },
+        { label: 'Moods logged', value: activity.moods.length, icon: 'heart' },
+        { label: 'Journal entries', value: activity.journalEntries, icon: 'book' },
       ]}
     />,
     ...(SHOW_PHQ9_TREND ? [<Phq9Card key="phq9" scores={activity.phq9} />] : []),
