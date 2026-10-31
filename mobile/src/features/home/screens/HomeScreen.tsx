@@ -6,16 +6,18 @@ import Screen from '@/components/ui/Screen';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { firstName } from '@/features/assignment/assign';
-import { getConsent } from '@/features/consent/consentStore';
 import CheckInCard from '@/features/home/components/CheckInCard';
 import HomeHeader from '@/features/home/components/HomeHeader';
 import MoodCard from '@/features/home/components/MoodCard';
 import SessionCard from '@/features/home/components/SessionCard';
 import SessionPath from '@/features/home/components/SessionPath';
 import WeekTodos from '@/features/home/components/WeekTodos';
-import { weekOfStudy } from '@/features/home/studyWeek';
+import { currentStudyWeek } from '@/features/home/currentWeek';
 import { logMood, todaysMood } from '@/features/mood/moodStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
+import { sessionContent } from '@/features/sessions/content';
+import { useSessionProgress } from '@/features/sessions/progressStore';
+import { modulesDone } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { haptics } from '@/lib/haptics';
 
@@ -26,19 +28,23 @@ export default function HomeScreen() {
     const assignment = getAssignment();
     return {
       name: getOnboardingData().name,
-      week: weekOfStudy(getConsent()?.agreedAt ?? assignment?.assignedAt),
+      week: currentStudyWeek(),
       researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
     };
   });
   const [mood, setMood] = useState(() => todaysMood());
 
+  const progress = useSessionProgress();
+
   const session = SESSIONS[week - 1];
-  // Session modules aren't built yet, so nothing can be marked done there.
-  const modulesDone = 0;
+  const content = sessionContent(session.id);
+  const record = progress[session.id];
+  const sessionDone = Boolean(record?.completedAt);
+  const completedSessions = SESSIONS.filter((s) => progress[s.id]?.completedAt).map((s) => s.id);
 
   const todos = [
     { label: 'Log today’s mood', done: mood !== null },
-    { label: `Complete Session ${session.id}`, done: false },
+    { label: `Complete Session ${session.id}`, done: sessionDone },
     { label: 'Do this week’s practice', done: false },
     {
       label: researcher ? `Check in with ${firstName(researcher.name)}` : 'Weekly check-in',
@@ -58,13 +64,19 @@ export default function HomeScreen() {
           <HomeHeader name={name} week={week} />
         </Animated.View>
         <Animated.View entering={stagger(1)}>
-          <SessionCard session={session} modulesDone={modulesDone} />
+          <SessionCard
+            session={session}
+            modulesDone={content ? modulesDone(content, record) : 0}
+            modulesTotal={content?.modules.length ?? 0}
+            minutes={content?.modules.reduce((sum, m) => sum + m.minutes, 0) ?? 0}
+            completed={sessionDone}
+          />
         </Animated.View>
         <Animated.View entering={stagger(2)}>
           <MoodCard today={mood} onLog={handleLogMood} />
         </Animated.View>
         <Animated.View entering={stagger(3)}>
-          <SessionPath current={session.id} />
+          <SessionPath week={week} completed={completedSessions} />
         </Animated.View>
         <Animated.View entering={stagger(4)}>
           <CheckInCard researcher={researcher} />

@@ -35,33 +35,32 @@ function CurrentPulse() {
   return <Animated.View pointerEvents="none" style={[styles.pulse, style]} />;
 }
 
-export default function SessionPath({ current }: { current: number }) {
+export default function SessionPath({ week, completed }: { week: number; completed: number[] }) {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.title}>Your 8 weeks</Text>
         <Text style={styles.meta}>
-          {current - 1} of {SESSIONS.length} done
+          {completed.length} of {SESSIONS.length} done
         </Text>
       </View>
 
-      <View style={styles.path} accessibilityLabel={`Session ${current} of ${SESSIONS.length}`}>
+      <View style={styles.path} accessibilityLabel={`Week ${week} of ${SESSIONS.length}`}>
         {SESSIONS.map((session, index) => {
-          const done = session.id < current;
-          const isCurrent = session.id === current;
+          const done = completed.includes(session.id);
+          const isCurrent = !done && session.id === week;
+          const open = !done && session.id <= week;
           return (
             <View key={session.id} style={styles.step}>
               {index > 0 && (
-                <View style={[styles.connector, session.id <= current && styles.connectorDone]} />
+                <View style={[styles.connector, session.id <= week && styles.connectorDone]} />
               )}
               <View style={styles.nodeWrap}>
                 {isCurrent && <CurrentPulse />}
-                <View
-                  style={[styles.node, done && styles.nodeDone, isCurrent && styles.nodeCurrent]}
-                >
+                <View style={[styles.node, done && styles.nodeDone, open && styles.nodeCurrent]}>
                   {done ? (
                     <CheckIcon size={14} color={colors.onPrimary} />
-                  ) : isCurrent ? (
+                  ) : open ? (
                     <Text style={styles.nodeCurrentText}>{session.id}</Text>
                   ) : (
                     <LockIcon size={12} color={colors.inkFaint} />

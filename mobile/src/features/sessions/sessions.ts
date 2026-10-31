@@ -10,6 +10,3 @@ export const SESSIONS: Session[] = [
   { id: 7, title: 'Self-Esteem & Core Beliefs', focus: 'Cognitive Schema Work' },
   { id: 8, title: 'Relapse Prevention & Future Planning', focus: 'Maintenance Skills' },
 ];
-
-/** Modules per session; drives the progress shown before the session screens exist. */
-export const MODULES_PER_SESSION = 4;

@@ -3,18 +3,24 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Emoji from '@/components/icons/Emoji';
 import Button from '@/components/ui/Button';
-import { MODULES_PER_SESSION, SESSIONS, Session } from '@/features/sessions/sessions';
+import { SESSIONS, Session } from '@/features/sessions/sessions';
 import { colors, fonts, radius } from '@/theme';
 
 export default function SessionCard({
   session,
   modulesDone,
+  modulesTotal,
+  minutes,
+  completed,
 }: {
   session: Session;
   modulesDone: number;
+  modulesTotal: number;
+  minutes: number;
+  completed: boolean;
 }) {
   const started = modulesDone > 0;
-  const progress = modulesDone / MODULES_PER_SESSION;
+  const progress = modulesTotal ? modulesDone / modulesTotal : 0;
 
   return (
     <View style={styles.card}>
@@ -31,16 +37,18 @@ export default function SessionCard({
 
       <View
         style={styles.track}
-        accessibilityLabel={`${modulesDone} of ${MODULES_PER_SESSION} parts done`}
+        accessibilityLabel={`${modulesDone} of ${modulesTotal} parts done`}
       >
         <View style={[styles.fill, { width: `${progress * 100}%` }]} />
       </View>
       <Text style={styles.meta}>
-        {modulesDone} of {MODULES_PER_SESSION} parts done · about 35–50 min
+        {completed
+          ? 'Session complete · nice work'
+          : `${modulesDone} of ${modulesTotal} parts done · about ${minutes} min`}
       </Text>
 
-      <Button variant="secondary" onPress={() => router.push('/sessions')}>
-        {started ? 'Continue session' : 'Start session'}
+      <Button variant="secondary" onPress={() => router.push(`/session/${session.id}`)}>
+        {completed ? 'Review session' : started ? 'Continue session' : 'Start session'}
       </Button>
     </View>
   );
