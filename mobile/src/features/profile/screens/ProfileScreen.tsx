@@ -10,17 +10,14 @@ import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { signOut } from '@/features/auth/signOut';
 import { getUserSession } from '@/features/auth/userSession';
-import { getCheckInHistory } from '@/features/checkin/checkinStore';
 import { getConsent } from '@/features/consent/consentStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
-import { getMoodLog } from '@/features/mood/moodStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
 import { useEmergencyContact } from '@/features/profile/emergencyContactStore';
-import { useSessionProgress } from '@/features/sessions/progressStore';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { setPreference, usePreferences } from '@/lib/preferences';
-import { colors, fonts, radius, type } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 function readProfile() {
   const assignment = getAssignment();
@@ -29,29 +26,24 @@ function readProfile() {
     email: getUserSession().email ?? '',
     week: currentStudyWeek(),
     researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
-    moods: getMoodLog().length,
-    checkIns: getCheckInHistory().length,
     consent: getConsent(),
   };
 }
 
-function Stat({ value, label }: { value: string | number; label: string }) {
-  return (
-    <View style={styles.stat}>
-      <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
-    </View>
-  );
+function shortDate(iso: string) {
+  return new Date(iso).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 }
 
 export default function ProfileScreen() {
   const [profile, setProfile] = useState(readProfile);
   useFocusEffect(useCallback(() => setProfile(readProfile()), []));
-  const progress = useSessionProgress();
   const { contact } = useEmergencyContact();
   const preferences = usePreferences();
 
-  const sessionsDone = SESSIONS.filter((s) => progress[s.id]?.completedAt).length;
   const researcherName = profile.researcher ? firstName(profile.researcher.name) : null;
 
   function confirmLogOut() {
@@ -77,35 +69,33 @@ export default function ProfileScreen() {
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{initials(profile.name) || '?'}</Text>
         </View>
-        <Text style={type.title}>{profile.name || 'Your profile'}</Text>
-        {profile.email !== '' && <Text style={type.caption}>{profile.email}</Text>}
-        <Text style={styles.meta}>
-          Week {profile.week} of {SESSIONS.length}
-          {researcherName ? ` · with ${researcherName}` : ''}
-        </Text>
+        <View style={styles.headerText}>
+          <Text style={styles.name}>{profile.name || 'Your profile'}</Text>
+          <Text style={styles.meta}>
+            Week {profile.week} of {SESSIONS.length}
+            {researcherName ? ` · with ${researcherName}` : ''}
+          </Text>
+        </View>
       </View>
 
-      <View style={styles.stats}>
-        <Stat value={`${sessionsDone}/${SESSIONS.length}`} label="Sessions" />
-        <View style={styles.divider} />
-        <Stat value={profile.moods} label="Moods logged" />
-        <View style={styles.divider} />
-        <Stat value={profile.checkIns} label="Check-ins" />
-      </View>
-
-      <View style={styles.groups}>
-        <SettingsGroup title="Account">
+      <View style={styles.list}>
+        <SettingsGroup>
+          <SettingsRow kind="static" icon="mail" label="Email" value={profile.email || 'Not set'} />
+          {/* The one call to action on the page, until a contact is added. */}
+          {!contact && (
+            <SettingsRow
+              kind="highlight"
+              icon="shield"
+              label="Add an emergency contact"
+              onPress={() => router.push('/profile/emergency-contact')}
+            />
+          )}
           <SettingsRow
             icon="pencil"
-            label="Your name"
-            detail={profile.name || 'Add your name'}
+            label="Name"
+            value={profile.name || undefined}
+            action="Edit"
             onPress={() => router.push('/profile/name')}
-          />
-          <SettingsRow
-            kind="static"
-            icon="mail"
-            label="Email"
-            detail={profile.email || 'Not set'}
           />
           <SettingsRow
             icon="lock"
@@ -114,13 +104,15 @@ export default function ProfileScreen() {
           />
         </SettingsGroup>
 
-        <SettingsGroup title="Safety">
-          <SettingsRow
-            icon="phone"
-            label="Emergency contact"
-            detail={contact ? `${contact.name} · ${contact.relationship}` : 'Not added yet'}
-            onPress={() => router.push('/profile/emergency-contact')}
-          />
+        <SettingsGroup>
+          {contact && (
+            <SettingsRow
+              icon="phone"
+              label="Emergency contact"
+              value={contact.name}
+              onPress={() => router.push('/profile/emergency-contact')}
+            />
+          )}
           <SettingsRow
             icon="shield"
             label="Help & crisis contacts"
@@ -135,24 +127,22 @@ export default function ProfileScreen() {
           )}
         </SettingsGroup>
 
-        <SettingsGroup title="Preferences">
+        <SettingsGroup>
           <SettingsRow
             icon="bell"
             label="Notifications"
-            detail="Reminders, messages and check-ins"
             onPress={() => router.push('/profile/notifications')}
           />
           <SettingsRow
             kind="toggle"
             icon="device"
             label="Vibration"
-            detail="Little taps when you press and finish things"
-            value={preferences.vibration}
-            onChange={(value) => setPreference('vibration', value)}
+            on={preferences.vibration}
+            onChange={(on) => setPreference('vibration', on)}
           />
         </SettingsGroup>
 
-        <SettingsGroup title="Your data & the study">
+        <SettingsGroup>
           <SettingsRow
             icon="eye"
             label="What your researcher can see"
@@ -161,37 +151,29 @@ export default function ProfileScreen() {
           <SettingsRow
             icon="checkCircle"
             label="Your consent"
-            detail={
-              profile.consent
-                ? `Agreed ${new Date(profile.consent.agreedAt).toLocaleDateString(undefined, {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })}`
-                : 'Not recorded'
-            }
+            value={profile.consent ? shortDate(profile.consent.agreedAt) : undefined}
             onPress={() => router.push('/profile/consent')}
           />
           <SettingsRow
-            label="Withdraw from the study"
-            danger
-            onPress={() => router.push('/profile/withdraw')}
-          />
-        </SettingsGroup>
-
-        <SettingsGroup title="Legal">
-          <SettingsRow
+            icon="document"
             label="Terms of use"
             onPress={() => router.push({ pathname: '/profile/legal', params: { doc: 'terms' } })}
           />
           <SettingsRow
+            icon="document"
             label="Privacy policy"
             onPress={() => router.push({ pathname: '/profile/legal', params: { doc: 'privacy' } })}
           />
         </SettingsGroup>
 
-        <SettingsGroup title="Session">
-          <SettingsRow label="Log out" danger onPress={confirmLogOut} />
+        <SettingsGroup>
+          <SettingsRow
+            icon="flag"
+            label="Withdraw from the study"
+            danger
+            onPress={() => router.push('/profile/withdraw')}
+          />
+          <SettingsRow icon="logout" label="Log out" danger onPress={confirmLogOut} />
         </SettingsGroup>
 
         <Text style={styles.version}>ThriveCBT {Constants.expoConfig?.version ?? ''}</Text>
@@ -200,35 +182,25 @@ export default function ProfileScreen() {
   );
 }
 
+const AVATAR = 56;
+
 const styles = StyleSheet.create({
-  header: { alignItems: 'center', gap: 4, marginTop: 8 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 16 },
   avatar: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    marginBottom: 8,
+    width: AVATAR,
+    height: AVATAR,
+    borderRadius: AVATAR / 2,
     backgroundColor: colors.primaryEdge,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatarText: { fontFamily: fonts.heavy, fontSize: 32, color: colors.onPrimary },
-  meta: { fontFamily: fonts.bold, fontSize: 14, color: colors.primary, marginTop: 4 },
-  stats: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-    paddingVertical: 16,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-  },
-  stat: { flex: 1, alignItems: 'center', gap: 2 },
-  statValue: { fontFamily: fonts.heavy, fontSize: 20, color: colors.ink },
-  statLabel: { fontFamily: fonts.medium, fontSize: 12, color: colors.inkMuted },
-  divider: { width: 1, alignSelf: 'stretch', backgroundColor: colors.border },
-  groups: { gap: 22, marginTop: 24 },
+  avatarText: { fontFamily: fonts.heavy, fontSize: 20, color: colors.onPrimary },
+  headerText: { flex: 1, gap: 2 },
+  name: { fontFamily: fonts.heavy, fontSize: 22, color: colors.ink },
+  meta: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
+  list: { marginTop: 18 },
   version: {
+    marginTop: 24,
     textAlign: 'center',
     fontFamily: fonts.medium,
     fontSize: 12,

@@ -24,13 +24,13 @@ export default function NotificationSettingsScreen() {
       <Text style={type.body}>Choose what we remind you about. You can change this any time.</Text>
 
       <View style={styles.groups}>
-        <SettingsGroup title="Reminders">
+        <SettingsGroup title="Reminders" first>
           <SettingsRow
             kind="toggle"
             icon="book"
             label="New sessions"
             detail="When this week’s session opens"
-            value={preferences.notifySessions}
+            on={preferences.notifySessions}
             onChange={(value) => setPreference('notifySessions', value)}
           />
           <SettingsRow
@@ -38,7 +38,7 @@ export default function NotificationSettingsScreen() {
             icon="heart"
             label="Daily mood check"
             detail="A gentle nudge to log how you feel"
-            value={preferences.notifyMood}
+            on={preferences.notifyMood}
             onChange={(value) => setPreference('notifyMood', value)}
           />
           {preferences.notifyMood && (
@@ -80,7 +80,7 @@ export default function NotificationSettingsScreen() {
             icon="chat"
             label="Messages"
             detail="When your researcher replies"
-            value={preferences.notifyMessages}
+            on={preferences.notifyMessages}
             onChange={(value) => setPreference('notifyMessages', value)}
           />
           <SettingsRow
@@ -88,7 +88,7 @@ export default function NotificationSettingsScreen() {
             icon="video"
             label="Check-in reminders"
             detail="The day before and 10 minutes before"
-            value={preferences.notifyCheckIns}
+            on={preferences.notifyCheckIns}
             onChange={(value) => setPreference('notifyCheckIns', value)}
           />
         </SettingsGroup>
