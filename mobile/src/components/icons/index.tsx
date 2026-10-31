@@ -1,5 +1,5 @@
 import type { ColorValue } from 'react-native';
-import Svg, { Circle, Path } from 'react-native-svg';
+import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 type IconProps = { size?: number; color: ColorValue };
 
@@ -185,6 +185,85 @@ export function DoubleCheckIcon({ size = 16, color }: IconProps) {
         strokeWidth={2.4}
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function MicIcon({ size = 24, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M9 6a3 3 0 016 0v5a3 3 0 01-6 0V6z" stroke={color} strokeWidth={2} />
+      <Path
+        d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
+export function MicOffIcon({ size = 24, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M9 6a3 3 0 016 0v5a3 3 0 01-6 0V6z" stroke={color} strokeWidth={2} />
+      <Path
+        d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+      <Path d="M4 4l16 16" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function CameraIcon({ size = 24, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Rect x={3} y={6} width={13} height={12} rx={3} stroke={color} strokeWidth={2} />
+      <Path d="M16 10.5l5-3v9l-5-3" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+export function CameraOffIcon({ size = 24, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Rect x={3} y={6} width={13} height={12} rx={3} stroke={color} strokeWidth={2} />
+      <Path d="M16 10.5l5-3v9l-5-3" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+      <Path d="M3 3l18 18" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function FlipCameraIcon({ size = 24, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4 9a8 8 0 0114-3.5L20 7M20 15a8 8 0 01-14 3.5L4 17"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+      <Path
+        d="M20 3v4h-4M4 21v-4h4"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function EndCallIcon({ size = 26, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 13.5c5-4.7 13-4.7 18 0l-2.2 2.6a1 1 0 01-1.3.2l-2.6-1.6a1 1 0 01-.5-.9V12a12 12 0 00-4.8 0v1.8a1 1 0 01-.5.9l-2.6 1.6a1 1 0 01-1.3-.2L3 13.5z"
+        fill={color}
       />
     </Svg>
   );
