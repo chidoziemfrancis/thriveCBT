@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals
 import * as Haptics from 'expo-haptics';
 
 import { haptics } from '@/lib/haptics';
+import { setPreference } from '@/lib/preferences';
 
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(() => Promise.resolve()),
@@ -11,11 +12,19 @@ jest.mock('expo-haptics', () => ({
   NotificationFeedbackType: { Success: 'success' },
 }));
 
+// Preferences are read from native storage at import, before any test runs; defaults are enough.
+jest.mock('@/lib/storage', () => ({
+  readJson: (_key: string, fallback: unknown) => fallback,
+  writeJson: () => {},
+  removeKey: () => {},
+}));
+
 const impact = jest.mocked(Haptics.impactAsync);
 
 beforeEach(() => {
   jest.useFakeTimers();
   jest.clearAllMocks();
+  setPreference('vibration', true);
 });
 
 afterEach(() => {
@@ -61,5 +70,13 @@ describe('haptics', () => {
     impact.mockReturnValueOnce(Promise.reject(new Error('no motor')));
     expect(() => haptics.tap()).not.toThrow();
     await Promise.resolve();
+  });
+
+  it('stays silent when the student has turned vibration off', () => {
+    setPreference('vibration', false);
+    haptics.tap();
+    haptics.heartbeat();
+    jest.advanceTimersByTime(500);
+    expect(impact).not.toHaveBeenCalled();
   });
 });

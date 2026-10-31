@@ -5,7 +5,7 @@ export default function ProgressScreen() {
     <ComingSoon
       title="Your progress"
       description="See how your mood and check-ins change over the 8 weeks. Coming soon."
-      emoji="growingHeart"
+      image="chart"
     />
   );
 }

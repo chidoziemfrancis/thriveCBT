@@ -1,11 +1,14 @@
 import * as Haptics from 'expo-haptics';
 import { Platform } from 'react-native';
 
+import { getPreferences } from './preferences';
+
 const HEARTBEAT_GAP_MS = 140;
 
-// Haptics are unavailable on web, and a missing motor should never break a flow.
+// Haptics are unavailable on web, some students switch them off, and a missing motor
+// should never break a flow.
 function run(effect: () => Promise<void>) {
-  if (Platform.OS === 'web') return;
+  if (Platform.OS === 'web' || !getPreferences().vibration) return;
   effect().catch(() => {});
 }
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
-import Emoji from '@/components/icons/Emoji';
+import Icon3D from '@/components/icons/Icon3D';
 import Button from '@/components/ui/Button';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -23,7 +23,7 @@ export default function JournalModule({
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Emoji name="memo" size={56} />
+        <Icon3D name="pencil" size={56} />
         <Text style={[type.title, styles.prompt]}>{prompt}</Text>
       </View>
       <Text style={type.body}>{hint}</Text>

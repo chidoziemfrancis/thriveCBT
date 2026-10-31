@@ -1,6 +1,6 @@
 import { readJson, writeJson } from '@/lib/storage';
 
-import type { CheckIn, CheckInFeedback } from './checkinLogic';
+import { CheckIn, CheckInFeedback, rollForward } from './checkinLogic';
 
 const CHECKIN_KEY = 'next_checkin';
 const FEEDBACK_KEY = 'checkin_feedback';
@@ -15,7 +15,11 @@ const MOCK_FIRST_START_MS = 5 * 60_000;
 export function getNextCheckIn(researcherId: string | undefined, now = new Date()): CheckIn | null {
   if (!researcherId) return null;
   const saved = readJson<CheckIn | null>(CHECKIN_KEY, null);
-  if (saved && saved.researcherId === researcherId) return saved;
+  if (saved && saved.researcherId === researcherId) {
+    const current = rollForward(saved, now);
+    if (current !== saved) writeJson(CHECKIN_KEY, current);
+    return current;
+  }
 
   const created: CheckIn = {
     id: `checkin-${now.getTime()}`,
@@ -25,6 +29,10 @@ export function getNextCheckIn(researcherId: string | undefined, now = new Date(
   };
   writeJson(CHECKIN_KEY, created);
   return created;
+}
+
+export function getCheckInHistory(): CheckInFeedback[] {
+  return readJson<CheckInFeedback[]>(FEEDBACK_KEY, []);
 }
 
 /** Saves how the call felt and books the same slot next week. */

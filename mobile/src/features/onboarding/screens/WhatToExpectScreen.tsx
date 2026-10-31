@@ -4,36 +4,36 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 
 import Button from '@/components/ui/Button';
-import Emoji from '@/components/icons/Emoji';
-import type { EmojiName } from '@/components/icons/emojiSources';
+import Icon3D from '@/components/icons/Icon3D';
+import type { Icon3DName } from '@/components/icons/icon3dSources';
 import Screen from '@/components/ui/Screen';
 import StepHeader from '@/components/ui/StepHeader';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
-const JOURNEY: { title: string; detail: string; emoji: EmojiName; bg: string }[] = [
+const JOURNEY: { title: string; detail: string; image: Icon3DName; bg: string }[] = [
   {
     title: 'Quick check-in',
     detail: '9 questions about the last 2 weeks',
-    emoji: 'clipboard',
+    image: 'fileText',
     bg: colors.lavender,
   },
   {
     title: '8 weekly sessions',
     detail: 'Short lessons, a mood check and a journal',
-    emoji: 'books',
+    image: 'notebook',
     bg: colors.mint,
   },
   {
     title: 'Weekly video check-ins',
     detail: 'A real researcher, right in the app',
-    emoji: 'videoCamera',
+    image: 'videoCamera',
     bg: colors.peach,
   },
   {
     title: 'Final check-in',
     detail: 'See how far you’ve come',
-    emoji: 'chequeredFlag',
+    image: 'flag',
     bg: colors.butter,
   },
 ];
@@ -56,7 +56,7 @@ export default function WhatToExpectScreen() {
         </View>
 
         <View>
-          {JOURNEY.map(({ title, detail, emoji, bg }, index) => {
+          {JOURNEY.map(({ title, detail, image, bg }, index) => {
             const isLast = index === JOURNEY.length - 1;
             return (
               <Animated.View
@@ -66,7 +66,7 @@ export default function WhatToExpectScreen() {
               >
                 <View style={styles.rail}>
                   <View style={[styles.node, { backgroundColor: bg }]}>
-                    <Emoji name={emoji} size={34} />
+                    <Icon3D name={image} size={34} />
                   </View>
                   {!isLast && <View style={styles.line} />}
                 </View>
