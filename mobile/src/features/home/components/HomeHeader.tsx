@@ -2,10 +2,10 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BellIcon, LifebuoyIcon } from '@/components/icons';
-import { initials } from '@/features/assignment/assign';
 import { useNotifications } from '@/features/notifications/useNotifications';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { haptics } from '@/lib/haptics';
+import UserAvatar from '@/features/avatar/components/UserAvatar';
 import { colors, fonts } from '@/theme';
 
 function IconButton({
@@ -53,9 +53,7 @@ export default function HomeHeader({ name, week }: { name?: string; week: number
         onPress={() => router.push('/profile')}
         style={({ pressed }) => [styles.identity, pressed && { opacity: 0.7 }]}
       >
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{initials(name ?? '') || '?'}</Text>
-        </View>
+        <UserAvatar size={48} />
         <View style={styles.text}>
           <Text style={styles.greeting} numberOfLines={1}>
             Welcome{name ? `, ${name}` : ''}
