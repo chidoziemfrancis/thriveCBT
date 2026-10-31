@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
   top: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   identity: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatarRing: { padding: 2, borderRadius: 30, backgroundColor: colors.surface },
-  hi: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
-  name: { fontFamily: fonts.heavy, fontSize: 18, color: colors.ink },
+  hi: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  name: { fontFamily: fonts.heavy, fontSize: 16, color: colors.ink },
   round: {
     width: 46,
     height: 46,
@@ -158,14 +158,14 @@ const styles = StyleSheet.create({
     borderColor: colors.surface,
     backgroundColor: colors.danger,
   },
-  greeting: { marginTop: 26, fontFamily: fonts.medium, fontSize: 16, color: colors.inkMuted },
+  greeting: { marginTop: 24, fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
   headline: {
     marginTop: 6,
-    maxWidth: 330,
+    maxWidth: 300,
     fontFamily: fonts.heavy,
-    fontSize: 33,
-    lineHeight: 39,
-    letterSpacing: -0.8,
+    fontSize: 26,
+    lineHeight: 32,
+    letterSpacing: -0.6,
     color: colors.ink,
   },
   weekPill: {
@@ -180,5 +180,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   weekDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary },
-  weekText: { fontFamily: fonts.bold, fontSize: 14, color: colors.ink },
+  weekText: { fontFamily: fonts.bold, fontSize: 13, color: colors.ink },
 });

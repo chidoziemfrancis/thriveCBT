@@ -68,12 +68,12 @@ export default function DailyMood({
 const styles = StyleSheet.create({
   section: { gap: 14 },
   head: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
-  title: { fontFamily: fonts.heavy, fontSize: 20, color: colors.ink },
+  title: { fontFamily: fonts.heavy, fontSize: 17, color: colors.ink },
   meta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkFaint },
   row: { flexDirection: 'row', justifyContent: 'space-between' },
   option: { alignItems: 'center' },
   faded: { opacity: 0.4 },
   selected: { transform: [{ scale: 1.1 }] },
   ring: { padding: 3, borderRadius: FACE, borderWidth: 3, borderColor: 'transparent' },
-  caption: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
+  caption: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
 });

@@ -104,5 +104,5 @@ const styles = StyleSheet.create({
   },
   body: { gap: 30, paddingHorizontal: GUTTER, paddingTop: 22 },
   checkIn: { gap: 14 },
-  heading: { fontFamily: fonts.heavy, fontSize: 20, color: colors.ink },
+  heading: { fontFamily: fonts.heavy, fontSize: 17, color: colors.ink },
 });

@@ -118,7 +118,7 @@ export default function WeekTiles({
 
 const styles = StyleSheet.create({
   section: { gap: 14 },
-  heading: { fontFamily: fonts.heavy, fontSize: 20, color: colors.ink },
+  heading: { fontFamily: fonts.heavy, fontSize: 17, color: colors.ink },
   row: { flexDirection: 'row', gap: 12 },
   tile: {
     flex: 1,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { fontFamily: fonts.heavy, fontSize: 18, lineHeight: 23, color: colors.ink },
+  title: { fontFamily: fonts.heavy, fontSize: 15, lineHeight: 20, color: colors.ink },
   bottom: { marginTop: 'auto', gap: 8 },
   track: {
     height: 5,
