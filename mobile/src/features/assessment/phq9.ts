@@ -26,3 +26,8 @@ export function severityBand(score: number) {
   if (score <= 19) return 'Moderately severe';
   return 'Severe';
 }
+
+/** Unanswered questions count as 0, so a partly filled questionnaire never scores NaN. */
+export function phq9Score(answers: (number | undefined)[]): number {
+  return answers.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+}

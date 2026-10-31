@@ -7,9 +7,15 @@ import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
 import Screen from '@/components/ui/Screen';
 import { clearAnswers, getAnswers } from '@/features/assessment/assessmentStore';
+import { recordPhq9Score } from '@/features/assessment/scoreHistory';
 import { SUPPORT_OPTIONS } from '@/features/support/supportOptions';
 import { haptics } from '@/lib/haptics';
-import { PHQ9_QUESTIONS, SUICIDAL_IDEATION_INDEX, severityBand } from '@/features/assessment/phq9';
+import {
+  PHQ9_QUESTIONS,
+  SUICIDAL_IDEATION_INDEX,
+  phq9Score,
+  severityBand,
+} from '@/features/assessment/phq9';
 import { colors, fonts, radius, type } from '@/theme';
 
 const BANDS = ['Minimal', 'Mild', 'Moderate', 'Moderately severe', 'Severe'];
@@ -18,7 +24,7 @@ export default function Phq9ResultsScreen() {
   const [{ score, needsSupport }] = useState(() => {
     const answers = getAnswers();
     return {
-      score: answers.reduce((sum, value) => sum + (value ?? 0), 0),
+      score: phq9Score(answers),
       needsSupport: (answers[SUICIDAL_IDEATION_INDEX] ?? 0) > 0,
     };
   });
@@ -31,6 +37,7 @@ export default function Phq9ResultsScreen() {
   }, [needsSupport]);
 
   function handleContinue() {
+    recordPhq9Score(score);
     clearAnswers();
     router.replace('/assignment/finding');
   }
