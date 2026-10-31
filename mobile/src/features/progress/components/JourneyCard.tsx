@@ -25,13 +25,16 @@ export default function JourneyCard({
       style={({ pressed }) => [styles.card, pressed && { transform: [{ scale: 0.98 }] }]}
     >
       <View style={styles.head}>
-        <View style={styles.headText}>
-          <Text style={styles.eyebrow}>Your journey</Text>
-          <Text style={styles.title}>
-            Week {week} of {SESSIONS.length}
+        <Text style={styles.title}>Your plan</Text>
+        {/* iOS doesn't round a Text's own background, so the pill is a View. */}
+        <View style={styles.weekPill}>
+          <Text style={styles.week}>
+            WEEK {week}/{SESSIONS.length}
           </Text>
         </View>
-        <ChevronRightIcon color={colors.inkFaint} />
+        <View style={styles.spacer} />
+        <Text style={styles.more}>Sessions</Text>
+        <ChevronRightIcon size={14} color={colors.primary} />
       </View>
 
       <View style={styles.track} accessibilityElementsHidden>
@@ -78,21 +81,21 @@ const styles = StyleSheet.create({
     gap: 14,
     padding: 18,
     borderRadius: radius.lg,
-    borderWidth: 2,
-    borderBottomWidth: 4,
+    borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.surface,
   },
-  head: { flexDirection: 'row', alignItems: 'center' },
-  headText: { flex: 1, gap: 2 },
-  eyebrow: {
-    fontFamily: fonts.bold,
-    fontSize: 12,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    color: colors.inkMuted,
+  head: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  title: { fontFamily: fonts.heavy, fontSize: 18, color: colors.ink },
+  weekPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: radius.pill,
+    backgroundColor: colors.primarySoft,
   },
-  title: { fontFamily: fonts.heavy, fontSize: 20, color: colors.ink },
+  week: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 0.8, color: colors.primary },
+  spacer: { flex: 1 },
+  more: { fontFamily: fonts.bold, fontSize: 13, color: colors.primary },
   track: { flexDirection: 'row', alignItems: 'center' },
   link: { flex: 1, height: 3, borderRadius: 2, backgroundColor: colors.border },
   linkReached: { backgroundColor: colors.primary },

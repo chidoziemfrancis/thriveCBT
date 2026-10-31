@@ -88,6 +88,8 @@ const TONES = {
   peach: { bg: colors.peach, ink: colors.peachInk },
   butter: { bg: colors.butter, ink: colors.butterInk },
   neutral: { bg: colors.surfaceMuted, ink: colors.inkFaint },
+  // For icons sitting on a tinted card, where a tinted tile would disappear.
+  plain: { bg: colors.surface, ink: colors.primary },
 } as const;
 
 export type FeatureIconTone = keyof typeof TONES;
