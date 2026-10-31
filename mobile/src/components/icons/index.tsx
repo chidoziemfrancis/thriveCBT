@@ -268,3 +268,17 @@ export function EndCallIcon({ size = 26, color }: IconProps) {
     </Svg>
   );
 }
+
+export function BackspaceIcon({ size = 28, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M8.5 5H20a1 1 0 011 1v12a1 1 0 01-1 1H8.5L3 12l5.5-7z"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinejoin="round"
+      />
+      <Path d="M11 9l6 6M17 9l-6 6" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
+    </Svg>
+  );
+}

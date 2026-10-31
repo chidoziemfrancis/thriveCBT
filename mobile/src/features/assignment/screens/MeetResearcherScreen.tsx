@@ -35,7 +35,9 @@ export default function MeetResearcherScreen() {
   ];
 
   return (
-    <Screen footer={<Button onPress={() => router.replace('/dashboard')}>Go to my home</Button>}>
+    <Screen
+      footer={<Button onPress={() => router.replace('/auth/create-pin')}>Go to my home</Button>}
+    >
       <View style={styles.body}>
         <Animated.View entering={ZoomIn.springify().damping(12)} style={styles.avatar}>
           <Text style={styles.avatarText}>{initials(researcher.name)}</Text>

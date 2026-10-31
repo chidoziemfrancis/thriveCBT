@@ -68,7 +68,9 @@ export default function FindingResearcherScreen() {
 
   if (noneAvailable) {
     return (
-      <Screen footer={<Button onPress={() => router.replace('/dashboard')}>Go to my home</Button>}>
+      <Screen
+        footer={<Button onPress={() => router.replace('/auth/create-pin')}>Go to my home</Button>}
+      >
         <Animated.View entering={FadeIn} style={styles.body}>
           <Mascot size={120} mood="calm" />
           <Text style={[type.title, styles.center]}>Your researcher is on the way</Text>

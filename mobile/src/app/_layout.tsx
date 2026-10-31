@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import AnimatedSplash, { SplashRevealedProvider } from '@/components/splash/AnimatedSplash';
+import { useRelockOnResume } from '@/features/auth/useRelockOnResume';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -25,6 +26,7 @@ export default function RootLayout() {
   const [splashDone, setSplashDone] = useState(false);
   const revealApp = useCallback(() => setSplashRevealed(true), []);
   const finishSplash = useCallback(() => setSplashDone(true), []);
+  useRelockOnResume();
 
   // A font that fails to load falls back to the system font rather than holding the
   // native splash on screen forever.
@@ -42,6 +44,8 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="index" options={{ animation: 'fade' }} />
+          <Stack.Screen name="auth/unlock" options={{ gestureEnabled: false, animation: 'fade' }} />
+          <Stack.Screen name="auth/create-pin" options={{ gestureEnabled: false }} />
           <Stack.Screen name="assessment/phq9/results" options={{ gestureEnabled: false }} />
           <Stack.Screen name="assignment/finding" options={{ gestureEnabled: false }} />
           <Stack.Screen name="assignment/meet" options={{ gestureEnabled: false }} />
