@@ -12,7 +12,6 @@ import EmergencyContactCard from '@/features/home/components/EmergencyContactCar
 import HomeHeader from '@/features/home/components/HomeHeader';
 import MoodCard from '@/features/home/components/MoodCard';
 import SessionCard from '@/features/home/components/SessionCard';
-import SessionPath from '@/features/home/components/SessionPath';
 import WeekTodos from '@/features/home/components/WeekTodos';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { logMood, todaysMood } from '@/features/mood/moodStore';
@@ -46,7 +45,6 @@ export default function HomeScreen() {
   const content = sessionContent(session.id);
   const record = progress[session.id];
   const sessionDone = Boolean(record?.completedAt);
-  const completedSessions = SESSIONS.filter((s) => progress[s.id]?.completedAt).map((s) => s.id);
 
   const todos = [
     { label: 'Log today’s mood', done: mood !== null },
@@ -83,12 +81,9 @@ export default function HomeScreen() {
           <MoodCard today={mood} onLog={handleLogMood} />
         </Animated.View>
         <Animated.View entering={stagger(3)}>
-          <SessionPath week={week} completed={completedSessions} />
-        </Animated.View>
-        <Animated.View entering={stagger(4)}>
           <CheckInCard researcher={researcher} />
         </Animated.View>
-        <Animated.View entering={stagger(5)}>
+        <Animated.View entering={stagger(4)}>
           <WeekTodos todos={todos} />
         </Animated.View>
       </View>
