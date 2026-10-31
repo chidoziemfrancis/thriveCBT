@@ -3,11 +3,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
-import { BellIcon, LifebuoyIcon } from '@/components/icons';
+import { BellIcon, ChevronRightIcon, LifebuoyIcon } from '@/components/icons';
 import UserAvatar from '@/features/avatar/components/UserAvatar';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { useNotifications } from '@/features/notifications/useNotifications';
-import { SESSIONS } from '@/features/sessions/sessions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
@@ -46,9 +45,22 @@ function RoundButton({
   );
 }
 
-export default function HomeHero({ name, week }: { name?: string; week: number }) {
+export type HeroSession = {
+  id: number;
+  title: string;
+  minutes: number;
+  started: boolean;
+  done: boolean;
+};
+
+export default function HomeHero({ name, session }: { name?: string; session: HeroSession }) {
   const insets = useSafeAreaInsets();
   const { unread } = useNotifications();
+  const action = session.done
+    ? 'Review Session'
+    : session.started
+      ? 'Continue Session'
+      : 'Start Session';
 
   return (
     <View style={[styles.hero, { paddingTop: insets.top + 10 }]}>
@@ -114,12 +126,27 @@ export default function HomeHero({ name, week }: { name?: string; week: number }
         Welcome back, how’s your mind today?
       </Text>
 
-      <View style={styles.weekPill}>
-        <View style={styles.weekDot} />
-        <Text style={styles.weekText}>
-          Week {week} of {SESSIONS.length}
-        </Text>
-      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${action} ${session.id}: ${session.title}, about ${session.minutes} minutes`}
+        onPress={() => {
+          haptics.tap();
+          router.push(`/session/${session.id}`);
+        }}
+        style={({ pressed }) => [styles.start, pressed && { transform: [{ scale: 0.98 }] }]}
+      >
+        <View style={styles.startText}>
+          <Text style={styles.startTitle}>
+            {action} {session.id}
+          </Text>
+          <Text style={styles.startMeta} numberOfLines={1}>
+            {session.title} · {session.minutes} min
+          </Text>
+        </View>
+        <View style={styles.startArrow}>
+          <ChevronRightIcon size={18} color={colors.ink} />
+        </View>
+      </Pressable>
     </View>
   );
 }
@@ -168,17 +195,26 @@ const styles = StyleSheet.create({
     letterSpacing: -0.6,
     color: colors.ink,
   },
-  weekPill: {
+  start: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
-    gap: 8,
-    marginTop: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    gap: 12,
+    marginTop: 20,
+    paddingVertical: 12,
+    paddingLeft: 20,
+    paddingRight: 10,
     borderRadius: radius.pill,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.ink,
   },
-  weekDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary },
-  weekText: { fontFamily: fonts.bold, fontSize: 13, color: colors.ink },
+  startText: { flex: 1, gap: 2 },
+  startTitle: { fontFamily: fonts.bold, fontSize: 15, color: colors.onPrimary },
+  startMeta: { fontFamily: fonts.medium, fontSize: 12, color: 'rgba(255,255,255,0.7)' },
+  startArrow: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

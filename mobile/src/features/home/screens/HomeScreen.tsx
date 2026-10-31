@@ -43,6 +43,7 @@ export default function HomeScreen() {
   const session = SESSIONS[week - 1];
   const content = sessionContent(session.id);
   const record = progress[session.id];
+  const minutes = content?.modules.reduce((sum, m) => sum + m.minutes, 0) ?? 0;
 
   function handleLogMood(value: number) {
     setMood(logMood(value));
@@ -59,7 +60,16 @@ export default function HomeScreen() {
       <View style={styles.overscroll} />
 
       <Animated.View entering={FadeInDown.duration(380)}>
-        <HomeHero name={name} week={week} />
+        <HomeHero
+          name={name}
+          session={{
+            id: session.id,
+            title: session.title,
+            minutes,
+            started: (content ? modulesDone(content, record) : 0) > 0,
+            done: Boolean(record?.completedAt),
+          }}
+        />
       </Animated.View>
 
       <View style={styles.body}>
@@ -73,7 +83,7 @@ export default function HomeScreen() {
           <WeekTiles
             sessionId={session.id}
             sessionTitle={session.title}
-            minutes={content?.modules.reduce((sum, m) => sum + m.minutes, 0) ?? 0}
+            minutes={minutes}
             partsDone={content ? modulesDone(content, record) : 0}
             partsTotal={content?.modules.length ?? 0}
             sessionDone={Boolean(record?.completedAt)}
