@@ -135,3 +135,76 @@ export function badges(stats: ProgressStats): Badge[] {
     },
   ];
 }
+
+/** "Good" and "Great". */
+const GOOD_MOOD = 3;
+
+export type WeekDay = MoodDay & { isToday: boolean; isFuture: boolean };
+
+/** Monday to Sunday of the current week, so the strip reads like a calendar. */
+export function currentWeek(entries: MoodEntry[], now = new Date()): WeekDay[] {
+  const today = startOfDay(now);
+  const sinceMonday = (today.getDay() + 6) % 7;
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = daysBefore(today, sinceMonday - i);
+    const offset = date.getTime() - today.getTime();
+    return {
+      date,
+      mood: offset > 0 ? null : (moodOnDay(entries, date)?.mood ?? null),
+      isToday: offset === 0,
+      isFuture: offset > 0,
+    };
+  });
+}
+
+/** Good days are "Good" or "Great". The percent is of logged days, not of the whole week. */
+export function goodDayShare(days: MoodDay[]) {
+  const logged = days.filter((d) => d.mood !== null);
+  const good = logged.filter((d) => (d.mood ?? 0) >= GOOD_MOOD).length;
+  return {
+    good,
+    logged: logged.length,
+    percent: logged.length ? Math.round((good / logged.length) * 100) : 0,
+  };
+}
+
+const MORNING_ENDS_HOUR = 12;
+const MIN_ENTRIES_FOR_PATTERN = 4;
+const NOTICEABLE_CHANGE = 0.5;
+
+function average(values: number[]) {
+  return values.reduce((sum, v) => sum + v, 0) / values.length;
+}
+
+/**
+ * One plain-language observation about the student's moods, or null with too little to go
+ * on. Harder weeks point gently to the researcher rather than sounding like a grade.
+ */
+export function moodInsight(entries: MoodEntry[], now = new Date()): string | null {
+  const recent = dailyMoods(entries, 14, now);
+  const lastWeek = recent.slice(0, 7).flatMap((d) => (d.mood === null ? [] : [d.mood]));
+  const thisWeek = recent.slice(7).flatMap((d) => (d.mood === null ? [] : [d.mood]));
+
+  if (lastWeek.length >= 2 && thisWeek.length >= 2) {
+    const change = average(thisWeek) - average(lastWeek);
+    if (change >= NOTICEABLE_CHANGE) {
+      return 'You’ve been feeling a bit better than last week. Keep it up.';
+    }
+    if (change <= -NOTICEABLE_CHANGE) {
+      return 'This week has felt harder than last. Your researcher is here if you want to talk.';
+    }
+  }
+
+  const mornings = entries.filter((e) => new Date(e.at).getHours() < MORNING_ENDS_HOUR);
+  const later = entries.filter((e) => new Date(e.at).getHours() >= MORNING_ENDS_HOUR);
+  if (mornings.length >= 2 && later.length >= 2 && entries.length >= MIN_ENTRIES_FOR_PATTERN) {
+    const change = average(mornings.map((e) => e.mood)) - average(later.map((e) => e.mood));
+    if (change >= NOTICEABLE_CHANGE) return 'You tend to feel brighter in the mornings.';
+    if (change <= -NOTICEABLE_CHANGE) return 'Your days tend to get better as they go on.';
+  }
+
+  const streak = moodStreak(entries, now);
+  if (streak >= 3) return `${streak} days of checking in in a row. That habit really helps.`;
+  if (entries.length > 0) return 'Logging your mood most days helps you spot patterns over time.';
+  return null;
+}
