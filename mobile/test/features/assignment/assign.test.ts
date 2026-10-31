@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { Researcher, assignResearcher, initials } from '@/features/assignment/assign';
+import { Researcher, assignResearcher, firstName, initials } from '@/features/assignment/assign';
 
 function researcher(overrides: Partial<Researcher>): Researcher {
   return {
@@ -62,5 +62,12 @@ describe('initials', () => {
     expect(initials('Dr. Amara Okafor')).toBe('AO');
     expect(initials('Tunde Bello')).toBe('TB');
     expect(initials('Grace')).toBe('G');
+  });
+});
+
+describe('firstName', () => {
+  it('drops titles and keeps the first name', () => {
+    expect(firstName('Dr. Amara Okafor')).toBe('Amara');
+    expect(firstName('Tunde Bello')).toBe('Tunde');
   });
 });

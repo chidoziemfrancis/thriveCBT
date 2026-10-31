@@ -8,6 +8,11 @@ export const EMOJI = {
   chequeredFlag: require('@/assets/images/emoji/chequered-flag.png'),
   speechBalloon: require('@/assets/images/emoji/speech-balloon.png'),
   growingHeart: require('@/assets/images/emoji/growing-heart.png'),
+  faceDisappointed: require('@/assets/images/emoji/face-disappointed.png'),
+  faceConfused: require('@/assets/images/emoji/face-confused.png'),
+  faceNeutral: require('@/assets/images/emoji/face-neutral.png'),
+  faceSlightlySmiling: require('@/assets/images/emoji/face-slightly-smiling.png'),
+  faceGrinning: require('@/assets/images/emoji/face-grinning.png'),
 } satisfies Record<string, ImageSource>;
 
 export type EmojiName = keyof typeof EMOJI;

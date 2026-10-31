@@ -7,17 +7,13 @@ import Emoji from '@/components/icons/Emoji';
 import type { EmojiName } from '@/components/icons/emojiSources';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { initials } from '@/features/assignment/assign';
+import { firstName, initials } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
 const AVATAR = 112;
-
-function firstName(name: string) {
-  return name.replace(/^(dr|mr|mrs|ms|prof)\.?\s+/i, '').split(/\s+/)[0];
-}
 
 export default function MeetResearcherScreen() {
   const assignment = getAssignment();

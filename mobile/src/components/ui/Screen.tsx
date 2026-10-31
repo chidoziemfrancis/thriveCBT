@@ -7,13 +7,19 @@ export default function Screen({
   children,
   footer,
   background = colors.background,
+  insideTabs = false,
 }: {
   children: React.ReactNode;
   footer?: React.ReactNode;
   background?: string;
+  /** The tab bar already pads for the home indicator, so tab screens only pad the top. */
+  insideTabs?: boolean;
 }) {
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: background }]} edges={['top', 'bottom']}>
+    <SafeAreaView
+      style={[styles.safe, { backgroundColor: background }]}
+      edges={insideTabs ? ['top'] : ['top', 'bottom']}
+    >
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
