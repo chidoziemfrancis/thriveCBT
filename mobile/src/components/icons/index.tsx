@@ -151,3 +151,41 @@ export function LockIcon({ size = 14, color }: IconProps) {
     </Svg>
   );
 }
+
+export function ChatIcon({ size = 26, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4 6.5A2.5 2.5 0 016.5 4h11A2.5 2.5 0 0120 6.5V15a2.5 2.5 0 01-2.5 2.5H10l-4.2 3.3a.6.6 0 01-.97-.47V17.5A2.5 2.5 0 014 15V6.5z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function SendIcon({ size = 20, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4 12l15-7-5.5 15-2.6-6.4L4 12z"
+        stroke={color}
+        strokeWidth={2.2}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function DoubleCheckIcon({ size = 16, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M2 13l4 4L16 7M10 15l2 2L22 7"
+        stroke={color}
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
