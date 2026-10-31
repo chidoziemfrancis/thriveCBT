@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { MOODS } from '@/features/mood/moods';
 import type { WeekDay } from '@/features/progress/progressLogic';
-import { colors, fonts, radius } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 const FACE = 34;
 
@@ -40,16 +40,7 @@ export default function WeekStrip({ days }: { days: WeekDay[] }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    paddingHorizontal: 10,
-    borderRadius: radius.lg,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
+  card: { flexDirection: 'row', justifyContent: 'space-between' },
   day: { flex: 1, alignItems: 'center', gap: 6 },
   name: { fontFamily: fonts.medium, fontSize: 12, color: colors.inkFaint },
   date: { fontFamily: fonts.bold, fontSize: 14, color: colors.ink },

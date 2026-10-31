@@ -4,12 +4,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import Screen from '@/components/ui/Screen';
+import AchievementsSection from '@/features/achievements/components/AchievementsSection';
+import { useAchievements } from '@/features/achievements/useAchievements';
 import { getPhq9Scores } from '@/features/assessment/scoreHistory';
 import { getCheckInHistory } from '@/features/checkin/checkinStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getJournal } from '@/features/journal/journalStore';
 import { getMoodLog } from '@/features/mood/moodStore';
-import BadgeGrid from '@/features/progress/components/BadgeGrid';
 import InsightCard from '@/features/progress/components/InsightCard';
 import JourneyCard from '@/features/progress/components/JourneyCard';
 import MoodTrend from '@/features/progress/components/MoodTrend';
@@ -18,16 +19,13 @@ import StatsCard from '@/features/progress/components/StatsCard';
 import ThisWeekCard from '@/features/progress/components/ThisWeekCard';
 import WeekStrip from '@/features/progress/components/WeekStrip';
 import {
-  badges,
   currentWeek,
   dailyMoods,
   goodDayShare,
-  longestStreak,
   moodInsight,
   moodStreak,
 } from '@/features/progress/progressLogic';
 import { useSessionProgress } from '@/features/sessions/progressStore';
-import { SESSIONS } from '@/features/sessions/sessions';
 import { colors, fonts, type } from '@/theme';
 
 // Whether students see their own PHQ-9 trend is a study design decision, since seeing scores
@@ -63,16 +61,8 @@ export default function ProgressScreen() {
   const share = goodDayShare(week);
   const insight = moodInsight(moods);
   const daysLogged = dailyMoods(moods, MONTH_DAYS).filter((d) => d.mood !== null).length;
-  const sessionsDone = SESSIONS.filter((s) => progress[s.id]?.completedAt).length;
 
-  const earned = badges({
-    sessionsDone,
-    totalSessions: SESSIONS.length,
-    moodsLogged: moods.length,
-    bestStreak: longestStreak(moods),
-    checkIns: activity.checkIns,
-    journalEntries: activity.journalEntries,
-  });
+  const achievements = useAchievements();
 
   const sections = [
     <WeekStrip key="strip" days={week} />,
@@ -90,7 +80,7 @@ export default function ProgressScreen() {
     ...(insight ? [<InsightCard key="insight" text={insight} />] : []),
     <JourneyCard key="journey" week={activity.week} progress={progress} />,
     ...(SHOW_PHQ9_TREND ? [<Phq9Card key="phq9" scores={activity.phq9} />] : []),
-    <BadgeGrid key="badges" items={earned} />,
+    <AchievementsSection key="achievements" {...achievements} />,
   ];
 
   return (
@@ -103,6 +93,8 @@ export default function ProgressScreen() {
       <View style={styles.sections}>
         {sections.map((section, i) => (
           <Animated.View key={section.key} entering={FadeInDown.delay(60 * i).duration(320)}>
+            {/* Open sections split by hairlines instead of each sitting in its own card. */}
+            {i > 0 && <View style={styles.divider} />}
             {section}
           </Animated.View>
         ))}
@@ -113,5 +105,6 @@ export default function ProgressScreen() {
 
 const styles = StyleSheet.create({
   headline: { fontFamily: fonts.bold, fontSize: 17, color: colors.primary, marginTop: 4 },
-  sections: { gap: 14, marginTop: 20 },
+  sections: { marginTop: 20 },
+  divider: { height: 1, marginVertical: 24, backgroundColor: colors.border },
 });

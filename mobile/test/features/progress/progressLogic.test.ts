@@ -2,8 +2,6 @@ import { describe, expect, it } from '@jest/globals';
 
 import type { MoodEntry } from '@/features/mood/moodLog';
 import {
-  ProgressStats,
-  badges,
   currentWeek,
   dailyMoods,
   goodDayShare,
@@ -68,39 +66,6 @@ describe('mostCommonMood', () => {
 
   it('is null with no moods', () => {
     expect(mostCommonMood(dailyMoods([], 7, now))).toBeNull();
-  });
-});
-
-describe('badges', () => {
-  const none: ProgressStats = {
-    sessionsDone: 0,
-    totalSessions: 8,
-    moodsLogged: 0,
-    bestStreak: 0,
-    checkIns: 0,
-    journalEntries: 0,
-  };
-  const earned = (stats: ProgressStats) =>
-    badges(stats)
-      .filter((b) => b.earned)
-      .map((b) => b.id);
-
-  it('starts with nothing earned', () => {
-    expect(earned(none)).toEqual([]);
-  });
-
-  it('earns each badge at its threshold', () => {
-    expect(
-      earned({
-        ...none,
-        sessionsDone: 4,
-        moodsLogged: 7,
-        bestStreak: 7,
-        checkIns: 1,
-        journalEntries: 3,
-      })
-    ).toEqual(['first-session', 'first-mood', 'mood-streak', 'first-call', 'journal', 'halfway']);
-    expect(earned({ ...none, sessionsDone: 8 })).toContain('finished');
   });
 });
 

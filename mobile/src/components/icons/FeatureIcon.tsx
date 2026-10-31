@@ -82,7 +82,7 @@ const GLYPHS = {
 
 export type FeatureIconName = keyof typeof GLYPHS;
 
-const TONES = {
+export const TONES = {
   mint: { bg: colors.mint, ink: colors.mintInk },
   lavender: { bg: colors.lavender, ink: colors.lavenderInk },
   peach: { bg: colors.peach, ink: colors.peachInk },
@@ -94,7 +94,7 @@ const TONES = {
 
 export type FeatureIconTone = keyof typeof TONES;
 
-function Glyph({
+export function Glyph({
   name,
   size = 24,
   color,

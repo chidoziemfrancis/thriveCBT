@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { severityBand } from '@/features/assessment/phq9';
 import type { Phq9Result } from '@/features/assessment/scoreHistory';
-import { colors, fonts, radius } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 // From "Moderately severe" up, a gentle route to support sits right next to the score.
 const SUPPORT_FROM_SCORE = 15;
@@ -57,15 +57,7 @@ export default function Phq9Card({ scores }: { scores: Phq9Result[] }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 12,
-    padding: 18,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    borderBottomWidth: 4,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-  },
+  card: { gap: 12 },
   title: { fontFamily: fonts.heavy, fontSize: 18, color: colors.ink },
   rows: { gap: 8 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },

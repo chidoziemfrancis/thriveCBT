@@ -257,14 +257,7 @@ export default function MoodTrend({ entries }: { entries: MoodEntry[] }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 16,
-    padding: 18,
-    borderRadius: radius.lg,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
+  card: { gap: 16 },
   head: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   title: { fontFamily: fonts.heavy, fontSize: 18, color: colors.ink },
   toggle: {

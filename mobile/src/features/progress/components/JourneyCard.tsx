@@ -77,14 +77,7 @@ export default function JourneyCard({
 const NODE = 28;
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 14,
-    padding: 18,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-  },
+  card: { gap: 14 },
   head: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   title: { fontFamily: fonts.heavy, fontSize: 18, color: colors.ink },
   weekPill: {
