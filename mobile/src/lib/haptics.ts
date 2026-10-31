@@ -1,0 +1,36 @@
+import * as Haptics from 'expo-haptics';
+import { Platform } from 'react-native';
+
+import { getPreferences } from './preferences';
+
+const HEARTBEAT_GAP_MS = 140;
+
+// Haptics are unavailable on web, some students switch them off, and a missing motor
+// should never break a flow.
+function run(effect: () => Promise<void>) {
+  if (Platform.OS === 'web' || !getPreferences().vibration) return;
+  effect().catch(() => {});
+}
+
+export const haptics = {
+  tap: () => run(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)),
+  tick: () => run(() => Haptics.selectionAsync()),
+  success: () => run(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)),
+  error: () => run(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)),
+
+  heartbeat() {
+    run(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft));
+    setTimeout(
+      () => run(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)),
+      HEARTBEAT_GAP_MS
+    );
+  },
+
+  // Fires one soft tap per delay so the feel lines up with staggered entrance animations.
+  ripple(delaysMs: number[]) {
+    const timers = delaysMs.map((delay) =>
+      setTimeout(() => run(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft)), delay)
+    );
+    return () => timers.forEach(clearTimeout);
+  },
+};
