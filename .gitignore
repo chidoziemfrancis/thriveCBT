@@ -1,0 +1,10 @@
+# Root-anchored so the mobile/ and pwa/ apps keep their own ignore rules
+/node_modules
+/dist
+/coverage
+/*.tsbuildinfo
+/.env
+/.env.*
+!/.env.example
+*.log
+.DS_Store
