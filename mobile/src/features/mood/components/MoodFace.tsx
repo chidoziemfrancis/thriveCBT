@@ -14,7 +14,7 @@ const MOUTHS = [
 
 /**
  * A simple drawn face for each mood. `filled` sits the face on its mood colour; otherwise it's
- * just the features, for drawing on top of the coloured gauge.
+ * just the features, for drawing over something already coloured.
  */
 export default function MoodFace({
   mood,

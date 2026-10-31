@@ -138,15 +138,7 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
 }
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 14,
-    padding: 18,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    borderBottomWidth: 4,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-  },
+  card: { gap: 14 },
   top: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   avatar: {
     width: 48,
