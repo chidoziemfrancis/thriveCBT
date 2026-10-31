@@ -138,15 +138,7 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
 }
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 14,
-    padding: 18,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    borderBottomWidth: 4,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-  },
+  card: { gap: 14 },
   top: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   avatar: {
     width: 48,
@@ -159,7 +151,7 @@ const styles = StyleSheet.create({
   },
   avatarText: { fontFamily: fonts.heavy, fontSize: 17, color: colors.lavenderInk },
   text: { flex: 1, gap: 2 },
-  title: { fontFamily: fonts.heavy, fontSize: 16, color: colors.ink },
+  title: { fontFamily: fonts.heavy, fontSize: 15, color: colors.ink },
   meta: { fontFamily: fonts.medium, fontSize: 13, lineHeight: 18, color: colors.inkMuted },
   live: { fontFamily: fonts.bold, color: colors.primary },
   actions: { flexDirection: 'row', gap: 10 },
@@ -174,9 +166,9 @@ const styles = StyleSheet.create({
   },
   join: { flex: 1.4, backgroundColor: colors.primary },
   joinLocked: { backgroundColor: colors.surfaceMuted },
-  joinText: { fontFamily: fonts.bold, fontSize: 15, color: colors.onPrimary },
+  joinText: { fontFamily: fonts.bold, fontSize: 14, color: colors.onPrimary },
   message: { flex: 1, backgroundColor: colors.primarySoft },
-  messageText: { fontFamily: fonts.bold, fontSize: 15, color: colors.mintInk },
+  messageText: { fontFamily: fonts.bold, fontSize: 14, color: colors.mintInk },
   badge: {
     minWidth: 22,
     height: 22,

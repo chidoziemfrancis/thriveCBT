@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import Svg, { Circle, Defs, Line, LinearGradient, Path, Stop } from 'react-native-svg';
+import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import Svg, { Circle, Line, Path } from 'react-native-svg';
 
 import MoodFace from '@/features/mood/components/MoodFace';
 import type { MoodEntry } from '@/features/mood/moodLog';
@@ -16,11 +16,12 @@ const RANGES = [
   { days: 30, label: '30 days' },
 ];
 
-const HEIGHT = 140;
-// Room above the top line and below the bottom one so dots and the tooltip aren't clipped.
-const PAD_Y = 14;
+const FACE = 30;
+const HEIGHT = 168;
+// Faces sit on the line, so leave half a face of room at the top, bottom and both ends.
+const PAD_Y = FACE / 2 + 6;
+const PAD_X = FACE / 2 + 2;
 const TOP_MOOD = MOODS.length - 1;
-const TOOLTIP_WIDTH = 92;
 
 type Point = { x: number; y: number; mood: number; date: Date; index: number };
 
@@ -43,6 +44,10 @@ function shortDay(date: Date) {
   return date.toLocaleDateString(undefined, { weekday: 'short' });
 }
 
+function longDay(date: Date) {
+  return date.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short' });
+}
+
 function shortDate(date: Date) {
   return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
 }
@@ -52,12 +57,14 @@ export default function MoodTrend({ entries }: { entries: MoodEntry[] }) {
   const [width, setWidth] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
 
+  const week = days <= 7;
   const slots = dailyMoods(entries, days);
-  const step = slots.length > 1 ? width / (slots.length - 1) : 0;
+  const step = slots.length > 1 ? (width - PAD_X * 2) / (slots.length - 1) : 0;
+  const xFor = (index: number) => PAD_X + index * step;
   const points: Point[] = slots.flatMap((slot, index) =>
     slot.mood === null
       ? []
-      : [{ x: index * step, y: yFor(slot.mood), mood: slot.mood, date: slot.date, index }]
+      : [{ x: xFor(index), y: yFor(slot.mood), mood: slot.mood, date: slot.date, index }]
   );
   const active = points.find((p) => p.index === selected) ?? points[points.length - 1];
   const common = mostCommonMood(slots);
@@ -122,139 +129,120 @@ export default function MoodTrend({ entries }: { entries: MoodEntry[] }) {
           </Pressable>
         </View>
       ) : (
-        <View style={styles.body}>
-          <View style={styles.faces} accessibilityElementsHidden>
-            {[TOP_MOOD, TOP_MOOD / 2, 0].map((mood) => (
-              <View key={mood} style={[styles.faceSlot, { top: yFor(mood) - 9 }]}>
-                <MoodFace mood={mood} size={18} />
-              </View>
-            ))}
-          </View>
+        <View>
+          <Pressable
+            accessible
+            accessibilityLabel={summary}
+            accessibilityHint="Tap a day to see its mood"
+            onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
+            onPress={(e) => pick(e.nativeEvent.locationX)}
+            style={{ height: HEIGHT }}
+          >
+            {width > 0 && (
+              <Animated.View key={days} entering={FadeIn.duration(350)}>
+                <Svg width={width} height={HEIGHT}>
+                  {MOODS.map((_, mood) => (
+                    <Line
+                      key={mood}
+                      x1={0}
+                      x2={width}
+                      y1={yFor(mood)}
+                      y2={yFor(mood)}
+                      stroke={colors.border}
+                      strokeDasharray="3 6"
+                    />
+                  ))}
 
-          <View style={styles.plot}>
-            <Pressable
-              accessible
-              accessibilityLabel={summary}
-              accessibilityHint="Tap a point to see that day"
-              onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}
-              onPress={(e) => pick(e.nativeEvent.locationX)}
-              style={{ height: HEIGHT }}
-            >
-              {width > 0 && (
-                <Animated.View key={days} entering={FadeIn.duration(350)}>
-                  <Svg width={width} height={HEIGHT}>
-                    <Defs>
-                      <LinearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-                        <Stop offset="0" stopColor={colors.primary} stopOpacity={0.22} />
-                        <Stop offset="1" stopColor={colors.primary} stopOpacity={0} />
-                      </LinearGradient>
-                    </Defs>
+                  {points.length > 1 && (
+                    <Path
+                      d={smoothPath(points)}
+                      stroke={colors.primary}
+                      strokeOpacity={0.45}
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      fill="none"
+                    />
+                  )}
 
-                    {[TOP_MOOD, TOP_MOOD / 2, 0].map((mood) => (
-                      <Line
-                        key={mood}
-                        x1={0}
-                        x2={width}
-                        y1={yFor(mood)}
-                        y2={yFor(mood)}
-                        stroke={colors.border}
-                        strokeDasharray="4 6"
+                  {/* Thirty faces would crowd the chart, so the month view uses small dots. */}
+                  {!week &&
+                    points.map((p) => (
+                      <Circle
+                        key={p.index}
+                        cx={p.x}
+                        cy={p.y}
+                        r={p.index === active?.index ? 6 : 3.5}
+                        fill={MOODS[p.mood].color}
+                        stroke={colors.background}
+                        strokeWidth={p.index === active?.index ? 2 : 0}
                       />
                     ))}
+                </Svg>
 
-                    {active && (
-                      <Line
-                        x1={active.x}
-                        x2={active.x}
-                        y1={active.y}
-                        y2={HEIGHT}
-                        stroke={colors.primary}
-                        strokeOpacity={0.35}
-                        strokeDasharray="3 4"
-                      />
-                    )}
-
-                    {points.length > 1 && (
-                      <>
-                        <Path
-                          d={`${smoothPath(points)} L${points[points.length - 1].x},${HEIGHT} L${points[0].x},${HEIGHT} Z`}
-                          fill="url(#trendFill)"
-                        />
-                        <Path
-                          d={smoothPath(points)}
-                          stroke={colors.primary}
-                          strokeWidth={3}
-                          strokeLinecap="round"
-                          fill="none"
-                        />
-                      </>
-                    )}
-
-                    {days <= 7 &&
-                      points.map((p) => (
-                        <Circle key={p.index} cx={p.x} cy={p.y} r={3.5} fill={colors.primary} />
-                      ))}
-
-                    {active && (
-                      <Circle
-                        cx={active.x}
-                        cy={active.y}
-                        r={7}
-                        fill={colors.primary}
-                        stroke={colors.surface}
-                        strokeWidth={3}
-                      />
-                    )}
-                  </Svg>
-                </Animated.View>
-              )}
-            </Pressable>
-
-            {active && width > 0 && (
-              <View
-                pointerEvents="none"
-                style={[
-                  styles.tooltip,
-                  {
-                    left: Math.min(
-                      Math.max(active.x - TOOLTIP_WIDTH / 2, 0),
-                      width - TOOLTIP_WIDTH
-                    ),
-                    // Flips below the point near the top so it never covers it.
-                    top: active.y < 60 ? active.y + 14 : active.y - 58,
-                  },
-                ]}
-              >
-                <Text style={styles.tooltipMood}>{MOODS[active.mood].label}</Text>
-                <Text style={styles.tooltipDate}>
-                  {active.index === slots.length - 1 ? 'Today' : shortDate(active.date)}
-                </Text>
-              </View>
+                {week &&
+                  points.map((p, i) => {
+                    const on = p.index === active?.index;
+                    return (
+                      <Animated.View
+                        key={p.index}
+                        entering={ZoomIn.delay(60 * i)
+                          .springify()
+                          .damping(13)}
+                        pointerEvents="none"
+                        style={[
+                          styles.face,
+                          { left: p.x - FACE / 2, top: p.y - FACE / 2 },
+                          on && styles.faceOn,
+                        ]}
+                      >
+                        <MoodFace mood={p.mood} size={FACE} />
+                      </Animated.View>
+                    );
+                  })}
+              </Animated.View>
             )}
+          </Pressable>
 
+          {week ? (
             <View style={styles.axis} accessibilityElementsHidden>
-              {days <= 7 ? (
-                slots.map((slot, i) => (
-                  <Text
+              {slots.map((slot, i) => {
+                const today = i === slots.length - 1;
+                return (
+                  <View
                     key={slot.date.getTime()}
-                    style={[styles.axisText, i === slots.length - 1 && styles.axisToday]}
+                    style={[styles.tick, { left: xFor(i) - TICK_WIDTH / 2 }]}
                   >
-                    {shortDay(slot.date)}
-                  </Text>
-                ))
-              ) : (
-                <>
-                  <Text style={styles.axisText}>{shortDate(slots[0].date)}</Text>
-                  <Text style={[styles.axisText, styles.axisToday]}>Today</Text>
-                </>
-              )}
+                    <View style={[styles.tickDot, today && styles.tickDotToday]} />
+                    <Text style={[styles.tickLabel, today && styles.tickLabelToday]}>
+                      {shortDay(slot.date)}
+                    </Text>
+                  </View>
+                );
+              })}
             </View>
-          </View>
+          ) : (
+            <View style={styles.monthAxis} accessibilityElementsHidden>
+              <Text style={styles.tickLabel}>{shortDate(slots[0].date)}</Text>
+              <Text style={[styles.tickLabel, styles.tickLabelToday]}>Today</Text>
+            </View>
+          )}
+
+          {active && (
+            <View style={styles.caption}>
+              <MoodFace mood={active.mood} size={18} />
+              <Text style={styles.captionText}>
+                {active.index === slots.length - 1 ? 'Today' : longDay(active.date)}:{' '}
+                <Text style={styles.captionMood}>{MOODS[active.mood].label}</Text>
+              </Text>
+            </View>
+          )}
         </View>
       )}
     </View>
   );
 }
+
+const TICK_WIDTH = 44;
 
 const styles = StyleSheet.create({
   card: { gap: 16 },
@@ -270,23 +258,25 @@ const styles = StyleSheet.create({
   toggleOn: { backgroundColor: colors.surface },
   toggleText: { fontFamily: fonts.bold, fontSize: 12, color: colors.inkMuted },
   toggleTextOn: { color: colors.ink },
-  body: { flexDirection: 'row', gap: 8 },
-  faces: { width: 18, height: HEIGHT },
-  faceSlot: { position: 'absolute', left: 0 },
-  plot: { flex: 1 },
-  tooltip: {
-    position: 'absolute',
-    width: TOOLTIP_WIDTH,
-    paddingVertical: 6,
-    borderRadius: radius.sm,
-    backgroundColor: colors.ink,
-    alignItems: 'center',
+  face: { position: 'absolute', borderRadius: FACE / 2 },
+  // The chosen day lifts slightly, so it's clear which one the caption describes.
+  faceOn: {
+    transform: [{ scale: 1.2 }],
+    shadowColor: colors.ink,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
   },
-  tooltipMood: { fontFamily: fonts.heavy, fontSize: 13, color: colors.onPrimary },
-  tooltipDate: { fontFamily: fonts.medium, fontSize: 11, color: colors.border },
-  axis: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
-  axisText: { fontFamily: fonts.medium, fontSize: 11, color: colors.inkFaint },
-  axisToday: { fontFamily: fonts.heavy, color: colors.ink },
+  axis: { height: 40, marginTop: 4 },
+  tick: { position: 'absolute', width: TICK_WIDTH, alignItems: 'center', gap: 8 },
+  tickDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: colors.inkFaint },
+  tickDotToday: { backgroundColor: colors.primary },
+  tickLabel: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  tickLabelToday: { fontFamily: fonts.bold, color: colors.ink },
+  monthAxis: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
+  caption: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 10 },
+  captionText: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  captionMood: { fontFamily: fonts.bold, color: colors.ink },
   empty: { alignItems: 'center', gap: 12, paddingVertical: 8 },
   emptyFaces: { flexDirection: 'row', gap: 6, opacity: 0.5 },
   emptyText: {

@@ -1,15 +1,17 @@
 import Constants from 'expo-constants';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import { firstName, initials } from '@/features/assignment/assign';
+import { firstName } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { signOut } from '@/features/auth/signOut';
 import { getUserSession } from '@/features/auth/userSession';
+import UserAvatar from '@/features/avatar/components/UserAvatar';
 import { getConsent } from '@/features/consent/consentStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
@@ -66,9 +68,17 @@ export default function ProfileScreen() {
       <BackButton />
 
       <View style={styles.header}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{initials(profile.name) || '?'}</Text>
-        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Change your avatar"
+          onPress={() => router.push('/profile/avatar')}
+          style={({ pressed }) => pressed && { opacity: 0.8 }}
+        >
+          <UserAvatar size={AVATAR} />
+          <View style={styles.editBadge}>
+            <Glyph name="pencil" size={12} color={colors.onPrimary} />
+          </View>
+        </Pressable>
         <View style={styles.headerText}>
           <Text style={styles.name}>{profile.name || 'Your profile'}</Text>
           <Text style={styles.meta}>
@@ -186,15 +196,19 @@ const AVATAR = 56;
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 16 },
-  avatar: {
-    width: AVATAR,
-    height: AVATAR,
-    borderRadius: AVATAR / 2,
-    backgroundColor: colors.primaryEdge,
+  editBadge: {
+    position: 'absolute',
+    right: -2,
+    bottom: -2,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: colors.primary,
+    borderWidth: 2,
+    borderColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatarText: { fontFamily: fonts.heavy, fontSize: 20, color: colors.onPrimary },
   headerText: { flex: 1, gap: 2 },
   name: { fontFamily: fonts.heavy, fontSize: 22, color: colors.ink },
   meta: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },

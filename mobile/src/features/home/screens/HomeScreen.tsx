@@ -1,19 +1,17 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import Screen from '@/components/ui/Screen';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
-import { firstName } from '@/features/assignment/assign';
 import CheckInCard from '@/features/home/components/CheckInCard';
+import DailyMood from '@/features/home/components/DailyMood';
 import EmergencyContactCard from '@/features/home/components/EmergencyContactCard';
-import HomeHeader from '@/features/home/components/HomeHeader';
-import MoodCard from '@/features/home/components/MoodCard';
-import SessionCard from '@/features/home/components/SessionCard';
-import WeekTodos from '@/features/home/components/WeekTodos';
+import HomeHero from '@/features/home/components/HomeHero';
+import WeekTiles from '@/features/home/components/WeekTiles';
 import { currentStudyWeek } from '@/features/home/currentWeek';
+import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
 import { logMood, todaysMood } from '@/features/mood/moodStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { sessionContent } from '@/features/sessions/content';
@@ -21,8 +19,10 @@ import { useSessionProgress } from '@/features/sessions/progressStore';
 import { modulesDone } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { haptics } from '@/lib/haptics';
+import { colors, fonts } from '@/theme';
 
-const stagger = (index: number) => FadeInDown.delay(60 * index).duration(380);
+const GUTTER = 24;
+const stagger = (index: number) => FadeInDown.delay(70 * index).duration(380);
 
 function readBasics() {
   const assignment = getAssignment();
@@ -38,23 +38,12 @@ export default function HomeScreen() {
   // Re-read on focus so a name changed in Profile, or a new study week, shows straight away.
   useFocusEffect(useCallback(() => setBasics(readBasics()), []));
   const [mood, setMood] = useState(() => todaysMood());
-
   const progress = useSessionProgress();
 
   const session = SESSIONS[week - 1];
   const content = sessionContent(session.id);
   const record = progress[session.id];
-  const sessionDone = Boolean(record?.completedAt);
-
-  const todos = [
-    { label: 'Log today’s mood', done: mood !== null },
-    { label: `Complete Session ${session.id}`, done: sessionDone },
-    { label: 'Do this week’s practice', done: false },
-    {
-      label: researcher ? `Check in with ${firstName(researcher.name)}` : 'Weekly check-in',
-      done: false,
-    },
-  ];
+  const minutes = content?.modules.reduce((sum, m) => sum + m.minutes, 0) ?? 0;
 
   function handleLogMood(value: number) {
     setMood(logMood(value));
@@ -62,35 +51,68 @@ export default function HomeScreen() {
   }
 
   return (
-    <Screen insideTabs>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Fills the overscroll above the hero so pulling down shows mint, not cream. */}
+      <View style={styles.overscroll} />
+
+      <Animated.View entering={FadeInDown.duration(380)}>
+        <HomeHero
+          name={name}
+          session={{
+            id: session.id,
+            title: session.title,
+            minutes,
+            started: (content ? modulesDone(content, record) : 0) > 0,
+            done: Boolean(record?.completedAt),
+          }}
+        />
+      </Animated.View>
+
       <View style={styles.body}>
-        <Animated.View entering={stagger(0)}>
-          <HomeHeader name={name} week={week} />
-        </Animated.View>
         <EmergencyContactCard />
+
         <Animated.View entering={stagger(1)}>
-          <SessionCard
-            session={session}
-            modulesDone={content ? modulesDone(content, record) : 0}
-            modulesTotal={content?.modules.length ?? 0}
-            minutes={content?.modules.reduce((sum, m) => sum + m.minutes, 0) ?? 0}
-            completed={sessionDone}
+          <DailyMood today={mood} onLog={handleLogMood} />
+        </Animated.View>
+
+        <Animated.View entering={stagger(2)}>
+          <WeekTiles
+            sessionId={session.id}
+            sessionTitle={session.title}
+            minutes={minutes}
+            partsDone={content ? modulesDone(content, record) : 0}
+            partsTotal={content?.modules.length ?? 0}
+            sessionDone={Boolean(record?.completedAt)}
+            prompt={JOURNAL_PROMPTS[promptIndexForDay()]}
           />
         </Animated.View>
-        <Animated.View entering={stagger(2)}>
-          <MoodCard today={mood} onLog={handleLogMood} />
-        </Animated.View>
-        <Animated.View entering={stagger(3)}>
+
+        <Animated.View entering={stagger(3)} style={styles.checkIn}>
+          <Text style={styles.heading}>Your check-in</Text>
           <CheckInCard researcher={researcher} />
         </Animated.View>
-        <Animated.View entering={stagger(4)}>
-          <WeekTodos todos={todos} />
-        </Animated.View>
       </View>
-    </Screen>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  body: { gap: 16 },
+  scroll: { flex: 1, backgroundColor: colors.background },
+  // Room for the floating chat button, so it never covers the last section.
+  content: { paddingBottom: 110 },
+  overscroll: {
+    position: 'absolute',
+    top: -1000,
+    left: 0,
+    right: 0,
+    height: 1000,
+    backgroundColor: '#CFEBDD',
+  },
+  body: { gap: 30, paddingHorizontal: GUTTER, paddingTop: 22 },
+  checkIn: { gap: 14 },
+  heading: { fontFamily: fonts.heavy, fontSize: 17, color: colors.ink },
 });

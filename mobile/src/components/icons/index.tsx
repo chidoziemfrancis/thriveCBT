@@ -336,3 +336,17 @@ export function PlusIcon({ size = 18, color }: IconProps) {
     </Svg>
   );
 }
+
+export function ArrowUpRightIcon({ size = 18, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M7 17L17 7M9 7h8v8"
+        stroke={color}
+        strokeWidth={2.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}

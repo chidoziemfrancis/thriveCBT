@@ -11,7 +11,6 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { sessionContent } from '@/features/sessions/content';
-import { MODULE_ICON } from '@/features/sessions/content/types';
 import { useSessionProgress } from '@/features/sessions/progressStore';
 import { nextModuleId, sessionStatus } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';
@@ -110,7 +109,7 @@ export default function SessionOverviewScreen() {
                     pressed && { transform: [{ scale: 0.98 }] },
                   ]}
                 >
-                  <FeatureIcon name={MODULE_ICON[module.kind]} size={40} />
+                  <FeatureIcon name={module.icon} size={40} />
                   <View style={styles.rowText}>
                     <Text style={styles.rowTitle}>{module.title}</Text>
                     <Text style={styles.rowMeta}>

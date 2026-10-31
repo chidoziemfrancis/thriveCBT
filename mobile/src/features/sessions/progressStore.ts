@@ -2,6 +2,7 @@ import { useSyncExternalStore } from 'react';
 
 import { readJson, writeJson } from '@/lib/storage';
 
+import type { StepAnswer } from './content/types';
 import type { SessionRecord } from './sessionLogic';
 
 const STORAGE_KEY = 'session_progress';
@@ -34,12 +35,8 @@ export function completeModule(sessionId: number, moduleId: string) {
   update(sessionId, (r) => (r.done.includes(moduleId) ? r : { ...r, done: [...r.done, moduleId] }));
 }
 
-export function saveRatings(sessionId: number, ratings: Record<string, number>) {
-  update(sessionId, (r) => ({ ...r, ratings }));
-}
-
-export function saveQuizAnswers(sessionId: number, quizAnswers: Record<string, number>) {
-  update(sessionId, (r) => ({ ...r, quizAnswers }));
+export function saveAnswer(sessionId: number, stepId: string, answer: StepAnswer) {
+  update(sessionId, (r) => ({ ...r, answers: { ...r.answers, [stepId]: answer } }));
 }
 
 export function completeSession(sessionId: number, now = new Date()) {
