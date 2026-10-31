@@ -25,7 +25,7 @@ export function SettingsGroup({ title, children }: { title: string; children: Re
 export default function SettingsRow(props: Props) {
   const lead = (props.image || props.icon) && (
     <View style={styles.lead}>
-      {props.image ? <Icon3D name={props.image} size={24} /> : props.icon}
+      {props.image ? <Icon3D name={props.image} size={18} /> : props.icon}
     </View>
   );
   const danger = props.kind !== 'toggle' && props.kind !== 'static' && props.danger;
@@ -101,15 +101,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    minHeight: 60,
+    minHeight: 54,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.surfaceMuted,
   },
   lead: {
-    width: 38,
-    height: 38,
+    width: 30,
+    height: 30,
     borderRadius: radius.sm,
     backgroundColor: colors.background,
     alignItems: 'center',
