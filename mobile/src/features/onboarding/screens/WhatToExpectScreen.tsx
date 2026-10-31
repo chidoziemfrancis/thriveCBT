@@ -4,40 +4,37 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 
 import Button from '@/components/ui/Button';
-import { BookIcon, ClipboardIcon, FlagIcon, VideoIcon } from '@/components/icons';
+import Emoji from '@/components/icons/Emoji';
+import type { EmojiName } from '@/components/icons/emojiSources';
 import Screen from '@/components/ui/Screen';
 import StepHeader from '@/components/ui/StepHeader';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
-const JOURNEY = [
+const JOURNEY: { title: string; detail: string; emoji: EmojiName; bg: string }[] = [
   {
     title: 'Quick check-in',
     detail: '9 questions about the last 2 weeks',
-    Icon: ClipboardIcon,
+    emoji: 'clipboard',
     bg: colors.lavender,
-    ink: colors.lavenderInk,
   },
   {
     title: '8 weekly sessions',
     detail: 'Short lessons, a mood check and a journal',
-    Icon: BookIcon,
+    emoji: 'books',
     bg: colors.mint,
-    ink: colors.mintInk,
   },
   {
     title: 'Weekly video check-ins',
     detail: 'A real researcher, right in the app',
-    Icon: VideoIcon,
+    emoji: 'videoCamera',
     bg: colors.peach,
-    ink: colors.peachInk,
   },
   {
     title: 'Final check-in',
     detail: 'See how far you’ve come',
-    Icon: FlagIcon,
+    emoji: 'chequeredFlag',
     bg: colors.butter,
-    ink: colors.butterInk,
   },
 ];
 
@@ -59,7 +56,7 @@ export default function WhatToExpectScreen() {
         </View>
 
         <View>
-          {JOURNEY.map(({ title, detail, Icon, bg, ink }, index) => {
+          {JOURNEY.map(({ title, detail, emoji, bg }, index) => {
             const isLast = index === JOURNEY.length - 1;
             return (
               <Animated.View
@@ -69,7 +66,7 @@ export default function WhatToExpectScreen() {
               >
                 <View style={styles.rail}>
                   <View style={[styles.node, { backgroundColor: bg }]}>
-                    <Icon color={ink} />
+                    <Emoji name={emoji} size={34} />
                   </View>
                   {!isLast && <View style={styles.line} />}
                 </View>
@@ -98,8 +95,8 @@ const styles = StyleSheet.create({
   item: { flexDirection: 'row', gap: 16 },
   rail: { alignItems: 'center' },
   node: {
-    width: 52,
-    height: 52,
+    width: 56,
+    height: 56,
     borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
