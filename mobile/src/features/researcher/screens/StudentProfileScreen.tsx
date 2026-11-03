@@ -9,6 +9,7 @@ import Screen from '@/components/ui/Screen';
 import { severityBand } from '@/features/assessment/phq9';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { dailyMoods } from '@/features/progress/progressLogic';
+import { sessionsCompleted } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { activeLabel, nextCallFor } from '@/features/researcher/studentsLogic';
 import { needsYou } from '@/features/researcher/todayLogic';
@@ -167,7 +168,7 @@ export default function StudentProfileScreen() {
         </Row>
         <Row label="Sessions">
           <Text style={styles.value}>
-            {student.sessionsDone} of {SESSIONS.length}
+            {sessionsCompleted(student)} of {SESSIONS.length}
           </Text>
         </Row>
         <Row label="Next call">

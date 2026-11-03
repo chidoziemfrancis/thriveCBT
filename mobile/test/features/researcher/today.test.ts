@@ -26,7 +26,8 @@ function student(patch: Partial<CaseloadStudent> = {}): CaseloadStudent {
     lastActiveAt: at(0, 9),
     phq9: { answers: [], score: 10, item9: 0, at: at(10) },
     moods: [],
-    sessionsDone: 1,
+    sessions: {},
+    journal: [],
     ...patch,
   };
 }
