@@ -350,3 +350,26 @@ export function ArrowUpRightIcon({ size = 18, color }: IconProps) {
     </Svg>
   );
 }
+
+export function UsersIcon({ size = 24, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Circle cx={9} cy={8} r={3.5} stroke={color} strokeWidth={2} />
+      <Path
+        d="M3 19.5a6 6 0 0112 0M15.5 4.8a3.5 3.5 0 010 6.4M18 14.5a5.5 5.5 0 013 5"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
+export function SearchIcon({ size = 18, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Circle cx={11} cy={11} r={6.5} stroke={color} strokeWidth={2} />
+      <Path d="M16 16l4 4" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}

@@ -2,14 +2,15 @@ import { router } from 'expo-router';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { CameraIcon } from '@/components/icons';
+import { CameraIcon, ChevronRightIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
-import { firstName, initials } from '@/features/assignment/assign';
+import { firstName } from '@/features/assignment/assign';
 import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { signOut } from '@/features/auth/signOut';
 import { getUserSession } from '@/features/auth/userSession';
 import { JOIN_EARLY_MIN, countdownLabel } from '@/features/checkin/checkinLogic';
 import type { Call, CaseloadStudent } from '@/features/researcher/caseload';
+import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import {
   callState,
   callsToday,
@@ -27,14 +28,6 @@ function time(iso: string) {
 
 function today(now: Date) {
   return now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
-}
-
-function Initials({ name }: { name: string }) {
-  return (
-    <View style={styles.initials} accessibilityElementsHidden>
-      <Text style={styles.initialsText}>{initials(name)}</Text>
-    </View>
-  );
 }
 
 function SectionTitle({ children }: { children: string }) {
@@ -81,6 +74,11 @@ export default function ResearcherHomeScreen() {
   const later = callsToday(calls, now).filter((c) => c !== next && callState(c, now) !== 'done');
   const flagged = needsYou(students, now);
 
+  function openStudent(id: string) {
+    haptics.tick();
+    router.push({ pathname: '/researcher/student/[id]', params: { id } });
+  }
+
   // Settings get their own screen later; until then the photo is where to log out.
   function openAccount() {
     haptics.tap();
@@ -98,7 +96,7 @@ export default function ResearcherHomeScreen() {
   }
 
   return (
-    <Screen>
+    <Screen insideTabs>
       <View style={styles.header}>
         <View style={styles.headerText}>
           <Text style={styles.date}>{today(now)}</Text>
@@ -135,18 +133,24 @@ export default function ResearcherHomeScreen() {
           <Text style={styles.empty}>Nothing urgent. Everyone is okay.</Text>
         ) : (
           flagged.map(({ student, reason, urgent }, i) => (
-            <View
+            <Pressable
               key={student.id}
-              style={[styles.row, i > 0 && styles.divider]}
-              accessible
+              accessibilityRole="button"
               accessibilityLabel={`${urgent ? 'Urgent. ' : ''}${student.name}: ${reason}`}
+              onPress={() => openStudent(student.id)}
+              style={({ pressed }) => [
+                styles.row,
+                i > 0 && styles.divider,
+                pressed && { opacity: 0.6 },
+              ]}
             >
               <View style={[styles.dot, { backgroundColor: urgent ? colors.danger : '#D9A21B' }]} />
               <View style={styles.rowText}>
                 <Text style={styles.rowName}>{student.name}</Text>
                 <Text style={[styles.rowMeta, urgent && { color: colors.danger }]}>{reason}</Text>
               </View>
-            </View>
+              <ChevronRightIcon size={16} color={colors.inkFaint} />
+            </Pressable>
           ))
         )}
       </Animated.View>
@@ -158,19 +162,25 @@ export default function ResearcherHomeScreen() {
             const student = byId(call.studentId);
             if (!student) return null;
             return (
-              <View
+              <Pressable
                 key={call.startsAt}
-                style={[styles.row, i > 0 && styles.divider]}
-                accessible
+                accessibilityRole="button"
                 accessibilityLabel={`${time(call.startsAt)}, ${student.name}, week ${student.week}`}
+                onPress={() => openStudent(student.id)}
+                style={({ pressed }) => [
+                  styles.row,
+                  i > 0 && styles.divider,
+                  pressed && { opacity: 0.6 },
+                ]}
               >
                 <Text style={styles.rowTime}>{time(call.startsAt)}</Text>
-                <Initials name={student.name} />
+                <StudentAvatar id={student.id} name={student.name} size={34} />
                 <View style={styles.rowText}>
                   <Text style={styles.rowName}>{student.name}</Text>
                   <Text style={styles.rowMeta}>Week {student.week}</Text>
                 </View>
-              </View>
+                <ChevronRightIcon size={16} color={colors.inkFaint} />
+              </Pressable>
             );
           })}
         </Animated.View>
@@ -236,13 +246,4 @@ const styles = StyleSheet.create({
   rowName: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink },
   rowMeta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
   rowTime: { width: 64, fontFamily: fonts.bold, fontSize: 14, color: colors.ink },
-  initials: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: colors.surfaceMuted,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  initialsText: { fontFamily: fonts.bold, fontSize: 12, color: colors.inkMuted },
 });
