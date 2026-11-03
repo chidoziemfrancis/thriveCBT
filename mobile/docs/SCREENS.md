@@ -190,10 +190,10 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 20" | WhatsApp chat list and filter chips | ✅ PR #27 |
 | R5 | Student profile (hub) | Avatar, name, week, last active; Message · Call · Schedule buttons; an alert line when needed; rows that open R6–R10 | WhatsApp contact info: summary, actions, then rows to detail screens | ✅ PR #27 (rows for R7–R10 to add) |
 | R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted | The paper PHQ-9 form | ✅ PR #27 |
-| R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ⬜ |
-| R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ⬜ |
-| R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ⬜ |
-| R9 | Journal | Entries newest first (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ⬜ |
+| R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
+| R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
+| R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
+| R9 | Journal | Entries grouped by week (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ✅ |
 | R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note; researcher call notes added later | iPhone Recents; WhatsApp Calls tab | ⬜ |
 
 ### 3.3 Scheduling
@@ -237,7 +237,7 @@ Everything a researcher sees must be on the student's "What your researcher can 
 |---|---|
 | PHQ-9 answers and scores, session progress and answers, mood logs, messages, check-in feedback, emergency contact | Yes |
 | When they were last active | **Not yet; add it** |
-| Journal entries | **Undecided; if shown, the student's privacy screen, the Journal tab and the consent must say so first, with ethics approval** |
+| Journal entries | **Yes**: shown on the privacy screen, the Journal tab and the reflection step, and in the draft consent (needs ethics approval) |
 | PIN, password, location, call recordings | Never |
 
 ---
