@@ -52,7 +52,17 @@ function shortDate(date: Date) {
   return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
 }
 
-export default function MoodTrend({ entries }: { entries: MoodEntry[] }) {
+export default function MoodTrend({
+  entries,
+  emptyText = 'Log how you feel on Home and your trend will build up here.',
+  showLogLink = true,
+}: {
+  entries: MoodEntry[];
+  /** What to say before there are any moods; the researcher side words it differently. */
+  emptyText?: string;
+  /** The "Log today's mood" link, which only makes sense for the student themselves. */
+  showLogLink?: boolean;
+}) {
   const [days, setDays] = useState(RANGES[0].days);
   const [width, setWidth] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -117,16 +127,16 @@ export default function MoodTrend({ entries }: { entries: MoodEntry[] }) {
               <MoodFace key={mood.label} mood={i} size={28} />
             ))}
           </View>
-          <Text style={styles.emptyText}>
-            Log how you feel on Home and your trend will build up here.
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => router.navigate('/dashboard')}
-            hitSlop={8}
-          >
-            <Text style={styles.link}>Log today’s mood</Text>
-          </Pressable>
+          <Text style={styles.emptyText}>{emptyText}</Text>
+          {showLogLink && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => router.navigate('/dashboard')}
+              hitSlop={8}
+            >
+              <Text style={styles.link}>Log today’s mood</Text>
+            </Pressable>
+          )}
         </View>
       ) : (
         <View>

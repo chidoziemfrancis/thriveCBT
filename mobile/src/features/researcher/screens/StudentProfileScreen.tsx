@@ -7,8 +7,9 @@ import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import { severityBand } from '@/features/assessment/phq9';
-import MoodFace from '@/features/mood/components/MoodFace';
-import { dailyMoods } from '@/features/progress/progressLogic';
+import { MOODS } from '@/features/mood/moods';
+import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
+import { sessionsCompleted } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { activeLabel, nextCallFor } from '@/features/researcher/studentsLogic';
 import { needsYou } from '@/features/researcher/todayLogic';
@@ -112,7 +113,7 @@ export default function StudentProfileScreen() {
   }
 
   const alert = needsYou([student], now)[0];
-  const week = dailyMoods(student.moods, 7, now);
+  const weekMood = mostCommonMood(dailyMoods(student.moods, 7, now));
   const next = nextCallFor(student.id, calls, now);
 
   return (
@@ -143,16 +144,18 @@ export default function StudentProfileScreen() {
       )}
 
       <View style={styles.rows}>
-        <Row label="Mood this week">
-          <View style={styles.moods} accessible accessibilityLabel="Mood over the last 7 days">
-            {week.map((day) =>
-              day.mood === null ? (
-                <View key={day.date.getTime()} style={styles.noMood} />
-              ) : (
-                <MoodFace key={day.date.getTime()} mood={day.mood} size={18} />
-              )
-            )}
-          </View>
+        <Row
+          label="Mood"
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/student/[id]/moods', params: { id: student.id } });
+          }}
+        >
+          <Text style={styles.value}>
+            {weekMood === null
+              ? 'No moods this week'
+              : `Mostly ${MOODS[weekMood].label.toLowerCase()} this week`}
+          </Text>
         </Row>
         <Row
           label="PHQ-9"
@@ -167,7 +170,7 @@ export default function StudentProfileScreen() {
         </Row>
         <Row label="Sessions">
           <Text style={styles.value}>
-            {student.sessionsDone} of {SESSIONS.length}
+            {sessionsCompleted(student)} of {SESSIONS.length}
           </Text>
         </Row>
         <Row label="Next call">
@@ -224,13 +227,4 @@ const styles = StyleSheet.create({
   rowLabel: { fontFamily: fonts.medium, fontSize: 15, color: colors.inkMuted },
   rowValue: { flex: 1, alignItems: 'flex-end' },
   value: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink, textAlign: 'right' },
-  moods: { flexDirection: 'row', gap: 4 },
-  noMood: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    borderColor: colors.border,
-  },
 });
