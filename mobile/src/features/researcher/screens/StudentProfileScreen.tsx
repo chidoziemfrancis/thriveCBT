@@ -168,7 +168,16 @@ export default function StudentProfileScreen() {
             {student.phq9.score} · {severityBand(student.phq9.score)}
           </Text>
         </Row>
-        <Row label="Sessions">
+        <Row
+          label="Sessions"
+          onPress={() => {
+            haptics.tick();
+            router.push({
+              pathname: '/researcher/student/[id]/sessions',
+              params: { id: student.id },
+            });
+          }}
+        >
           <Text style={styles.value}>
             {sessionsCompleted(student)} of {SESSIONS.length}
           </Text>

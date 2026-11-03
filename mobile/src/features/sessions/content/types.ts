@@ -24,6 +24,9 @@ export type RevealStep = StepBase & {
   cards: { id: string; icon: FeatureIconName; label: string; detail: string }[];
 };
 
+/** The checklist answer for "None of these", which clears every other pick. */
+export const CHECKLIST_NONE = -1;
+
 /** "Which of these sound like you?", answered with a kind, personal reply. */
 export type ChecklistStep = StepBase & {
   kind: 'checklist';

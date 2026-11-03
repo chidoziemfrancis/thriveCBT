@@ -2,14 +2,13 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { CheckIcon } from '@/components/icons';
-import type { ChecklistStep } from '@/features/sessions/content/types';
+import { CHECKLIST_NONE, type ChecklistStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
 import { stepText } from './stepText';
 
-/** Index -1 stands for "None of these", which clears every other pick. */
-export const NONE = -1;
+const NONE = CHECKLIST_NONE;
 
 export default function ChecklistStepView({
   step,
