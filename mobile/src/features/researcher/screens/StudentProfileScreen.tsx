@@ -10,7 +10,7 @@ import { severityBand } from '@/features/assessment/phq9';
 import { daysAgoLabel } from '@/features/journal/journalLogic';
 import { MOODS } from '@/features/mood/moods';
 import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
-import { sessionsCompleted } from '@/features/researcher/caseload';
+import { callCounts, sessionsCompleted } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { activeLabel, nextCallFor } from '@/features/researcher/studentsLogic';
 import { needsYou } from '@/features/researcher/todayLogic';
@@ -116,6 +116,7 @@ export default function StudentProfileScreen() {
   const alert = needsYou([student], now)[0];
   const weekMood = mostCommonMood(dailyMoods(student.moods, 7, now));
   const next = nextCallFor(student.id, calls, now);
+  const callTotals = callCounts(student.pastCalls);
 
   return (
     <Screen>
@@ -200,6 +201,19 @@ export default function StudentProfileScreen() {
                   [...student.journal].sort((a, b) => b.at.localeCompare(a.at))[0].at,
                   now
                 )}`}
+          </Text>
+        </Row>
+        <Row
+          label="Calls"
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/student/[id]/calls', params: { id: student.id } });
+          }}
+        >
+          <Text style={styles.value}>
+            {callTotals.total === 0
+              ? 'No calls yet'
+              : `${callTotals.total} ${callTotals.total === 1 ? 'call' : 'calls'}${callTotals.missed ? ` · ${callTotals.missed} missed` : ''}`}
           </Text>
         </Row>
         <Row label="Next call">
