@@ -1,4 +1,6 @@
 import type { AssignmentMethod } from '@/features/assignment/assign';
+import type { Message } from '@/features/chat/chatLogic';
+import { containsRiskLanguage } from '@/features/chat/riskLanguage';
 import type { JournalEntry } from '@/features/journal/journalStore';
 import type { MoodEntry } from '@/features/mood/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
@@ -23,6 +25,8 @@ export type CaseloadStudent = {
   journal: JournalEntry[];
   /** Weekly check-ins that have already happened, newest first. */
   pastCalls: PastCall[];
+  /** The chat with their researcher, oldest first. */
+  messages: Message[];
 };
 
 /**
@@ -132,6 +136,26 @@ function laterSessions(now: Date, count: number, joinedDaysAgo: number) {
   return sessions;
 }
 
+type Line = [
+  daysBack: number,
+  hour: number,
+  minute: number,
+  from: 'student' | 'researcher',
+  text: string,
+];
+
+/** A chat thread, oldest first. Student messages are checked for risk words as they are live. */
+function chat(now: Date, studentId: string, lines: Line[]): Message[] {
+  return lines.map(([daysBack, hour, minute, from, text], i) => ({
+    id: `${studentId}-m${i}`,
+    from,
+    text,
+    sentAt: at(now, daysBack, hour, minute),
+    status: 'read',
+    flagged: from === 'student' && containsRiskLanguage(text) ? true : undefined,
+  }));
+}
+
 type CallOutcome = 'missed' | [minutes: number, rating: number | null, note?: string];
 
 /** One check-in per week since joining, at the same time, newest first. */
@@ -195,6 +219,18 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         ),
       ],
       pastCalls: [],
+      messages: chat(now, 's-tolu', [
+        [
+          1,
+          18,
+          5,
+          'researcher',
+          'Hi Tolu, I’m Grace. I’ll be supporting you through the programme. How are you settling in?',
+        ],
+        [1, 21, 40, 'student', 'Hi. Not great honestly.'],
+        [0, 10, 40, 'student', 'Some days I feel like there’s no reason to live.'],
+        [0, 10, 42, 'student', 'Sorry, I don’t know why I’m telling you this.'],
+      ]),
     },
     {
       id: 's-chiamaka',
@@ -246,6 +282,13 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         [28, 3, 'Felt good to talk about the library.'],
         [30, 4],
       ]),
+      messages: chat(now, 's-chiamaka', [
+        [8, 17, 0, 'student', 'I went to the library with Ada like we talked about!'],
+        [8, 18, 30, 'researcher', 'That’s brilliant, Chiamaka. How did it feel afterwards?'],
+        [8, 19, 2, 'student', 'Better than I expected.'],
+        [1, 12, 0, 'researcher', 'Looking forward to our call tomorrow at 10.'],
+        [1, 12, 20, 'student', 'Thanks, see you then!'],
+      ]),
     },
     {
       id: 's-ifeanyi',
@@ -275,6 +318,17 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         ),
       ],
       pastCalls: callHistory(now, 10, 15, ['missed']),
+      messages: chat(now, 's-ifeanyi', [
+        [7, 16, 0, 'researcher', 'Hi Ifeanyi, how did Session 1 go?'],
+        [6, 18, 10, 'student', 'It was okay. Busy week with exams.'],
+        [
+          2,
+          10,
+          0,
+          'researcher',
+          'Just checking in. I missed you at our call, no pressure. Want to pick a new time?',
+        ],
+      ]),
     },
     {
       id: 's-zainab',
@@ -317,6 +371,17 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         [29, 1, 'Hard week. Glad Grace listened.'],
         'missed',
       ]),
+      messages: chat(now, 's-zainab', [
+        [3, 20, 15, 'student', 'I couldn’t make it to class again today.'],
+        [
+          3,
+          21,
+          0,
+          'researcher',
+          'Thanks for telling me. That sounds really hard. Shall we talk about it at our call?',
+        ],
+        [1, 22, 30, 'student', 'Yes please. It’s been a bad week.'],
+      ]),
     },
     {
       id: 's-emeka',
@@ -337,6 +402,10 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       },
       journal: [],
       pastCalls: callHistory(now, 38, 16, [[22, 2], 'missed', [18, 2], 'missed', [25, null]]),
+      messages: chat(now, 's-emeka', [
+        [10, 14, 0, 'researcher', 'Hi Emeka, how are you finding the sessions?'],
+        [9, 9, 30, 'student', 'Fine. Haven’t had much time.'],
+      ]),
     },
     {
       id: 's-seyi',
@@ -382,6 +451,16 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       pastCalls: callHistory(now, 17, 11, [
         [30, 1, 'Didn’t feel like talking much.'],
         [27, 2],
+      ]),
+      messages: chat(now, 's-seyi', [
+        [
+          5,
+          21,
+          10,
+          'student',
+          'My roommate made jollof and we ate together. Small thing but it helped.',
+        ],
+        [5, 21, 40, 'researcher', 'That’s not a small thing at all. I’m really glad you had that.'],
       ]),
     },
   ];

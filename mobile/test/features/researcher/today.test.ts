@@ -29,6 +29,7 @@ function student(patch: Partial<CaseloadStudent> = {}): CaseloadStudent {
     sessions: {},
     journal: [],
     pastCalls: [],
+    messages: [],
     ...patch,
   };
 }
