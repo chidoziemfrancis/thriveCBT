@@ -36,7 +36,16 @@ export type PastCall = {
   feedback?: { rating: number | null; note?: string };
 };
 
-export type Call = { studentId: string; startsAt: string; durationMin: number };
+export type Call = {
+  id: string;
+  studentId: string;
+  startsAt: string;
+  durationMin: number;
+  /** A note from the researcher, shown to the student with the booking. */
+  note?: string;
+  /** True when the call was booked to repeat every week. */
+  weekly?: boolean;
+};
 
 function at(now: Date, daysBack: number, hour: number, minute = 0) {
   return new Date(
@@ -377,11 +386,11 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
     },
   ];
   const calls: Call[] = [
-    { studentId: 's-chiamaka', startsAt: at(now, 0, 10), durationMin: 30 },
-    { studentId: 's-zainab', startsAt: at(now, 0, 14), durationMin: 30 },
-    { studentId: 's-emeka', startsAt: at(now, 0, 16, 30), durationMin: 30 },
-    { studentId: 's-seyi', startsAt: at(now, -1, 11), durationMin: 30 },
-    { studentId: 's-tolu', startsAt: at(now, -1, 15), durationMin: 30 },
+    { id: 'seed-s-chiamaka', studentId: 's-chiamaka', startsAt: at(now, 0, 10), durationMin: 30 },
+    { id: 'seed-s-zainab', studentId: 's-zainab', startsAt: at(now, 0, 14), durationMin: 30 },
+    { id: 'seed-s-emeka', studentId: 's-emeka', startsAt: at(now, 0, 16, 30), durationMin: 30 },
+    { id: 'seed-s-seyi', studentId: 's-seyi', startsAt: at(now, -1, 11), durationMin: 30 },
+    { id: 'seed-s-tolu', studentId: 's-tolu', startsAt: at(now, -1, 15), durationMin: 30 },
   ];
   return { students, calls };
 }

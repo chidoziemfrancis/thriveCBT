@@ -101,10 +101,10 @@ describe('activeLabel', () => {
 
 describe('nextCallFor', () => {
   const calls: Call[] = [
-    { studentId: 'a', startsAt: at(0, 10), durationMin: 30 },
-    { studentId: 'a', startsAt: at(-2, 9), durationMin: 30 },
-    { studentId: 'a', startsAt: at(-1, 9), durationMin: 30 },
-    { studentId: 'b', startsAt: at(0, 15), durationMin: 30 },
+    { id: 'c0', studentId: 'a', startsAt: at(0, 10), durationMin: 30 },
+    { id: 'c1', studentId: 'a', startsAt: at(-2, 9), durationMin: 30 },
+    { id: 'c2', studentId: 'a', startsAt: at(-1, 9), durationMin: 30 },
+    { id: 'c3', studentId: 'b', startsAt: at(0, 15), durationMin: 30 },
   ];
 
   it('picks the soonest call for that student that is not over', () => {
