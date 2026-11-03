@@ -31,6 +31,7 @@ export default function JournalStepView({
         <Text style={stepText.eyebrow}>Reflect</Text>
         <Text style={stepText.title}>{step.prompt}</Text>
         <Text style={stepText.body}>{step.hint}</Text>
+        <Text style={styles.shared}>Saved to your journal, which your researcher can read.</Text>
       </View>
       <TextInput
         value={text}
@@ -52,6 +53,7 @@ export default function JournalStepView({
 const styles = StyleSheet.create({
   wrap: { gap: 18, paddingTop: 8 },
   art: { alignItems: 'center' },
+  shared: { fontFamily: fonts.medium, fontSize: 12, color: colors.inkFaint },
   input: {
     minHeight: 180,
     padding: 16,

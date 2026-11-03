@@ -4,7 +4,7 @@
 export const CONSENT_IS_DRAFT = true;
 
 // Stored with each agreement, so the study can tell which wording a participant agreed to.
-export const CONSENT_VERSION = 'draft-2026-10-29';
+export const CONSENT_VERSION = 'draft-2026-11-03';
 
 export const STUDY_INFO = [
   {
@@ -17,7 +17,7 @@ export const STUDY_INFO = [
   },
   {
     title: 'Who sees my answers?',
-    body: 'Only the research team. Your answers are stored securely, reported without your name, and never shared with your school or anyone else.',
+    body: 'Only the research team. Your researcher sees your check-ins, moods, session answers and journal entries so they can support you. Everything is stored securely, reported without your name, and never shared with your school or anyone else.',
   },
   {
     title: 'Are there any risks?',
