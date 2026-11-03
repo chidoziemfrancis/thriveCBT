@@ -7,8 +7,7 @@ import { colors, fonts, radius, type } from '@/theme';
 
 type Visibility = 'yes' | 'no' | 'pending';
 
-// Mirrors the study information. Journal access is an open question for the study team,
-// so it's shown honestly as undecided rather than guessed.
+// Mirrors the study information, so students know exactly what their researcher can read.
 const ITEMS: { label: string; detail: string; visibility: Visibility }[] = [
   { label: 'Check-in questionnaires', detail: 'Your PHQ-9 answers and scores', visibility: 'yes' },
   { label: 'Session progress', detail: 'Which parts you’ve finished', visibility: 'yes' },
@@ -22,8 +21,8 @@ const ITEMS: { label: string; detail: string; visibility: Visibility }[] = [
   },
   {
     label: 'Journal entries',
-    detail: 'To be confirmed by the study team',
-    visibility: 'pending',
+    detail: 'Entries you save, including session reflections',
+    visibility: 'yes',
   },
   { label: 'Your PIN and password', detail: 'Never seen by anyone', visibility: 'no' },
 ];

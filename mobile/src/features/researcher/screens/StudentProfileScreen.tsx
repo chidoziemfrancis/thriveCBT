@@ -7,6 +7,7 @@ import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import { severityBand } from '@/features/assessment/phq9';
+import { daysAgoLabel } from '@/features/journal/journalLogic';
 import { MOODS } from '@/features/mood/moods';
 import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
 import { sessionsCompleted } from '@/features/researcher/caseload';
@@ -180,6 +181,25 @@ export default function StudentProfileScreen() {
         >
           <Text style={styles.value}>
             {sessionsCompleted(student)} of {SESSIONS.length}
+          </Text>
+        </Row>
+        <Row
+          label="Journal"
+          onPress={() => {
+            haptics.tick();
+            router.push({
+              pathname: '/researcher/student/[id]/journal',
+              params: { id: student.id },
+            });
+          }}
+        >
+          <Text style={styles.value}>
+            {student.journal.length === 0
+              ? 'No entries yet'
+              : `${student.journal.length} ${student.journal.length === 1 ? 'entry' : 'entries'} · last ${daysAgoLabel(
+                  [...student.journal].sort((a, b) => b.at.localeCompare(a.at))[0].at,
+                  now
+                )}`}
           </Text>
         </Row>
         <Row label="Next call">
