@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { accountExists, registerStudent, signIn } from '@/features/auth/mockAccounts';
+import {
+  accountExists,
+  registerStudent,
+  researcherIdFor,
+  signIn,
+} from '@/features/auth/mockAccounts';
 import { homeFor } from '@/features/auth/roles';
 
 // On-device storage is native, so tests use an in-mockMemory stand-in.
@@ -58,5 +63,13 @@ describe('homeFor', () => {
   it('sends each role to its own side of the app', () => {
     expect(homeFor('student')).toBe('/dashboard');
     expect(homeFor('researcher')).toBe('/researcher');
+  });
+});
+
+describe('researcherIdFor', () => {
+  it('links the researcher account to its profile, and nothing else', () => {
+    expect(researcherIdFor('Researcher@ThriveCBT.com')).toBe('r-grace');
+    expect(researcherIdFor('test@gmail.com')).toBeNull();
+    expect(researcherIdFor(undefined)).toBeNull();
   });
 });
