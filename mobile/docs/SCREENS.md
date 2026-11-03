@@ -193,8 +193,8 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
 | R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
 | R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
-| R9 | Journal | Entries grouped by week (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ✅ |
-| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note; researcher call notes added later | iPhone Recents; WhatsApp Calls tab | ⬜ |
+| R9 | Journal | Entries grouped by week (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ✅ PR #31 |
+| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note; researcher call notes added later | iPhone Recents; WhatsApp Calls tab | ✅ |
 
 ### 3.3 Scheduling
 
