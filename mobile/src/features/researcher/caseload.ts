@@ -21,6 +21,19 @@ export type CaseloadStudent = {
   /** Each session's progress and answers, keyed by session number, as on the student side. */
   sessions: Record<number, SessionRecord>;
   journal: JournalEntry[];
+  /** Weekly check-ins that have already happened, newest first. */
+  pastCalls: PastCall[];
+};
+
+/**
+ * A check-in that has happened. Feedback is what the student chose to share afterwards: a
+ * mood face (0 to 4) and an optional note. Calls are never recorded.
+ */
+export type PastCall = {
+  startsAt: string;
+  attended: boolean;
+  minutes?: number;
+  feedback?: { rating: number | null; note?: string };
 };
 
 export type Call = { studentId: string; startsAt: string; durationMin: number };
@@ -110,6 +123,25 @@ function laterSessions(now: Date, count: number, joinedDaysAgo: number) {
   return sessions;
 }
 
+type CallOutcome = 'missed' | [minutes: number, rating: number | null, note?: string];
+
+/** One check-in per week since joining, at the same time, newest first. */
+function callHistory(
+  now: Date,
+  joinedDaysAgo: number,
+  hour: number,
+  outcomes: CallOutcome[]
+): PastCall[] {
+  return outcomes
+    .map((outcome, i): PastCall => {
+      const startsAt = at(now, joinedDaysAgo - 3 - i * 7, hour);
+      if (outcome === 'missed') return { startsAt, attended: false };
+      const [minutes, rating, note] = outcome;
+      return { startsAt, attended: true, minutes, feedback: { rating, note } };
+    })
+    .reverse();
+}
+
 function entry(
   now: Date,
   id: string,
@@ -153,6 +185,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
           0
         ),
       ],
+      pastCalls: [],
     },
     {
       id: 's-chiamaka',
@@ -198,6 +231,12 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
           3
         ),
       ],
+      pastCalls: callHistory(now, 30, 10, [
+        [26, 2, 'Nervous at first but it helped.'],
+        [31, 3],
+        [28, 3, 'Felt good to talk about the library.'],
+        [30, 4],
+      ]),
     },
     {
       id: 's-ifeanyi',
@@ -226,6 +265,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
           1
         ),
       ],
+      pastCalls: callHistory(now, 10, 15, ['missed']),
     },
     {
       id: 's-zainab',
@@ -263,6 +303,11 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
           0
         ),
       ],
+      pastCalls: callHistory(now, 24, 14, [
+        [24, 2],
+        [29, 1, 'Hard week. Glad Grace listened.'],
+        'missed',
+      ]),
     },
     {
       id: 's-emeka',
@@ -282,6 +327,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         ...laterSessions(now, 1, 38),
       },
       journal: [],
+      pastCalls: callHistory(now, 38, 16, [[22, 2], 'missed', [18, 2], 'missed', [25, null]]),
     },
     {
       id: 's-seyi',
@@ -324,6 +370,10 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
           2
         ),
       ],
+      pastCalls: callHistory(now, 17, 11, [
+        [30, 1, 'Didn’t feel like talking much.'],
+        [27, 2],
+      ]),
     },
   ];
   const calls: Call[] = [
@@ -339,4 +389,10 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
 /** Sessions the student has finished. */
 export function sessionsCompleted(student: CaseloadStudent): number {
   return Object.values(student.sessions).filter((r) => r.completedAt).length;
+}
+
+/** How many check-ins happened, and how many were missed. */
+export function callCounts(calls: PastCall[]) {
+  const missed = calls.filter((c) => !c.attended).length;
+  return { total: calls.length, attended: calls.length - missed, missed };
 }
