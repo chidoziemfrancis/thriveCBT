@@ -94,7 +94,7 @@ function Row({
   );
 }
 
-// Messaging, calls and booking are built next; until then the buttons say so honestly.
+// Video calls are built later; until then the Call button says so honestly.
 function comingSoon(what: string) {
   Alert.alert('Coming soon', `${what} for researchers is on the way.`);
 }
@@ -131,7 +131,13 @@ export default function StudentProfileScreen() {
       </View>
 
       <View style={styles.actions}>
-        <Action icon="chat" label="Message" onPress={() => comingSoon('Messaging')} />
+        <Action
+          icon="chat"
+          label="Message"
+          onPress={() =>
+            router.push({ pathname: '/researcher/chat/[id]', params: { id: student.id } })
+          }
+        />
         <Action icon="video" label="Call" onPress={() => comingSoon('Video calling')} />
         <Action
           icon="calendar"

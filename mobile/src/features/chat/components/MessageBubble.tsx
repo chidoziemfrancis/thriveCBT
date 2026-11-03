@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 
 import { CheckIcon, DoubleCheckIcon } from '@/components/icons';
-import type { Message } from '@/features/chat/chatLogic';
+import type { Message, Sender } from '@/features/chat/chatLogic';
 import { colors, fonts, radius } from '@/theme';
 
 function timeOf(iso: string) {
@@ -12,11 +12,16 @@ function timeOf(iso: string) {
 export default function MessageBubble({
   message,
   lastInGroup,
+  viewer = 'student',
 }: {
   message: Message;
   lastInGroup: boolean;
+  /** Whose side of the chat this is drawn from; their own messages sit on the right. */
+  viewer?: Sender;
 }) {
-  const mine = message.from === 'student';
+  const mine = message.from === viewer;
+  // Only the researcher sees the flag, so the student is never made to feel watched mid-chat.
+  const showRisk = viewer === 'researcher' && message.from === 'student' && message.flagged;
   const read = message.status === 'read';
 
   return (
@@ -33,6 +38,12 @@ export default function MessageBubble({
       >
         <Text style={[styles.text, mine && { color: colors.onPrimary }]}>{message.text}</Text>
       </View>
+      {showRisk && (
+        <View style={styles.risk}>
+          <View style={styles.riskDot} />
+          <Text style={styles.riskText}>Risk words</Text>
+        </View>
+      )}
 
       {lastInGroup && (
         <View
@@ -54,6 +65,9 @@ export default function MessageBubble({
 
 const styles = StyleSheet.create({
   row: { maxWidth: '82%', marginTop: 4 },
+  risk: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 4, marginLeft: 4 },
+  riskDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: colors.danger },
+  riskText: { fontFamily: fonts.bold, fontSize: 11, color: colors.danger },
   rowMine: { alignSelf: 'flex-end', alignItems: 'flex-end' },
   rowTheirs: { alignSelf: 'flex-start', alignItems: 'flex-start' },
   gap: { marginBottom: 8 },
