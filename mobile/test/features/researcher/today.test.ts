@@ -21,8 +21,12 @@ function student(patch: Partial<CaseloadStudent> = {}): CaseloadStudent {
     id: 's1',
     name: 'Test Student',
     week: 2,
+    joinedAt: at(10),
+    joinedBy: 'random',
     lastActiveAt: at(0, 9),
-    phq9: { score: 10, item9: 0, at: at(10) },
+    phq9: { answers: [], score: 10, item9: 0, at: at(10) },
+    moods: [],
+    sessionsDone: 1,
     ...patch,
   };
 }
@@ -36,7 +40,7 @@ describe('needsYou', () => {
     const items = needsYou(
       [
         student({ id: 'quiet', lastActiveAt: at(INACTIVE_DAYS + 1) }),
-        student({ id: 'risk', phq9: { score: 9, item9: 1, at: at(1) } }),
+        student({ id: 'risk', phq9: { answers: [], score: 9, item9: 1, at: at(1) } }),
       ],
       now
     );
@@ -50,7 +54,7 @@ describe('needsYou', () => {
     const items = needsYou(
       [
         student({ id: 'quiet', lastActiveAt: at(6) }),
-        student({ id: 'severe', phq9: { score: 21, item9: 0, at: at(3) } }),
+        student({ id: 'severe', phq9: { answers: [], score: 21, item9: 0, at: at(3) } }),
         student({ id: 'fine' }),
       ],
       now
@@ -103,5 +107,17 @@ describe('mock caseload', () => {
     const { students, calls } = mockCaseload(now);
     expect(needsYou(students, now).some((i) => i.urgent)).toBe(true);
     expect(callsToday(calls, now).length).toBeGreaterThan(0);
+  });
+});
+
+describe('mock PHQ-9 answers', () => {
+  // The researcher's answers screen shows these, so they must agree with the stored score.
+  it('add up to each score and keep question 9 as flagged', () => {
+    for (const s of mockCaseload(now).students) {
+      expect(s.phq9.answers).toHaveLength(9);
+      expect(s.phq9.answers.reduce((a, b) => a + b, 0)).toBe(s.phq9.score);
+      expect(s.phq9.answers[8]).toBe(s.phq9.item9);
+      expect(s.phq9.answers.every((a) => a >= 0 && a <= 3)).toBe(true);
+    }
   });
 });
