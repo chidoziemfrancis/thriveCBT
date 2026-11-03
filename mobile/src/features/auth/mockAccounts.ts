@@ -2,7 +2,8 @@ import { readJson, writeJson } from '@/lib/storage';
 
 import type { Role } from './roles';
 
-type MockAccount = { role: Role; password: string };
+// A researcher account belongs to one researcher profile, which owns their students.
+type MockAccount = { role: Role; password: string; researcherId?: string };
 
 const REGISTERED_KEY = 'mock_registered_accounts';
 
@@ -10,7 +11,11 @@ const REGISTERED_KEY = 'mock_registered_accounts';
 // researcher can only be one of these pre-created accounts.
 const SEED_ACCOUNTS: Record<string, MockAccount> = {
   'test@gmail.com': { role: 'student', password: 'password123' },
-  'researcher@thrivecbt.com': { role: 'researcher', password: 'password123' },
+  'researcher@thrivecbt.com': {
+    role: 'researcher',
+    password: 'password123',
+    researcherId: 'r-grace',
+  },
 };
 
 function normalise(email: string) {
@@ -39,4 +44,10 @@ export function registerStudent(email: string, password: string) {
     ...registered,
     [normalise(email)]: { role: 'student', password },
   });
+}
+
+/** Which researcher profile a researcher account signs in as, or null for other accounts. */
+export function researcherIdFor(email: string | undefined): string | null {
+  if (!email) return null;
+  return allAccounts()[normalise(email)]?.researcherId ?? null;
 }
