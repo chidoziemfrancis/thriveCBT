@@ -34,10 +34,25 @@ function SectionTitle({ children }: { children: string }) {
   return <Text style={styles.sectionTitle}>{children}</Text>;
 }
 
-function NextCall({ call, student, now }: { call: Call; student: CaseloadStudent; now: Date }) {
+function NextCall({
+  call,
+  student,
+  now,
+  onOpen,
+}: {
+  call: Call;
+  student: CaseloadStudent;
+  now: Date;
+  onOpen: () => void;
+}) {
   const live = callState(call, now) === 'live';
   return (
-    <View style={styles.next}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Next call, ${time(call.startsAt)}, ${student.name}`}
+      onPress={onOpen}
+      style={({ pressed }) => [styles.next, pressed && { opacity: 0.85 }]}
+    >
       <View style={styles.nextText}>
         <Text style={styles.nextTime}>{time(call.startsAt)}</Text>
         <Text style={styles.nextName}>{student.name}</Text>
@@ -61,7 +76,7 @@ function NextCall({ call, student, now }: { call: Call; student: CaseloadStudent
         <CameraIcon size={16} color={live ? colors.onPrimary : colors.inkFaint} />
         <Text style={[styles.joinText, !live && { color: colors.inkFaint }]}>Join</Text>
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 
@@ -73,6 +88,11 @@ export default function ResearcherHomeScreen() {
   const nextStudent = next && byId(next.studentId);
   const later = callsToday(calls, now).filter((c) => c !== next && callState(c, now) !== 'done');
   const flagged = needsYou(students, now);
+
+  function openCall(id: string) {
+    haptics.tick();
+    router.push({ pathname: '/researcher/call/[callId]', params: { callId: id } });
+  }
 
   function openStudent(id: string) {
     haptics.tick();
@@ -121,7 +141,7 @@ export default function ResearcherHomeScreen() {
       <Animated.View entering={FadeInDown.duration(320)} style={styles.section}>
         <SectionTitle>Next call</SectionTitle>
         {next && nextStudent ? (
-          <NextCall call={next} student={nextStudent} now={now} />
+          <NextCall call={next} student={nextStudent} now={now} onOpen={() => openCall(next.id)} />
         ) : (
           <Text style={styles.empty}>No more calls today.</Text>
         )}
@@ -163,10 +183,10 @@ export default function ResearcherHomeScreen() {
             if (!student) return null;
             return (
               <Pressable
-                key={call.startsAt}
+                key={call.id}
                 accessibilityRole="button"
                 accessibilityLabel={`${time(call.startsAt)}, ${student.name}, week ${student.week}`}
-                onPress={() => openStudent(student.id)}
+                onPress={() => openCall(call.id)}
                 style={({ pressed }) => [
                   styles.row,
                   i > 0 && styles.divider,
@@ -185,6 +205,19 @@ export default function ResearcherHomeScreen() {
           })}
         </Animated.View>
       )}
+
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => {
+          haptics.tick();
+          router.push('/researcher/calls');
+        }}
+        hitSlop={8}
+        style={styles.allCalls}
+      >
+        <Text style={styles.allCallsText}>See all calls</Text>
+        <ChevronRightIcon size={14} color={colors.primary} />
+      </Pressable>
     </Screen>
   );
 }
@@ -193,6 +226,8 @@ const PHOTO = 44;
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 4 },
+  allCalls: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 24 },
+  allCallsText: { fontFamily: fonts.bold, fontSize: 14, color: colors.primary },
   headerText: { flex: 1, gap: 2 },
   date: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
   photo: {

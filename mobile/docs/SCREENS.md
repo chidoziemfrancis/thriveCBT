@@ -200,9 +200,9 @@ Researchers use the app as case managers: keeping their students safe, supported
 
 | # | Screen | What it does | Reference | Status |
 |---|---|---|---|---|
-| R11 | Schedule a call | Student (only your own), a day strip for the next two weeks, time slots from your availability, repeat weekly, optional note, then confirm ("Zainab will get a notification") | Spring Health booking; Calendly time slots | ⬜ |
-| R12 | Upcoming calls | Every booked call grouped by day | Google Calendar schedule view | ⬜ |
-| R13 | Call details | Time and student, with Join, Reschedule and Cancel; after cancelling, "Book another time" | Spring Health appointment details and cancel flow | ⬜ |
+| R11 | Schedule a call | Student (only your own), a day strip for the next two weeks, time slots from your availability, repeat weekly, optional note, then confirm ("Zainab will get a notification") | Spring Health booking; Calendly time slots | ✅ |
+| R12 | Upcoming calls | Every booked call grouped by day | Google Calendar schedule view | ✅ |
+| R13 | Call details | Time and student, with Join, Reschedule and Cancel; after cancelling, "Book another time" | Spring Health appointment details and cancel flow | ✅ |
 
 Rules: no double-booking, no past times, one regular weekly check-in per student plus one-offs, and the student is notified of every booking, change or cancellation.
 

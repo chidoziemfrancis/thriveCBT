@@ -133,7 +133,13 @@ export default function StudentProfileScreen() {
       <View style={styles.actions}>
         <Action icon="chat" label="Message" onPress={() => comingSoon('Messaging')} />
         <Action icon="video" label="Call" onPress={() => comingSoon('Video calling')} />
-        <Action icon="calendar" label="Schedule" onPress={() => comingSoon('Booking calls')} />
+        <Action
+          icon="calendar"
+          label="Schedule"
+          onPress={() =>
+            router.push({ pathname: '/researcher/schedule', params: { studentId: student.id } })
+          }
+        />
       </View>
 
       {alert && (
@@ -216,7 +222,20 @@ export default function StudentProfileScreen() {
               : `${callTotals.total} ${callTotals.total === 1 ? 'call' : 'calls'}${callTotals.missed ? ` · ${callTotals.missed} missed` : ''}`}
           </Text>
         </Row>
-        <Row label="Next call">
+        <Row
+          label="Next call"
+          onPress={
+            next
+              ? () => {
+                  haptics.tick();
+                  router.push({
+                    pathname: '/researcher/call/[callId]',
+                    params: { callId: next.id },
+                  });
+                }
+              : undefined
+          }
+        >
           <Text style={styles.value}>{next ? callLabel(next.startsAt, now) : 'None booked'}</Text>
         </Row>
         <Row label="Joined">

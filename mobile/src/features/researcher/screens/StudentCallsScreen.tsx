@@ -1,5 +1,7 @@
-import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { ChevronRightIcon } from '@/components/icons';
 
 import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
@@ -8,6 +10,7 @@ import MoodFace from '@/features/mood/components/MoodFace';
 import { callCounts } from '@/features/researcher/caseload';
 import { nextCallFor } from '@/features/researcher/studentsLogic';
 import { useResearcher } from '@/features/researcher/useResearcher';
+import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
 function when(iso: string) {
@@ -61,13 +64,22 @@ export default function StudentCallsScreen() {
 
       <Text style={styles.sectionTitle}>Next</Text>
       {next ? (
-        <View style={styles.row} accessible accessibilityLabel={`Next call ${when(next.startsAt)}`}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Next call ${when(next.startsAt)}`}
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/call/[callId]', params: { callId: next.id } });
+          }}
+          style={({ pressed }) => [styles.row, pressed && { opacity: 0.6 }]}
+        >
           <CallIcon />
           <View style={styles.text}>
             <Text style={styles.when}>{when(next.startsAt)}</Text>
             <Text style={styles.detail}>{next.durationMin} min video check-in</Text>
           </View>
-        </View>
+          <ChevronRightIcon size={16} color={colors.inkFaint} />
+        </Pressable>
       ) : (
         <Text style={styles.empty}>No call booked yet.</Text>
       )}

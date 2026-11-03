@@ -6,6 +6,8 @@ import { researcherIdFor } from '@/features/auth/mockAccounts';
 import { getUserSession } from '@/features/auth/userSession';
 
 import { mockCaseload } from './caseload';
+import { allCalls } from './schedule';
+import { useSchedule } from './scheduleStore';
 
 function read(now = new Date()) {
   const id = researcherIdFor(getUserSession().email);
@@ -15,9 +17,13 @@ function read(now = new Date()) {
   return { researcher, ...caseload, now };
 }
 
-/** The signed-in researcher and their students, rebuilt on focus so "today" stays current. */
+/**
+ * The signed-in researcher, their students and every call, including ones they've booked or
+ * cancelled. The caseload is rebuilt on focus so "today" stays current; bookings are live.
+ */
 export function useResearcher() {
   const [state, setState] = useState(() => read());
   useFocusEffect(useCallback(() => setState(read()), []));
-  return state;
+  const { bookings, cancelled } = useSchedule();
+  return { ...state, calls: allCalls(state.calls, bookings, cancelled) };
 }
