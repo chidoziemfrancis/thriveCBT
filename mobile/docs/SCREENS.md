@@ -173,7 +173,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 
 **Design rules for this side:** flat and simple (no gradients, no glow, few cards), and every screen starts from a real app reference that's named below, with a sketch approved before it's built.
 
-**Navigation:** bottom tabs **Today · Students** (Messages joins when chat is built). Settings open from the researcher's photo.
+**Navigation:** bottom tabs **Today · Students · Messages**. Settings open from the researcher's photo.
 
 ### 3.1 Account
 
@@ -210,9 +210,9 @@ Rules: no double-booking, no past times, one regular weekly check-in per student
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R14 | Messages inbox | All student chats with unread counts and last message; risk-flagged chats first, then unread, then most recent | ⬜ |
-| R15 | Conversation | Same chat as the student side, plus a strip with the student's week, today's mood and any risk flag, linking to their profile | ⬜ |
-| R16 | Quick replies and follow-up flag | Saved short replies, and a "needs follow-up" flag that keeps a chat at the top | ⬜ |
+| R14 | Messages inbox | All student chats with unread counts and last message; risk-flagged chats first, then unread, then most recent | ✅ |
+| R15 | Conversation | Same chat as the student side, plus a strip with the student's week, today's mood and any risk flag, linking to their profile | ✅ |
+| R16 | Quick replies and follow-up flag | Saved short replies, and a "needs follow-up" flag that keeps a chat at the top | ✅ |
 | R17 | Video call and call note | Same call screens as the student, then a short note on how it went (feeds the call log, R10) | ⬜ |
 
 ### 3.5 Safety
