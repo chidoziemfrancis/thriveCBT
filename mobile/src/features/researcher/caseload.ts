@@ -27,6 +27,8 @@ export type CaseloadStudent = {
   pastCalls: PastCall[];
   /** The chat with their researcher, oldest first. */
   messages: Message[];
+  /** Only for when the researcher is seriously worried; every view of it is recorded. */
+  emergencyContact?: { name: string; relationship: string; phone: string };
 };
 
 /**
@@ -219,6 +221,11 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         ),
       ],
       pastCalls: [],
+      emergencyContact: {
+        name: 'Funke Adebayo',
+        relationship: 'Mother',
+        phone: '+234 803 555 0142',
+      },
       messages: chat(now, 's-tolu', [
         [
           1,
@@ -452,6 +459,11 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
         [30, 1, 'Didn’t feel like talking much.'],
         [27, 2],
       ]),
+      emergencyContact: {
+        name: 'Dele Ogunleye',
+        relationship: 'Brother',
+        phone: '+234 812 555 0187',
+      },
       messages: chat(now, 's-seyi', [
         [
           5,

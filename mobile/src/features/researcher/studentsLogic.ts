@@ -1,6 +1,7 @@
 import { moodOnDay } from '@/features/mood/moodLog';
 
 import type { Call, CaseloadStudent } from './caseload';
+import { openAlerts } from './alerts';
 import { callState, needsYou } from './todayLogic';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -23,9 +24,10 @@ export function filterStudents(
   students: CaseloadStudent[],
   filter: StudentFilter,
   query: string,
-  now = new Date()
+  now = new Date(),
+  handled: string[] = []
 ): CaseloadStudent[] {
-  const flagged = new Set(needsYou(students, now).map((n) => n.student.id));
+  const flagged = new Set(needsYou(students, now, handled).map((n) => n.student.id));
   const search = query.trim().toLowerCase();
   return students
     .filter((s) => filter !== 'needs' || flagged.has(s.id))
@@ -44,8 +46,12 @@ export type RowMark =
   | { kind: 'none' };
 
 /** The single thing shown on the right of a student's row, most important first. */
-export function rowMark(student: CaseloadStudent, now = new Date()): RowMark {
-  if (student.phq9.item9 > 0) return { kind: 'urgent' };
+export function rowMark(
+  student: CaseloadStudent,
+  now = new Date(),
+  handled: string[] = []
+): RowMark {
+  if (openAlerts([student], handled, now).some((a) => a.urgent)) return { kind: 'urgent' };
   const days = quietDays(student, now);
   if (days >= QUIET_DAYS) return { kind: 'quiet', days };
   for (let back = 0; back < RECENT_MOOD_DAYS; back++) {
