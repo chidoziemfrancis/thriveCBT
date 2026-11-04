@@ -219,7 +219,7 @@ Rules: no double-booking, no past times, one regular weekly check-in per student
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R18 | Alert detail | What triggered it, contact options, mark as handled with a note, escalate | ⬜ |
+| R18 | Alert detail | What triggered it, contact options, mark as handled with a note, escalate | ✅ |
 
 ### 3.6 Running the caseload
 

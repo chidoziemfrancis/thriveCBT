@@ -17,8 +17,16 @@ import { useResearcher } from '@/features/researcher/useResearcher';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
-function Mark({ student, now }: { student: CaseloadStudent; now: Date }) {
-  const mark = rowMark(student, now);
+function Mark({
+  student,
+  now,
+  handled,
+}: {
+  student: CaseloadStudent;
+  now: Date;
+  handled: string[];
+}) {
+  const mark = rowMark(student, now, handled);
   if (mark.kind === 'urgent') {
     return (
       <View style={styles.urgent}>
@@ -33,21 +41,21 @@ function Mark({ student, now }: { student: CaseloadStudent; now: Date }) {
 }
 
 export default function StudentsScreen() {
-  const { researcher, students, now } = useResearcher();
+  const { researcher, students, now, handled } = useResearcher();
   const [filter, setFilter] = useState<StudentFilter>('all');
   const [query, setQuery] = useState('');
 
   const counts = {
     all: students.length,
-    needs: filterStudents(students, 'needs', '', now).length,
-    quiet: filterStudents(students, 'quiet', '', now).length,
+    needs: filterStudents(students, 'needs', '', now, handled).length,
+    quiet: filterStudents(students, 'quiet', '', now, handled).length,
   };
   const chips: { key: StudentFilter; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'needs', label: `Needs you ${counts.needs}` },
     { key: 'quiet', label: `Quiet ${counts.quiet}` },
   ];
-  const shown = filterStudents(students, filter, query, now);
+  const shown = filterStudents(students, filter, query, now, handled);
 
   return (
     <Screen insideTabs>
@@ -129,7 +137,7 @@ export default function StudentsScreen() {
                     Week {student.week} · {activeLabel(student.lastActiveAt, now)}
                   </Text>
                 </View>
-                <Mark student={student} now={now} />
+                <Mark student={student} now={now} handled={handled} />
                 <ChevronRightIcon size={16} color={colors.inkFaint} />
               </View>
             </Pressable>

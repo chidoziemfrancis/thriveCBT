@@ -18,6 +18,7 @@ import {
   needsYou,
   nextCall,
 } from '@/features/researcher/todayLogic';
+import { alertStatus } from '@/features/researcher/alerts';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
@@ -81,22 +82,17 @@ function NextCall({
 }
 
 export default function ResearcherHomeScreen() {
-  const { researcher, students, calls, now } = useResearcher();
+  const { researcher, students, calls, now, handled, alertEvents } = useResearcher();
   const byId = (id: string) => students.find((s) => s.id === id);
 
   const next = nextCall(calls, now);
   const nextStudent = next && byId(next.studentId);
   const later = callsToday(calls, now).filter((c) => c !== next && callState(c, now) !== 'done');
-  const flagged = needsYou(students, now);
+  const flagged = needsYou(students, now, handled);
 
   function openCall(id: string) {
     haptics.tick();
     router.push({ pathname: '/researcher/call/[callId]', params: { callId: id } });
-  }
-
-  function openStudent(id: string) {
-    haptics.tick();
-    router.push({ pathname: '/researcher/student/[id]', params: { id } });
   }
 
   // Settings get their own screen later; until then the photo is where to log out.
@@ -152,12 +148,15 @@ export default function ResearcherHomeScreen() {
         {flagged.length === 0 ? (
           <Text style={styles.empty}>Nothing urgent. Everyone is okay.</Text>
         ) : (
-          flagged.map(({ student, reason, urgent }, i) => (
+          flagged.map(({ student, reason, urgent, alertId }, i) => (
             <Pressable
               key={student.id}
               accessibilityRole="button"
               accessibilityLabel={`${urgent ? 'Urgent. ' : ''}${student.name}: ${reason}`}
-              onPress={() => openStudent(student.id)}
+              onPress={() => {
+                haptics.tick();
+                router.push({ pathname: '/researcher/alert/[id]', params: { id: alertId } });
+              }}
               style={({ pressed }) => [
                 styles.row,
                 i > 0 && styles.divider,
@@ -168,6 +167,9 @@ export default function ResearcherHomeScreen() {
               <View style={styles.rowText}>
                 <Text style={styles.rowName}>{student.name}</Text>
                 <Text style={[styles.rowMeta, urgent && { color: colors.danger }]}>{reason}</Text>
+                {alertStatus(alertEvents[alertId]) === 'acknowledged' && (
+                  <Text style={styles.onIt}>You’re on it</Text>
+                )}
               </View>
               <ChevronRightIcon size={16} color={colors.inkFaint} />
             </Pressable>
@@ -280,5 +282,6 @@ const styles = StyleSheet.create({
   rowText: { flex: 1, gap: 2 },
   rowName: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink },
   rowMeta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  onIt: { fontFamily: fonts.bold, fontSize: 12, color: colors.primary },
   rowTime: { width: 64, fontFamily: fonts.bold, fontSize: 14, color: colors.ink },
 });
