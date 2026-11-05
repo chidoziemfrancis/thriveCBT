@@ -131,6 +131,12 @@ export default function ResearcherSettingsScreen() {
             on={researcher.accepting}
             onChange={(on) => updateSettings({ accepting: on })}
           />
+          <SettingsRow
+            icon="userPlus"
+            label="Invite a student"
+            value={researcher.inviteCode}
+            onPress={() => router.push('/researcher/invite')}
+          />
         </SettingsGroup>
 
         <SettingsGroup>
