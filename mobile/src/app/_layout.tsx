@@ -58,6 +58,11 @@ export default function RootLayout() {
           <Stack.Screen name="profile/withdrawn" options={{ gestureEnabled: false }} />
           <Stack.Screen name="call/live" options={{ gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="call/feedback" options={{ gestureEnabled: false }} />
+          <Stack.Screen
+            name="researcher/call/[callId]/live"
+            options={{ gestureEnabled: false, animation: 'fade' }}
+          />
+          <Stack.Screen name="researcher/call/[callId]/note" options={{ gestureEnabled: false }} />
           <Stack.Screen name="session/[id]/complete" options={{ gestureEnabled: false }} />
           <Stack.Screen
             name="entry/write"

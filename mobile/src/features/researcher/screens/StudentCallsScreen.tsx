@@ -7,6 +7,7 @@ import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import MoodFace from '@/features/mood/components/MoodFace';
+import { OUTCOME_LABELS } from '@/features/researcher/callLog';
 import { callCounts } from '@/features/researcher/caseload';
 import { nextCallFor } from '@/features/researcher/studentsLogic';
 import { useResearcher } from '@/features/researcher/useResearcher';
@@ -98,7 +99,14 @@ export default function StudentCallsScreen() {
               key={call.startsAt}
               style={[styles.row, i > 0 && styles.divider]}
               accessible
-              accessibilityLabel={`${label}${call.feedback?.note ? `. ${first} said: ${call.feedback.note}` : ''}`}
+              accessibilityLabel={[
+                label,
+                call.feedback?.note && `${first} said: ${call.feedback.note}`,
+                call.researcherNote?.outcome && OUTCOME_LABELS[call.researcherNote.outcome],
+                call.researcherNote?.text && `Your note: ${call.researcherNote.text}`,
+              ]
+                .filter(Boolean)
+                .join('. ')}
             >
               <CallIcon missed={!call.attended} />
               <View style={styles.text}>
@@ -107,6 +115,22 @@ export default function StudentCallsScreen() {
                   {call.attended ? `${call.minutes} min` : 'Missed'}
                 </Text>
                 {call.feedback?.note && <Text style={styles.note}>“{call.feedback.note}”</Text>}
+                {call.researcherNote && (
+                  <View style={styles.yours}>
+                    <Text style={styles.yoursLabel}>
+                      Your note
+                      {call.researcherNote.outcome && (
+                        <Text style={call.researcherNote.outcome === 'concerns' && styles.concerns}>
+                          {' '}
+                          · {OUTCOME_LABELS[call.researcherNote.outcome]}
+                        </Text>
+                      )}
+                    </Text>
+                    {call.researcherNote.text && (
+                      <Text style={styles.yoursText}>{call.researcherNote.text}</Text>
+                    )}
+                  </View>
+                )}
               </View>
               {rating !== undefined && rating !== null && <MoodFace mood={rating} size={26} />}
             </View>
@@ -115,7 +139,8 @@ export default function StudentCallsScreen() {
       )}
 
       <Text style={styles.footnote}>
-        Calls are never recorded. Ratings and notes are what {first} chose to share after each call.
+        Calls are never recorded. Ratings and quotes are what {first} chose to share after each
+        call. Your notes are seen only by you and the study team.
       </Text>
     </Screen>
   );
@@ -156,6 +181,16 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: colors.ink,
   },
+  yours: {
+    gap: 2,
+    marginTop: 8,
+    paddingLeft: 10,
+    borderLeftWidth: 2,
+    borderLeftColor: colors.border,
+  },
+  yoursLabel: { fontFamily: fonts.bold, fontSize: 12, color: colors.inkMuted },
+  concerns: { color: '#B7801A' },
+  yoursText: { fontFamily: fonts.regular, fontSize: 14, lineHeight: 20, color: colors.ink },
   empty: { paddingVertical: 8, fontFamily: fonts.medium, fontSize: 15, color: colors.inkMuted },
   footnote: {
     marginTop: 28,
