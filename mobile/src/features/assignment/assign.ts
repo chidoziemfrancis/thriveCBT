@@ -1,3 +1,6 @@
+// The most students the study lets one researcher look after.
+export const MAX_CASELOAD = 10;
+
 export type Researcher = {
   id: string;
   name: string;

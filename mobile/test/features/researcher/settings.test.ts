@@ -50,10 +50,10 @@ describe('researcher settings', () => {
 
   it('saves profile changes and notification switches', () => {
     const store = loadStore();
-    store.updateSettings({ capacity: 15, accepting: false, bio: 'Hi' });
+    store.updateSettings({ capacity: 8, accepting: false, bio: 'Hi' });
     store.setNotify('calls', false);
     expect(mockMemory.get('researcher_settings')).toMatchObject({
-      capacity: 15,
+      capacity: 8,
       accepting: false,
       bio: 'Hi',
       notify: { messages: true, calls: false },
