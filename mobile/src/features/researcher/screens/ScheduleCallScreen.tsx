@@ -24,19 +24,19 @@ function time(date: Date) {
  */
 export default function ScheduleCallScreen() {
   const params = useLocalSearchParams<{ studentId?: string; replace?: string }>();
-  const { students, calls, now } = useResearcher();
+  const { students, calls, now, settings } = useResearcher();
   const moving = params.replace ? calls.find((c) => c.id === params.replace) : undefined;
 
   const [studentId, setStudentId] = useState(params.studentId ?? moving?.studentId);
   const [picking, setPicking] = useState(!studentId);
-  const days = bookableDays(now);
+  const days = bookableDays(now, settings.hours);
   const [day, setDay] = useState(days[0]);
   const [slot, setSlot] = useState<Date | null>(null);
   const [weekly, setWeekly] = useState(!moving);
   const [note, setNote] = useState(moving?.note ?? '');
 
   const student = students.find((s) => s.id === studentId);
-  const slots = day ? slotsForDay(day, calls, now, moving?.id) : [];
+  const slots = day ? slotsForDay(day, calls, now, moving?.id, settings.hours) : [];
   const first = student?.name.split(' ')[0];
 
   function confirm() {
@@ -112,6 +112,14 @@ export default function ScheduleCallScreen() {
       )}
 
       <Text style={styles.label}>Day</Text>
+      {days.length === 0 && (
+        <Pressable accessibilityRole="link" onPress={() => router.push('/researcher/availability')}>
+          <Text style={styles.empty}>
+            You haven’t set any available days.{' '}
+            <Text style={styles.emptyLink}>Set your availability</Text>
+          </Text>
+        </Pressable>
+      )}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -254,6 +262,7 @@ const styles = StyleSheet.create({
   slotText: { fontFamily: fonts.bold, fontSize: 14, color: colors.ink },
   slotTakenText: { color: colors.inkFaint, textDecorationLine: 'line-through' },
   empty: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
+  emptyLink: { fontFamily: fonts.bold, color: colors.primary },
   repeat: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -6,8 +6,6 @@ import { CameraIcon, ChevronRightIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import { firstName } from '@/features/assignment/assign';
 import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
-import { signOut } from '@/features/auth/signOut';
-import { getUserSession } from '@/features/auth/userSession';
 import { JOIN_EARLY_MIN, countdownLabel } from '@/features/checkin/checkinLogic';
 import type { Call, CaseloadStudent } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
@@ -95,20 +93,9 @@ export default function ResearcherHomeScreen() {
     router.push({ pathname: '/researcher/call/[callId]', params: { callId: id } });
   }
 
-  // Settings get their own screen later; until then the photo is where to log out.
   function openAccount() {
     haptics.tap();
-    Alert.alert(researcher?.name ?? 'Your account', getUserSession().email ?? '', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Log out',
-        style: 'destructive',
-        onPress: async () => {
-          await signOut();
-          router.replace('/');
-        },
-      },
-    ]);
+    router.push('/researcher/settings');
   }
 
   return (
@@ -123,7 +110,7 @@ export default function ResearcherHomeScreen() {
         </View>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Your account"
+          accessibilityLabel="Your settings"
           onPress={openAccount}
           style={styles.photo}
         >

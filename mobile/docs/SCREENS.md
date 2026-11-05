@@ -204,7 +204,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R12 | Upcoming calls | Every booked call grouped by day | Google Calendar schedule view | ✅ |
 | R13 | Call details | Time and student, with Join, Reschedule and Cancel; after cancelling, "Book another time" | Spring Health appointment details and cancel flow | ✅ |
 
-Rules: no double-booking, no past times, one regular weekly check-in per student plus one-offs, and the student is notified of every booking, change or cancellation.
+Rules: slots follow the researcher's own availability (Monday to Friday, 9 to 5 until they change it), no double-booking, no past times, one regular weekly check-in per student plus one-offs, and the student is notified of every booking, change or cancellation.
 
 ### 3.4 Messages and calls
 
@@ -227,7 +227,7 @@ Rules: no double-booking, no past times, one regular weekly check-in per student
 |---|---|---|---|
 | R19 | Invite a student | Invite code and link, Share and QR | ⬜ |
 | R20 | Weekly note | The study's weekly note per student: how they're doing and support given (contents to be confirmed) | ⬜ |
-| R21 | Settings | Photo and bio, availability and capacity, "accepting students", notifications, log out | ⬜ |
+| R21 | Settings | Photo and bio, availability and capacity, "accepting students", notifications, log out | ✅ |
 
 ### 3.7 What researchers can see, and what students are told
 

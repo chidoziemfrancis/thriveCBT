@@ -2,10 +2,11 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 import type { Call } from '@/features/researcher/caseload';
 import {
-  AVAILABILITY,
+  DEFAULT_HOURS,
   REPEAT_WEEKS,
   allCalls,
   bookableDays,
+  hoursSummary,
   dayLabel,
   expandBookings,
   slotsForDay,
@@ -21,7 +22,7 @@ jest.mock('@/lib/storage', () => ({
 
 beforeEach(() => mockMemory.clear());
 
-// Monday 3 November 2026, 1pm.
+// Tuesday 3 November 2026, 1pm.
 const now = new Date(2026, 10, 3, 13, 0);
 
 function call(id: string, day: number, hour: number, minute = 0): Call {
@@ -78,7 +79,7 @@ describe('bookableDays', () => {
   it('offers working days only, starting today', () => {
     const days = bookableDays(now);
     expect(days[0]).toEqual(new Date(2026, 10, 3));
-    expect(days.every((d) => AVAILABILITY.days.includes(d.getDay()))).toBe(true);
+    expect(days.every((d) => DEFAULT_HOURS[d.getDay()].on)).toBe(true);
     expect(days).toHaveLength(10);
   });
 });
@@ -144,5 +145,41 @@ describe('schedule store', () => {
         cancelled: ['seed-s1'],
       });
     });
+  });
+});
+
+describe('custom hours', () => {
+  const hours = {
+    ...DEFAULT_HOURS,
+    2: { on: true, start: 13 * 60, end: 15 * 60 },
+    3: { on: false, start: 9 * 60, end: 17 * 60 },
+    6: { on: true, start: 10 * 60, end: 12 * 60 },
+  };
+
+  it('only offers days that are switched on', () => {
+    const days = bookableDays(now, hours).map((d) => d.getDay());
+    expect(days).not.toContain(3);
+    expect(days).toContain(6);
+  });
+
+  it('offers slots within that day’s hours that finish by the end', () => {
+    const slots = slotsForDay(new Date(2026, 10, 10), [], now, undefined, hours);
+    expect(slots.map((s) => s.start.getHours() * 60 + s.start.getMinutes())).toEqual([
+      780, 810, 840, 870,
+    ]);
+  });
+
+  it('offers nothing on a day switched off', () => {
+    expect(slotsForDay(new Date(2026, 10, 11), [], now, undefined, hours)).toEqual([]);
+  });
+
+  it('summarises the week', () => {
+    expect(hoursSummary(DEFAULT_HOURS)).toMatch(/–.*·.*–/);
+    expect(hoursSummary(hours)).toMatch(/Varies/);
+    expect(
+      hoursSummary(
+        Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((d) => [d, { on: false, start: 0, end: 0 }]))
+      )
+    ).toBe('Not available');
   });
 });

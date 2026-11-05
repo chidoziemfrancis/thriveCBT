@@ -10,6 +10,7 @@ import { handledIds } from './alerts';
 import { useAlertEvents } from './alertStore';
 import { allCalls } from './schedule';
 import { useSchedule } from './scheduleStore';
+import { useResearcherSettings } from './settingsStore';
 
 function read(now = new Date()) {
   const id = researcherIdFor(getUserSession().email);
@@ -19,18 +20,24 @@ function read(now = new Date()) {
   return { researcher, ...caseload, now };
 }
 
-/**
- * The signed-in researcher, their students and every call, including ones they've booked or
- * cancelled, and which alerts are handled. The caseload is rebuilt on focus so "today" stays
- * current; bookings and alert actions are live.
- */
+/** Rebuilt on focus so "today" stays current. */
 export function useResearcher() {
   const [state, setState] = useState(() => read());
   useFocusEffect(useCallback(() => setState(read()), []));
   const { bookings, cancelled } = useSchedule();
   const alertEvents = useAlertEvents();
+  const settings = useResearcherSettings();
+  const researcher = state.researcher && {
+    ...state.researcher,
+    name: settings.name ?? state.researcher.name,
+    bio: settings.bio ?? state.researcher.bio,
+    capacity: settings.capacity ?? state.researcher.capacity,
+    accepting: settings.accepting ?? state.researcher.accepting,
+  };
   return {
     ...state,
+    researcher,
+    settings,
     calls: allCalls(state.calls, bookings, cancelled),
     alertEvents,
     handled: handledIds(alertEvents),

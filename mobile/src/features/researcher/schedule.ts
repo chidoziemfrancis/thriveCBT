@@ -4,17 +4,52 @@ import { callState } from './todayLogic';
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export const CALL_MINUTES = 30;
-/** How far ahead calls can be booked, and how far a weekly booking is shown. */
 export const BOOK_DAYS_AHEAD = 14;
+// Covers the whole 8-week programme.
 export const REPEAT_WEEKS = 8;
 
-/**
- * Working hours that slots are offered in, until researchers set their own in Settings:
- * Monday to Friday, 9am to 5pm.
- */
-export const AVAILABILITY = { days: [1, 2, 3, 4, 5], startHour: 9, endHour: 17 };
+/** Minutes from midnight. */
+export type DayHours = { on: boolean; start: number; end: number };
 
-/** A call the researcher has booked, as stored. A weekly booking repeats from its first call. */
+/** Keyed 0 (Sunday) to 6, as Date.getDay() counts. */
+export type WeeklyHours = Record<number, DayHours>;
+
+export const DEFAULT_HOURS: WeeklyHours = Object.fromEntries(
+  [0, 1, 2, 3, 4, 5, 6].map((day) => [
+    day,
+    { on: day >= 1 && day <= 5, start: 9 * 60, end: 17 * 60 },
+  ])
+);
+
+export function timeLabel(minutes: number): string {
+  return new Date(2000, 0, 1, 0, minutes).toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+/** e.g. "Mon–Fri · 9:00 AM–5:00 PM", "3 days · Varies". */
+export function hoursSummary(hours: WeeklyHours): string {
+  const order = [1, 2, 3, 4, 5, 6, 0];
+  const on = order.filter((d) => hours[d]?.on);
+  if (on.length === 0) return 'Not available';
+  const first = hours[on[0]];
+  const same = on.every((d) => hours[d].start === first.start && hours[d].end === first.end);
+  // 2 Jan 2000 was a Sunday.
+  const name = (d: number) =>
+    new Date(2000, 0, 2 + d).toLocaleDateString(undefined, { weekday: 'short' });
+  const consecutive = on.every(
+    (d, i) => i === 0 || order.indexOf(d) === order.indexOf(on[i - 1]) + 1
+  );
+  const days =
+    on.length === 1
+      ? name(on[0])
+      : consecutive
+        ? `${name(on[0])}–${name(on[on.length - 1])}`
+        : `${on.length} days`;
+  return same ? `${days} · ${timeLabel(first.start)}–${timeLabel(first.end)}` : `${days} · Varies`;
+}
+
 export type Booking = {
   id: string;
   studentId: string;
@@ -28,7 +63,6 @@ function dayStart(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-/** Each booking as the calls it produces: one, or one a week for the repeat window. */
 export function expandBookings(bookings: Booking[]): Call[] {
   return bookings.flatMap((b) => {
     const count = b.weekly ? REPEAT_WEEKS : 1;
@@ -53,7 +87,6 @@ export function expandBookings(bookings: Booking[]): Call[] {
   });
 }
 
-/** Every call: the existing ones plus booked ones, minus any that were cancelled. */
 export function allCalls(existing: Call[], bookings: Booking[], cancelled: string[]): Call[] {
   const removed = new Set(cancelled);
   return [...existing, ...expandBookings(bookings)]
@@ -61,34 +94,28 @@ export function allCalls(existing: Call[], bookings: Booking[], cancelled: strin
     .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
 }
 
-/** The days calls can be booked on: working days from today through the booking window. */
-export function bookableDays(now = new Date()): Date[] {
+export function bookableDays(now = new Date(), hours: WeeklyHours = DEFAULT_HOURS): Date[] {
   const today = dayStart(now);
   return Array.from(
     { length: BOOK_DAYS_AHEAD },
     (_, i) => new Date(today.getFullYear(), today.getMonth(), today.getDate() + i)
-  ).filter((d) => AVAILABILITY.days.includes(d.getDay()));
+  ).filter((d) => hours[d.getDay()]?.on);
 }
 
 export type Slot = { start: Date; taken: boolean };
 
-/**
- * The half-hour slots in working hours on a day, skipping any that have already started.
- * A slot is taken when it overlaps another call, so nothing is ever double-booked. The call
- * being moved, if any, doesn't block its own old slot.
- */
+/** A slot is taken if it overlaps a call; the call being moved doesn't block its own slot. */
 export function slotsForDay(
   day: Date,
   calls: Call[],
   now = new Date(),
-  ignoreCallId?: string
+  ignoreCallId?: string,
+  hours: WeeklyHours = DEFAULT_HOURS
 ): Slot[] {
   const slots: Slot[] = [];
-  for (
-    let minutes = AVAILABILITY.startHour * 60;
-    minutes < AVAILABILITY.endHour * 60;
-    minutes += CALL_MINUTES
-  ) {
+  const today = hours[day.getDay()];
+  if (!today?.on) return slots;
+  for (let minutes = today.start; minutes + CALL_MINUTES <= today.end; minutes += CALL_MINUTES) {
     const start = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, minutes);
     if (start <= now) continue;
     const end = start.getTime() + CALL_MINUTES * 60_000;
@@ -105,7 +132,6 @@ export function slotsForDay(
 
 export type CallDay = { date: Date; calls: Call[] };
 
-/** Calls that aren't over yet, grouped by day for the next couple of weeks. */
 export function upcomingByDay(calls: Call[], now = new Date(), days = BOOK_DAYS_AHEAD): CallDay[] {
   const last = dayStart(now).getTime() + days * DAY_MS;
   const groups = new Map<number, Call[]>();
@@ -123,7 +149,6 @@ export function upcomingByDay(calls: Call[], now = new Date(), days = BOOK_DAYS_
     }));
 }
 
-/** "Today", "Tomorrow", or the weekday and date. */
 export function dayLabel(date: Date, now = new Date()): string {
   const diff = Math.round((dayStart(date).getTime() - dayStart(now).getTime()) / DAY_MS);
   if (diff === 0) return 'Today';
