@@ -2,30 +2,39 @@ import { JOIN_EARLY_MIN } from '@/features/checkin/checkinLogic';
 
 import type { Call, CaseloadStudent } from './caseload';
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+import { INACTIVE_DAYS, SEVERE_PHQ9, openAlerts } from './alerts';
 
-// Draft thresholds until the study team confirms them.
-export const INACTIVE_DAYS = 5;
-export const SEVERE_PHQ9 = 20;
+export { INACTIVE_DAYS, SEVERE_PHQ9 };
 
-export type NeedsYou = { student: CaseloadStudent; reason: string; urgent: boolean };
+export type NeedsYou = {
+  student: CaseloadStudent;
+  reason: string;
+  urgent: boolean;
+  alertId: string;
+};
 
-/** Students who need attention today, urgent ones first. */
-export function needsYou(students: CaseloadStudent[], now = new Date()): NeedsYou[] {
+/**
+ * Students who need attention today: each one's most serious open alert, urgent first. Alerts
+ * the researcher has marked as handled no longer count.
+ */
+export function needsYou(
+  students: CaseloadStudent[],
+  now = new Date(),
+  handled: string[] = []
+): NeedsYou[] {
+  const seen = new Set<string>();
   const items: NeedsYou[] = [];
-  for (const student of students) {
-    if (student.phq9.item9 > 0) {
-      items.push({ student, reason: 'Answered question 9 above zero', urgent: true });
-      continue;
-    }
-    const quiet = Math.floor((now.getTime() - new Date(student.lastActiveAt).getTime()) / DAY_MS);
-    if (quiet >= INACTIVE_DAYS) {
-      items.push({ student, reason: `Not active for ${quiet} days`, urgent: false });
-    } else if (student.phq9.score >= SEVERE_PHQ9) {
-      items.push({ student, reason: `Severe PHQ-9 score (${student.phq9.score})`, urgent: false });
-    }
+  for (const alert of openAlerts(students, handled, now)) {
+    if (seen.has(alert.student.id)) continue;
+    seen.add(alert.student.id);
+    items.push({
+      student: alert.student,
+      reason: alert.title,
+      urgent: alert.urgent,
+      alertId: alert.id,
+    });
   }
-  return items.sort((a, b) => Number(b.urgent) - Number(a.urgent));
+  return items;
 }
 
 export type CallState = 'done' | 'live' | 'upcoming';

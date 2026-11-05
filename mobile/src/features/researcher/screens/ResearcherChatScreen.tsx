@@ -40,7 +40,7 @@ import { colors, fonts, radius, type } from '@/theme';
  */
 export default function ResearcherChatScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { students, now } = useResearcher();
+  const { students, now, handled } = useResearcher();
   const chat = useResearcherChat();
   const [draft, setDraft] = useState('');
   const student = students.find((s) => s.id === id);
@@ -72,7 +72,7 @@ export default function ResearcherChatScreen() {
   const first = student.name.split(' ')[0];
   const flagged = chat.followUp.includes(student.id);
   const today = moodOnDay(student.moods, now);
-  const alert = needsYou([student], now)[0];
+  const alert = needsYou([student], now, handled)[0];
   const risk = unansweredRisk(thread);
 
   function send(text: string) {

@@ -101,7 +101,7 @@ function comingSoon(what: string) {
 
 export default function StudentProfileScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { students, calls, now } = useResearcher();
+  const { students, calls, now, handled } = useResearcher();
   const student = students.find((s) => s.id === id);
 
   if (!student) {
@@ -113,7 +113,7 @@ export default function StudentProfileScreen() {
     );
   }
 
-  const alert = needsYou([student], now)[0];
+  const alert = needsYou([student], now, handled)[0];
   const weekMood = mostCommonMood(dailyMoods(student.moods, 7, now));
   const next = nextCallFor(student.id, calls, now);
   const callTotals = callCounts(student.pastCalls);
@@ -149,12 +149,25 @@ export default function StudentProfileScreen() {
       </View>
 
       {alert && (
-        <View style={[styles.alert, !alert.urgent && styles.alertSoft]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${alert.reason}. Open alert`}
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/alert/[id]', params: { id: alert.alertId } });
+          }}
+          style={({ pressed }) => [
+            styles.alert,
+            !alert.urgent && styles.alertSoft,
+            pressed && { opacity: 0.8 },
+          ]}
+        >
           <View style={[styles.alertDot, !alert.urgent && { backgroundColor: '#D9A21B' }]} />
           <Text style={[styles.alertText, !alert.urgent && { color: colors.ink }]}>
             {alert.reason}
           </Text>
-        </View>
+          <ChevronRightIcon size={14} color={alert.urgent ? colors.danger : colors.inkFaint} />
+        </Pressable>
       )}
 
       <View style={styles.rows}>
