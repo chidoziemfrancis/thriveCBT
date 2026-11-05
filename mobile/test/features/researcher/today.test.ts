@@ -26,13 +26,16 @@ function student(patch: Partial<CaseloadStudent> = {}): CaseloadStudent {
     lastActiveAt: at(0, 9),
     phq9: { answers: [], score: 10, item9: 0, at: at(10) },
     moods: [],
-    sessionsDone: 1,
+    sessions: {},
+    journal: [],
+    pastCalls: [],
+    messages: [],
     ...patch,
   };
 }
 
 function call(startsAt: string, durationMin = 30): Call {
-  return { studentId: 's1', startsAt, durationMin };
+  return { id: startsAt, studentId: 's1', startsAt, durationMin };
 }
 
 describe('needsYou', () => {

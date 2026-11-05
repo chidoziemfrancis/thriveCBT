@@ -7,8 +7,24 @@ import { colors, fonts, radius } from '@/theme';
 
 const MAX_LENGTH = 1000;
 
-export default function ChatComposer({ onSend }: { onSend: (text: string) => void }) {
-  const [text, setText] = useState('');
+export default function ChatComposer({
+  onSend,
+  value,
+  onChangeText,
+  placeholder = 'Write a message…',
+  showHelp = true,
+}: {
+  onSend: (text: string) => void;
+  /** Pass both to control the text from outside, e.g. to drop in a quick reply. */
+  value?: string;
+  onChangeText?: (text: string) => void;
+  placeholder?: string;
+  /** The "Not for emergencies" line, which is for students. */
+  showHelp?: boolean;
+}) {
+  const [own, setOwn] = useState('');
+  const text = value ?? own;
+  const setText = onChangeText ?? setOwn;
   const canSend = text.trim().length > 0;
 
   function handleSend() {
@@ -19,24 +35,26 @@ export default function ChatComposer({ onSend }: { onSend: (text: string) => voi
 
   return (
     <View style={styles.wrap}>
-      <Pressable
-        accessibilityRole="link"
-        accessibilityLabel="Not for emergencies. Get help now"
-        onPress={() => router.push('/support')}
-        style={styles.helpRow}
-        hitSlop={6}
-      >
-        <LifebuoyIcon size={14} color={colors.inkMuted} />
-        <Text style={styles.helpText}>
-          Not for emergencies. <Text style={styles.helpLink}>Get help now</Text>
-        </Text>
-      </Pressable>
+      {showHelp && (
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel="Not for emergencies. Get help now"
+          onPress={() => router.push('/support')}
+          style={styles.helpRow}
+          hitSlop={6}
+        >
+          <LifebuoyIcon size={14} color={colors.inkMuted} />
+          <Text style={styles.helpText}>
+            Not for emergencies. <Text style={styles.helpLink}>Get help now</Text>
+          </Text>
+        </Pressable>
+      )}
 
       <View style={styles.row}>
         <TextInput
           value={text}
           onChangeText={setText}
-          placeholder="Write a message…"
+          placeholder={placeholder}
           placeholderTextColor={colors.inkFaint}
           multiline
           maxLength={MAX_LENGTH}

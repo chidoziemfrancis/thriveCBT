@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
-import FeatureIcon from '@/components/icons/FeatureIcon';
+import FeatureIcon, { Glyph } from '@/components/icons/FeatureIcon';
 import { PlusIcon, RefreshIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/journalLogic';
@@ -102,6 +102,11 @@ export default function JournalScreen() {
               ? `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'} · last written ${daysAgoLabel(latest.at)}`
               : 'A space to think things through'}
           </Text>
+          {/* Students must know before they write that their researcher can read this. */}
+          <View style={styles.shared}>
+            <Glyph name="eye" size={13} color={colors.inkFaint} />
+            <Text style={styles.sharedText}>Shared with your researcher</Text>
+          </View>
         </View>
         <Pressable
           accessibilityRole="button"
@@ -204,6 +209,8 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   headerText: { flex: 1, gap: 4 },
   meta: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
+  shared: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 2 },
+  sharedText: { fontFamily: fonts.medium, fontSize: 12, color: colors.inkFaint },
   newButton: {
     flexDirection: 'row',
     alignItems: 'center',

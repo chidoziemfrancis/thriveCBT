@@ -1,3 +1,6 @@
+// The most students the study lets one researcher look after.
+export const MAX_CASELOAD = 10;
+
 export type Researcher = {
   id: string;
   name: string;
@@ -27,11 +30,8 @@ export function assignResearcher(
   inviteCode?: string,
   random: () => number = Math.random
 ): Assignment | null {
-  const code = inviteCode?.trim().toUpperCase();
-  if (code) {
-    const inviter = researchers.find((r) => r.inviteCode.toUpperCase() === code);
-    if (inviter) return { researcher: inviter, method: 'invite' };
-  }
+  const inviter = inviteCode ? researcherForCode(researchers, inviteCode) : undefined;
+  if (inviter) return { researcher: inviter, method: 'invite' };
 
   const open = researchers.filter(hasSpace);
   if (open.length === 0) return null;
@@ -40,6 +40,12 @@ export function assignResearcher(
   const candidates = open.filter((r) => r.studentCount === fewest);
   const index = Math.min(Math.floor(random() * candidates.length), candidates.length - 1);
   return { researcher: candidates[index], method: 'random' };
+}
+
+/** Codes are matched without caring about case or stray spaces, as people type them. */
+export function researcherForCode(researchers: Researcher[], code: string): Researcher | undefined {
+  const wanted = code.replace(/\s/g, '').toUpperCase();
+  return wanted ? researchers.find((r) => r.inviteCode.toUpperCase() === wanted) : undefined;
 }
 
 function withoutTitle(name: string) {

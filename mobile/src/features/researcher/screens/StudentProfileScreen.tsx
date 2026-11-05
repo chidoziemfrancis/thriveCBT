@@ -7,8 +7,10 @@ import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import { severityBand } from '@/features/assessment/phq9';
-import MoodFace from '@/features/mood/components/MoodFace';
-import { dailyMoods } from '@/features/progress/progressLogic';
+import { daysAgoLabel } from '@/features/journal/journalLogic';
+import { MOODS } from '@/features/mood/moods';
+import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
+import { callCounts, sessionsCompleted } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { activeLabel, nextCallFor } from '@/features/researcher/studentsLogic';
 import { needsYou } from '@/features/researcher/todayLogic';
@@ -92,14 +94,14 @@ function Row({
   );
 }
 
-// Messaging, calls and booking are built next; until then the buttons say so honestly.
+// Video calls are built later; until then the Call button says so honestly.
 function comingSoon(what: string) {
   Alert.alert('Coming soon', `${what} for researchers is on the way.`);
 }
 
 export default function StudentProfileScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { students, calls, now } = useResearcher();
+  const { students, calls, now, handled } = useResearcher();
   const student = students.find((s) => s.id === id);
 
   if (!student) {
@@ -111,9 +113,10 @@ export default function StudentProfileScreen() {
     );
   }
 
-  const alert = needsYou([student], now)[0];
-  const week = dailyMoods(student.moods, 7, now);
+  const alert = needsYou([student], now, handled)[0];
+  const weekMood = mostCommonMood(dailyMoods(student.moods, 7, now));
   const next = nextCallFor(student.id, calls, now);
+  const callTotals = callCounts(student.pastCalls);
 
   return (
     <Screen>
@@ -128,31 +131,58 @@ export default function StudentProfileScreen() {
       </View>
 
       <View style={styles.actions}>
-        <Action icon="chat" label="Message" onPress={() => comingSoon('Messaging')} />
+        <Action
+          icon="chat"
+          label="Message"
+          onPress={() =>
+            router.push({ pathname: '/researcher/chat/[id]', params: { id: student.id } })
+          }
+        />
         <Action icon="video" label="Call" onPress={() => comingSoon('Video calling')} />
-        <Action icon="calendar" label="Schedule" onPress={() => comingSoon('Booking calls')} />
+        <Action
+          icon="calendar"
+          label="Schedule"
+          onPress={() =>
+            router.push({ pathname: '/researcher/schedule', params: { studentId: student.id } })
+          }
+        />
       </View>
 
       {alert && (
-        <View style={[styles.alert, !alert.urgent && styles.alertSoft]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${alert.reason}. Open alert`}
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/alert/[id]', params: { id: alert.alertId } });
+          }}
+          style={({ pressed }) => [
+            styles.alert,
+            !alert.urgent && styles.alertSoft,
+            pressed && { opacity: 0.8 },
+          ]}
+        >
           <View style={[styles.alertDot, !alert.urgent && { backgroundColor: '#D9A21B' }]} />
           <Text style={[styles.alertText, !alert.urgent && { color: colors.ink }]}>
             {alert.reason}
           </Text>
-        </View>
+          <ChevronRightIcon size={14} color={alert.urgent ? colors.danger : colors.inkFaint} />
+        </Pressable>
       )}
 
       <View style={styles.rows}>
-        <Row label="Mood this week">
-          <View style={styles.moods} accessible accessibilityLabel="Mood over the last 7 days">
-            {week.map((day) =>
-              day.mood === null ? (
-                <View key={day.date.getTime()} style={styles.noMood} />
-              ) : (
-                <MoodFace key={day.date.getTime()} mood={day.mood} size={18} />
-              )
-            )}
-          </View>
+        <Row
+          label="Mood"
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/student/[id]/moods', params: { id: student.id } });
+          }}
+        >
+          <Text style={styles.value}>
+            {weekMood === null
+              ? 'No moods this week'
+              : `Mostly ${MOODS[weekMood].label.toLowerCase()} this week`}
+          </Text>
         </Row>
         <Row
           label="PHQ-9"
@@ -165,12 +195,66 @@ export default function StudentProfileScreen() {
             {student.phq9.score} · {severityBand(student.phq9.score)}
           </Text>
         </Row>
-        <Row label="Sessions">
+        <Row
+          label="Sessions"
+          onPress={() => {
+            haptics.tick();
+            router.push({
+              pathname: '/researcher/student/[id]/sessions',
+              params: { id: student.id },
+            });
+          }}
+        >
           <Text style={styles.value}>
-            {student.sessionsDone} of {SESSIONS.length}
+            {sessionsCompleted(student)} of {SESSIONS.length}
           </Text>
         </Row>
-        <Row label="Next call">
+        <Row
+          label="Journal"
+          onPress={() => {
+            haptics.tick();
+            router.push({
+              pathname: '/researcher/student/[id]/journal',
+              params: { id: student.id },
+            });
+          }}
+        >
+          <Text style={styles.value}>
+            {student.journal.length === 0
+              ? 'No entries yet'
+              : `${student.journal.length} ${student.journal.length === 1 ? 'entry' : 'entries'} · last ${daysAgoLabel(
+                  [...student.journal].sort((a, b) => b.at.localeCompare(a.at))[0].at,
+                  now
+                )}`}
+          </Text>
+        </Row>
+        <Row
+          label="Calls"
+          onPress={() => {
+            haptics.tick();
+            router.push({ pathname: '/researcher/student/[id]/calls', params: { id: student.id } });
+          }}
+        >
+          <Text style={styles.value}>
+            {callTotals.total === 0
+              ? 'No calls yet'
+              : `${callTotals.total} ${callTotals.total === 1 ? 'call' : 'calls'}${callTotals.missed ? ` · ${callTotals.missed} missed` : ''}`}
+          </Text>
+        </Row>
+        <Row
+          label="Next call"
+          onPress={
+            next
+              ? () => {
+                  haptics.tick();
+                  router.push({
+                    pathname: '/researcher/call/[callId]',
+                    params: { callId: next.id },
+                  });
+                }
+              : undefined
+          }
+        >
           <Text style={styles.value}>{next ? callLabel(next.startsAt, now) : 'None booked'}</Text>
         </Row>
         <Row label="Joined">
@@ -224,13 +308,4 @@ const styles = StyleSheet.create({
   rowLabel: { fontFamily: fonts.medium, fontSize: 15, color: colors.inkMuted },
   rowValue: { flex: 1, alignItems: 'flex-end' },
   value: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink, textAlign: 'right' },
-  moods: { flexDirection: 'row', gap: 4 },
-  noMood: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    borderColor: colors.border,
-  },
 });

@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { ChevronRightIcon, CloseIcon, SearchIcon } from '@/components/icons';
+import { ChevronRightIcon, CloseIcon, PlusIcon, SearchIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import MoodFace from '@/features/mood/components/MoodFace';
 import type { CaseloadStudent } from '@/features/researcher/caseload';
@@ -17,8 +17,16 @@ import { useResearcher } from '@/features/researcher/useResearcher';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
-function Mark({ student, now }: { student: CaseloadStudent; now: Date }) {
-  const mark = rowMark(student, now);
+function Mark({
+  student,
+  now,
+  handled,
+}: {
+  student: CaseloadStudent;
+  now: Date;
+  handled: string[];
+}) {
+  const mark = rowMark(student, now, handled);
   if (mark.kind === 'urgent') {
     return (
       <View style={styles.urgent}>
@@ -33,21 +41,21 @@ function Mark({ student, now }: { student: CaseloadStudent; now: Date }) {
 }
 
 export default function StudentsScreen() {
-  const { researcher, students, now } = useResearcher();
+  const { researcher, students, now, handled } = useResearcher();
   const [filter, setFilter] = useState<StudentFilter>('all');
   const [query, setQuery] = useState('');
 
   const counts = {
     all: students.length,
-    needs: filterStudents(students, 'needs', '', now).length,
-    quiet: filterStudents(students, 'quiet', '', now).length,
+    needs: filterStudents(students, 'needs', '', now, handled).length,
+    quiet: filterStudents(students, 'quiet', '', now, handled).length,
   };
   const chips: { key: StudentFilter; label: string }[] = [
     { key: 'all', label: 'All' },
     { key: 'needs', label: `Needs you ${counts.needs}` },
     { key: 'quiet', label: `Quiet ${counts.quiet}` },
   ];
-  const shown = filterStudents(students, filter, query, now);
+  const shown = filterStudents(students, filter, query, now, handled);
 
   return (
     <Screen insideTabs>
@@ -58,6 +66,19 @@ export default function StudentsScreen() {
             {students.length} / {researcher.capacity}
           </Text>
         )}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Invite a student"
+          hitSlop={8}
+          onPress={() => {
+            haptics.tap();
+            router.push('/researcher/invite');
+          }}
+          style={({ pressed }) => [styles.invite, pressed && { opacity: 0.7 }]}
+        >
+          <PlusIcon size={14} color={colors.primary} />
+          <Text style={styles.inviteText}>Invite</Text>
+        </Pressable>
       </View>
 
       <View style={styles.search}>
@@ -129,7 +150,7 @@ export default function StudentsScreen() {
                     Week {student.week} · {activeLabel(student.lastActiveAt, now)}
                   </Text>
                 </View>
-                <Mark student={student} now={now} />
+                <Mark student={student} now={now} handled={handled} />
                 <ChevronRightIcon size={16} color={colors.inkFaint} />
               </View>
             </Pressable>
@@ -141,8 +162,18 @@ export default function StudentsScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
-  capacity: { fontFamily: fonts.bold, fontSize: 15, color: colors.inkMuted },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  capacity: { flex: 1, fontFamily: fonts.bold, fontSize: 15, color: colors.inkMuted },
+  invite: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.pill,
+    backgroundColor: colors.primarySoft,
+  },
+  inviteText: { fontFamily: fonts.bold, fontSize: 13, color: colors.primary },
   search: {
     flexDirection: 'row',
     alignItems: 'center',

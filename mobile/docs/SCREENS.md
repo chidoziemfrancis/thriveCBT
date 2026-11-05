@@ -169,57 +169,76 @@ A simple one-to-one chat so a student can message their researcher between weekl
 
 ## 3. Researcher screens
 
+Researchers use the app as case managers: keeping their students safe, supported and on track. Research analysis happens later on de-identified data from the admin website (section 4), not in the app.
+
+**Design rules for this side:** flat and simple (no gradients, no glow, few cards), and every screen starts from a real app reference that's named below, with a sketch approved before it's built.
+
+**Navigation:** bottom tabs **Today · Students · Messages**. Settings open from the researcher's photo.
+
 ### 3.1 Account
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R1 | Researcher sign in | Email and password (no self sign-up; accounts are created for researchers, see section 4) | ⬜ |
-| R2 | Accept researcher invite | First-time setup from their invite email: set a password | ⬜ |
-| R3 | Researcher profile setup | Photo, name, short bio shown to students, contact preferences | ⬜ |
-| R4 | Availability and capacity | Weekly call slots, max number of students, "accepting new students" switch | ⬜ |
+| R1 | Researcher sign in | Email and password (no self sign-up; accounts are created for researchers), then the PIN lock | ✅ |
+| R2 | Accept researcher invite | First-time setup from their invite email: set a password. Needs the backend | ⬜ |
 
-### 3.2 Main app (tab bar: Students · Schedule · Messages · Alerts)
+### 3.2 Today and students
+
+| # | Screen | What it does | Reference | Status |
+|---|---|---|---|---|
+| R3 | Today | Greeting, **Next call** (with Join from 10 minutes before), **Needs you** (question 9, inactivity, severe score) and **Later today** | Spring Health home: upcoming appointment first | ✅ PR #26 |
+| R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 10" and an Invite button | WhatsApp chat list and filter chips | ✅ PR #27 |
+| R5 | Student profile (hub) | Avatar, name, week, last active; Message · Call · Schedule buttons; an alert line when needed; rows that open R6–R10 | WhatsApp contact info: summary, actions, then rows to detail screens | ✅ PR #27 (rows for R7–R10 to add) |
+| R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted | The paper PHQ-9 form | ✅ PR #27 |
+| R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
+| R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
+| R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
+| R9 | Journal | Entries grouped by week (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ✅ PR #31 |
+| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note; researcher call notes added later | iPhone Recents; WhatsApp Calls tab | ✅ |
+
+### 3.3 Scheduling
+
+| # | Screen | What it does | Reference | Status |
+|---|---|---|---|---|
+| R11 | Schedule a call | Student (only your own), a day strip for the next two weeks, time slots from your availability, repeat weekly, optional note, then confirm ("Zainab will get a notification") | Spring Health booking; Calendly time slots | ✅ |
+| R12 | Upcoming calls | Every booked call grouped by day | Google Calendar schedule view | ✅ |
+| R13 | Call details | Time and student, with Join, Reschedule and Cancel; after cancelling, "Book another time" | Spring Health appointment details and cancel flow | ✅ |
+
+Rules: slots follow the researcher's own availability (Monday to Friday, 9 to 5 until they change it), no double-booking, no past times, one regular weekly check-in per student plus one-offs, and the student is notified of every booking, change or cancellation.
+
+### 3.4 Messages and calls
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R5 | Researcher home | Today's calls, open alerts, students needing attention, caseload size | ⬜ |
-| R6 | Student list | Every assigned student with week, last active, adherence and a risk flag; search and filter | ⬜ |
-| R7 | Student detail | Profile, how they joined (invite or random), PHQ-9 baseline and latest, session progress, mood trend, homework | ⬜ |
-| R8 | Student journal and homework | Entries and homework the student has shared | ⬜ |
-| R9 | Weekly progress note | Write the required weekly note: adherence, symptoms, risk check, support given | ⬜ |
-| R10 | Adherence overview | Logins, session completion, homework compliance across all students | ⬜ |
-
-### 3.3 Inviting students
-
-| # | Screen | What it does | Status |
-|---|---|---|---|
-| R11 | Invite students | Generate an invite link and code; share via WhatsApp, email or QR | ⬜ |
-| R12 | Invites list | Pending, accepted and expired invites; resend or cancel | ⬜ |
-
-### 3.4 Contact and calls
-
-| # | Screen | What it does | Status |
-|---|---|---|---|
-| R13 | Schedule | Upcoming weekly check-ins by day | ⬜ |
-| R14 | Book or move a check-in | Pick a student and a slot | ⬜ |
-| R15 | Messages inbox | All student chats with unread counts and last-message preview. Chats with a risk flag sit at the top, then unread, then most recent. | ⬜ |
-| R16 | Conversation | Same chat screen as the student (C2), plus a strip at the top with the student's week, today's mood and any PHQ-9 risk flag, and a link to their detail page (R7) | ⬜ |
-| R16a | Quick replies | Saved short replies the researcher can tap ("Just checking in, how did this week's session go?") and edit | ⬜ |
-| R16b | Follow-up flag | Mark a chat "needs follow-up" so it stays at the top of the inbox until cleared | ⬜ |
-| R17 | Video call | Same call screens as the student (S35, S36), plus a notes panel | ⬜ |
+| R14 | Messages inbox | All student chats with unread counts and last message; risk-flagged chats first, then unread, then most recent | ✅ |
+| R15 | Conversation | Same chat as the student side, plus a strip with the student's week, today's mood and any risk flag, linking to their profile | ✅ |
+| R16 | Quick replies and follow-up flag | Saved short replies, and a "needs follow-up" flag that keeps a chat at the top | ✅ |
+| R17 | Video call and call note | Same call screens as the student, then a short note on how it went (feeds the call log, R10) | ⬜ |
 
 ### 3.5 Safety
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R18 | Alerts inbox | Risk alerts: PHQ-9 question 9 answered above zero, severe scores, emergency button used, student inactive for X days | ⬜ |
-| R19 | Alert detail | What triggered it, student contact options, mark actions taken, escalate | ⬜ |
+| R18 | Alert detail | What triggered it, contact options, mark as handled with a note, escalate | ✅ |
 
-### 3.6 Settings
+### 3.6 Running the caseload
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R20 | Researcher settings | Notifications, profile, availability, log out | ⬜ |
+| R19 | Invite a student | QR, code and link with Copy, Share invite (hidden when full or not accepting), places used out of 10. Students enter the code in an optional sign-up step after email checking, or open the link to fill it in | ✅ |
+| R20 | Weekly note | The study's weekly note per student: how they're doing and support given (contents to be confirmed) | ⬜ |
+| R21 | Settings | Photo and bio, availability and capacity, "accepting students", notifications, log out | ✅ |
+
+### 3.7 What researchers can see, and what students are told
+
+Everything a researcher sees must be on the student's "What your researcher can see" list, and nothing else.
+
+| Shown to researchers | On the student's list? |
+|---|---|
+| PHQ-9 answers and scores, session progress and answers, mood logs, messages, check-in feedback, emergency contact | Yes |
+| When they were last active | **Not yet; add it** |
+| Journal entries | **Yes**: shown on the privacy screen, the Journal tab and the reflection step, and in the draft consent (needs ethics approval) |
+| PIN, password, location, call recordings | Never |
 
 ---
 

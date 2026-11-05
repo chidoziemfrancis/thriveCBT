@@ -1,11 +1,17 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 
+import { MAX_CASELOAD } from '@/features/assignment/assign';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { researcherIdFor } from '@/features/auth/mockAccounts';
 import { getUserSession } from '@/features/auth/userSession';
 
 import { mockCaseload } from './caseload';
+import { handledIds } from './alerts';
+import { useAlertEvents } from './alertStore';
+import { allCalls } from './schedule';
+import { useSchedule } from './scheduleStore';
+import { useResearcherSettings } from './settingsStore';
 
 function read(now = new Date()) {
   const id = researcherIdFor(getUserSession().email);
@@ -15,9 +21,26 @@ function read(now = new Date()) {
   return { researcher, ...caseload, now };
 }
 
-/** The signed-in researcher and their students, rebuilt on focus so "today" stays current. */
+/** Rebuilt on focus so "today" stays current. */
 export function useResearcher() {
   const [state, setState] = useState(() => read());
   useFocusEffect(useCallback(() => setState(read()), []));
-  return state;
+  const { bookings, cancelled } = useSchedule();
+  const alertEvents = useAlertEvents();
+  const settings = useResearcherSettings();
+  const researcher = state.researcher && {
+    ...state.researcher,
+    name: settings.name ?? state.researcher.name,
+    bio: settings.bio ?? state.researcher.bio,
+    capacity: Math.min(MAX_CASELOAD, settings.capacity ?? state.researcher.capacity),
+    accepting: settings.accepting ?? state.researcher.accepting,
+  };
+  return {
+    ...state,
+    researcher,
+    settings,
+    calls: allCalls(state.calls, bookings, cancelled),
+    alertEvents,
+    handled: handledIds(alertEvents),
+  };
 }

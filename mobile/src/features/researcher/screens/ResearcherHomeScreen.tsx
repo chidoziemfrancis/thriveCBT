@@ -6,8 +6,6 @@ import { CameraIcon, ChevronRightIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import { firstName } from '@/features/assignment/assign';
 import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
-import { signOut } from '@/features/auth/signOut';
-import { getUserSession } from '@/features/auth/userSession';
 import { JOIN_EARLY_MIN, countdownLabel } from '@/features/checkin/checkinLogic';
 import type { Call, CaseloadStudent } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
@@ -18,6 +16,7 @@ import {
   needsYou,
   nextCall,
 } from '@/features/researcher/todayLogic';
+import { alertStatus } from '@/features/researcher/alerts';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
@@ -34,10 +33,25 @@ function SectionTitle({ children }: { children: string }) {
   return <Text style={styles.sectionTitle}>{children}</Text>;
 }
 
-function NextCall({ call, student, now }: { call: Call; student: CaseloadStudent; now: Date }) {
+function NextCall({
+  call,
+  student,
+  now,
+  onOpen,
+}: {
+  call: Call;
+  student: CaseloadStudent;
+  now: Date;
+  onOpen: () => void;
+}) {
   const live = callState(call, now) === 'live';
   return (
-    <View style={styles.next}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Next call, ${time(call.startsAt)}, ${student.name}`}
+      onPress={onOpen}
+      style={({ pressed }) => [styles.next, pressed && { opacity: 0.85 }]}
+    >
       <View style={styles.nextText}>
         <Text style={styles.nextTime}>{time(call.startsAt)}</Text>
         <Text style={styles.nextName}>{student.name}</Text>
@@ -61,38 +75,27 @@ function NextCall({ call, student, now }: { call: Call; student: CaseloadStudent
         <CameraIcon size={16} color={live ? colors.onPrimary : colors.inkFaint} />
         <Text style={[styles.joinText, !live && { color: colors.inkFaint }]}>Join</Text>
       </Pressable>
-    </View>
+    </Pressable>
   );
 }
 
 export default function ResearcherHomeScreen() {
-  const { researcher, students, calls, now } = useResearcher();
+  const { researcher, students, calls, now, handled, alertEvents } = useResearcher();
   const byId = (id: string) => students.find((s) => s.id === id);
 
   const next = nextCall(calls, now);
   const nextStudent = next && byId(next.studentId);
   const later = callsToday(calls, now).filter((c) => c !== next && callState(c, now) !== 'done');
-  const flagged = needsYou(students, now);
+  const flagged = needsYou(students, now, handled);
 
-  function openStudent(id: string) {
+  function openCall(id: string) {
     haptics.tick();
-    router.push({ pathname: '/researcher/student/[id]', params: { id } });
+    router.push({ pathname: '/researcher/call/[callId]', params: { callId: id } });
   }
 
-  // Settings get their own screen later; until then the photo is where to log out.
   function openAccount() {
     haptics.tap();
-    Alert.alert(researcher?.name ?? 'Your account', getUserSession().email ?? '', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Log out',
-        style: 'destructive',
-        onPress: async () => {
-          await signOut();
-          router.replace('/');
-        },
-      },
-    ]);
+    router.push('/researcher/settings');
   }
 
   return (
@@ -107,7 +110,7 @@ export default function ResearcherHomeScreen() {
         </View>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Your account"
+          accessibilityLabel="Your settings"
           onPress={openAccount}
           style={styles.photo}
         >
@@ -121,7 +124,7 @@ export default function ResearcherHomeScreen() {
       <Animated.View entering={FadeInDown.duration(320)} style={styles.section}>
         <SectionTitle>Next call</SectionTitle>
         {next && nextStudent ? (
-          <NextCall call={next} student={nextStudent} now={now} />
+          <NextCall call={next} student={nextStudent} now={now} onOpen={() => openCall(next.id)} />
         ) : (
           <Text style={styles.empty}>No more calls today.</Text>
         )}
@@ -132,12 +135,15 @@ export default function ResearcherHomeScreen() {
         {flagged.length === 0 ? (
           <Text style={styles.empty}>Nothing urgent. Everyone is okay.</Text>
         ) : (
-          flagged.map(({ student, reason, urgent }, i) => (
+          flagged.map(({ student, reason, urgent, alertId }, i) => (
             <Pressable
               key={student.id}
               accessibilityRole="button"
               accessibilityLabel={`${urgent ? 'Urgent. ' : ''}${student.name}: ${reason}`}
-              onPress={() => openStudent(student.id)}
+              onPress={() => {
+                haptics.tick();
+                router.push({ pathname: '/researcher/alert/[id]', params: { id: alertId } });
+              }}
               style={({ pressed }) => [
                 styles.row,
                 i > 0 && styles.divider,
@@ -148,6 +154,9 @@ export default function ResearcherHomeScreen() {
               <View style={styles.rowText}>
                 <Text style={styles.rowName}>{student.name}</Text>
                 <Text style={[styles.rowMeta, urgent && { color: colors.danger }]}>{reason}</Text>
+                {alertStatus(alertEvents[alertId]) === 'acknowledged' && (
+                  <Text style={styles.onIt}>You’re on it</Text>
+                )}
               </View>
               <ChevronRightIcon size={16} color={colors.inkFaint} />
             </Pressable>
@@ -163,10 +172,10 @@ export default function ResearcherHomeScreen() {
             if (!student) return null;
             return (
               <Pressable
-                key={call.startsAt}
+                key={call.id}
                 accessibilityRole="button"
                 accessibilityLabel={`${time(call.startsAt)}, ${student.name}, week ${student.week}`}
-                onPress={() => openStudent(student.id)}
+                onPress={() => openCall(call.id)}
                 style={({ pressed }) => [
                   styles.row,
                   i > 0 && styles.divider,
@@ -185,6 +194,19 @@ export default function ResearcherHomeScreen() {
           })}
         </Animated.View>
       )}
+
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => {
+          haptics.tick();
+          router.push('/researcher/calls');
+        }}
+        hitSlop={8}
+        style={styles.allCalls}
+      >
+        <Text style={styles.allCallsText}>See all calls</Text>
+        <ChevronRightIcon size={14} color={colors.primary} />
+      </Pressable>
     </Screen>
   );
 }
@@ -193,6 +215,8 @@ const PHOTO = 44;
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 4 },
+  allCalls: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 24 },
+  allCallsText: { fontFamily: fonts.bold, fontSize: 14, color: colors.primary },
   headerText: { flex: 1, gap: 2 },
   date: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
   photo: {
@@ -245,5 +269,6 @@ const styles = StyleSheet.create({
   rowText: { flex: 1, gap: 2 },
   rowName: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink },
   rowMeta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  onIt: { fontFamily: fonts.bold, fontSize: 12, color: colors.primary },
   rowTime: { width: 64, fontFamily: fonts.bold, fontSize: 14, color: colors.ink },
 });

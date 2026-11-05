@@ -103,7 +103,8 @@ describe('mock check-in schedule', () => {
     const first = getNextCheckIn('r-tunde', new Date(2026, 9, 29, 9, 0))!;
     completeCheckIn(first, { rating: 3, callSeconds: 1200 }, new Date(2026, 9, 29, 9, 30));
 
-    const next = getNextCheckIn('r-tunde')!;
+    // Read back the same day, so the rule that rolls missed calls forward doesn't kick in.
+    const next = getNextCheckIn('r-tunde', new Date(2026, 9, 29, 10, 0))!;
     expect(new Date(next.startsAt).getTime() - new Date(first.startsAt).getTime()).toBe(
       7 * 24 * 60 * 60 * 1000
     );
