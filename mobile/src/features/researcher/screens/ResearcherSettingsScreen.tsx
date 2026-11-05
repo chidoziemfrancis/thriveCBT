@@ -3,6 +3,7 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
+import { MAX_CASELOAD } from '@/features/assignment/assign';
 import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { signOut } from '@/features/auth/signOut';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
@@ -13,7 +14,6 @@ import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
 const MIN_CAPACITY = 1;
-const MAX_CAPACITY = 40;
 
 export default function ResearcherSettingsScreen() {
   const { researcher, students, settings } = useResearcher();
@@ -30,7 +30,7 @@ export default function ResearcherSettingsScreen() {
   const lowest = Math.max(MIN_CAPACITY, students.length);
 
   function changeCapacity(by: number) {
-    const next = Math.min(MAX_CAPACITY, Math.max(lowest, researcher!.capacity + by));
+    const next = Math.min(MAX_CASELOAD, Math.max(lowest, researcher!.capacity + by));
     if (next === researcher!.capacity) return;
     haptics.tick();
     updateSettings({ capacity: next });
@@ -111,10 +111,10 @@ export default function ResearcherSettingsScreen() {
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Raise the limit"
-              accessibilityState={{ disabled: researcher.capacity >= MAX_CAPACITY }}
-              disabled={researcher.capacity >= MAX_CAPACITY}
+              accessibilityState={{ disabled: researcher.capacity >= MAX_CASELOAD }}
+              disabled={researcher.capacity >= MAX_CASELOAD}
               onPress={() => changeCapacity(1)}
-              style={[styles.step, researcher.capacity >= MAX_CAPACITY && styles.stepOff]}
+              style={[styles.step, researcher.capacity >= MAX_CASELOAD && styles.stepOff]}
             >
               <Text style={styles.stepText}>+</Text>
             </Pressable>
@@ -130,6 +130,12 @@ export default function ResearcherSettingsScreen() {
             }
             on={researcher.accepting}
             onChange={(on) => updateSettings({ accepting: on })}
+          />
+          <SettingsRow
+            icon="userPlus"
+            label="Invite a student"
+            value={researcher.inviteCode}
+            onPress={() => router.push('/researcher/invite')}
           />
         </SettingsGroup>
 

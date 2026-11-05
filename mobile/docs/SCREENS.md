@@ -187,7 +187,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | # | Screen | What it does | Reference | Status |
 |---|---|---|---|---|
 | R3 | Today | Greeting, **Next call** (with Join from 10 minutes before), **Needs you** (question 9, inactivity, severe score) and **Later today** | Spring Health home: upcoming appointment first | ✅ PR #26 |
-| R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 20" | WhatsApp chat list and filter chips | ✅ PR #27 |
+| R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 10" and an Invite button | WhatsApp chat list and filter chips | ✅ PR #27 |
 | R5 | Student profile (hub) | Avatar, name, week, last active; Message · Call · Schedule buttons; an alert line when needed; rows that open R6–R10 | WhatsApp contact info: summary, actions, then rows to detail screens | ✅ PR #27 (rows for R7–R10 to add) |
 | R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted | The paper PHQ-9 form | ✅ PR #27 |
 | R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
@@ -225,7 +225,7 @@ Rules: slots follow the researcher's own availability (Monday to Friday, 9 to 5 
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| R19 | Invite a student | Invite code and link, Share and QR | ⬜ |
+| R19 | Invite a student | QR, code and link with Copy, Share invite (hidden when full or not accepting), places used out of 10. Students enter the code in an optional sign-up step after email checking, or open the link to fill it in | ✅ |
 | R20 | Weekly note | The study's weekly note per student: how they're doing and support given (contents to be confirmed) | ⬜ |
 | R21 | Settings | Photo and bio, availability and capacity, "accepting students", notifications, log out | ✅ |
 

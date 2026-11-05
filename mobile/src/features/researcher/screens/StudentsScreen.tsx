@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { ChevronRightIcon, CloseIcon, SearchIcon } from '@/components/icons';
+import { ChevronRightIcon, CloseIcon, PlusIcon, SearchIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import MoodFace from '@/features/mood/components/MoodFace';
 import type { CaseloadStudent } from '@/features/researcher/caseload';
@@ -66,6 +66,19 @@ export default function StudentsScreen() {
             {students.length} / {researcher.capacity}
           </Text>
         )}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Invite a student"
+          hitSlop={8}
+          onPress={() => {
+            haptics.tap();
+            router.push('/researcher/invite');
+          }}
+          style={({ pressed }) => [styles.invite, pressed && { opacity: 0.7 }]}
+        >
+          <PlusIcon size={14} color={colors.primary} />
+          <Text style={styles.inviteText}>Invite</Text>
+        </Pressable>
       </View>
 
       <View style={styles.search}>
@@ -149,8 +162,18 @@ export default function StudentsScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
-  capacity: { fontFamily: fonts.bold, fontSize: 15, color: colors.inkMuted },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  capacity: { flex: 1, fontFamily: fonts.bold, fontSize: 15, color: colors.inkMuted },
+  invite: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.pill,
+    backgroundColor: colors.primarySoft,
+  },
+  inviteText: { fontFamily: fonts.bold, fontSize: 13, color: colors.primary },
   search: {
     flexDirection: 'row',
     alignItems: 'center',

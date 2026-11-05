@@ -1,6 +1,7 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 
+import { MAX_CASELOAD } from '@/features/assignment/assign';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { researcherIdFor } from '@/features/auth/mockAccounts';
 import { getUserSession } from '@/features/auth/userSession';
@@ -31,7 +32,7 @@ export function useResearcher() {
     ...state.researcher,
     name: settings.name ?? state.researcher.name,
     bio: settings.bio ?? state.researcher.bio,
-    capacity: settings.capacity ?? state.researcher.capacity,
+    capacity: Math.min(MAX_CASELOAD, settings.capacity ?? state.researcher.capacity),
     accepting: settings.accepting ?? state.researcher.accepting,
   };
   return {
