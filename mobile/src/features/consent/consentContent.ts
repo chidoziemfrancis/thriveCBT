@@ -17,7 +17,7 @@ export const STUDY_INFO = [
   },
   {
     title: 'Who sees my answers?',
-    body: 'Only the research team. Your researcher sees your check-ins, moods, session answers and journal entries so they can support you. Everything is stored securely, reported without your name, and never shared with your school or anyone else.',
+    body: 'Only the research team. Your researcher sees your check-ins, moods, session answers, journal entries, calls and when you were last active, so they can support you. Everything is stored securely, reported without your name, and never shared with your school or anyone else.',
   },
   {
     title: 'Are there any risks?',
