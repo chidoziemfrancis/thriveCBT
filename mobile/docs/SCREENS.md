@@ -134,7 +134,7 @@ A simple one-to-one chat so a student can message their researcher between weekl
 | C1 | Other chat entry points | "Message Tunde" on the Home check-in card and on My researcher (S32), with the same unread badge | ✅ (mock researcher) |
 | C2 | Chat screen | Researcher's avatar and name in the header, with their usual reply hours ("Usually replies within a day, Mon–Fri"). Message bubbles with date separators. Sent, delivered and read ticks. Typing indicator. Text and emoji input, plus a small "Not for emergencies, tap Help" link above the input. | ✅ (mock researcher) |
 | C3 | Empty chat | First-time state: the researcher's intro and a few suggested openers ("Hi, I have a question about this week's session") | ✅ (mock researcher) |
-| C4 | Risk message prompt | If a student's message contains risk words (for example "kill myself" or "end it"), the message still sends, the Help sheet opens straight away, and the researcher gets an alert (R18) | ✅ (placeholder word list, researcher alert ⬜) |
+| C4 | Risk message prompt | If a student's message contains risk words (for example "kill myself" or "end it"), the message still sends, the Help sheet opens straight away, and the researcher gets an alert (R18) | ✅ (placeholder word list, researcher alert R18) |
 | C5 | New message notification | Push notification and in-app unread badge. The preview says "New message from Tunde", never the message text, so nothing private shows on the lock screen. | ⬜ |
 | C6 | Offline and failed sends | Messages queue while offline and show "Not sent, tap to retry" if they fail | ⬜ |
 
@@ -194,7 +194,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
 | R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
 | R9 | Journal | Entries grouped by week (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ✅ PR #31 |
-| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note; researcher call notes added later | iPhone Recents; WhatsApp Calls tab | ✅ |
+| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note, and the researcher's own note from R17 | iPhone Recents; WhatsApp Calls tab | ✅ |
 
 ### 3.3 Scheduling
 
@@ -213,7 +213,7 @@ Rules: slots follow the researcher's own availability (Monday to Friday, 9 to 5 
 | R14 | Messages inbox | All student chats with unread counts and last message; risk-flagged chats first, then unread, then most recent | ✅ |
 | R15 | Conversation | Same chat as the student side, plus a strip with the student's week, today's mood and any risk flag, linking to their profile | ✅ |
 | R16 | Quick replies and follow-up flag | Saved short replies, and a "needs follow-up" flag that keeps a chat at the top | ✅ |
-| R17 | Video call and call note | Same call screens as the student, then a short note on how it went (feeds the call log, R10) | ⬜ |
+| R17 | Video call and call note | Same call screen as the student, "Waiting for Tolu to join…" until they arrive. After the call: Went well, Some concerns or Didn't happen, an optional private note, and Save and book a follow-up for concerns. Feeds the call log (R10) and takes the call off the upcoming list. Video is a demo until the call service exists | ✅ |
 
 ### 3.5 Safety
 
