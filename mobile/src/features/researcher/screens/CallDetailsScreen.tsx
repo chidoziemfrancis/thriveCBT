@@ -74,10 +74,13 @@ export default function CallDetailsScreen() {
               accessibilityRole="button"
               accessibilityState={{ disabled: !live }}
               disabled={!live}
-              // The researcher's call screen comes with the calls work.
-              onPress={() =>
-                Alert.alert('Coming soon', 'Video calls for researchers are on the way.')
-              }
+              onPress={() => {
+                haptics.tap();
+                router.replace({
+                  pathname: '/researcher/call/[callId]/live',
+                  params: { callId: call.id },
+                });
+              }}
               style={[styles.join, !live && styles.joinLocked]}
             >
               <CameraIcon size={18} color={live ? colors.onPrimary : colors.inkFaint} />

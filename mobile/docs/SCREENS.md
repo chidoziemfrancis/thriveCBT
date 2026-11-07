@@ -35,7 +35,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 |---|---|---|---|
 | S1 | Splash | Logo while the app loads | ✅ |
 | S2 | Welcome | Mascot, app promise, "Get started" or "I already have an account" | ✅ |
-| S3 | Invite code | "Got an invite from a researcher?" Enter a code, or skip. Opening an invite link fills it in automatically. | ⬜ |
+| S3 | Invite code | "Got an invite from a researcher?" Enter a code, or skip. Opening an invite link fills it in automatically. | ✅ |
 | S4 | Email | Enter email; existing accounts go to the password step | ✅ |
 | S5 | Create password | Set a password for a new account | ✅ |
 | S6 | Verify email | 6-digit code with resend timer | ✅ |
@@ -56,7 +56,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S16 | What to expect | The study journey: check-in, 8 sessions, weekly calls, final check-in | ✅ |
 | S17 | PHQ-9 question (×9) | Baseline check-in, one question per screen, slider and 14-day visual | ✅ |
 | S18 | PHQ-9 results | Starting score and severity band | ✅ |
-| S19 | Crisis support | Shown instead of results if question 9 is above "Not at all": support options, alerts the researcher | ✅ (alert ⬜) |
+| S19 | Crisis support | Shown instead of results if question 9 is above "Not at all": support options, alerts the researcher | ✅ (researcher alert R18; live link needs the backend) |
 
 ### 2.3 Researcher assignment
 
@@ -74,11 +74,11 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S24 | Sessions path | Duolingo-style path of the 8 sessions: done, current, locked | ✅ |
 | S25 | Session overview | Title, focus, the session's modules and progress, "Begin" or "Continue" | ✅ |
 | S26 | Session complete | Celebration, what was learned, homework for the week | ✅ |
-| S27 | Journal list | All entries, newest first, with prompts and mood tags | ⬜ |
-| S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ⬜ |
-| S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ⬜ |
+| S27 | Journal list | All entries, newest first, with prompts and mood tags | ✅ |
+| S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ✅ |
+| S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (on Home; note ⬜) |
-| S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | ⬜ |
+| S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
 
 ### 2.5 Session modules (reusable templates)
 
@@ -134,7 +134,7 @@ A simple one-to-one chat so a student can message their researcher between weekl
 | C1 | Other chat entry points | "Message Tunde" on the Home check-in card and on My researcher (S32), with the same unread badge | ✅ (mock researcher) |
 | C2 | Chat screen | Researcher's avatar and name in the header, with their usual reply hours ("Usually replies within a day, Mon–Fri"). Message bubbles with date separators. Sent, delivered and read ticks. Typing indicator. Text and emoji input, plus a small "Not for emergencies, tap Help" link above the input. | ✅ (mock researcher) |
 | C3 | Empty chat | First-time state: the researcher's intro and a few suggested openers ("Hi, I have a question about this week's session") | ✅ (mock researcher) |
-| C4 | Risk message prompt | If a student's message contains risk words (for example "kill myself" or "end it"), the message still sends, the Help sheet opens straight away, and the researcher gets an alert (R18) | ✅ (placeholder word list, researcher alert ⬜) |
+| C4 | Risk message prompt | If a student's message contains risk words (for example "kill myself" or "end it"), the message still sends, the Help sheet opens straight away, and the researcher gets an alert (R18) | ✅ (placeholder word list, researcher alert R18) |
 | C5 | New message notification | Push notification and in-app unread badge. The preview says "New message from Tunde", never the message text, so nothing private shows on the lock screen. | ⬜ |
 | C6 | Offline and failed sends | Messages queue while offline and show "Not sent, tap to retry" if they fail | ⬜ |
 
@@ -160,7 +160,7 @@ A simple one-to-one chat so a student can message their researcher between weekl
 |---|---|---|---|
 | S42 | Profile | Name, email, age, sessions done, researcher | ✅ |
 | S43 | Notification settings | Reminders on or off and timing | ✅ (settings saved; push needs backend) |
-| S44 | Privacy | What the researcher can see; download my data | ✅ (journal access ⬜) |
+| S44 | Privacy | What the researcher can see; download my data | ✅ |
 | S45 | Withdraw from study | Participants can leave at any time; explains what happens to their data | ✅ (draft wording) |
 | S46 | Terms of use / Privacy policy | Legal pages | 🟡 (placeholder until legal text) |
 | S47 | Log out | Confirm and sign out | ✅ |
@@ -194,7 +194,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
 | R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
 | R9 | Journal | Entries grouped by week (date, mood face, prompt, preview), read-only; open one to read it in full | Day One journal timeline | ✅ PR #31 |
-| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note; researcher call notes added later | iPhone Recents; WhatsApp Calls tab | ✅ |
+| R10 | Call log | Every past call: date and time, duration or **Missed** in red, the student's post-call rating and note, and the researcher's own note from R17 | iPhone Recents; WhatsApp Calls tab | ✅ |
 
 ### 3.3 Scheduling
 
@@ -213,7 +213,7 @@ Rules: slots follow the researcher's own availability (Monday to Friday, 9 to 5 
 | R14 | Messages inbox | All student chats with unread counts and last message; risk-flagged chats first, then unread, then most recent | ✅ |
 | R15 | Conversation | Same chat as the student side, plus a strip with the student's week, today's mood and any risk flag, linking to their profile | ✅ |
 | R16 | Quick replies and follow-up flag | Saved short replies, and a "needs follow-up" flag that keeps a chat at the top | ✅ |
-| R17 | Video call and call note | Same call screens as the student, then a short note on how it went (feeds the call log, R10) | ⬜ |
+| R17 | Video call and call note | Same call screen as the student, "Waiting for Tolu to join…" until they arrive. After the call: Went well, Some concerns or Didn't happen, an optional private note, and Save and book a follow-up for concerns. Feeds the call log (R10) and takes the call off the upcoming list. Video is a demo until the call service exists | ✅ |
 
 ### 3.5 Safety
 
@@ -236,7 +236,7 @@ Everything a researcher sees must be on the student's "What your researcher can 
 | Shown to researchers | On the student's list? |
 |---|---|
 | PHQ-9 answers and scores, session progress and answers, mood logs, messages, check-in feedback, emergency contact | Yes |
-| When they were last active | **Not yet; add it** |
+| When they were last active, and calls joined or missed | Yes |
 | Journal entries | **Yes**: shown on the privacy screen, the Journal tab and the reflection step, and in the draft consent (needs ethics approval) |
 | PIN, password, location, call recordings | Never |
 
@@ -282,9 +282,28 @@ Accept invite → Profile setup → Availability → Home → Invite students �
 2. **Age limit.** What is the minimum age to join? It decides when S15 "Not eligible" shows.
 3. **Journal privacy.** Can researchers read every journal entry, or only ones the student chooses to share?
 4. **Changing researcher.** Can a student or the study lead switch a student to another researcher mid-study?
-5. **Capacity.** How many students can one researcher support at once?
+5. ~~**Capacity.**~~ Answered: 10 students per researcher.
 6. **Crisis contacts.** Which helpline numbers and campus counselling details should S38 show?
 7. **Admin website users.** One study lead, or several people managing researchers? (Post-MVP, but it affects how researcher accounts are set up now.)
 8. **Chat as research data.** Are chat messages part of the study data (analysed, exported), or only for support? This changes the consent wording.
 9. **Chat reply hours.** What reply time should students expect from researchers, and are weekends covered?
 10. **Risk words.** Which words or phrases should trigger the chat risk prompt (C4)? A clinician on the team should approve the list.
+
+---
+
+## 7. MVP build phases
+
+Screens first, so the backend starts against a finished app. Everything is front end with mock data until Phase 7.
+
+| Phase | What | Status |
+|---|---|---|
+| 0 | Tidy up: build settings (ThriveCBT, `com.thrivecbt.app`), "last active" on the privacy list, this screen map | ✅ |
+| 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ⬜ |
+| 2 | Session 2 and the shared exercises: M6–M9 | ⬜ |
+| 3 | Sessions 3 and 4: M10–M13 | ⬜ |
+| 4 | Sessions 5 and 6: M14–M19 | ⬜ |
+| 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |
+| 6 | End of study: S39–S41 | ⬜ |
+| 7 | Backend hand-off: data contract for everything the app stores, and one swap point per store for the real API | ⬜ |
+
+Waiting on the study team: R20, real helpline numbers (S38), the risk word list (C4), legal text (S46), session videos (M2), and the open questions in section 6. Needs the backend: R2, real video calls, live chat, C5, C6 and the invite link domain.

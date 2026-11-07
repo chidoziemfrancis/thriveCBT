@@ -8,6 +8,8 @@ import { getUserSession } from '@/features/auth/userSession';
 
 import { mockCaseload } from './caseload';
 import { handledIds } from './alerts';
+import { withLoggedCalls } from './callLog';
+import { useCallLog } from './callLogStore';
 import { useAlertEvents } from './alertStore';
 import { allCalls } from './schedule';
 import { useSchedule } from './scheduleStore';
@@ -28,6 +30,8 @@ export function useResearcher() {
   const { bookings, cancelled } = useSchedule();
   const alertEvents = useAlertEvents();
   const settings = useResearcherSettings();
+  const callLog = useCallLog();
+  const records = Object.values(callLog);
   const researcher = state.researcher && {
     ...state.researcher,
     name: settings.name ?? state.researcher.name,
@@ -39,7 +43,15 @@ export function useResearcher() {
     ...state,
     researcher,
     settings,
-    calls: allCalls(state.calls, bookings, cancelled),
+    students: state.students.map((s) => ({
+      ...s,
+      pastCalls: withLoggedCalls(
+        s.pastCalls,
+        records.filter((r) => r.studentId === s.id)
+      ),
+    })),
+    // A call with a note has happened, so it leaves the upcoming list.
+    calls: allCalls(state.calls, bookings, cancelled).filter((c) => !callLog[c.id]),
     alertEvents,
     handled: handledIds(alertEvents),
   };

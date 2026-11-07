@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { CameraIcon, ChevronRightIcon } from '@/components/icons';
@@ -64,8 +64,10 @@ function NextCall({
         accessibilityState={{ disabled: !live }}
         accessibilityHint={live ? undefined : `Opens ${JOIN_EARLY_MIN} minutes before`}
         disabled={!live}
-        // The researcher's call screen comes with the calls work.
-        onPress={() => Alert.alert('Coming soon', 'Video calls for researchers are on the way.')}
+        onPress={() => {
+          haptics.tap();
+          router.push({ pathname: '/researcher/call/[callId]/live', params: { callId: call.id } });
+        }}
         style={({ pressed }) => [
           styles.join,
           !live && styles.joinLocked,

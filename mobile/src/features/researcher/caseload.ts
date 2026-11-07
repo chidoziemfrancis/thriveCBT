@@ -6,6 +6,8 @@ import type { MoodEntry } from '@/features/mood/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
 import type { SessionRecord } from '@/features/sessions/sessionLogic';
 
+import type { CallOutcome } from './callLog';
+
 export type CaseloadStudent = {
   id: string;
   name: string;
@@ -40,6 +42,7 @@ export type PastCall = {
   attended: boolean;
   minutes?: number;
   feedback?: { rating: number | null; note?: string };
+  researcherNote?: { outcome?: CallOutcome; text?: string };
 };
 
 export type Call = {
@@ -158,14 +161,14 @@ function chat(now: Date, studentId: string, lines: Line[]): Message[] {
   }));
 }
 
-type CallOutcome = 'missed' | [minutes: number, rating: number | null, note?: string];
+type MockOutcome = 'missed' | [minutes: number, rating: number | null, note?: string];
 
 /** One check-in per week since joining, at the same time, newest first. */
 function callHistory(
   now: Date,
   joinedDaysAgo: number,
   hour: number,
-  outcomes: CallOutcome[]
+  outcomes: MockOutcome[]
 ): PastCall[] {
   return outcomes
     .map((outcome, i): PastCall => {
