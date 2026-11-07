@@ -11,3 +11,18 @@ export function weekOfStudy(startIso: string | undefined, now = new Date()): num
   const week = Math.floor((today - startDay) / (7 * DAY_MS)) + 1;
   return Math.min(Math.max(week, 1), SESSIONS.length);
 }
+
+/** Each session opens on the same weekday the student joined, one week apart. */
+export function sessionOpensOn(startIso: string | undefined, sessionId: number, now = new Date()) {
+  const parsed = startIso ? new Date(startIso) : now;
+  const start = Number.isNaN(parsed.getTime()) ? now : parsed;
+  return new Date(start.getFullYear(), start.getMonth(), start.getDate() + (sessionId - 1) * 7);
+}
+
+export function opensLabel(opensOn: Date, now = new Date()): string {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const days = Math.round((opensOn.getTime() - today) / DAY_MS);
+  if (days <= 0) return 'Opens today';
+  if (days === 1) return 'Opens tomorrow';
+  return `Opens ${opensOn.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}`;
+}
