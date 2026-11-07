@@ -172,6 +172,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'sadness',
           kind: 'scale',
+          art: 'cloud',
+          short: 'Sadness',
           title: 'How sad have you felt?',
           low: 'Not sad',
           high: 'Very sad',
@@ -179,6 +181,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'motivation',
           kind: 'scale',
+          art: 'flame',
+          short: 'Motivation',
           title: 'How has your motivation been?',
           low: 'Very low',
           high: 'Very high',
@@ -186,6 +190,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'sleep',
           kind: 'scale',
+          art: 'moon',
+          short: 'Sleep',
           title: 'How well have you slept?',
           low: 'Very poorly',
           high: 'Very well',
@@ -193,6 +199,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'energy',
           kind: 'scale',
+          art: 'battery',
+          short: 'Energy',
           title: 'How has your energy been?',
           low: 'Very low',
           high: 'Very high',
@@ -200,9 +208,18 @@ export const SESSION_1: SessionContent = {
         {
           id: 'concentration',
           kind: 'scale',
+          art: 'target',
+          short: 'Concentration',
           title: 'How easily could you concentrate?',
           low: 'Very hard',
           high: 'Very easy',
+        },
+        {
+          id: 'mood-recap',
+          kind: 'recap',
+          of: 'scales',
+          title: 'Your week at a glance',
+          body: 'Your researcher will see this before your check-in, so you can talk it through together.',
         },
       ],
     },
@@ -215,6 +232,7 @@ export const SESSION_1: SessionContent = {
         {
           id: 'q1',
           kind: 'choice',
+          art: 'cloud',
           question: 'Depression is the same as ordinary sadness that passes quickly.',
           options: ['True', 'False'],
           answer: 1,
@@ -224,6 +242,7 @@ export const SESSION_1: SessionContent = {
         {
           id: 'q2',
           kind: 'choice',
+          art: 'moon',
           question: 'Which of these can depression affect?',
           options: ['Sleep and appetite', 'Only your mood', 'Nothing physical'],
           answer: 0,
@@ -233,11 +252,19 @@ export const SESSION_1: SessionContent = {
         {
           id: 'q3',
           kind: 'choice',
+          picture: 'quiz-stress',
           question: 'Academic stress can contribute to depression in undergraduates.',
           options: ['True', 'False'],
           answer: 0,
           explanation:
             'Academic stress is one of the most common contributors for students, along with loneliness, money worries and relationship or family pressure.',
+        },
+        {
+          id: 'quiz-score',
+          kind: 'recap',
+          of: 'quiz',
+          title: 'Nice work',
+          body: 'Here’s how you did. Every answer came with the reason, so nothing is wasted.',
         },
       ],
     },
@@ -252,6 +279,14 @@ export const SESSION_1: SessionContent = {
           kind: 'journal',
           prompt: 'What has depression affected most in your life?',
           hint: 'There’s no right answer. A few honest sentences is plenty.',
+          starters: [
+            { label: 'Studies', text: 'Mostly my studies. ' },
+            { label: 'Friendships', text: 'My friendships. ' },
+            { label: 'Sleep', text: 'My sleep. ' },
+            { label: 'Family', text: 'Things with my family. ' },
+            { label: 'Hobbies', text: 'The things I used to enjoy. ' },
+            { label: 'How I see myself', text: 'How I see myself. ' },
+          ],
         },
       ],
     },

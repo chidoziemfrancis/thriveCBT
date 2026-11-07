@@ -190,3 +190,26 @@ describe('the redesigned Session 1', () => {
     }
   });
 });
+
+describe('Session 1 parts 2 to 4', () => {
+  const part = (id: string) => SESSION_1.modules.find((m) => m.id === id)!.steps;
+
+  it('gives every check-in question a moving picture and a short name, then a recap', () => {
+    const steps = part('mood-check');
+    const scales = steps.filter((s) => s.kind === 'scale');
+    expect(scales).toHaveLength(5);
+    expect(scales.every((s) => s.kind === 'scale' && s.art && s.short)).toBe(true);
+    expect(steps.at(-1)).toMatchObject({ kind: 'recap', of: 'scales' });
+  });
+
+  it('ends the quiz with its score and lets the recaps continue straight away', () => {
+    const last = part('quiz').at(-1)!;
+    expect(last).toMatchObject({ kind: 'recap', of: 'quiz' });
+    expect(isStepReady(last, undefined)).toBe(true);
+  });
+
+  it('offers sentence starters for the reflection', () => {
+    const reflect = part('journal').find((s) => s.id === 'reflect');
+    expect(reflect?.kind === 'journal' && (reflect.starters?.length ?? 0) > 0).toBe(true);
+  });
+});
