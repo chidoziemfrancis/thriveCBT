@@ -13,6 +13,8 @@ export type Preferences = {
   moodReminderTime: MoodReminderTime;
   notifyMessages: boolean;
   notifyCheckIns: boolean;
+  /** Whether the reminders screen has been shown, so it only asks once. */
+  remindersAsked: boolean;
 };
 
 const DEFAULTS: Preferences = {
@@ -22,6 +24,7 @@ const DEFAULTS: Preferences = {
   moodReminderTime: '18:00',
   notifyMessages: true,
   notifyCheckIns: true,
+  remindersAsked: false,
 };
 
 let preferences: Preferences = { ...DEFAULTS, ...readJson<Partial<Preferences>>(STORAGE_KEY, {}) };

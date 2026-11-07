@@ -19,6 +19,7 @@ import { getAssignment, saveAssignment } from '@/features/assignment/assignmentS
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { getUserSession } from '@/features/auth/userSession';
 import { colors, type } from '@/theme';
+import { afterMatching } from '@/features/onboarding/reminders';
 
 // Long enough to read the message and feel the match is considered, short enough not to drag.
 const SEARCH_MS = 2200;
@@ -69,7 +70,7 @@ export default function FindingResearcherScreen() {
   if (noneAvailable) {
     return (
       <Screen
-        footer={<Button onPress={() => router.replace('/auth/create-pin')}>Go to my home</Button>}
+        footer={<Button onPress={() => router.replace(afterMatching())}>Go to my home</Button>}
       >
         <Animated.View entering={FadeIn} style={styles.body}>
           <Mascot size={120} mood="calm" />
