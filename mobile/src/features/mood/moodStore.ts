@@ -11,11 +11,27 @@ export function getMoodLog(): MoodEntry[] {
 }
 
 export function logMood(mood: number, now = new Date()): MoodEntry {
-  const entry = { mood, at: now.toISOString() };
+  // Changing today's face keeps today's note.
+  const note = todaysMood(now)?.note;
+  const entry: MoodEntry = { mood, at: now.toISOString(), ...(note ? { note } : {}) };
   writeJson(STORAGE_KEY, [...getMoodLog(), entry]);
   return entry;
 }
 
 export function todaysMood(now = new Date()): MoodEntry | null {
   return moodOnDay(getMoodLog(), now);
+}
+
+/** Adds, changes or (when blank) removes the note on today's mood. */
+export function setTodaysMoodNote(note: string, now = new Date()): MoodEntry | null {
+  const log = getMoodLog();
+  const today = todaysMood(now);
+  if (!today) return null;
+  const text = note.trim();
+  const updated: MoodEntry = { mood: today.mood, at: today.at, ...(text ? { note: text } : {}) };
+  writeJson(
+    STORAGE_KEY,
+    log.map((entry) => (entry.at === today.at ? updated : entry))
+  );
+  return updated;
 }

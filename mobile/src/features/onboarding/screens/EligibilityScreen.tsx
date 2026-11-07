@@ -18,7 +18,7 @@ export default function OnboardingEligibilityScreen() {
   function handleContinue() {
     if (isUndergraduate === null) return;
     setOnboardingData({ isUndergraduate });
-    router.push('/onboarding/what-to-expect');
+    router.push(isUndergraduate ? '/onboarding/what-to-expect' : '/onboarding/not-eligible');
   }
 
   return (

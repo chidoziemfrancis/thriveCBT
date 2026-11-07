@@ -64,9 +64,14 @@ export default function CheckInCard({ researcher }: { researcher: Researcher | u
   return (
     <View style={styles.card}>
       <View style={styles.top}>
-        <View style={styles.avatar}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`About ${researcher.name}`}
+          onPress={() => router.push('/my-researcher')}
+          style={styles.avatar}
+        >
           <ResearcherPhoto researcher={researcher} initialsStyle={styles.avatarText} />
-        </View>
+        </Pressable>
         <View style={styles.text}>
           <Text style={styles.title}>Weekly check-in with {name}</Text>
           {checkIn ? (

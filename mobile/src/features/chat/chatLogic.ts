@@ -57,3 +57,5 @@ export function unreadCount(messages: Message[], lastReadAt: string | null): num
   return messages.filter((m) => m.from === 'researcher' && new Date(m.sentAt).getTime() > since)
     .length;
 }
+
+export const REPLY_HOURS = 'Usually replies within a day';
