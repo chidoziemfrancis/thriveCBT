@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
+import { opensLabel, sessionOpensOn } from '@/features/home/studyWeek';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_1 } from '@/features/sessions/content/session1';
 import type { SessionStep } from '@/features/sessions/content/types';
@@ -145,5 +146,21 @@ describe('progress store', () => {
         1: { done: ['lesson'], completedAt: '2026-10-29T10:00:00.000Z' },
       });
     });
+  });
+});
+
+describe('when sessions open', () => {
+  const joined = new Date(2026, 10, 3, 14, 30).toISOString();
+  const now = new Date(2026, 10, 7, 9);
+
+  it('opens each session a week apart from the day the student joined', () => {
+    expect(sessionOpensOn(joined, 1, now)).toEqual(new Date(2026, 10, 3));
+    expect(sessionOpensOn(joined, 3, now)).toEqual(new Date(2026, 10, 17));
+  });
+
+  it('says today, tomorrow, or the date', () => {
+    expect(opensLabel(new Date(2026, 10, 7), now)).toBe('Opens today');
+    expect(opensLabel(new Date(2026, 10, 8), now)).toBe('Opens tomorrow');
+    expect(opensLabel(new Date(2026, 10, 17), now)).toMatch(/^Opens .*17/);
   });
 });

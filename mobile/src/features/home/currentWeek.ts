@@ -3,7 +3,11 @@ import { getConsent } from '@/features/consent/consentStore';
 
 import { weekOfStudy } from './studyWeek';
 
-/** The student's study week, counted from when they consented (or were matched). */
+/** When the student's study started: when they consented, or else were matched. */
+export function studyStart(): string | undefined {
+  return getConsent()?.agreedAt ?? getAssignment()?.assignedAt;
+}
+
 export function currentStudyWeek(now = new Date()): number {
-  return weekOfStudy(getConsent()?.agreedAt ?? getAssignment()?.assignedAt, now);
+  return weekOfStudy(studyStart(), now);
 }
