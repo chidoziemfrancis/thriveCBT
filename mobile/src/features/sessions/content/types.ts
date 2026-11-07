@@ -1,5 +1,6 @@
 import type { FeatureIconName, FeatureIconTone } from '@/components/icons/FeatureIcon';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
+import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
 import type { StoryScene } from '@/features/sessions/art/StoryArt';
 import type { PhotoKey } from '@/features/sessions/photos';
 
@@ -63,6 +64,9 @@ export type MythFactStep = StepBase & {
 /** A multiple-choice check with instant feedback. */
 export type ChoiceStep = StepBase & {
   kind: 'choice';
+  /** A picture on the question card: an illustration or a drawn scene. */
+  picture?: PhotoKey;
+  art?: ScaleArtName;
   question: string;
   options: string[];
   answer: number;
@@ -72,6 +76,10 @@ export type ChoiceStep = StepBase & {
 /** A 1–5 self-rating, one area per screen. */
 export type ScaleStep = StepBase & {
   kind: 'scale';
+  /** A drawing that moves with the answer: 5 is its fullest. */
+  art?: ScaleArtName;
+  /** One word for the recap, e.g. "Sleep". */
+  short?: string;
   title: string;
   low: string;
   high: string;
@@ -105,7 +113,21 @@ export type CompareStep = StepBase & {
   lesson: string;
 };
 
-export type JournalStep = StepBase & { kind: 'journal'; prompt: string; hint: string };
+export type JournalStep = StepBase & {
+  kind: 'journal';
+  prompt: string;
+  hint: string;
+  /** Chips that start the entry for the student, so the box is never blank. */
+  starters?: { label: string; text: string }[];
+};
+
+/** A look back over this part's answers: the check-in as bars, or the quiz score. */
+export type RecapStep = StepBase & {
+  kind: 'recap';
+  of: 'scales' | 'quiz';
+  title: string;
+  body: string;
+};
 
 export type SessionStep =
   | InfoStep
@@ -117,6 +139,7 @@ export type SessionStep =
   | BreatheStep
   | VideoStep
   | CompareStep
+  | RecapStep
   | JournalStep;
 
 export type SessionModule = {
