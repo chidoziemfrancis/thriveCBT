@@ -39,7 +39,7 @@ export function markNotificationsSeen(now = new Date()) {
   listeners.forEach((listener) => listener());
 }
 
-export function useNotifications(): { items: AppNotification[]; unread: number } {
+export function useNotifications() {
   const chat = useChat();
   const progress = useSessionProgress();
   const seen = useSyncExternalStore(subscribe, () => lastSeenAt);
@@ -47,7 +47,7 @@ export function useNotifications(): { items: AppNotification[]; unread: number }
   const [now, setNow] = useState(() => new Date());
   useFocusEffect(useCallback(() => setNow(new Date()), []));
 
-  const items = useMemo(() => {
+  const { items, researcher } = useMemo(() => {
     const assignment = getAssignment();
     const researcher = MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId);
     const checkIn = getNextCheckIn(researcher?.id, now);
@@ -56,7 +56,7 @@ export function useNotifications(): { items: AppNotification[]; unread: number }
     const session = SESSIONS[week - 1];
     const lastMessage = [...chat.messages].reverse().find((m) => m.from === 'researcher');
 
-    return buildNotifications({
+    const items: AppNotification[] = buildNotifications({
       now,
       researcherName: researcher ? firstName(researcher.name) : undefined,
       unreadMessages: chat.unread,
@@ -75,7 +75,13 @@ export function useNotifications(): { items: AppNotification[]; unread: number }
       },
       joinedAt,
     });
+    return { items, researcher };
   }, [chat, progress, now]);
 
-  return { items, unread: unreadNotifications(items, seen) };
+  return {
+    items,
+    unread: unreadNotifications(items, seen),
+    researcher,
+    refresh: () => setNow(new Date()),
+  };
 }

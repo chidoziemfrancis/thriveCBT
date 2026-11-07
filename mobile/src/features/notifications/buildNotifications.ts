@@ -1,8 +1,14 @@
 import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import { CheckInPhase, countdownLabel } from '@/features/checkin/checkinLogic';
 
+export type NotificationKind = 'chat' | 'checkin' | 'mood' | 'session' | 'welcome';
+
 export type AppNotification = {
   id: string;
+  kind: NotificationKind;
+  /** Something the student still has to do, as opposed to news. */
+  todo: boolean;
+  action?: string;
   title: string;
   body: string;
   at: string;
@@ -39,6 +45,8 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
   if (input.unreadMessages > 0 && input.lastMessageAt) {
     items.push({
       id: `chat-${input.lastMessageAt}`,
+      kind: 'chat',
+      todo: false,
       title: `${researcherName} sent you a message`,
       body:
         input.unreadMessages === 1 ? 'Tap to read it.' : `${input.unreadMessages} unread messages`,
@@ -53,6 +61,9 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
     if (input.checkIn.phase === 'joinable') {
       items.push({
         id: `checkin-open-${input.checkIn.startsAt}`,
+        kind: 'checkin',
+        todo: true,
+        action: 'Join',
         title: 'Your check-in is ready',
         body: `${researcherName} is ready for your video call.`,
         at: new Date(start - JOIN_EARLY_MS).toISOString(),
@@ -62,6 +73,8 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
     } else if (input.checkIn.phase === 'upcoming' && start - now.getTime() <= 24 * HOUR) {
       items.push({
         id: `checkin-soon-${input.checkIn.startsAt}`,
+        kind: 'checkin',
+        todo: false,
         title: 'Check-in coming up',
         body: `${countdownLabel(input.checkIn.startsAt, now)} with ${researcherName}.`,
         at: new Date(start - 24 * HOUR).toISOString(),
@@ -75,8 +88,10 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
     const today = startOfDay(now);
     items.push({
       id: `mood-${today.toISOString()}`,
+      kind: 'mood',
+      todo: true,
       title: 'How are you feeling today?',
-      body: 'Take 10 seconds to log your mood.',
+      body: 'Tap a face to log it.',
       at: today.toISOString(),
       icon: 'heart',
       href: '/dashboard',
@@ -86,6 +101,9 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
   if (!input.session.complete) {
     items.push({
       id: `session-${input.session.id}`,
+      kind: 'session',
+      todo: true,
+      action: 'Start',
       title: `Session ${input.session.id} is ready`,
       body: input.session.title,
       at: input.session.opensAt ?? input.joinedAt ?? now.toISOString(),
@@ -97,6 +115,8 @@ export function buildNotifications(input: NotificationInput): AppNotification[] 
   if (input.joinedAt) {
     items.push({
       id: 'welcome',
+      kind: 'welcome',
+      todo: false,
       title: 'Welcome to ThriveCBT',
       body: 'We’re glad you’re here. Your 8 weeks start now.',
       at: input.joinedAt,

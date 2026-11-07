@@ -80,3 +80,33 @@ describe('unreadNotifications', () => {
     expect(unreadNotifications(items, now.toISOString())).toBe(0);
   });
 });
+
+describe('to-dos and news', () => {
+  it('marks things to do with their action, and news without one', () => {
+    const items = buildNotifications(
+      input({
+        unreadMessages: 1,
+        lastMessageAt: new Date(2026, 9, 29, 14).toISOString(),
+        moodLoggedToday: false,
+        session: { id: 2, title: 'Understanding the CBT model', complete: false },
+        checkIn: { startsAt: new Date(2026, 9, 29, 15, 5).toISOString(), phase: 'joinable' },
+        joinedAt: new Date(2026, 9, 20).toISOString(),
+      })
+    );
+    const byKind = Object.fromEntries(items.map((i) => [i.kind, i]));
+    expect(byKind.checkin).toMatchObject({ todo: true, action: 'Join' });
+    expect(byKind.session).toMatchObject({ todo: true, action: 'Start' });
+    expect(byKind.mood.todo).toBe(true);
+    expect(byKind.mood.action).toBeUndefined();
+    expect(byKind.chat.todo).toBe(false);
+    expect(byKind.chat.action).toBeUndefined();
+    expect(byKind.welcome).toMatchObject({ todo: false });
+  });
+
+  it('treats a check-in that is only coming up as news', () => {
+    const [soon] = buildNotifications(
+      input({ checkIn: { startsAt: new Date(2026, 9, 30, 9).toISOString(), phase: 'upcoming' } })
+    );
+    expect(soon).toMatchObject({ kind: 'checkin', todo: false });
+  });
+});
