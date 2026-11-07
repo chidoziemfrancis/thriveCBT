@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, LinearTransition } from 'react-native-reanimated';
@@ -8,6 +8,7 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
+import { isEmail } from '@/features/auth/email';
 import { accountExists, signIn } from '@/features/auth/mockAccounts';
 import { hasPin } from '@/features/auth/pinStore';
 import { homeFor } from '@/features/auth/roles';
@@ -15,16 +16,18 @@ import { setUserSession } from '@/features/auth/userSession';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
-const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
-
 export default function SignInScreen() {
-  const [email, setEmail] = useState('');
+  // Coming back from a password reset, the email is filled in and the password step is open.
+  const params = useLocalSearchParams<{ email?: string }>();
+  const [email, setEmail] = useState(params.email ?? '');
   const [password, setPassword] = useState('');
-  const [hasAccount, setHasAccount] = useState(false);
+  const [hasAccount, setHasAccount] = useState(() =>
+    Boolean(params.email && accountExists(params.email))
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const emailValid = EMAIL_PATTERN.test(email.trim());
+  const emailValid = isEmail(email);
   const canSubmit = emailValid && (!hasAccount || password.length > 0);
 
   function handleEmailChange(value: string) {
@@ -140,7 +143,14 @@ export default function SignInScreen() {
 
         {hasAccount && (
           <Animated.View entering={FadeIn.delay(150)}>
-            <Pressable accessibilityRole="link" style={styles.forgot} hitSlop={8}>
+            <Pressable
+              accessibilityRole="link"
+              onPress={() =>
+                router.push({ pathname: '/auth/forgot-password', params: { email: email.trim() } })
+              }
+              style={styles.forgot}
+              hitSlop={8}
+            >
               <Text style={styles.forgotLabel}>Forgot password?</Text>
             </Pressable>
           </Animated.View>
