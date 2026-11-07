@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { CheckIcon } from '@/components/icons';
+import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import { CHECKLIST_NONE, type ChecklistStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
@@ -39,8 +40,39 @@ export default function ChecklistStepView({
         {step.body && <Text style={stepText.body}>{step.body}</Text>}
       </View>
 
+      {step.photos ? (
+        <View style={styles.tiles}>
+          {step.options.map((label, i) => {
+            const on = picked.includes(i);
+            const photo = step.photos?.[i];
+            return (
+              <Pressable
+                key={i}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: on }}
+                accessibilityLabel={label}
+                onPress={() => toggle(i)}
+                style={({ pressed }) => [
+                  styles.tile,
+                  on && styles.tileOn,
+                  pressed && { transform: [{ scale: 0.97 }] },
+                ]}
+              >
+                {photo && <SessionPhoto photo={photo} style={styles.tilePhoto} />}
+                <View style={styles.tileFoot}>
+                  <Text style={[styles.tileLabel, on && styles.labelOn]}>{label}</Text>
+                  <View style={[styles.box, on && styles.boxOn]}>
+                    {on && <CheckIcon size={12} color={colors.onPrimary} />}
+                  </View>
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      ) : null}
+
       <View style={styles.list}>
-        {options.map(({ label, i }) => {
+        {(step.photos ? options.filter((o) => o.i === NONE) : options).map(({ label, i }) => {
           const on = picked.includes(i);
           return (
             <Pressable
@@ -103,5 +135,19 @@ const styles = StyleSheet.create({
   boxOn: { borderColor: colors.primary, backgroundColor: colors.primary },
   label: { flex: 1, fontFamily: fonts.medium, fontSize: 15, color: colors.ink },
   labelOn: { fontFamily: fonts.bold },
+  tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  tile: {
+    width: '48%',
+    flexGrow: 1,
+    borderRadius: radius.lg,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    overflow: 'hidden',
+  },
+  tileOn: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
+  tilePhoto: { height: 104, borderRadius: 0 },
+  tileFoot: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 10 },
+  tileLabel: { flex: 1, fontFamily: fonts.medium, fontSize: 14, color: colors.ink },
   reply: { padding: 16, borderRadius: radius.md, backgroundColor: colors.butter },
 });

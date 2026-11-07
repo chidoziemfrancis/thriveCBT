@@ -4,6 +4,7 @@ import type { SessionContent } from './types';
 // intervention structure. Wording should be reviewed by the research team.
 export const SESSION_1: SessionContent = {
   sessionId: 1,
+  hero: 'hero',
   modules: [
     {
       id: 'lesson',
@@ -14,10 +15,10 @@ export const SESSION_1: SessionContent = {
         {
           id: 'welcome',
           kind: 'info',
-          art: 'heart',
-          tone: 'peach',
-          title: 'Welcome to Session 1',
-          body: 'Over the next few minutes we’ll look at what depression is, how it shows up, and why it can get better. Go at your own pace.',
+          photo: 'welcome',
+          title: 'Welcome to week 1, {name}',
+          body: 'This week is about understanding what depression is, how it shows up, and why it can get better. Go at your own pace.',
+          researcherNote: true,
         },
         {
           id: 'myth-sad',
@@ -29,40 +30,47 @@ export const SESSION_1: SessionContent = {
         },
         {
           id: 'what-is',
-          kind: 'info',
-          art: 'umbrella',
-          tone: 'lavender',
-          title: 'What is depression?',
-          body: 'A common mental health condition that affects how you feel, think and handle daily life. It goes beyond ordinary sadness and can last for weeks at a time.',
+          kind: 'compare',
+          title: 'A bad day, or depression?',
+          left: 'A bad day',
+          right: 'Depression',
+          start: '1 day',
+          end: '2 weeks+',
+          lesson:
+            'A bad day clears. When low mood stays for two weeks or more and gets in the way of daily life, that’s depression: a common health condition that affects how you feel, think and cope.',
         },
         {
           id: 'four-ways',
           kind: 'reveal',
           title: 'It shows up in four ways',
-          body: 'Tap each card to see how.',
+          figure: 'body',
           cards: [
             {
               id: 'thoughts',
               icon: 'bulb',
               label: 'Thoughts',
+              spot: 'head',
               detail: 'Harsh or hopeless thoughts, like “I always mess things up”.',
             },
             {
               id: 'feelings',
               icon: 'heart',
               label: 'Feelings',
+              spot: 'chest',
               detail: 'Sadness, emptiness, irritability, or feeling numb.',
             },
             {
               id: 'body',
               icon: 'sun',
-              label: 'Body',
+              label: 'Sleep and energy',
+              spot: 'belly',
               detail: 'Sleeping too much or too little, low energy, appetite changes.',
             },
             {
               id: 'behaviour',
               icon: 'flag',
-              label: 'Behaviour',
+              label: 'What you do',
+              spot: 'feet',
               detail: 'Pulling away from friends, skipping classes, dropping hobbies.',
             },
           ],
@@ -97,6 +105,13 @@ export const SESSION_1: SessionContent = {
             'Relationship problems',
             'Family pressure',
           ],
+          photos: [
+            'worry-studies',
+            'worry-lonely',
+            'worry-money',
+            'worry-relationships',
+            'worry-family',
+          ],
           responseSome:
             'Naming what weighs on you is a real first step. We’ll come back to these as the weeks go on.',
           responseNone: 'That’s okay. Not everyone can put a name to it, and that’s fine too.',
@@ -106,6 +121,15 @@ export const SESSION_1: SessionContent = {
           kind: 'video',
           title: 'What happens in depression?',
           body: 'A short animation about what happens in your mind and body during depression.',
+          slides: [
+            { scene: 'energy', text: 'Depression drains your energy…' },
+            { scene: 'sleep', text: '…upsets your sleep…' },
+            { scene: 'withdraw', text: '…and makes you pull away from people.' },
+            {
+              scene: 'loop',
+              text: 'Pulling away makes you feel worse, and round it goes. CBT helps you break that loop.',
+            },
+          ],
         },
         {
           id: 'breathe',
@@ -125,8 +149,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'better',
           kind: 'info',
-          art: 'sun',
-          tone: 'butter',
+          photo: 'better',
+          path: true,
           title: 'It can get better',
           body: 'Depression is treatable. Over the next 8 weeks, CBT will help you notice how your thoughts, feelings and actions connect, and give you practical skills to feel better, one small step at a time.',
         },
