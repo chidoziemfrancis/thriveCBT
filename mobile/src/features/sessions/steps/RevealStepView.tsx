@@ -6,6 +6,7 @@ import type { RevealStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
+import BodyRevealView from './BodyRevealView';
 import { stepText } from './stepText';
 
 /** Tap each card to turn it over; Continue unlocks once every card has been seen. */
@@ -18,6 +19,9 @@ export default function RevealStepView({
   revealed: string[];
   onReveal: (ids: string[]) => void;
 }) {
+  if (step.figure === 'body') {
+    return <BodyRevealView step={step} revealed={revealed} onReveal={onReveal} />;
+  }
   return (
     <View style={styles.wrap}>
       <View style={stepText.block}>

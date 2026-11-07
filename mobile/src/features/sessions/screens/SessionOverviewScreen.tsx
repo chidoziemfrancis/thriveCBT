@@ -1,20 +1,20 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 import { CheckIcon, LockIcon } from '@/components/icons';
-import FeatureIcon from '@/components/icons/FeatureIcon';
 import Mascot from '@/components/mascot/Mascot';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { currentStudyWeek } from '@/features/home/currentWeek';
+import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import { sessionContent } from '@/features/sessions/content';
 import { useSessionProgress } from '@/features/sessions/progressStore';
 import { nextModuleId, sessionStatus } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';
-import { colors, fonts, radius, type } from '@/theme';
+import { colors, fonts, type } from '@/theme';
 
 function Placeholder({ title, body }: { title: string; body: string }) {
   return (
@@ -69,27 +69,28 @@ export default function SessionOverviewScreen() {
     <Screen
       footer={
         <Button onPress={() => (next ? open(next) : router.push(`/session/${sessionId}/complete`))}>
-          {!next ? 'Review summary' : started ? 'Continue' : 'Begin session'}
+          {!next ? 'Review summary' : started ? 'Continue' : 'Begin'}
         </Button>
       }
     >
       <BackButton />
 
       <View style={styles.body}>
-        <View style={styles.header}>
-          <View style={styles.headerText}>
-            <Text style={type.eyebrow}>
-              Session {session.id} of {SESSIONS.length} · {session.focus}
-            </Text>
-            <Text style={type.title}>{session.title}</Text>
-            <Text style={type.caption}>
-              About {minutes} minutes · {content.modules.length} parts
-            </Text>
-          </View>
-          <FeatureIcon name="book" size={64} />
+        {content.hero && (
+          <Animated.View entering={FadeIn.duration(400)}>
+            <SessionPhoto photo={content.hero} style={styles.hero} />
+          </Animated.View>
+        )}
+
+        <View style={styles.headerText}>
+          <Text style={styles.eyebrow}>Week {session.id}</Text>
+          <Text style={type.title}>{session.title}</Text>
+          <Text style={styles.meta}>
+            About {minutes} min · {content.modules.length} parts
+          </Text>
         </View>
 
-        <View style={styles.list}>
+        <View>
           {content.modules.map((module, index) => {
             const done = record?.done.includes(module.id) ?? false;
             const isNext = module.id === next;
@@ -104,26 +105,24 @@ export default function SessionOverviewScreen() {
                   onPress={() => open(module.id)}
                   style={({ pressed }) => [
                     styles.row,
-                    isNext && styles.rowNext,
-                    !reachable && styles.rowLocked,
-                    pressed && { transform: [{ scale: 0.98 }] },
+                    index > 0 && styles.divider,
+                    pressed && { opacity: 0.6 },
                   ]}
                 >
-                  <FeatureIcon name={module.icon} size={40} />
-                  <View style={styles.rowText}>
-                    <Text style={styles.rowTitle}>{module.title}</Text>
-                    <Text style={styles.rowMeta}>
-                      {isNext ? 'Up next · ' : ''}
-                      {module.minutes} min
-                    </Text>
+                  <View style={[styles.num, isNext && styles.numNext, done && styles.numDone]}>
+                    {done ? (
+                      <CheckIcon size={12} color={colors.onPrimary} />
+                    ) : (
+                      <Text style={[styles.numText, isNext && { color: colors.primary }]}>
+                        {index + 1}
+                      </Text>
+                    )}
                   </View>
-                  {done ? (
-                    <View style={styles.done}>
-                      <CheckIcon size={13} color={colors.onPrimary} />
-                    </View>
-                  ) : !reachable ? (
-                    <LockIcon size={16} color={colors.inkFaint} />
-                  ) : null}
+                  <Text style={[styles.rowTitle, !reachable && styles.faded]}>{module.title}</Text>
+                  <Text style={[styles.rowMeta, !reachable && styles.faded]}>
+                    {module.minutes} min
+                  </Text>
+                  {!reachable && <LockIcon size={14} color={colors.inkFaint} />}
                 </Pressable>
               </Animated.View>
             );
@@ -134,35 +133,37 @@ export default function SessionOverviewScreen() {
   );
 }
 
+const NUM = 28;
+
 const styles = StyleSheet.create({
   center: { textAlign: 'center' },
   placeholder: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  body: { marginTop: 20, gap: 22 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  headerText: { flex: 1, gap: 6 },
-  list: { gap: 10 },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    padding: 16,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    borderBottomWidth: 4,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
+  body: { marginTop: 16, gap: 20 },
+  hero: { height: 220 },
+  headerText: { gap: 6 },
+  eyebrow: {
+    fontFamily: fonts.bold,
+    fontSize: 12,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    color: colors.primary,
   },
-  rowNext: { borderColor: colors.primary },
-  rowLocked: { opacity: 0.55 },
-  rowText: { flex: 1, gap: 2 },
-  rowTitle: { fontFamily: fonts.heavy, fontSize: 16, color: colors.ink },
-  rowMeta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
-  done: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: colors.primary,
+  meta: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16 },
+  divider: { borderTopWidth: 1, borderTopColor: colors.border },
+  num: {
+    width: NUM,
+    height: NUM,
+    borderRadius: NUM / 2,
+    borderWidth: 2,
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  numNext: { borderColor: colors.primary },
+  numDone: { borderColor: colors.primary, backgroundColor: colors.primary },
+  numText: { fontFamily: fonts.bold, fontSize: 13, color: colors.inkMuted },
+  rowTitle: { flex: 1, fontFamily: fonts.bold, fontSize: 16, color: colors.ink },
+  rowMeta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  faded: { opacity: 0.45 },
 });

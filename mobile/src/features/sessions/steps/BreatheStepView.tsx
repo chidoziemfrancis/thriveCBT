@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
+import Svg, { Path } from 'react-native-svg';
+
 import type { BreatheStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
@@ -66,7 +68,23 @@ export default function BreatheStepView({
       </View>
 
       <View style={styles.stage} accessibilityLiveRegion="polite">
-        <Animated.View style={[styles.circle, circleStyle]} />
+        <Animated.View style={[styles.circle, circleStyle]}>
+          <Svg
+            width={CIRCLE * 0.42}
+            height={CIRCLE * 0.42}
+            viewBox="0 0 100 100"
+            style={styles.leaf}
+          >
+            <Path
+              d="M20 82C20 40 48 16 86 14c0 40-24 68-66 68z"
+              fill="#9CCFB3"
+              stroke={colors.primary}
+              strokeWidth={4}
+              strokeLinejoin="round"
+            />
+            <Path d="M22 80 70 30" stroke={colors.primary} strokeWidth={4} strokeLinecap="round" />
+          </Svg>
+        </Animated.View>
         <View style={styles.inner}>
           <Text style={styles.phase}>
             {done ? 'Well done' : running ? PHASES[phase].label : 'Ready?'}
@@ -105,8 +123,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mint,
     borderWidth: 2,
     borderColor: colors.primary,
+    alignItems: 'center',
   },
-  inner: { alignItems: 'center', gap: 4 },
+  leaf: { marginTop: CIRCLE * 0.08, opacity: 0.9 },
+  inner: { alignItems: 'center', gap: 4, marginTop: CIRCLE * 0.34 },
   phase: { fontFamily: fonts.heavy, fontSize: 20, color: colors.mintInk },
   cycle: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
   start: {

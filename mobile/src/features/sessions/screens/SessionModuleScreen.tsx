@@ -26,6 +26,8 @@ import { isStepReady, nextModuleId, stepPosition } from '@/features/sessions/ses
 import BreatheStepView from '@/features/sessions/steps/BreatheStepView';
 import ChecklistStepView from '@/features/sessions/steps/ChecklistStepView';
 import ChoiceStepView from '@/features/sessions/steps/ChoiceStepView';
+import CompareStepView from '@/features/sessions/steps/CompareStepView';
+import RecapStepView from '@/features/sessions/steps/RecapStepView';
 import InfoStepView from '@/features/sessions/steps/InfoStepView';
 import JournalStepView from '@/features/sessions/steps/JournalStepView';
 import MythFactStepView from '@/features/sessions/steps/MythFactStepView';
@@ -198,6 +200,12 @@ export default function SessionModuleScreen() {
                   }, SCALE_ADVANCE_MS);
                 }}
               />
+            )}
+            {step.kind === 'recap' && (
+              <RecapStepView step={step} steps={module.steps} answers={answers} />
+            )}
+            {step.kind === 'compare' && (
+              <CompareStepView step={step} done={answer === true} onDone={() => setAnswer(true)} />
             )}
             {step.kind === 'breathe' && (
               <BreatheStepView step={step} done={answer === true} onDone={() => setAnswer(true)} />
