@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import MoodFace from '@/features/mood/components/MoodFace';
+import MoodNotes from '@/features/mood/components/MoodNotes';
 import { MOODS } from '@/features/mood/moods';
 import MoodTrend from '@/features/progress/components/MoodTrend';
 import { moodWeeks } from '@/features/researcher/moodHistory';
@@ -59,6 +60,10 @@ export default function MoodHistoryScreen() {
         />
       </View>
 
+      <View style={styles.notes}>
+        <MoodNotes entries={student.moods} title={`${first}’s notes`} />
+      </View>
+
       <Text style={styles.sectionTitle}>Week by week</Text>
       <View>
         {weeks.map((w, i) => {
@@ -103,6 +108,7 @@ const styles = StyleSheet.create({
   header: { gap: 4, marginTop: 16 },
   meta: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
   chart: { marginTop: 24 },
+  notes: { marginTop: 28 },
   sectionTitle: {
     marginTop: 32,
     marginBottom: 4,

@@ -92,6 +92,14 @@ function phq9(score: number, item9: number, takenAt: string) {
  * `lift` raises later weeks a little, so longer-running students show a trend. Null skips a
  * day, as real students do.
  */
+function withNotes(entries: MoodEntry[], notes: Record<number, string>): MoodEntry[] {
+  // Keys count back from the newest mood: 0 is the latest one.
+  return entries.map((entry, i) => {
+    const note = notes[entries.length - 1 - i];
+    return note ? { ...entry, note } : entry;
+  });
+}
+
 function moodHistory(now: Date, days: number, pattern: (number | null)[], lift = 0): MoodEntry[] {
   const entries: MoodEntry[] = [];
   for (let i = 0; i < days; i++) {
@@ -250,7 +258,9 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'invite',
       lastActiveAt: hoursAgo(now, 5),
       phq9: phq9(12, 0, at(now, 30, 9)),
-      moods: moodHistory(now, 30, [2, 2, 3, null, 2, 3, 3], 1.4),
+      moods: withNotes(moodHistory(now, 30, [2, 2, 3, null, 2, 3, 3], 1.4), {
+        1: 'Went for a walk with my roommate. Helped a lot.',
+      }),
       sessions: {
         1: session1(
           at(now, 27, 19),
@@ -348,7 +358,10 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'invite',
       lastActiveAt: hoursAgo(now, 20),
       phq9: phq9(14, 0, at(now, 24, 9)),
-      moods: moodHistory(now, 23, [2, 2, 1, 2, null, 1, 2], -1.2),
+      moods: withNotes(moodHistory(now, 23, [2, 2, 1, 2, null, 1, 2], -1.2), {
+        0: 'Couldn’t sleep again. Exams on Monday.',
+        3: 'Skipped lectures, didn’t feel like seeing anyone.',
+      }),
       sessions: {
         1: session1(
           at(now, 21, 20),

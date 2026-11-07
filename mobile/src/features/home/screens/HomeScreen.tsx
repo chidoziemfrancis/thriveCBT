@@ -12,7 +12,7 @@ import HomeHero from '@/features/home/components/HomeHero';
 import WeekTiles from '@/features/home/components/WeekTiles';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
-import { logMood, todaysMood } from '@/features/mood/moodStore';
+import { logMood, setTodaysMoodNote, todaysMood } from '@/features/mood/moodStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { sessionContent } from '@/features/sessions/content';
 import { useSessionProgress } from '@/features/sessions/progressStore';
@@ -76,7 +76,11 @@ export default function HomeScreen() {
         <EmergencyContactCard />
 
         <Animated.View entering={stagger(1)}>
-          <DailyMood today={mood} onLog={handleLogMood} />
+          <DailyMood
+            today={mood}
+            onLog={handleLogMood}
+            onSaveNote={(note) => setMood(setTodaysMoodNote(note))}
+          />
         </Animated.View>
 
         <Animated.View entering={stagger(2)}>

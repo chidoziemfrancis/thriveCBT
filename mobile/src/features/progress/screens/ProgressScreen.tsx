@@ -5,6 +5,8 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import Screen from '@/components/ui/Screen';
 import { getPhq9Scores } from '@/features/assessment/scoreHistory';
+import MoodNotes from '@/features/mood/components/MoodNotes';
+import { moodNotes } from '@/features/mood/moodLog';
 import { getMoodLog } from '@/features/mood/moodStore';
 import InsightCard from '@/features/progress/components/InsightCard';
 import MoodTrend from '@/features/progress/components/MoodTrend';
@@ -46,6 +48,9 @@ export default function ProgressScreen() {
     <WeekStrip key="strip" days={week} />,
     <ThisWeekCard key="week" {...share} />,
     <MoodTrend key="trend" entries={moods} />,
+    ...(moodNotes(moods).length > 0
+      ? [<MoodNotes key="notes" entries={moods} title="Your notes" />]
+      : []),
     ...(insight ? [<InsightCard key="insight" text={insight} />] : []),
     ...(SHOW_PHQ9_TREND ? [<Phq9Card key="phq9" scores={activity.phq9} />] : []),
   ];
