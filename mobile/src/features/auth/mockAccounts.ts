@@ -6,6 +6,7 @@ import type { Role } from './roles';
 type MockAccount = { role: Role; password: string; researcherId?: string };
 
 const REGISTERED_KEY = 'mock_registered_accounts';
+const RESETS_KEY = 'mock_password_resets';
 
 // Stand-in for the backend until auth exists. Researchers never sign up in the app, so a
 // researcher can only be one of these pre-created accounts.
@@ -23,7 +24,17 @@ function normalise(email: string) {
 }
 
 function allAccounts(): Record<string, MockAccount> {
-  return { ...readJson<Record<string, MockAccount>>(REGISTERED_KEY, {}), ...SEED_ACCOUNTS };
+  // Seeded accounts come last so signing up can never take one over; a reset only changes
+  // the password.
+  const accounts = {
+    ...readJson<Record<string, MockAccount>>(REGISTERED_KEY, {}),
+    ...SEED_ACCOUNTS,
+  };
+  const resets = readJson<Record<string, string>>(RESETS_KEY, {});
+  for (const [email, password] of Object.entries(resets)) {
+    if (accounts[email]) accounts[email] = { ...accounts[email], password };
+  }
+  return accounts;
 }
 
 export function accountExists(email: string): boolean {
@@ -50,4 +61,12 @@ export function registerStudent(email: string, password: string) {
 export function researcherIdFor(email: string | undefined): string | null {
   if (!email) return null;
   return allAccounts()[normalise(email)]?.researcherId ?? null;
+}
+
+/** False when there is no account for this email, so nothing changes. */
+export function resetPassword(email: string, password: string): boolean {
+  if (!accountExists(email)) return false;
+  const resets = readJson<Record<string, string>>(RESETS_KEY, {});
+  writeJson(RESETS_KEY, { ...resets, [normalise(email)]: password });
+  return true;
 }

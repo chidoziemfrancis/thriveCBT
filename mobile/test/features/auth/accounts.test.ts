@@ -4,8 +4,10 @@ import {
   accountExists,
   registerStudent,
   researcherIdFor,
+  resetPassword,
   signIn,
 } from '@/features/auth/mockAccounts';
+import { isEmail } from '@/features/auth/email';
 import { homeFor } from '@/features/auth/roles';
 
 // On-device storage is native, so tests use an in-mockMemory stand-in.
@@ -71,5 +73,33 @@ describe('researcherIdFor', () => {
     expect(researcherIdFor('Researcher@ThriveCBT.com')).toBe('r-grace');
     expect(researcherIdFor('test@gmail.com')).toBeNull();
     expect(researcherIdFor(undefined)).toBeNull();
+  });
+});
+
+describe('resetPassword', () => {
+  it('replaces the password, so only the new one signs in', () => {
+    registerStudent('ada@uni.edu', 'oldpass123');
+    expect(resetPassword('Ada@uni.edu', 'newpass456')).toBe(true);
+    expect(signIn('ada@uni.edu', 'oldpass123')).toBeNull();
+    expect(signIn('ada@uni.edu', 'newpass456')).toBe('student');
+  });
+
+  it('keeps a researcher a researcher after a reset', () => {
+    resetPassword('researcher@thrivecbt.com', 'brandnew789');
+    expect(signIn('researcher@thrivecbt.com', 'brandnew789')).toBe('researcher');
+    expect(researcherIdFor('researcher@thrivecbt.com')).toBe('r-grace');
+  });
+
+  it('changes nothing for an email with no account', () => {
+    expect(resetPassword('nobody@uni.edu', 'whatever123')).toBe(false);
+    expect(accountExists('nobody@uni.edu')).toBe(false);
+  });
+});
+
+describe('isEmail', () => {
+  it('accepts an email with spaces around it and rejects anything else', () => {
+    expect(isEmail('  ada@uni.edu ')).toBe(true);
+    expect(isEmail('ada@uni')).toBe(false);
+    expect(isEmail('ada uni.edu')).toBe(false);
   });
 });

@@ -13,6 +13,7 @@ import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { haptics } from '@/lib/haptics';
 import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius, type } from '@/theme';
+import { afterMatching } from '@/features/onboarding/reminders';
 
 const AVATAR = 112;
 
@@ -36,9 +37,7 @@ export default function MeetResearcherScreen() {
   ];
 
   return (
-    <Screen
-      footer={<Button onPress={() => router.replace('/auth/create-pin')}>Go to my home</Button>}
-    >
+    <Screen footer={<Button onPress={() => router.replace(afterMatching())}>Go to my home</Button>}>
       <View style={styles.body}>
         <Animated.View entering={ZoomIn.springify().damping(12)} style={styles.avatar}>
           <ResearcherPhoto researcher={researcher} initialsStyle={styles.avatarText} />
