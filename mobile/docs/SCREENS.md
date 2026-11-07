@@ -40,8 +40,8 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S5 | Create password | Set a password for a new account | ✅ |
 | S6 | Verify email | 6-digit code with resend timer | ✅ |
 | S7 | Sign in (password) | Returning student enters password | ✅ |
-| S8 | Forgot password | Request a reset code | ⬜ |
-| S9 | Reset password | Enter the code and a new password | ⬜ |
+| S8 | Forgot password | Request a reset code | ✅ (mock code) |
+| S9 | Reset password | Enter the code and a new password | ✅ (mock code) |
 
 ### 2.2 Consent and screening
 
@@ -52,7 +52,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S12 | Name | First name or nickname | ✅ |
 | S13 | Birthday | iOS-style month/day/year wheels, shows age | ✅ |
 | S14 | Undergraduate check | Yes/No eligibility question | ✅ |
-| S15 | Not eligible | Kind message if the student doesn't meet the criteria (not an undergrad, under the age limit), with support links | ⬜ |
+| S15 | Not eligible | Kind message if the student doesn't meet the criteria (not an undergrad, under the age limit), with support links | ✅ (undergrad check; age limit waits on the study team) |
 | S16 | What to expect | The study journey: check-in, 8 sessions, weekly calls, final check-in | ✅ |
 | S17 | PHQ-9 question (×9) | Baseline check-in, one question per screen, slider and 14-day visual | ✅ |
 | S18 | PHQ-9 results | Starting score and severity band | ✅ |
@@ -64,7 +64,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 |---|---|---|---|
 | S20 | Finding your researcher | Short animated wait while assignment runs. Stays up if no researcher has space yet. | ✅ (mock researchers) |
 | S21 | Meet your researcher | Photo, name, short bio, how and when they'll be in touch, first check-in time | ✅ (mock researchers) |
-| S22 | Notification permission | Explains why reminders help, then asks for push permission | ⬜ |
+| S22 | Notification permission | Explains why reminders help, then asks for push permission. Shown once, after meeting the researcher | ✅ (sending reminders needs the backend) |
 
 ### 2.4 Main app (tab bar: Home · Sessions · Journal · Progress)
 
@@ -77,7 +77,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S27 | Journal list | All entries, newest first, with prompts and mood tags | ✅ |
 | S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
-| S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (on Home; note ⬜) |
+| S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
 
 ### 2.5 Session modules (reusable templates)
@@ -117,7 +117,7 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 
 | # | Screen | What it does | Status |
 |---|---|---|---|
-| S32 | My researcher | Profile, next call, message, WhatsApp, call options | ⬜ |
+| S32 | My researcher | Profile, next check-in, Message, Move check-in, Get help now. Opens from the chat header and the check-in card | ✅ |
 | S33 | Chat with my researcher | One-to-one mini chat with their own researcher only (see 2.6a) | ✅ (mock researcher) |
 | S34 | Upcoming check-in | Date and time of the weekly call, reschedule request, add to calendar | ✅ (mock schedule) |
 | S35 | Pre-call check | Camera and mic preview, "Join call" | ✅ |
@@ -298,7 +298,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 | Phase | What | Status |
 |---|---|---|
 | 0 | Tidy up: build settings (ThriveCBT, `com.thrivecbt.app`), "last active" on the privacy list, this screen map | ✅ |
-| 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ⬜ |
+| 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ✅ |
 | 2 | Session 2 and the shared exercises: M6–M9 | ⬜ |
 | 3 | Sessions 3 and 4: M10–M13 | ⬜ |
 | 4 | Sessions 5 and 6: M14–M19 | ⬜ |
