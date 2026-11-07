@@ -58,6 +58,8 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
       return Array.isArray(answer) && answer.length > 0;
     case 'mythFact':
       return typeof answer === 'boolean';
+    case 'compare':
+      return answer === true;
     case 'choice':
     case 'scale':
       return typeof answer === 'number';
