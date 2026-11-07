@@ -1,5 +1,5 @@
-import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useMemo } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useMemo, useState } from 'react';
 import {
   FlatList,
   KeyboardAvoidingView,
@@ -17,7 +17,7 @@ import BackButton from '@/components/ui/BackButton';
 import { Researcher, firstName } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
-import { ChatRow, toChatRows } from '@/features/chat/chatLogic';
+import { ChatRow, REPLY_HOURS, toChatRows } from '@/features/chat/chatLogic';
 import { sendMessage, setChatOpen, useChat } from '@/features/chat/chatStore';
 import ChatComposer from '@/features/chat/components/ChatComposer';
 import MessageBubble from '@/features/chat/components/MessageBubble';
@@ -25,8 +25,6 @@ import TypingBubble from '@/features/chat/components/TypingBubble';
 import { haptics } from '@/lib/haptics';
 import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius, type } from '@/theme';
-
-const REPLY_HOURS = 'Usually replies within a day';
 
 // Shown after a flagged message is visibly sent, so the student sees it went through first.
 const SUPPORT_DELAY_MS = 600;
@@ -43,17 +41,24 @@ function Header({ researcher, typing }: { researcher: Researcher; typing: boolea
   return (
     <View style={styles.header}>
       <BackButton />
-      <View style={styles.headerAvatar}>
-        <ResearcherPhoto researcher={researcher} initialsStyle={styles.headerAvatarText} />
-      </View>
-      <View style={styles.headerText}>
-        <Text style={styles.headerName} numberOfLines={1}>
-          {researcher.name}
-        </Text>
-        <Text style={[styles.headerSub, typing && { color: colors.primary }]}>
-          {typing ? 'typing…' : REPLY_HOURS}
-        </Text>
-      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`About ${researcher.name}`}
+        onPress={() => router.push('/my-researcher')}
+        style={styles.headerWho}
+      >
+        <View style={styles.headerAvatar}>
+          <ResearcherPhoto researcher={researcher} initialsStyle={styles.headerAvatarText} />
+        </View>
+        <View style={styles.headerText}>
+          <Text style={styles.headerName} numberOfLines={1}>
+            {researcher.name}
+          </Text>
+          <Text style={[styles.headerSub, typing && { color: colors.primary }]}>
+            {typing ? 'typing…' : REPLY_HOURS}
+          </Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
@@ -95,6 +100,9 @@ function EmptyChat({
 
 export default function ChatScreen() {
   const { messages, typing } = useChat();
+  // Other screens can open the chat with a message ready to send.
+  const { draft } = useLocalSearchParams<{ draft?: string }>();
+  const [text, setText] = useState(draft ?? '');
   const researcher = useMemo(
     () => MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId),
     []
@@ -164,7 +172,7 @@ export default function ChatScreen() {
             }
           />
         )}
-        <ChatComposer onSend={handleSend} />
+        <ChatComposer onSend={handleSend} value={text} onChangeText={setText} />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -185,6 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   headerBare: { paddingHorizontal: 16, paddingVertical: 10 },
+  headerWho: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
   headerAvatar: {
     width: 42,
     height: 42,
