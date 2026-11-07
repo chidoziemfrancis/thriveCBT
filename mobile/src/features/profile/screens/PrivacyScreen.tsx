@@ -10,10 +10,23 @@ type Visibility = 'yes' | 'no' | 'pending';
 // Mirrors the study information, so students know exactly what their researcher can read.
 const ITEMS: { label: string; detail: string; visibility: Visibility }[] = [
   { label: 'Check-in questionnaires', detail: 'Your PHQ-9 answers and scores', visibility: 'yes' },
-  { label: 'Session progress', detail: 'Which parts you’ve finished', visibility: 'yes' },
+  {
+    label: 'Session progress',
+    detail: 'Which parts you’ve finished and your answers',
+    visibility: 'yes',
+  },
   { label: 'Mood logs', detail: 'The moods you log each day', visibility: 'yes' },
   { label: 'Messages', detail: 'Your chat with them', visibility: 'yes' },
-  { label: 'Check-in feedback', detail: 'How calls felt, if you shared it', visibility: 'yes' },
+  {
+    label: 'Calls',
+    detail: 'Calls you joined or missed, and how they felt if you shared it',
+    visibility: 'yes',
+  },
+  {
+    label: 'When you were last active',
+    detail: 'The last day you used the app',
+    visibility: 'yes',
+  },
   {
     label: 'Emergency contact',
     detail: 'Only used if they’re seriously worried',
