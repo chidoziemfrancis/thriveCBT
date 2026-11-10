@@ -19,7 +19,12 @@ export type PhotoKey =
   | 'feel-angry'
   | 'feel-ashamed'
   | 'feel-lonely'
-  | 'feel-numb';
+  | 'feel-numb'
+  | 'week3'
+  | 'trap-catastrophe'
+  | 'trap-mindreading'
+  | 'trap-always'
+  | 'trap-allornothing';
 
 // Illustrations, not photos, so every student can see themselves in them. Bundled so sessions work
 // offline and every student sees the same pictures. Credits in assets/images/sessions/CREDITS.md.
@@ -45,6 +50,11 @@ export const PHOTOS: Partial<Record<PhotoKey, number>> = {
   'feel-ashamed': require('@/assets/images/sessions/illustrations/feel-ashamed.svg'),
   'feel-lonely': require('@/assets/images/sessions/illustrations/feel-lonely.svg'),
   'feel-numb': require('@/assets/images/sessions/illustrations/feel-numb.svg'),
+  week3: require('@/assets/images/sessions/illustrations/week3.svg'),
+  'trap-catastrophe': require('@/assets/images/sessions/illustrations/trap-catastrophe.svg'),
+  'trap-mindreading': require('@/assets/images/sessions/illustrations/trap-mindreading.svg'),
+  'trap-always': require('@/assets/images/sessions/illustrations/trap-always.svg'),
+  'trap-allornothing': require('@/assets/images/sessions/illustrations/trap-allornothing.svg'),
 };
 
 /** What each photo shows, read out by screen readers. */
@@ -70,4 +80,9 @@ export const PHOTO_ALT: Record<PhotoKey, string> = {
   'feel-ashamed': 'An ashamed face',
   'feel-lonely': 'A lonely face',
   'feel-numb': 'A numb, blank face',
+  week3: 'A student next to a page with a magnifying glass',
+  'trap-catastrophe': 'A worried student watching a snowball grow as it rolls downhill',
+  'trap-mindreading': 'A worried student guessing what a friend is thinking',
+  'trap-always': 'A tired student next to stamps reading always and never',
+  'trap-allornothing': 'A serious student next to a circle split into black and white',
 };

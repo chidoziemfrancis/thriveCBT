@@ -4,6 +4,7 @@ import {
   type StepAnswer,
 } from '@/features/sessions/content/types';
 import { emotionLabel } from '@/features/sessions/emotions';
+import { trapLabels } from '@/features/sessions/traps';
 import { FLIPPED, type SessionRecord, sortProgress } from '@/features/sessions/sessionLogic';
 
 export type SummaryLine = { label: string; value: string };
@@ -106,9 +107,10 @@ export function summariseSession(
         case 'sort': {
           const { scenario, placed, firstTry, done } = sortProgress(step, answer);
           if (!scenario) break;
-          lines.push({ label: 'Story picked', value: scenario.label });
+          if (step.scenarios.length > 1)
+            lines.push({ label: 'Story picked', value: scenario.label });
           lines.push({
-            label: 'Sorted into thought, feeling, do',
+            label: step.targets ? step.title : 'Sorted into thought, feeling, do',
             value: done
               ? `${firstTry} of ${scenario.cards.length} right first time`
               : `${placed.length} of ${scenario.cards.length} sorted`,
@@ -120,6 +122,11 @@ export function summariseSession(
           if (label) lines.push({ label: step.title, value: label });
           break;
         }
+        case 'traps':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({ label: step.title, value: trapLabels(answer as string[]).join(', ') });
+          }
+          break;
         case 'prompt':
           if (typeof answer === 'string' && answer.trim()) {
             lines.push({ label: step.title, value: answer.trim() });

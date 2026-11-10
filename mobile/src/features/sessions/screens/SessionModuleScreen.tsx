@@ -36,6 +36,7 @@ import EmotionStepView from '@/features/sessions/steps/EmotionStepView';
 import PromptStepView from '@/features/sessions/steps/PromptStepView';
 import RecapStepView from '@/features/sessions/steps/RecapStepView';
 import SortStepView from '@/features/sessions/steps/SortStepView';
+import TrapsStepView from '@/features/sessions/steps/TrapsStepView';
 import TriangleStepView from '@/features/sessions/steps/TriangleStepView';
 import InfoStepView from '@/features/sessions/steps/InfoStepView';
 import JournalStepView from '@/features/sessions/steps/JournalStepView';
@@ -43,6 +44,8 @@ import MythFactStepView from '@/features/sessions/steps/MythFactStepView';
 import RevealStepView from '@/features/sessions/steps/RevealStepView';
 import ScaleStepView from '@/features/sessions/steps/ScaleStepView';
 import VideoStepView from '@/features/sessions/steps/VideoStepView';
+import { recordFromDiary } from '@/features/thoughts/thoughtLog';
+import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
@@ -111,7 +114,10 @@ export default function SessionModuleScreen() {
     }
     if (current.kind === 'recap' && current.of === 'diary') {
       const text = diaryText(current, answers);
-      if (text) addJournalEntry({ prompt: 'Thought diary', text, sessionId });
+      const prompt = current.diary?.traps ? 'Thought record' : 'Thought diary';
+      if (text) addJournalEntry({ prompt, text, sessionId });
+      const record = recordFromDiary(current, answers);
+      if (record) addThoughtRecord({ ...record, sessionId });
     }
     if (isLastStep) return finishModule();
     haptics.tick();
@@ -232,6 +238,13 @@ export default function SessionModuleScreen() {
             )}
             {step.kind === 'emotion' && (
               <EmotionStepView
+                step={step}
+                answer={Array.isArray(answer) ? (answer as string[]) : []}
+                onAnswer={setAnswer}
+              />
+            )}
+            {step.kind === 'traps' && (
+              <TrapsStepView
                 step={step}
                 answer={Array.isArray(answer) ? (answer as string[]) : []}
                 onAnswer={setAnswer}

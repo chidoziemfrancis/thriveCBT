@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FlipInEasyX } from 'react-native-reanimated';
 
 import { Glyph } from '@/components/icons/FeatureIcon';
+import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import type { RevealStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
@@ -57,7 +58,11 @@ export default function RevealStepView({
                 </Animated.View>
               ) : (
                 <View style={[styles.card, styles.closed]}>
-                  <Glyph name={card.icon} size={34} color={colors.mintInk} />
+                  {card.picture ? (
+                    <SessionPhoto photo={card.picture} style={styles.picture} />
+                  ) : (
+                    <Glyph name={card.icon} size={34} color={colors.mintInk} />
+                  )}
                   <Text style={styles.label}>{card.label}</Text>
                   <Text style={styles.tap}>Tap to reveal</Text>
                 </View>
@@ -75,6 +80,7 @@ export default function RevealStepView({
 }
 
 const styles = StyleSheet.create({
+  picture: { alignSelf: 'stretch', height: 84, borderRadius: radius.md },
   wrap: { gap: 22, paddingTop: 8 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 12 },
   cell: { width: '48.5%' },

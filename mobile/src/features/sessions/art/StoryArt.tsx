@@ -9,11 +9,11 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle, Path } from 'react-native-svg';
+import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 
 import { colors } from '@/theme';
 
-export type StoryScene = 'energy' | 'sleep' | 'withdraw' | 'loop';
+export type StoryScene = 'energy' | 'sleep' | 'withdraw' | 'loop' | 'pop' | 'stamp' | 'magnify';
 
 const INK = colors.primary;
 const SOFT = colors.primarySoft;
@@ -129,11 +129,90 @@ function Loop() {
   );
 }
 
+function Bubble({ label }: { label?: string }) {
+  return (
+    <Svg width={170} height={130} viewBox="0 0 170 130">
+      <Path
+        d="M40 30c10-24 70-28 84-4 30-4 46 22 36 44 18 18 2 46-26 42-12 22-62 22-74 2-30 4-48-20-36-40-18-20 0-50 16-44z"
+        fill="#FFFFFF"
+        stroke={INK}
+        strokeWidth={4}
+      />
+      <Circle cx={30} cy={118} r={7} fill="#FFFFFF" stroke={INK} strokeWidth={3} />
+      {label && (
+        <SvgText x={85} y={78} fontSize={26} fontWeight="700" textAnchor="middle" fill={colors.ink}>
+          {label}
+        </SvgText>
+      )}
+    </Svg>
+  );
+}
+
+// A thought that pops up out of nowhere, again and again.
+function Pop() {
+  const t = useLoop(900);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: 0.7 + t.value * 0.3 }] }));
+  return (
+    <Animated.View style={style}>
+      <Bubble label="I'm useless" />
+    </Animated.View>
+  );
+}
+
+// It feels true, so it gets stamped as true without a second look.
+function Stamp() {
+  const t = useLoop(1400);
+  const stamp = useAnimatedStyle(() => ({
+    opacity: t.value,
+    transform: [{ rotate: '-14deg' }, { scale: 1.4 - t.value * 0.4 }],
+  }));
+  return (
+    <View style={styles.row}>
+      <Bubble />
+      <Animated.View style={[styles.stamp, stamp]}>
+        <Svg width={120} height={60} viewBox="0 0 120 60">
+          <Path d="M6 6h108v48H6z" fill="none" stroke="#E8836B" strokeWidth={6} />
+          <SvgText x={60} y={40} fontSize={26} fontWeight="800" textAnchor="middle" fill="#E8836B">
+            TRUE?
+          </SvgText>
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
+// Spotting the thought: a magnifying glass moving over it.
+function Magnify() {
+  const t = useLoop(2000);
+  const glass = useAnimatedStyle(() => ({ transform: [{ translateX: -40 + t.value * 80 }] }));
+  return (
+    <View>
+      <Bubble label="I'm useless" />
+      <Animated.View style={[styles.glass, glass]}>
+        <Svg width={90} height={90} viewBox="0 0 90 90">
+          <Circle
+            cx={38}
+            cy={38}
+            r={26}
+            fill="rgba(255,255,255,0.4)"
+            stroke={INK}
+            strokeWidth={6}
+          />
+          <Path d="M58 58l22 22" stroke={INK} strokeWidth={8} strokeLinecap="round" />
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
 const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   energy: Energy,
   sleep: Sleep,
   withdraw: Withdraw,
   loop: Loop,
+  pop: Pop,
+  stamp: Stamp,
+  magnify: Magnify,
 };
 
 export default function StoryArt({ scene }: { scene: StoryScene }) {
@@ -148,6 +227,8 @@ export default function StoryArt({ scene }: { scene: StoryScene }) {
 const styles = StyleSheet.create({
   stage: { height: 200, alignItems: 'center', justifyContent: 'center' },
   row: { flexDirection: 'row', alignItems: 'center' },
+  stamp: { position: 'absolute', right: -10, top: 40 },
+  glass: { position: 'absolute', left: 50, top: 30 },
   battery: {
     width: 160,
     height: 70,
