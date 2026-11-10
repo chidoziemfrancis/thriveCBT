@@ -121,12 +121,57 @@ export type JournalStep = StepBase & {
   starters?: { label: string; text: string }[];
 };
 
-/** A look back over this part's answers: the check-in as bars, or the quiz score. */
+/** A look back over this part's answers: the check-in as bars, the quiz score, or a diary. */
 export type RecapStep = StepBase & {
   kind: 'recap';
-  of: 'scales' | 'quiz';
+  of: 'scales' | 'quiz' | 'diary';
   title: string;
   body: string;
+  /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
+  diary?: { situation: string; thought: string; feeling: string; action: string };
+};
+
+/** The three corners of the CBT triangle. */
+export type CbtPart = 'thought' | 'feeling' | 'do';
+
+export type TriangleSide = { thought: string; feeling: string; strength: number; action: string };
+
+/**
+ * One person's thought, feeling and action, tapped corner by corner, then the same moment with
+ * a kinder thought so the student watches the feeling and action change.
+ */
+export type TriangleStep = StepBase & {
+  kind: 'triangle';
+  title: string;
+  body: string;
+  name: string;
+  before: TriangleSide;
+  after: TriangleSide;
+};
+
+/** A story the student picks, then sorts line by line into thought, feeling or action. */
+export type SortStep = StepBase & {
+  kind: 'sort';
+  title: string;
+  body: string;
+  scenarios: {
+    id: string;
+    label: string;
+    picture: PhotoKey;
+    cards: { id: string; text: string; part: CbtPart }[];
+  }[];
+};
+
+/** Pick a feeling family, then the exact word, then how strong it is. */
+export type EmotionStep = StepBase & { kind: 'emotion'; title: string; body?: string };
+
+/** A short written answer, one question per screen, with optional starters. */
+export type PromptStep = StepBase & {
+  kind: 'prompt';
+  title: string;
+  hint: string;
+  placeholder?: string;
+  starters?: string[];
 };
 
 export type SessionStep =
@@ -140,6 +185,10 @@ export type SessionStep =
   | VideoStep
   | CompareStep
   | RecapStep
+  | TriangleStep
+  | SortStep
+  | EmotionStep
+  | PromptStep
   | JournalStep;
 
 export type SessionModule = {

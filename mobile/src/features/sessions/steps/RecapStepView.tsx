@@ -3,6 +3,7 @@ import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { CheckIcon, CloseIcon } from '@/components/icons';
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
+import { diaryAnswers } from '@/features/sessions/sessionLogic';
 import { colors, fonts } from '@/theme';
 
 import { stepText } from './stepText';
@@ -73,6 +74,40 @@ function QuizScore({
   );
 }
 
+function DiaryTriangle({
+  step,
+  answers,
+}: {
+  step: RecapStep;
+  answers: Record<string, StepAnswer>;
+}) {
+  const diary = diaryAnswers(step, answers);
+  if (!diary) return null;
+  const corners = [
+    { label: 'Thought', text: diary.thought },
+    { label: 'Feeling', text: diary.feeling },
+    { label: 'Do', text: diary.action },
+  ];
+  return (
+    <View style={styles.list}>
+      <View style={styles.situation}>
+        <Text style={styles.cornerLabel}>What happened</Text>
+        <Text style={styles.cornerText}>{diary.situation}</Text>
+      </View>
+      {corners.map((c, i) => (
+        <Animated.View
+          key={c.label}
+          entering={FadeInDown.delay(100 * i).duration(300)}
+          style={styles.corner}
+        >
+          <Text style={styles.cornerLabel}>{c.label}</Text>
+          <Text style={styles.cornerText}>{c.text || '—'}</Text>
+        </Animated.View>
+      ))}
+    </View>
+  );
+}
+
 export default function RecapStepView({
   step,
   steps,
@@ -88,11 +123,9 @@ export default function RecapStepView({
         <Text style={stepText.title}>{step.title}</Text>
         <Text style={stepText.body}>{step.body}</Text>
       </View>
-      {step.of === 'scales' ? (
-        <ScaleBars steps={steps} answers={answers} />
-      ) : (
-        <QuizScore steps={steps} answers={answers} />
-      )}
+      {step.of === 'scales' && <ScaleBars steps={steps} answers={answers} />}
+      {step.of === 'quiz' && <QuizScore steps={steps} answers={answers} />}
+      {step.of === 'diary' && <DiaryTriangle step={step} answers={answers} />}
     </View>
   );
 }
@@ -130,5 +163,21 @@ const styles = StyleSheet.create({
   },
   markOk: { backgroundColor: colors.primary },
   markNo: { backgroundColor: colors.dangerSoft },
+  situation: { gap: 4, padding: 14, borderRadius: 14, backgroundColor: colors.surfaceMuted },
+  corner: {
+    gap: 4,
+    paddingVertical: 10,
+    paddingLeft: 14,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.primary,
+  },
+  cornerLabel: {
+    fontFamily: fonts.bold,
+    fontSize: 11,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    color: colors.primary,
+  },
+  cornerText: { fontFamily: fonts.medium, fontSize: 15, lineHeight: 22, color: colors.ink },
   qText: { flex: 1, fontFamily: fonts.medium, fontSize: 15, lineHeight: 21, color: colors.ink },
 });

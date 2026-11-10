@@ -3,7 +3,8 @@ import {
   type SessionContent,
   type StepAnswer,
 } from '@/features/sessions/content/types';
-import type { SessionRecord } from '@/features/sessions/sessionLogic';
+import { emotionLabel } from '@/features/sessions/emotions';
+import { FLIPPED, type SessionRecord, sortProgress } from '@/features/sessions/sessionLogic';
 
 export type SummaryLine = { label: string; value: string };
 
@@ -91,6 +92,38 @@ export function summariseSession(
           break;
         case 'journal':
           if (typeof answer === 'string' && answer.trim()) reflection = answer.trim();
+          break;
+        case 'triangle':
+          if (Array.isArray(answer)) {
+            lines.push({
+              label: step.title,
+              value: (answer as string[]).includes(FLIPPED)
+                ? 'Followed the loop and tried a different thought'
+                : 'Followed the loop',
+            });
+          }
+          break;
+        case 'sort': {
+          const { scenario, placed, firstTry, done } = sortProgress(step, answer);
+          if (!scenario) break;
+          lines.push({ label: 'Story picked', value: scenario.label });
+          lines.push({
+            label: 'Sorted into thought, feeling, do',
+            value: done
+              ? `${firstTry} of ${scenario.cards.length} right first time`
+              : `${placed.length} of ${scenario.cards.length} sorted`,
+          });
+          break;
+        }
+        case 'emotion': {
+          const label = emotionLabel(answer);
+          if (label) lines.push({ label: step.title, value: label });
+          break;
+        }
+        case 'prompt':
+          if (typeof answer === 'string' && answer.trim()) {
+            lines.push({ label: step.title, value: answer.trim() });
+          }
           break;
       }
     }
