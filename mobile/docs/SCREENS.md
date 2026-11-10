@@ -97,9 +97,9 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M8 | Emotion picker | 2 | ✅ (family, exact word, strength) |
 | M9 | Thought diary (event → thought → emotion → intensity) | 2, 3 | ✅ (one question per screen, saved to the journal) |
 | M10 | Drag-and-drop matching (distortion ↔ statement) | 3 | ✅ (eight thoughts onto four traps) |
-| M11 | Evidence for and against worksheet | 4 | ⬜ |
-| M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ⬜ |
-| M13 | Balanced thought builder | 4 | ⬜ |
+| M11 | Evidence for and against worksheet | 4 | ✅ (sort Tobi's evidence, then your own, with a tipping scale) |
+| M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ✅ (how true, a friend, worst/best/likely, a year from now) |
+| M13 | Balanced thought builder | 4 | ✅ ("Even though…, I also know…, so…", then belief before and after) |
 | M14 | Activity scheduler (weekly planner) | 5 | ⬜ |
 | M15 | Motivation and enjoyment scale | 5 | ⬜ |
 | M16 | Relaxation audio player (breathing, muscle relaxation, grounding) | 6 | ⬜ |
@@ -301,7 +301,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 | 0 | Tidy up: build settings (ThriveCBT, `com.thrivecbt.app`), "last active" on the privacy list, this screen map | ✅ |
 | 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ✅ |
 | 2 | Session 2 and the shared exercises: M6–M9 | ✅ |
-| 3 | Sessions 3 and 4: M10–M13 | 🟡 Session 3 and the thought log done; Session 4 next |
+| 3 | Sessions 3 and 4: M10–M13 | ✅ (plus the thought log and Challenge a thought) |
 | 4 | Sessions 5 and 6: M14–M19 | ⬜ |
 | 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |
 | 6 | End of study: S39–S41 | ⬜ |
