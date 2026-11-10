@@ -164,3 +164,29 @@ describe('when sessions open', () => {
     expect(opensLabel(new Date(2026, 10, 17), now)).toMatch(/^Opens .*17/);
   });
 });
+
+describe('the redesigned Session 1', () => {
+  const steps = SESSION_1.modules.flatMap((m) => m.steps);
+
+  it('only moves on from the bad-day slider once time has been dragged to the end', () => {
+    const compare = steps.find((s) => s.kind === 'compare')!;
+    expect(isStepReady(compare, undefined)).toBe(false);
+    expect(isStepReady(compare, true)).toBe(true);
+  });
+
+  it('places every "four ways" card on the body and gives every worry a photo', () => {
+    const fourWays = steps.find((s) => s.id === 'four-ways');
+    expect(fourWays?.kind === 'reveal' && fourWays.cards.every((c) => c.spot)).toBe(true);
+    const pressures = steps.find((s) => s.id === 'pressures');
+    expect(
+      pressures?.kind === 'checklist' && pressures.photos?.length === pressures.options.length
+    ).toBe(true);
+  });
+
+  it('keeps the step ids the researcher’s view and saved progress rely on', () => {
+    const ids = steps.map((s) => s.id);
+    for (const id of ['noticed', 'pressures', 'four-ways', 'q1', 'q2', 'q3', 'reflect']) {
+      expect(ids).toContain(id);
+    }
+  });
+});

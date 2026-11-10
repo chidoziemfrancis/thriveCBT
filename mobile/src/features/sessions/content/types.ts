@@ -1,4 +1,7 @@
 import type { FeatureIconName, FeatureIconTone } from '@/components/icons/FeatureIcon';
+import type { BodySpot } from '@/features/sessions/art/BodyFigure';
+import type { StoryScene } from '@/features/sessions/art/StoryArt';
+import type { PhotoKey } from '@/features/sessions/photos';
 
 // Each session is data poured into a handful of reusable step templates, so adding sessions
 // 2–8 means writing content, not new screens. Every step is one idea on one screen, and most
@@ -9,11 +12,18 @@ type StepBase = { id: string };
 /** A short idea with a picture: the backbone of each lesson. */
 export type InfoStep = StepBase & {
   kind: 'info';
-  art: FeatureIconName;
+  /** A real photo above the text; otherwise the drawn art. */
+  photo?: PhotoKey;
+  art?: FeatureIconName;
   tone?: FeatureIconTone;
+  /** "{name}" is replaced with the student's first name. */
   title: string;
   body: string;
   bullets?: string[];
+  /** Shows the student's researcher and when they'll talk about this. */
+  researcherNote?: boolean;
+  /** Shows the 8-week path with this week marked. */
+  path?: boolean;
 };
 
 /** Cards the student taps to turn over, so they uncover the ideas themselves. */
@@ -21,7 +31,9 @@ export type RevealStep = StepBase & {
   kind: 'reveal';
   title: string;
   body?: string;
-  cards: { id: string; icon: FeatureIconName; label: string; detail: string }[];
+  cards: { id: string; icon: FeatureIconName; label: string; detail: string; spot?: BodySpot }[];
+  /** Cards sit on a drawing of a person instead of in a grid. */
+  figure?: 'body';
 };
 
 /** The checklist answer for "None of these", which clears every other pick. */
@@ -33,6 +45,8 @@ export type ChecklistStep = StepBase & {
   title: string;
   body?: string;
   options: string[];
+  /** One photo per option, shown as picture tiles. */
+  photos?: PhotoKey[];
   /** Shown after picking at least one option. */
   responseSome: string;
   responseNone: string;
@@ -71,8 +85,25 @@ export type BreatheStep = StepBase & {
   cycles: number;
 };
 
-/** A video slot; shown as "coming soon" until the animation is produced. */
-export type VideoStep = StepBase & { kind: 'video'; title: string; body: string };
+/** A video slot. Until the video is made, its story plays as illustrated slides. */
+export type VideoStep = StepBase & {
+  kind: 'video';
+  title: string;
+  body: string;
+  slides?: { scene: StoryScene; text: string }[];
+};
+
+/** A slider over time that shows how a passing low differs from one that stays. */
+export type CompareStep = StepBase & {
+  kind: 'compare';
+  title: string;
+  left: string;
+  right: string;
+  start: string;
+  end: string;
+  /** Said once the slider reaches the end. */
+  lesson: string;
+};
 
 export type JournalStep = StepBase & { kind: 'journal'; prompt: string; hint: string };
 
@@ -85,6 +116,7 @@ export type SessionStep =
   | ScaleStep
   | BreatheStep
   | VideoStep
+  | CompareStep
   | JournalStep;
 
 export type SessionModule = {
@@ -97,6 +129,8 @@ export type SessionModule = {
 
 export type SessionContent = {
   sessionId: number;
+  /** The photo at the top of the session's opening screen. */
+  hero?: PhotoKey;
   modules: SessionModule[];
   takeaways: string[];
   practice: string;
