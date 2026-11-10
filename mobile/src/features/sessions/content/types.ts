@@ -132,11 +132,13 @@ export type JournalStep = StepBase & {
 /** A look back over this part's answers: the check-in as bars, the quiz score, or a diary. */
 export type RecapStep = StepBase & {
   kind: 'recap';
-  of: 'scales' | 'quiz' | 'diary';
+  of: 'scales' | 'quiz' | 'diary' | 'reframe';
   title: string;
   body: string;
   /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
   diary?: { situation: string; thought: string; feeling: string; action?: string; traps?: string };
+  /** For a reframe: the evidence, the balanced thought, and belief before and after. */
+  reframe?: { evidence: string; balanced: string; before: string; after: string };
 };
 
 /** The three corners of the CBT triangle. */
@@ -167,6 +169,8 @@ export type SortStep = StepBase & {
   body: string;
   /** Said above the board while sorting. */
   prompt?: string;
+  /** A balance scale above the board tips as cards land on the first or second target. */
+  scale?: boolean;
   targets?: { id: string; label: string; hint: string }[];
   scenarios: {
     id: string;
@@ -174,6 +178,46 @@ export type SortStep = StepBase & {
     picture?: PhotoKey;
     cards: { id: string; text: string; part: string }[];
   }[];
+};
+
+/**
+ * The student's own thought with evidence for and against it. Saved as the thought first, then
+ * "for:" and "against:" items.
+ */
+export type EvidenceStep = StepBase & {
+  kind: 'evidence';
+  title: string;
+  body?: string;
+  suggestionsFor?: string[];
+  suggestionsAgainst?: string[];
+};
+
+/** How much something is believed or felt, 0 to 100%. Can quote the thought being rated. */
+export type RateStep = StepBase & {
+  kind: 'rate';
+  title: string;
+  body?: string;
+  /** The evidence step whose thought is shown above the slider. */
+  quote?: string;
+  low?: string;
+  high?: string;
+};
+
+/** A few short boxes on one screen, e.g. worst, best and most likely. */
+export type FieldsStep = StepBase & {
+  kind: 'fields';
+  title: string;
+  hint?: string;
+  fields: { label: string; placeholder?: string }[];
+};
+
+/** A balanced thought built from a sentence frame, with chips from the student's own evidence. */
+export type BalancedStep = StepBase & {
+  kind: 'balanced';
+  title: string;
+  body?: string;
+  evidence: string;
+  frame: [string, string, string];
 };
 
 /** Tag a thought with the thinking traps it might be, or "Not sure". */
@@ -207,6 +251,10 @@ export type SessionStep =
   | EmotionStep
   | PromptStep
   | TrapsStep
+  | EvidenceStep
+  | RateStep
+  | FieldsStep
+  | BalancedStep
   | JournalStep;
 
 export type SessionModule = {
@@ -225,7 +273,7 @@ export type SessionContent = {
   takeaways: string[];
   practice: string;
   /** A button under the practice that starts it straight away. */
-  practiceAction?: 'thought-record';
+  practiceAction?: 'thought-record' | 'challenge';
 };
 
 /** What a student's answer to a step looks like once saved. */

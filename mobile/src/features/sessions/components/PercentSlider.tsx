@@ -15,21 +15,23 @@ export default function PercentSlider({
   onChange,
   color,
   label,
+  low = 'A little',
+  high = 'Very strong',
 }: {
   value: number;
   onChange: (value: number) => void;
   color: string;
   label: string;
+  low?: string;
+  high?: string;
 }) {
   const [width, setWidth] = useState(0);
   const span = Math.max(0, width - KNOB);
 
   function set(next: number) {
     const clamped = Math.min(100, Math.max(0, Math.round(next / STEP) * STEP));
-    if (clamped !== value) {
-      haptics.tick();
-      onChange(clamped);
-    }
+    if (clamped !== value) haptics.tick();
+    onChange(clamped);
   }
 
   const pan = usePanGesture({
@@ -73,8 +75,8 @@ export default function PercentSlider({
         </View>
       </GestureDetector>
       <View style={styles.ends}>
-        <Text style={styles.end}>A little</Text>
-        <Text style={styles.end}>Very strong</Text>
+        <Text style={styles.end}>{low}</Text>
+        <Text style={styles.end}>{high}</Text>
       </View>
     </View>
   );

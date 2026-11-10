@@ -80,6 +80,19 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
       return typeof answer === 'string' && answer.trim().length > 0;
     case 'traps':
       return Array.isArray(answer) && answer.length > 0;
+    case 'evidence': {
+      const { thought, against } = readEvidence(answer);
+      return thought.length > 0 && against.length > 0;
+    }
+    case 'rate':
+      return typeof answer === 'number';
+    case 'fields':
+      return (
+        Array.isArray(answer) &&
+        step.fields.every((_, i) => typeof answer[i] === 'string' && (answer[i] as string).trim())
+      );
+    case 'balanced':
+      return Array.isArray(answer) && [0, 1, 2].every((i) => (answer[i] ?? '').toString().trim());
     case 'choice':
     case 'scale':
       return typeof answer === 'number';
@@ -140,6 +153,74 @@ export function diaryText(step: RecapStep, answers: Record<string, StepAnswer>):
     `What I felt: ${diary.feeling}`,
     diary.action && `What I did: ${diary.action}`,
     diary.traps.length > 0 && `Thinking trap: ${diary.traps.join(', ')}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
+const FOR = 'for:';
+const AGAINST = 'against:';
+
+/** The thought being weighed, and the evidence the student added on each side. */
+export function readEvidence(answer: StepAnswer | undefined) {
+  const items = Array.isArray(answer) ? (answer as string[]) : [];
+  return {
+    thought: (items[0] ?? '').trim(),
+    for: items.filter((i) => i.startsWith(FOR)).map((i) => i.slice(FOR.length)),
+    against: items.filter((i) => i.startsWith(AGAINST)).map((i) => i.slice(AGAINST.length)),
+  };
+}
+
+export function writeEvidence(thought: string, forItems: string[], against: string[]): string[] {
+  return [thought, ...forItems.map((i) => FOR + i), ...against.map((i) => AGAINST + i)];
+}
+
+/** "Even though …, I also know …, so …" read back as one sentence. */
+export function balancedText(frame: [string, string, string], answer: StepAnswer | undefined) {
+  const parts = Array.isArray(answer) ? (answer as string[]).map((p) => (p ?? '').trim()) : [];
+  if (parts.length < 3 || parts.some((p) => !p)) return null;
+  const clean = (text: string) => text.replace(/[.\s]+$/, '');
+  // Mid-sentence words drop their capital, except "I".
+  const lower = (text: string) =>
+    /^I\b/.test(text) ? text : text.charAt(0).toLowerCase() + text.slice(1);
+  return `${frame[0]} ${clean(parts[0])}, ${lower(frame[1])} ${clean(parts[1])}, ${lower(frame[2])} ${clean(parts[2])}.`;
+}
+
+/** What a reframe changed: the thought, the balanced version, and belief before and after. */
+export function reframeAnswers(
+  step: RecapStep,
+  steps: SessionStep[],
+  answers: Record<string, StepAnswer>
+) {
+  if (!step.reframe) return null;
+  const balancedStep = steps.find((s) => s.id === step.reframe!.balanced);
+  const number = (id: string) => (typeof answers[id] === 'number' ? (answers[id] as number) : null);
+  return {
+    thought: readEvidence(answers[step.reframe.evidence]).thought,
+    balanced:
+      balancedStep?.kind === 'balanced'
+        ? balancedText(balancedStep.frame, answers[balancedStep.id])
+        : null,
+    before: number(step.reframe.before),
+    after: number(step.reframe.after),
+  };
+}
+
+/** A challenged thought as one journal entry, so the researcher can follow the reasoning. */
+export function reframeText(
+  step: RecapStep,
+  steps: SessionStep[],
+  answers: Record<string, StepAnswer>
+): string | null {
+  const r = reframeAnswers(step, steps, answers);
+  if (!r || !r.thought || !step.reframe) return null;
+  const evidence = readEvidence(answers[step.reframe.evidence]);
+  return [
+    `Thought: ${r.thought}`,
+    evidence.for.length > 0 && `Evidence for: ${evidence.for.join('; ')}`,
+    evidence.against.length > 0 && `Evidence against: ${evidence.against.join('; ')}`,
+    r.balanced && `Balanced thought: ${r.balanced}`,
+    r.before !== null && r.after !== null && `Belief: ${r.before}% before, ${r.after}% after`,
   ]
     .filter(Boolean)
     .join('\n');
