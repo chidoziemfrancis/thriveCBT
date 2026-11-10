@@ -213,3 +213,12 @@ describe('Session 1 parts 2 to 4', () => {
     expect(reflect?.kind === 'journal' && (reflect.starters?.length ?? 0) > 0).toBe(true);
   });
 });
+
+describe('previewing sessions', () => {
+  it('opens later sessions without changing which one is this week', () => {
+    expect(sessionStatus(3, 1, undefined)).toBe('locked');
+    expect(sessionStatus(3, 1, undefined, 8)).toBe('available');
+    expect(sessionStatus(1, 1, undefined, 8)).toBe('current');
+    expect(sessionStatus(3, 1, { done: [], completedAt: 'x' }, 8)).toBe('done');
+  });
+});

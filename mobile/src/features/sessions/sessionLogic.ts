@@ -13,14 +13,19 @@ export type SessionRecord = {
 
 export type SessionStatus = 'done' | 'current' | 'available' | 'locked';
 
-/** A new session unlocks each study week; earlier ones stay open to revisit. */
+/**
+ * A new session unlocks each study week; earlier ones stay open to revisit. `unlocked` can run
+ * ahead of the week when previewing.
+ */
 export function sessionStatus(
   sessionId: number,
   week: number,
-  record: SessionRecord | undefined
+  record: SessionRecord | undefined,
+  unlocked = week
 ): SessionStatus {
   if (record?.completedAt) return 'done';
-  if (sessionId > week) return 'locked';
+  if (sessionId > unlocked) return 'locked';
+  if (sessionId > week) return 'available';
   if (sessionId === week) return 'current';
   return 'available';
 }
