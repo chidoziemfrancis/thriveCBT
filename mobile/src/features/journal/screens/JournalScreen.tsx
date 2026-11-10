@@ -4,7 +4,7 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 import FeatureIcon, { Glyph } from '@/components/icons/FeatureIcon';
-import { PlusIcon, RefreshIcon } from '@/components/icons';
+import { ChevronRightIcon, PlusIcon, RefreshIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/journalLogic';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
@@ -15,6 +15,8 @@ import {
   useJournal,
 } from '@/features/journal/journalStore';
 import MoodFace from '@/features/mood/components/MoodFace';
+import { trapCounts } from '@/features/thoughts/thoughtLog';
+import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -91,6 +93,9 @@ export default function JournalScreen() {
       { text: 'Cancel', style: 'cancel' },
     ]);
   }
+
+  const thoughts = useThoughtLog();
+  const topTrap = trapCounts(thoughts)[0];
 
   return (
     <Screen insideTabs>
@@ -172,6 +177,28 @@ export default function JournalScreen() {
           </View>
         </Animated.View>
 
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            haptics.tick();
+            router.push('/thought-log');
+          }}
+          style={({ pressed }) => [styles.logRow, pressed && { opacity: 0.6 }]}
+        >
+          <View style={styles.logIcon}>
+            <Glyph name="bulb" size={18} color={colors.primary} />
+          </View>
+          <View style={styles.logText}>
+            <Text style={styles.logTitle}>Thought log</Text>
+            <Text style={styles.logMeta}>
+              {thoughts.length === 0
+                ? 'Catch a thought and spot the trap'
+                : `${thoughts.length} ${thoughts.length === 1 ? 'record' : 'records'}${topTrap ? ` · most often ${topTrap.label.toLowerCase()}` : ''}`}
+            </Text>
+          </View>
+          <ChevronRightIcon size={16} color={colors.inkFaint} />
+        </Pressable>
+
         {groups.length === 0 ? (
           <View style={styles.empty}>
             <FeatureIcon name="book" size={72} tone="lavender" />
@@ -207,6 +234,26 @@ export default function JournalScreen() {
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  logRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.border,
+  },
+  logIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primarySoft,
+  },
+  logText: { flex: 1, gap: 2 },
+  logTitle: { fontFamily: fonts.bold, fontSize: 15, color: colors.ink },
+  logMeta: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
   headerText: { flex: 1, gap: 4 },
   meta: { fontFamily: fonts.medium, fontSize: 14, color: colors.inkMuted },
   shared: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 2 },
