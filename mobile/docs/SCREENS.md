@@ -76,6 +76,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S26 | Session complete | Celebration, what was learned, homework for the week | ✅ |
 | S27 | Journal list | All entries, newest first, with prompts and mood tags | ✅ |
 | S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ✅ |
+| S28b | Thought log | Every thought record with feeling and trap tags, this week's most common trap, and New thought record. Opens from the Journal tab and the Session 2 and 3 practice | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
@@ -95,7 +96,7 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M7 | Scenario exercise (pick the thought, feeling, behaviour) | 2, 4 | ✅ (pick a story, drag each card to thought, feeling or do) |
 | M8 | Emotion picker | 2 | ✅ (family, exact word, strength) |
 | M9 | Thought diary (event → thought → emotion → intensity) | 2, 3 | ✅ (one question per screen, saved to the journal) |
-| M10 | Drag-and-drop matching (distortion ↔ statement) | 3 | ⬜ |
+| M10 | Drag-and-drop matching (distortion ↔ statement) | 3 | ✅ (eight thoughts onto four traps) |
 | M11 | Evidence for and against worksheet | 4 | ⬜ |
 | M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ⬜ |
 | M13 | Balanced thought builder | 4 | ⬜ |
@@ -300,7 +301,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 | 0 | Tidy up: build settings (ThriveCBT, `com.thrivecbt.app`), "last active" on the privacy list, this screen map | ✅ |
 | 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ✅ |
 | 2 | Session 2 and the shared exercises: M6–M9 | ✅ |
-| 3 | Sessions 3 and 4: M10–M13 | ⬜ |
+| 3 | Sessions 3 and 4: M10–M13 | 🟡 Session 3 and the thought log done; Session 4 next |
 | 4 | Sessions 5 and 6: M14–M19 | ⬜ |
 | 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |
 | 6 | End of study: S39–S41 | ⬜ |
