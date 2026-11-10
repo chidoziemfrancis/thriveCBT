@@ -51,6 +51,7 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
     case 'info':
     case 'video':
     case 'breathe':
+    case 'recap':
       return true;
     case 'reveal':
       return Array.isArray(answer) && answer.length >= step.cards.length;
@@ -58,6 +59,8 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
       return Array.isArray(answer) && answer.length > 0;
     case 'mythFact':
       return typeof answer === 'boolean';
+    case 'compare':
+      return answer === true;
     case 'choice':
     case 'scale':
       return typeof answer === 'number';

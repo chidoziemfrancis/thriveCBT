@@ -3,9 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { VideoStep } from '@/features/sessions/content/types';
 import { colors, fonts, radius } from '@/theme';
 
+import StoryView from './StoryView';
 import { stepText } from './stepText';
 
 export default function VideoStepView({ step }: { step: VideoStep }) {
+  if (step.slides) return <StoryView title={step.title} slides={step.slides} />;
   return (
     <View style={styles.wrap}>
       <View style={styles.player} accessibilityLabel={`${step.title}, video coming soon`}>

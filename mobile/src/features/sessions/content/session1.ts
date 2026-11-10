@@ -4,6 +4,7 @@ import type { SessionContent } from './types';
 // intervention structure. Wording should be reviewed by the research team.
 export const SESSION_1: SessionContent = {
   sessionId: 1,
+  hero: 'hero',
   modules: [
     {
       id: 'lesson',
@@ -14,10 +15,10 @@ export const SESSION_1: SessionContent = {
         {
           id: 'welcome',
           kind: 'info',
-          art: 'heart',
-          tone: 'peach',
-          title: 'Welcome to Session 1',
-          body: 'Over the next few minutes we’ll look at what depression is, how it shows up, and why it can get better. Go at your own pace.',
+          photo: 'welcome',
+          title: 'Welcome to week 1, {name}',
+          body: 'This week is about understanding what depression is, how it shows up, and why it can get better. Go at your own pace.',
+          researcherNote: true,
         },
         {
           id: 'myth-sad',
@@ -29,40 +30,47 @@ export const SESSION_1: SessionContent = {
         },
         {
           id: 'what-is',
-          kind: 'info',
-          art: 'umbrella',
-          tone: 'lavender',
-          title: 'What is depression?',
-          body: 'A common mental health condition that affects how you feel, think and handle daily life. It goes beyond ordinary sadness and can last for weeks at a time.',
+          kind: 'compare',
+          title: 'A bad day, or depression?',
+          left: 'A bad day',
+          right: 'Depression',
+          start: '1 day',
+          end: '2 weeks+',
+          lesson:
+            'A bad day clears. When low mood stays for two weeks or more and gets in the way of daily life, that’s depression: a common health condition that affects how you feel, think and cope.',
         },
         {
           id: 'four-ways',
           kind: 'reveal',
           title: 'It shows up in four ways',
-          body: 'Tap each card to see how.',
+          figure: 'body',
           cards: [
             {
               id: 'thoughts',
               icon: 'bulb',
               label: 'Thoughts',
+              spot: 'head',
               detail: 'Harsh or hopeless thoughts, like “I always mess things up”.',
             },
             {
               id: 'feelings',
               icon: 'heart',
               label: 'Feelings',
+              spot: 'chest',
               detail: 'Sadness, emptiness, irritability, or feeling numb.',
             },
             {
               id: 'body',
               icon: 'sun',
-              label: 'Body',
+              label: 'Sleep and energy',
+              spot: 'belly',
               detail: 'Sleeping too much or too little, low energy, appetite changes.',
             },
             {
               id: 'behaviour',
               icon: 'flag',
-              label: 'Behaviour',
+              label: 'What you do',
+              spot: 'feet',
               detail: 'Pulling away from friends, skipping classes, dropping hobbies.',
             },
           ],
@@ -97,6 +105,13 @@ export const SESSION_1: SessionContent = {
             'Relationship problems',
             'Family pressure',
           ],
+          photos: [
+            'worry-studies',
+            'worry-lonely',
+            'worry-money',
+            'worry-relationships',
+            'worry-family',
+          ],
           responseSome:
             'Naming what weighs on you is a real first step. We’ll come back to these as the weeks go on.',
           responseNone: 'That’s okay. Not everyone can put a name to it, and that’s fine too.',
@@ -106,6 +121,15 @@ export const SESSION_1: SessionContent = {
           kind: 'video',
           title: 'What happens in depression?',
           body: 'A short animation about what happens in your mind and body during depression.',
+          slides: [
+            { scene: 'energy', text: 'Depression drains your energy…' },
+            { scene: 'sleep', text: '…upsets your sleep…' },
+            { scene: 'withdraw', text: '…and makes you pull away from people.' },
+            {
+              scene: 'loop',
+              text: 'Pulling away makes you feel worse, and round it goes. CBT helps you break that loop.',
+            },
+          ],
         },
         {
           id: 'breathe',
@@ -125,8 +149,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'better',
           kind: 'info',
-          art: 'sun',
-          tone: 'butter',
+          photo: 'better',
+          path: true,
           title: 'It can get better',
           body: 'Depression is treatable. Over the next 8 weeks, CBT will help you notice how your thoughts, feelings and actions connect, and give you practical skills to feel better, one small step at a time.',
         },
@@ -148,6 +172,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'sadness',
           kind: 'scale',
+          art: 'cloud',
+          short: 'Sadness',
           title: 'How sad have you felt?',
           low: 'Not sad',
           high: 'Very sad',
@@ -155,6 +181,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'motivation',
           kind: 'scale',
+          art: 'flame',
+          short: 'Motivation',
           title: 'How has your motivation been?',
           low: 'Very low',
           high: 'Very high',
@@ -162,6 +190,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'sleep',
           kind: 'scale',
+          art: 'moon',
+          short: 'Sleep',
           title: 'How well have you slept?',
           low: 'Very poorly',
           high: 'Very well',
@@ -169,6 +199,8 @@ export const SESSION_1: SessionContent = {
         {
           id: 'energy',
           kind: 'scale',
+          art: 'battery',
+          short: 'Energy',
           title: 'How has your energy been?',
           low: 'Very low',
           high: 'Very high',
@@ -176,9 +208,18 @@ export const SESSION_1: SessionContent = {
         {
           id: 'concentration',
           kind: 'scale',
+          art: 'target',
+          short: 'Concentration',
           title: 'How easily could you concentrate?',
           low: 'Very hard',
           high: 'Very easy',
+        },
+        {
+          id: 'mood-recap',
+          kind: 'recap',
+          of: 'scales',
+          title: 'Your week at a glance',
+          body: 'Your researcher will see this before your check-in, so you can talk it through together.',
         },
       ],
     },
@@ -191,6 +232,7 @@ export const SESSION_1: SessionContent = {
         {
           id: 'q1',
           kind: 'choice',
+          art: 'cloud',
           question: 'Depression is the same as ordinary sadness that passes quickly.',
           options: ['True', 'False'],
           answer: 1,
@@ -200,6 +242,7 @@ export const SESSION_1: SessionContent = {
         {
           id: 'q2',
           kind: 'choice',
+          art: 'moon',
           question: 'Which of these can depression affect?',
           options: ['Sleep and appetite', 'Only your mood', 'Nothing physical'],
           answer: 0,
@@ -209,11 +252,19 @@ export const SESSION_1: SessionContent = {
         {
           id: 'q3',
           kind: 'choice',
+          picture: 'quiz-stress',
           question: 'Academic stress can contribute to depression in undergraduates.',
           options: ['True', 'False'],
           answer: 0,
           explanation:
             'Academic stress is one of the most common contributors for students, along with loneliness, money worries and relationship or family pressure.',
+        },
+        {
+          id: 'quiz-score',
+          kind: 'recap',
+          of: 'quiz',
+          title: 'Nice work',
+          body: 'Here’s how you did. Every answer came with the reason, so nothing is wasted.',
         },
       ],
     },
@@ -228,6 +279,14 @@ export const SESSION_1: SessionContent = {
           kind: 'journal',
           prompt: 'What has depression affected most in your life?',
           hint: 'There’s no right answer. A few honest sentences is plenty.',
+          starters: [
+            { label: 'Studies', text: 'Mostly my studies. ' },
+            { label: 'Friendships', text: 'My friendships. ' },
+            { label: 'Sleep', text: 'My sleep. ' },
+            { label: 'Family', text: 'Things with my family. ' },
+            { label: 'Hobbies', text: 'The things I used to enjoy. ' },
+            { label: 'How I see myself', text: 'How I see myself. ' },
+          ],
         },
       ],
     },

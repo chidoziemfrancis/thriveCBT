@@ -20,3 +20,11 @@ export async function askForReminders(): Promise<boolean> {
 export function skipReminders() {
   setPreference('remindersAsked', true);
 }
+
+export async function remindersAllowed(): Promise<boolean> {
+  try {
+    return (await Notifications.getPermissionsAsync()).granted;
+  } catch {
+    return false;
+  }
+}
