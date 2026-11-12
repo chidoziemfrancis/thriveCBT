@@ -22,18 +22,16 @@ import { addJournalEntry } from '@/features/journal/journalStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { completeModule, saveAnswer, useSessionProgress } from '@/features/sessions/progressStore';
-import { isStepReady, nextModuleId, stepPosition } from '@/features/sessions/sessionLogic';
-import BreatheStepView from '@/features/sessions/steps/BreatheStepView';
-import ChecklistStepView from '@/features/sessions/steps/ChecklistStepView';
-import ChoiceStepView from '@/features/sessions/steps/ChoiceStepView';
-import CompareStepView from '@/features/sessions/steps/CompareStepView';
-import RecapStepView from '@/features/sessions/steps/RecapStepView';
-import InfoStepView from '@/features/sessions/steps/InfoStepView';
-import JournalStepView from '@/features/sessions/steps/JournalStepView';
-import MythFactStepView from '@/features/sessions/steps/MythFactStepView';
-import RevealStepView from '@/features/sessions/steps/RevealStepView';
-import ScaleStepView from '@/features/sessions/steps/ScaleStepView';
-import VideoStepView from '@/features/sessions/steps/VideoStepView';
+import {
+  diaryText,
+  reframeText,
+  isStepReady,
+  nextModuleId,
+  stepPosition,
+} from '@/features/sessions/sessionLogic';
+import StepBody from '@/features/sessions/steps/StepBody';
+import { recordFromDiary, recordFromReframe } from '@/features/thoughts/thoughtLog';
+import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
@@ -100,6 +98,19 @@ export default function SessionModuleScreen() {
         addJournalEntry({ prompt: current.prompt, text: value.trim(), sessionId });
       }
     }
+    if (current.kind === 'recap' && current.of === 'diary') {
+      const text = diaryText(current, answers);
+      const prompt = current.diary?.traps ? 'Thought record' : 'Thought diary';
+      if (text) addJournalEntry({ prompt, text, sessionId });
+      const record = recordFromDiary(current, answers);
+      if (record) addThoughtRecord({ ...record, sessionId });
+    }
+    if (current.kind === 'recap' && current.of === 'reframe') {
+      const text = reframeText(current, module.steps, answers);
+      if (text) addJournalEntry({ prompt: 'Challenged thought', text, sessionId });
+      const record = recordFromReframe(current, module.steps, answers);
+      if (record) addThoughtRecord({ ...record, sessionId });
+    }
     if (isLastStep) return finishModule();
     haptics.tick();
     setDirection(1);
@@ -119,9 +130,13 @@ export default function SessionModuleScreen() {
       ? 'Skip for now'
       : step.kind === 'journal'
         ? 'Save and continue'
-        : isLastStep && moduleIndex === content.modules.length - 1
-          ? 'Finish session'
-          : 'Continue';
+        : step.kind === 'recap' && step.of === 'diary'
+          ? 'Save my diary'
+          : step.kind === 'recap' && step.of === 'reframe'
+            ? 'Save my balanced thought'
+            : isLastStep && moduleIndex === content.modules.length - 1
+              ? 'Finish session'
+              : 'Continue';
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -156,67 +171,21 @@ export default function SessionModuleScreen() {
             key={`${module.id}-${step.id}`}
             entering={(direction === 1 ? FadeInRight : FadeInLeft).duration(280)}
           >
-            {step.kind === 'info' && <InfoStepView step={step} />}
-            {step.kind === 'video' && <VideoStepView step={step} />}
-            {step.kind === 'reveal' && (
-              <RevealStepView
-                step={step}
-                revealed={Array.isArray(answer) ? (answer as string[]) : []}
-                onReveal={setAnswer}
-              />
-            )}
-            {step.kind === 'checklist' && (
-              <ChecklistStepView
-                step={step}
-                picked={Array.isArray(answer) ? (answer as number[]) : []}
-                onPick={setAnswer}
-              />
-            )}
-            {step.kind === 'mythFact' && (
-              <MythFactStepView
-                step={step}
-                answer={typeof answer === 'boolean' ? answer : undefined}
-                onAnswer={setAnswer}
-              />
-            )}
-            {step.kind === 'choice' && (
-              <ChoiceStepView
-                step={step}
-                answer={typeof answer === 'number' ? answer : undefined}
-                onAnswer={setAnswer}
-              />
-            )}
-            {step.kind === 'scale' && (
-              <ScaleStepView
-                step={step}
-                answer={typeof answer === 'number' ? answer : undefined}
-                onAnswer={(value) => {
-                  setAnswer(value);
-                  // A rating moves on by itself, like the PHQ-9, so the check-in stays quick.
-                  advancing.current = true;
-                  setTimeout(() => {
-                    advancing.current = false;
-                    next(step, value);
-                  }, SCALE_ADVANCE_MS);
-                }}
-              />
-            )}
-            {step.kind === 'recap' && (
-              <RecapStepView step={step} steps={module.steps} answers={answers} />
-            )}
-            {step.kind === 'compare' && (
-              <CompareStepView step={step} done={answer === true} onDone={() => setAnswer(true)} />
-            )}
-            {step.kind === 'breathe' && (
-              <BreatheStepView step={step} done={answer === true} onDone={() => setAnswer(true)} />
-            )}
-            {step.kind === 'journal' && (
-              <JournalStepView
-                step={step}
-                text={typeof answer === 'string' ? answer : ''}
-                onChange={setAnswer}
-              />
-            )}
+            <StepBody
+              step={step}
+              steps={module.steps}
+              answers={answers}
+              onAnswer={setAnswer}
+              onScale={(value) => {
+                setAnswer(value);
+                // A rating moves on by itself, like the PHQ-9, so the check-in stays quick.
+                advancing.current = true;
+                setTimeout(() => {
+                  advancing.current = false;
+                  next(step, value);
+                }, SCALE_ADVANCE_MS);
+              }}
+            />
           </Animated.View>
         </ScrollView>
 

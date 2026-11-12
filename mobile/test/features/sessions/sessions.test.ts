@@ -109,7 +109,7 @@ describe('session 1 content', () => {
   it('is registered and keeps the four parts from the study plan', () => {
     expect(sessionContent(1)).toBe(SESSION_1);
     expect(SESSION_1.modules.map((m) => m.id)).toEqual(['lesson', 'mood-check', 'quiz', 'journal']);
-    expect(sessionContent(2)).toBeUndefined();
+    expect(sessionContent(5)).toBeUndefined();
   });
 
   it('has unique step ids and valid answers', () => {
@@ -211,5 +211,14 @@ describe('Session 1 parts 2 to 4', () => {
   it('offers sentence starters for the reflection', () => {
     const reflect = part('journal').find((s) => s.id === 'reflect');
     expect(reflect?.kind === 'journal' && (reflect.starters?.length ?? 0) > 0).toBe(true);
+  });
+});
+
+describe('previewing sessions', () => {
+  it('opens later sessions without changing which one is this week', () => {
+    expect(sessionStatus(3, 1, undefined)).toBe('locked');
+    expect(sessionStatus(3, 1, undefined, 8)).toBe('available');
+    expect(sessionStatus(1, 1, undefined, 8)).toBe('current');
+    expect(sessionStatus(3, 1, { done: [], completedAt: 'x' }, 8)).toBe('done');
   });
 });

@@ -11,6 +11,7 @@ import Screen from '@/components/ui/Screen';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import { sessionContent } from '@/features/sessions/content';
+import { unlockedThrough } from '@/features/sessions/preview';
 import { useSessionProgress } from '@/features/sessions/progressStore';
 import { nextModuleId, sessionStatus } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';
@@ -40,7 +41,7 @@ export default function SessionOverviewScreen() {
   if (!session) return <Placeholder title="Session not found" body="Head back and pick another." />;
 
   const record = progress[sessionId];
-  if (sessionStatus(sessionId, week, record) === 'locked') {
+  if (sessionStatus(sessionId, week, record, unlockedThrough(week)) === 'locked') {
     return (
       <Placeholder
         title={`Unlocks in week ${sessionId}`}

@@ -9,6 +9,7 @@ import Screen from '@/components/ui/Screen';
 import { currentStudyWeek, studyStart } from '@/features/home/currentWeek';
 import { opensLabel, sessionOpensOn } from '@/features/home/studyWeek';
 import { sessionContent } from '@/features/sessions/content';
+import { unlockedThrough } from '@/features/sessions/preview';
 import { useSessionProgress } from '@/features/sessions/progressStore';
 import {
   type SessionRecord,
@@ -126,7 +127,8 @@ export default function SessionsScreen() {
 
   const week = currentStudyWeek(now);
   const start = studyStart();
-  const statuses = SESSIONS.map((s) => sessionStatus(s.id, week, progress[s.id]));
+  const unlocked = unlockedThrough(week);
+  const statuses = SESSIONS.map((s) => sessionStatus(s.id, week, progress[s.id], unlocked));
   const completed = statuses.filter((s) => s === 'done').length;
 
   return (

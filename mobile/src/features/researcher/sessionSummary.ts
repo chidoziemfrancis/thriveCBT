@@ -3,7 +3,15 @@ import {
   type SessionContent,
   type StepAnswer,
 } from '@/features/sessions/content/types';
-import type { SessionRecord } from '@/features/sessions/sessionLogic';
+import { emotionLabel } from '@/features/sessions/emotions';
+import { trapLabels } from '@/features/sessions/traps';
+import {
+  FLIPPED,
+  type SessionRecord,
+  balancedText,
+  readEvidence,
+  sortProgress,
+} from '@/features/sessions/sessionLogic';
 
 export type SummaryLine = { label: string; value: string };
 
@@ -91,6 +99,69 @@ export function summariseSession(
           break;
         case 'journal':
           if (typeof answer === 'string' && answer.trim()) reflection = answer.trim();
+          break;
+        case 'triangle':
+          if (Array.isArray(answer)) {
+            lines.push({
+              label: step.title,
+              value: (answer as string[]).includes(FLIPPED)
+                ? 'Followed the loop and tried a different thought'
+                : 'Followed the loop',
+            });
+          }
+          break;
+        case 'sort': {
+          const { scenario, placed, firstTry, done } = sortProgress(step, answer);
+          if (!scenario) break;
+          if (step.scenarios.length > 1)
+            lines.push({ label: 'Story picked', value: scenario.label });
+          lines.push({
+            label: step.targets ? step.title : 'Sorted into thought, feeling, do',
+            value: done
+              ? `${firstTry} of ${scenario.cards.length} right first time`
+              : `${placed.length} of ${scenario.cards.length} sorted`,
+          });
+          break;
+        }
+        case 'emotion': {
+          const label = emotionLabel(answer);
+          if (label) lines.push({ label: step.title, value: label });
+          break;
+        }
+        case 'traps':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({ label: step.title, value: trapLabels(answer as string[]).join(', ') });
+          }
+          break;
+        case 'evidence': {
+          const e = readEvidence(answer);
+          if (!e.thought) break;
+          lines.push({ label: 'Thought checked', value: e.thought });
+          if (e.for.length) lines.push({ label: 'Evidence for', value: e.for.join('; ') });
+          if (e.against.length)
+            lines.push({ label: 'Evidence against', value: e.against.join('; ') });
+          break;
+        }
+        case 'rate':
+          if (typeof answer === 'number') lines.push({ label: step.title, value: `${answer}%` });
+          break;
+        case 'fields':
+          if (Array.isArray(answer)) {
+            step.fields.forEach((f, i) => {
+              const value = ((answer as string[])[i] ?? '').trim();
+              if (value) lines.push({ label: f.label, value });
+            });
+          }
+          break;
+        case 'balanced': {
+          const sentence = balancedText(step.frame, answer);
+          if (sentence) lines.push({ label: 'Balanced thought', value: sentence });
+          break;
+        }
+        case 'prompt':
+          if (typeof answer === 'string' && answer.trim()) {
+            lines.push({ label: step.title, value: answer.trim() });
+          }
           break;
       }
     }
