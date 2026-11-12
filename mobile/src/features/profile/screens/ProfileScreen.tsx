@@ -17,6 +17,7 @@ import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
 import { useEmergencyContact } from '@/features/profile/emergencyContactStore';
+import { OPEN_ALL_SESSIONS_FOR_TESTING, canPreviewSessions } from '@/features/sessions/preview';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { setPreference, usePreferences } from '@/lib/preferences';
 import { colors, fonts } from '@/theme';
@@ -151,6 +152,19 @@ export default function ProfileScreen() {
             onChange={(on) => setPreference('vibration', on)}
           />
         </SettingsGroup>
+
+        {canPreviewSessions() && !OPEN_ALL_SESSIONS_FOR_TESTING && (
+          <SettingsGroup>
+            <SettingsRow
+              kind="toggle"
+              icon="eye"
+              label="Preview all sessions"
+              detail="Testing only: opens every session now. Real students never see this."
+              on={preferences.previewSessions}
+              onChange={(on) => setPreference('previewSessions', on)}
+            />
+          </SettingsGroup>
+        )}
 
         <SettingsGroup>
           <SettingsRow

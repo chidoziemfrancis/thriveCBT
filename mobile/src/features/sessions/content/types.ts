@@ -32,7 +32,15 @@ export type RevealStep = StepBase & {
   kind: 'reveal';
   title: string;
   body?: string;
-  cards: { id: string; icon: FeatureIconName; label: string; detail: string; spot?: BodySpot }[];
+  cards: {
+    id: string;
+    icon: FeatureIconName;
+    label: string;
+    detail: string;
+    spot?: BodySpot;
+    /** An illustration on the face-down card, in place of the icon. */
+    picture?: PhotoKey;
+  }[];
   /** Cards sit on a drawing of a person instead of in a grid. */
   figure?: 'body';
 };
@@ -128,7 +136,7 @@ export type RecapStep = StepBase & {
   title: string;
   body: string;
   /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
-  diary?: { situation: string; thought: string; feeling: string; action: string };
+  diary?: { situation: string; thought: string; feeling: string; action?: string; traps?: string };
 };
 
 /** The three corners of the CBT triangle. */
@@ -149,18 +157,27 @@ export type TriangleStep = StepBase & {
   after: TriangleSide;
 };
 
-/** A story the student picks, then sorts line by line into thought, feeling or action. */
+/**
+ * Cards sorted one at a time onto targets: thought, feeling and do by default, or any set such
+ * as the thinking traps. With several stories, the student picks one first.
+ */
 export type SortStep = StepBase & {
   kind: 'sort';
   title: string;
   body: string;
+  /** Said above the board while sorting. */
+  prompt?: string;
+  targets?: { id: string; label: string; hint: string }[];
   scenarios: {
     id: string;
     label: string;
-    picture: PhotoKey;
-    cards: { id: string; text: string; part: CbtPart }[];
+    picture?: PhotoKey;
+    cards: { id: string; text: string; part: string }[];
   }[];
 };
+
+/** Tag a thought with the thinking traps it might be, or "Not sure". */
+export type TrapsStep = StepBase & { kind: 'traps'; title: string; body?: string };
 
 /** Pick a feeling family, then the exact word, then how strong it is. */
 export type EmotionStep = StepBase & { kind: 'emotion'; title: string; body?: string };
@@ -189,6 +206,7 @@ export type SessionStep =
   | SortStep
   | EmotionStep
   | PromptStep
+  | TrapsStep
   | JournalStep;
 
 export type SessionModule = {
@@ -206,6 +224,8 @@ export type SessionContent = {
   modules: SessionModule[];
   takeaways: string[];
   practice: string;
+  /** A button under the practice that starts it straight away. */
+  practiceAction?: 'thought-record';
 };
 
 /** What a student's answer to a step looks like once saved. */

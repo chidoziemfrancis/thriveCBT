@@ -86,7 +86,8 @@ function DiaryTriangle({
   const corners = [
     { label: 'Thought', text: diary.thought },
     { label: 'Feeling', text: diary.feeling },
-    { label: 'Do', text: diary.action },
+    ...(step.diary?.action ? [{ label: 'Do', text: diary.action }] : []),
+    ...(step.diary?.traps ? [{ label: 'Thinking trap', text: diary.traps.join(', ') }] : []),
   ];
   return (
     <View style={styles.list}>

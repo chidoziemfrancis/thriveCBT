@@ -194,4 +194,5 @@ export const SESSION_2: SessionContent = {
   ],
   practice:
     'Log your mood each day, and fill in one thought diary when something upsets you this week.',
+  practiceAction: 'thought-record',
 };

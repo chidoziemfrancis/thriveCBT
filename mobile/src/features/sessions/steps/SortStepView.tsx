@@ -14,22 +14,41 @@ import { scheduleOnRN } from 'react-native-worklets';
 
 import { CheckIcon } from '@/components/icons';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
-import type { CbtPart, SortStep } from '@/features/sessions/content/types';
+import type { SortStep } from '@/features/sessions/content/types';
 import { MISS, sortProgress } from '@/features/sessions/sessionLogic';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
 import { stepText } from './stepText';
 
-const PARTS: CbtPart[] = ['thought', 'feeling', 'do'];
-const LABELS: Record<CbtPart, string> = { thought: 'Thought', feeling: 'Feeling', do: 'Do' };
-const HINTS: Record<CbtPart, string> = {
-  thought: 'That’s something going through their mind, so it’s a Thought.',
-  feeling: 'That’s how they feel inside, so it’s a Feeling.',
-  do: 'That’s something they did, so it goes under Do.',
+type Target = { id: string; label: string; hint: string };
+
+const CBT_TARGETS: Target[] = [
+  {
+    id: 'thought',
+    label: 'Thought',
+    hint: 'That’s something going through their mind, so it’s a Thought.',
+  },
+  { id: 'feeling', label: 'Feeling', hint: 'That’s how they feel inside, so it’s a Feeling.' },
+  { id: 'do', label: 'Do', hint: 'That’s something they did, so it goes under Do.' },
+];
+
+// Three targets sit as a triangle; four sit in the corners.
+const PLACES: Record<number, object[]> = {
+  3: [
+    { top: 0, alignSelf: 'center' },
+    { bottom: 0, right: 0 },
+    { bottom: 0, left: 0 },
+  ],
+  4: [
+    { top: 0, left: 0 },
+    { top: 0, right: 0 },
+    { bottom: 0, left: 0 },
+    { bottom: 0, right: 0 },
+  ],
 };
 
-type Frames = Partial<Record<CbtPart | 'card', LayoutRectangle>>;
+type Frames = Record<string, LayoutRectangle | undefined>;
 
 function inside(frame: LayoutRectangle | undefined, x: number, y: number) {
   return Boolean(
@@ -51,20 +70,21 @@ export default function SortStepView({
   onAnswer: (value: string[]) => void;
 }) {
   const { scenario, placed, next, firstTry, done } = sortProgress(step, answer);
+  const targets = step.targets ?? CBT_TARGETS;
   const [frames, setFrames] = useState<Frames>({});
   const [hint, setHint] = useState<string | null>(null);
   const x = useSharedValue(0);
   const y = useSharedValue(0);
   const shake = useSharedValue(0);
 
-  function measure(key: keyof Frames) {
+  function measure(key: string) {
     return (e: { nativeEvent: { layout: LayoutRectangle } }) => {
       const layout = e.nativeEvent.layout;
       setFrames((f) => ({ ...f, [key]: layout }));
     };
   }
 
-  function place(part: CbtPart) {
+  function place(part: string) {
     if (!next) return;
     if (part === next.part) {
       haptics.success();
@@ -72,7 +92,7 @@ export default function SortStepView({
       onAnswer([...answer, next.id]);
     } else {
       haptics.error();
-      setHint(HINTS[next.part]);
+      setHint(targets.find((t) => t.id === next.part)?.hint ?? null);
       shake.set(
         withSequence(
           withTiming(-10, { duration: 60 }),
@@ -90,8 +110,8 @@ export default function SortStepView({
     if (!card) return;
     const cx = card.x + card.width / 2 + dx;
     const cy = card.y + card.height / 2 + dy;
-    const hit = PARTS.find((p) => inside(frames[p], cx, cy));
-    if (hit) place(hit);
+    const hit = targets.find((t) => inside(frames[t.id], cx, cy));
+    if (hit) place(hit.id);
   }
 
   const pan = usePanGesture({
@@ -130,7 +150,7 @@ export default function SortStepView({
                 }}
                 style={({ pressed }) => [styles.story, pressed && { transform: [{ scale: 0.98 }] }]}
               >
-                <SessionPhoto photo={s.picture} style={styles.storyPicture} />
+                {s.picture && <SessionPhoto photo={s.picture} style={styles.storyPicture} />}
                 <Text style={styles.storyLabel}>{s.label}</Text>
               </Pressable>
             </Animated.View>
@@ -144,18 +164,20 @@ export default function SortStepView({
     return (
       <View style={styles.wrap}>
         <View style={stepText.block}>
-          <Text style={stepText.title}>{scenario.label}, sorted</Text>
+          <Text style={stepText.title}>
+            {step.scenarios.length > 1 ? `${scenario.label}, sorted` : 'All sorted'}
+          </Text>
           <Text style={stepText.body}>
             {firstTry === scenario.cards.length
               ? 'Every one right first time.'
               : `${firstTry} of ${scenario.cards.length} right first time. Spotting them gets easier with practice.`}
           </Text>
         </View>
-        {PARTS.map((part) => (
-          <Animated.View key={part} entering={FadeIn.duration(300)} style={styles.group}>
-            <Text style={styles.groupLabel}>{LABELS[part]}</Text>
+        {targets.map((target) => (
+          <Animated.View key={target.id} entering={FadeIn.duration(300)} style={styles.group}>
+            <Text style={styles.groupLabel}>{target.label}</Text>
             {scenario.cards
-              .filter((c) => c.part === part)
+              .filter((c) => c.part === target.id)
               .map((c) => (
                 <View key={c.id} style={styles.groupRow}>
                   <CheckIcon size={12} color={colors.primary} />
@@ -172,30 +194,28 @@ export default function SortStepView({
     <View style={styles.wrap}>
       <View style={stepText.block}>
         <Text style={stepText.eyebrow}>
-          {scenario.label} · {placed.length + 1} of {scenario.cards.length}
+          {step.scenarios.length > 1 ? `${scenario.label} · ` : ''}
+          {placed.length + 1} of {scenario.cards.length}
         </Text>
-        <Text style={stepText.title}>Thought, feeling or do?</Text>
-        <Text style={stepText.body}>Drag the card to where it belongs, or tap a corner.</Text>
+        <Text style={stepText.title}>{step.prompt ?? 'Thought, feeling or do?'}</Text>
+        <Text style={stepText.body}>Drag the card to where it belongs, or tap a box.</Text>
       </View>
 
       <View style={styles.board}>
-        {PARTS.map((part) => (
+        {targets.map((target, i) => (
           <Pressable
-            key={part}
+            key={target.id}
             accessibilityRole="button"
-            accessibilityLabel={`Put in ${LABELS[part]}`}
-            onLayout={measure(part)}
-            onPress={() => place(part)}
+            accessibilityLabel={`Put in ${target.label}`}
+            onLayout={measure(target.id)}
+            onPress={() => place(target.id)}
             style={[
               styles.target,
-              part === 'thought'
-                ? styles.targetTop
-                : part === 'feeling'
-                  ? styles.targetRight
-                  : styles.targetLeft,
+              targets.length === 4 && styles.targetWide,
+              PLACES[targets.length]?.[i],
             ]}
           >
-            <Text style={styles.targetText}>{LABELS[part]}</Text>
+            <Text style={styles.targetText}>{target.label}</Text>
           </Pressable>
         ))}
 
@@ -256,10 +276,14 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     backgroundColor: colors.primarySoft,
   },
-  targetTop: { top: 0, alignSelf: 'center' },
-  targetRight: { bottom: 0, right: 0 },
-  targetLeft: { bottom: 0, left: 0 },
-  targetText: { fontFamily: fonts.heavy, fontSize: 15, color: colors.primary },
+  targetWide: { width: '48%' },
+  targetText: {
+    paddingHorizontal: 8,
+    textAlign: 'center',
+    fontFamily: fonts.heavy,
+    fontSize: 15,
+    color: colors.primary,
+  },
   card: {
     position: 'absolute',
     top: 106,

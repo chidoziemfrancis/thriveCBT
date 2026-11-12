@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 import {
   accountExists,
+  isTestAccount,
   registerStudent,
   researcherIdFor,
   resetPassword,
@@ -101,5 +102,15 @@ describe('isEmail', () => {
     expect(isEmail('  ada@uni.edu ')).toBe(true);
     expect(isEmail('ada@uni')).toBe(false);
     expect(isEmail('ada uni.edu')).toBe(false);
+  });
+});
+
+describe('isTestAccount', () => {
+  it('is true only for the built-in accounts', () => {
+    expect(isTestAccount(' Test@Gmail.com ')).toBe(true);
+    expect(isTestAccount('researcher@thrivecbt.com')).toBe(true);
+    registerStudent('real.student@uni.edu', 'password123');
+    expect(isTestAccount('real.student@uni.edu')).toBe(false);
+    expect(isTestAccount(undefined)).toBe(false);
   });
 });

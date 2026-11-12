@@ -1,5 +1,8 @@
 import type { RecapStep, SessionContent, SessionStep, SortStep, StepAnswer } from './content/types';
 import { emotionLabel } from './emotions';
+import { trapLabels } from './traps';
+
+const list = (value: unknown): string[] => (Array.isArray(value) ? (value as string[]) : []);
 
 export type SessionRecord = {
   done: string[];
@@ -10,14 +13,19 @@ export type SessionRecord = {
 
 export type SessionStatus = 'done' | 'current' | 'available' | 'locked';
 
-/** A new session unlocks each study week; earlier ones stay open to revisit. */
+/**
+ * A new session unlocks each study week; earlier ones stay open to revisit. `unlocked` can run
+ * ahead of the week when previewing.
+ */
 export function sessionStatus(
   sessionId: number,
   week: number,
-  record: SessionRecord | undefined
+  record: SessionRecord | undefined,
+  unlocked = week
 ): SessionStatus {
   if (record?.completedAt) return 'done';
-  if (sessionId > week) return 'locked';
+  if (sessionId > unlocked) return 'locked';
+  if (sessionId > week) return 'available';
   if (sessionId === week) return 'current';
   return 'available';
 }
@@ -70,6 +78,8 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
       return Array.isArray(answer) && answer.length >= 3;
     case 'prompt':
       return typeof answer === 'string' && answer.trim().length > 0;
+    case 'traps':
+      return Array.isArray(answer) && answer.length > 0;
     case 'choice':
     case 'scale':
       return typeof answer === 'number';
@@ -90,7 +100,9 @@ export const MISS = 'miss:';
  */
 export function sortProgress(step: SortStep, answer: StepAnswer | undefined) {
   const list = Array.isArray(answer) ? (answer as string[]) : [];
-  const scenario = step.scenarios.find((s) => s.id === list[0]);
+  // With only one story there's nothing to pick, so sorting starts straight away.
+  const scenario =
+    step.scenarios.length === 1 ? step.scenarios[0] : step.scenarios.find((s) => s.id === list[0]);
   const placed = scenario ? scenario.cards.filter((c) => list.includes(c.id)) : [];
   const missed = scenario ? scenario.cards.filter((c) => list.includes(`${MISS}${c.id}`)) : [];
   return {
@@ -113,7 +125,8 @@ export function diaryAnswers(step: RecapStep, answers: Record<string, StepAnswer
     situation: text(step.diary.situation),
     thought: text(step.diary.thought),
     feeling: emotionLabel(answers[step.diary.feeling]) ?? '',
-    action: text(step.diary.action),
+    action: step.diary.action ? text(step.diary.action) : '',
+    traps: step.diary.traps ? trapLabels(list(answers[step.diary.traps])) : [],
   };
 }
 
@@ -125,6 +138,9 @@ export function diaryText(step: RecapStep, answers: Record<string, StepAnswer>):
     `What happened: ${diary.situation}`,
     `What I thought: ${diary.thought}`,
     `What I felt: ${diary.feeling}`,
-    `What I did: ${diary.action}`,
-  ].join('\n');
+    diary.action && `What I did: ${diary.action}`,
+    diary.traps.length > 0 && `Thinking trap: ${diary.traps.join(', ')}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
 }

@@ -37,6 +37,11 @@ function allAccounts(): Record<string, MockAccount> {
   return accounts;
 }
 
+/** The built-in accounts used to try the app out, never real students. */
+export function isTestAccount(email: string | undefined): boolean {
+  return Boolean(email && normalise(email) in SEED_ACCOUNTS);
+}
+
 export function accountExists(email: string): boolean {
   return normalise(email) in allAccounts();
 }

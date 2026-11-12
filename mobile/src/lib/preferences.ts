@@ -15,6 +15,8 @@ export type Preferences = {
   notifyCheckIns: boolean;
   /** Whether the reminders screen has been shown, so it only asks once. */
   remindersAsked: boolean;
+  /** Testing only: open every session regardless of study week. */
+  previewSessions: boolean;
 };
 
 const DEFAULTS: Preferences = {
@@ -25,6 +27,7 @@ const DEFAULTS: Preferences = {
   notifyMessages: true,
   notifyCheckIns: true,
   remindersAsked: false,
+  previewSessions: false,
 };
 
 let preferences: Preferences = { ...DEFAULTS, ...readJson<Partial<Preferences>>(STORAGE_KEY, {}) };
