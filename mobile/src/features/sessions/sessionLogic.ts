@@ -1,4 +1,5 @@
-import type { SessionContent, SessionStep, StepAnswer } from './content/types';
+import type { RecapStep, SessionContent, SessionStep, SortStep, StepAnswer } from './content/types';
+import { emotionLabel } from './emotions';
 
 export type SessionRecord = {
   done: string[];
@@ -61,10 +62,69 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
       return typeof answer === 'boolean';
     case 'compare':
       return answer === true;
+    case 'triangle':
+      return Array.isArray(answer) && (answer as string[]).includes(FLIPPED);
+    case 'sort':
+      return sortProgress(step, answer).done;
+    case 'emotion':
+      return Array.isArray(answer) && answer.length >= 3;
+    case 'prompt':
+      return typeof answer === 'string' && answer.trim().length > 0;
     case 'choice':
     case 'scale':
       return typeof answer === 'number';
     case 'journal':
       return typeof answer === 'string' && answer.trim().length > 0;
   }
+}
+
+/** Saved in a triangle answer once the student has tried the kinder thought. */
+export const FLIPPED = 'flipped';
+
+/** Prefix for a card the student first placed in the wrong corner. */
+export const MISS = 'miss:';
+
+/**
+ * A sort answer is the chosen story's id, then each card id as it's placed, plus "miss:<id>"
+ * for any card that took a second try.
+ */
+export function sortProgress(step: SortStep, answer: StepAnswer | undefined) {
+  const list = Array.isArray(answer) ? (answer as string[]) : [];
+  const scenario = step.scenarios.find((s) => s.id === list[0]);
+  const placed = scenario ? scenario.cards.filter((c) => list.includes(c.id)) : [];
+  const missed = scenario ? scenario.cards.filter((c) => list.includes(`${MISS}${c.id}`)) : [];
+  return {
+    scenario,
+    placed,
+    next: scenario?.cards.find((c) => !list.includes(c.id)),
+    firstTry: placed.length - missed.filter((c) => placed.includes(c)).length,
+    done: Boolean(scenario) && placed.length === scenario!.cards.length,
+  };
+}
+
+/** A thought diary's four answers, read from the steps the recap points at. */
+export function diaryAnswers(step: RecapStep, answers: Record<string, StepAnswer>) {
+  if (!step.diary) return null;
+  const text = (id: string) => {
+    const value = answers[id];
+    return typeof value === 'string' ? value.trim() : '';
+  };
+  return {
+    situation: text(step.diary.situation),
+    thought: text(step.diary.thought),
+    feeling: emotionLabel(answers[step.diary.feeling]) ?? '',
+    action: text(step.diary.action),
+  };
+}
+
+/** The diary as one journal entry, so the researcher reads it alongside the student's journal. */
+export function diaryText(step: RecapStep, answers: Record<string, StepAnswer>): string | null {
+  const diary = diaryAnswers(step, answers);
+  if (!diary || !diary.situation) return null;
+  return [
+    `What happened: ${diary.situation}`,
+    `What I thought: ${diary.thought}`,
+    `What I felt: ${diary.feeling}`,
+    `What I did: ${diary.action}`,
+  ].join('\n');
 }

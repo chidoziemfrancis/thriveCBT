@@ -109,7 +109,7 @@ describe('session 1 content', () => {
   it('is registered and keeps the four parts from the study plan', () => {
     expect(sessionContent(1)).toBe(SESSION_1);
     expect(SESSION_1.modules.map((m) => m.id)).toEqual(['lesson', 'mood-check', 'quiz', 'journal']);
-    expect(sessionContent(2)).toBeUndefined();
+    expect(sessionContent(3)).toBeUndefined();
   });
 
   it('has unique step ids and valid answers', () => {

@@ -91,10 +91,10 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M3 | Mood self-check (5 ratings) | 1, 2 | ✅ (Session 1) |
 | M4 | Quiz | 1, 7 (strengths quiz) | ✅ (Session 1) |
 | M5 | Reflection journal prompt | 1, 7 | ✅ (Session 1) |
-| M6 | Interactive diagram (CBT triangle) | 2 | ⬜ |
-| M7 | Scenario exercise (pick the thought, feeling, behaviour) | 2, 4 | ⬜ |
-| M8 | Emotion picker | 2 | ⬜ |
-| M9 | Thought diary (event → thought → emotion → intensity) | 2, 3 | ⬜ |
+| M6 | Interactive diagram (CBT triangle) | 2 | ✅ (tap each corner, then try a different thought) |
+| M7 | Scenario exercise (pick the thought, feeling, behaviour) | 2, 4 | ✅ (pick a story, drag each card to thought, feeling or do) |
+| M8 | Emotion picker | 2 | ✅ (family, exact word, strength) |
+| M9 | Thought diary (event → thought → emotion → intensity) | 2, 3 | ✅ (one question per screen, saved to the journal) |
 | M10 | Drag-and-drop matching (distortion ↔ statement) | 3 | ⬜ |
 | M11 | Evidence for and against worksheet | 4 | ⬜ |
 | M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ⬜ |
@@ -299,7 +299,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 |---|---|---|
 | 0 | Tidy up: build settings (ThriveCBT, `com.thrivecbt.app`), "last active" on the privacy list, this screen map | ✅ |
 | 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ✅ |
-| 2 | Session 2 and the shared exercises: M6–M9 | ⬜ |
+| 2 | Session 2 and the shared exercises: M6–M9 | ✅ |
 | 3 | Sessions 3 and 4: M10–M13 | ⬜ |
 | 4 | Sessions 5 and 6: M14–M19 | ⬜ |
 | 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |

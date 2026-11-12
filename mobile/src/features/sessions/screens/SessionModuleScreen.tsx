@@ -22,12 +22,21 @@ import { addJournalEntry } from '@/features/journal/journalStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { completeModule, saveAnswer, useSessionProgress } from '@/features/sessions/progressStore';
-import { isStepReady, nextModuleId, stepPosition } from '@/features/sessions/sessionLogic';
+import {
+  diaryText,
+  isStepReady,
+  nextModuleId,
+  stepPosition,
+} from '@/features/sessions/sessionLogic';
 import BreatheStepView from '@/features/sessions/steps/BreatheStepView';
 import ChecklistStepView from '@/features/sessions/steps/ChecklistStepView';
 import ChoiceStepView from '@/features/sessions/steps/ChoiceStepView';
 import CompareStepView from '@/features/sessions/steps/CompareStepView';
+import EmotionStepView from '@/features/sessions/steps/EmotionStepView';
+import PromptStepView from '@/features/sessions/steps/PromptStepView';
 import RecapStepView from '@/features/sessions/steps/RecapStepView';
+import SortStepView from '@/features/sessions/steps/SortStepView';
+import TriangleStepView from '@/features/sessions/steps/TriangleStepView';
 import InfoStepView from '@/features/sessions/steps/InfoStepView';
 import JournalStepView from '@/features/sessions/steps/JournalStepView';
 import MythFactStepView from '@/features/sessions/steps/MythFactStepView';
@@ -100,6 +109,10 @@ export default function SessionModuleScreen() {
         addJournalEntry({ prompt: current.prompt, text: value.trim(), sessionId });
       }
     }
+    if (current.kind === 'recap' && current.of === 'diary') {
+      const text = diaryText(current, answers);
+      if (text) addJournalEntry({ prompt: 'Thought diary', text, sessionId });
+    }
     if (isLastStep) return finishModule();
     haptics.tick();
     setDirection(1);
@@ -119,9 +132,11 @@ export default function SessionModuleScreen() {
       ? 'Skip for now'
       : step.kind === 'journal'
         ? 'Save and continue'
-        : isLastStep && moduleIndex === content.modules.length - 1
-          ? 'Finish session'
-          : 'Continue';
+        : step.kind === 'recap' && step.of === 'diary'
+          ? 'Save my diary'
+          : isLastStep && moduleIndex === content.modules.length - 1
+            ? 'Finish session'
+            : 'Continue';
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -199,6 +214,34 @@ export default function SessionModuleScreen() {
                     next(step, value);
                   }, SCALE_ADVANCE_MS);
                 }}
+              />
+            )}
+            {step.kind === 'triangle' && (
+              <TriangleStepView
+                step={step}
+                answer={Array.isArray(answer) ? (answer as string[]) : []}
+                onAnswer={setAnswer}
+              />
+            )}
+            {step.kind === 'sort' && (
+              <SortStepView
+                step={step}
+                answer={Array.isArray(answer) ? (answer as string[]) : []}
+                onAnswer={setAnswer}
+              />
+            )}
+            {step.kind === 'emotion' && (
+              <EmotionStepView
+                step={step}
+                answer={Array.isArray(answer) ? (answer as string[]) : []}
+                onAnswer={setAnswer}
+              />
+            )}
+            {step.kind === 'prompt' && (
+              <PromptStepView
+                step={step}
+                text={typeof answer === 'string' ? answer : ''}
+                onChange={setAnswer}
               />
             )}
             {step.kind === 'recap' && (
