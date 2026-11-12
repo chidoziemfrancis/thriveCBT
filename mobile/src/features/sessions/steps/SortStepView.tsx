@@ -13,6 +13,7 @@ import Animated, {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { CheckIcon } from '@/components/icons';
+import BalanceScale from '@/features/sessions/art/BalanceScale';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import type { SortStep } from '@/features/sessions/content/types';
 import { MISS, sortProgress } from '@/features/sessions/sessionLogic';
@@ -35,6 +36,10 @@ const CBT_TARGETS: Target[] = [
 
 // Three targets sit as a triangle; four sit in the corners.
 const PLACES: Record<number, object[]> = {
+  2: [
+    { bottom: 0, left: 0 },
+    { bottom: 0, right: 0 },
+  ],
   3: [
     { top: 0, alignSelf: 'center' },
     { bottom: 0, right: 0 },
@@ -201,7 +206,16 @@ export default function SortStepView({
         <Text style={stepText.body}>Drag the card to where it belongs, or tap a box.</Text>
       </View>
 
-      <View style={styles.board}>
+      {step.scale && (
+        <BalanceScale
+          left={placed.filter((c) => c.part === targets[0].id).length}
+          right={placed.filter((c) => c.part === targets[1].id).length}
+          leftLabel={targets[0].label}
+          rightLabel={targets[1].label}
+        />
+      )}
+
+      <View style={[styles.board, step.scale && styles.boardShort]}>
         {targets.map((target, i) => (
           <Pressable
             key={target.id}
@@ -211,7 +225,7 @@ export default function SortStepView({
             onPress={() => place(target.id)}
             style={[
               styles.target,
-              targets.length === 4 && styles.targetWide,
+              targets.length !== 3 && styles.targetWide,
               PLACES[targets.length]?.[i],
             ]}
           >
@@ -225,7 +239,7 @@ export default function SortStepView({
               key={next.id}
               entering={FadeIn.duration(250)}
               onLayout={measure('card')}
-              style={[styles.card, cardStyle]}
+              style={[styles.card, targets.length === 2 && styles.cardHigh, cardStyle]}
               accessible
               accessibilityLabel={next.text}
             >
@@ -264,6 +278,8 @@ const styles = StyleSheet.create({
   storyPicture: { width: 110, height: 84, borderRadius: radius.md },
   storyLabel: { flex: 1, fontFamily: fonts.bold, fontSize: 16, color: colors.ink },
   board: { height: 330 },
+  boardShort: { height: 250 },
+  cardHigh: { top: 10 },
   target: {
     position: 'absolute',
     width: 130,

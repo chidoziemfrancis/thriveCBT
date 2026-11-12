@@ -3,7 +3,7 @@ import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { CheckIcon, CloseIcon } from '@/components/icons';
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { diaryAnswers } from '@/features/sessions/sessionLogic';
+import { diaryAnswers, reframeAnswers } from '@/features/sessions/sessionLogic';
 import { colors, fonts } from '@/theme';
 
 import { stepText } from './stepText';
@@ -109,6 +109,50 @@ function DiaryTriangle({
   );
 }
 
+function Reframe({
+  step,
+  steps,
+  answers,
+}: {
+  step: RecapStep;
+  steps: SessionStep[];
+  answers: Record<string, StepAnswer>;
+}) {
+  const r = reframeAnswers(step, steps, answers);
+  if (!r) return null;
+  return (
+    <View style={styles.list}>
+      <View style={styles.situation}>
+        <Text style={styles.cornerLabel}>The old thought</Text>
+        <Text style={styles.cornerText}>“{r.thought}”</Text>
+      </View>
+      {r.balanced && (
+        <View style={styles.corner}>
+          <Text style={styles.cornerLabel}>Your balanced thought</Text>
+          <Text style={styles.cornerText}>{r.balanced}</Text>
+        </View>
+      )}
+      {r.before !== null && r.after !== null && (
+        <Animated.View entering={FadeInDown.duration(300)} style={styles.list}>
+          <Text style={styles.cornerLabel}>How much you believe the old thought</Text>
+          {[
+            { label: 'Before', value: r.before },
+            { label: 'Now', value: r.after },
+          ].map((row) => (
+            <View key={row.label} style={styles.barRow}>
+              <Text style={styles.barLabel}>{row.label}</Text>
+              <View style={styles.track}>
+                <View style={[styles.fill, { width: `${row.value}%` }]} />
+              </View>
+              <Text style={styles.barValue}>{row.value}%</Text>
+            </View>
+          ))}
+        </Animated.View>
+      )}
+    </View>
+  );
+}
+
 export default function RecapStepView({
   step,
   steps,
@@ -127,6 +171,7 @@ export default function RecapStepView({
       {step.of === 'scales' && <ScaleBars steps={steps} answers={answers} />}
       {step.of === 'quiz' && <QuizScore steps={steps} answers={answers} />}
       {step.of === 'diary' && <DiaryTriangle step={step} answers={answers} />}
+      {step.of === 'reframe' && <Reframe step={step} steps={steps} answers={answers} />}
     </View>
   );
 }

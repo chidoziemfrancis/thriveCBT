@@ -1,4 +1,5 @@
-import type { RecapStep, StepAnswer } from '@/features/sessions/content/types';
+import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
+import { reframeAnswers } from '@/features/sessions/sessionLogic';
 import { NOT_SURE, TRAPS } from '@/features/sessions/traps';
 
 export type ThoughtRecord = {
@@ -11,6 +12,10 @@ export type ThoughtRecord = {
   action?: string;
   traps: string[];
   sessionId?: number;
+  /** Set when the thought was challenged: the fairer version and how belief changed. */
+  balanced?: string;
+  beliefBefore?: number;
+  beliefAfter?: number;
 };
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
@@ -49,4 +54,23 @@ export function trapCounts(records: ThoughtRecord[], now = new Date()) {
 
 export function isTagged(record: ThoughtRecord) {
   return record.traps.some((t) => t !== NOT_SURE);
+}
+
+/** A challenged thought, saved with its balanced version and how much belief dropped. */
+export function recordFromReframe(
+  step: RecapStep,
+  steps: SessionStep[],
+  answers: Record<string, StepAnswer>
+): Omit<ThoughtRecord, 'id' | 'at'> | null {
+  const r = reframeAnswers(step, steps, answers);
+  if (!r || !r.thought) return null;
+  return {
+    situation: '',
+    thought: r.thought,
+    feeling: [],
+    traps: [],
+    balanced: r.balanced ?? undefined,
+    beliefBefore: r.before ?? undefined,
+    beliefAfter: r.after ?? undefined,
+  };
 }

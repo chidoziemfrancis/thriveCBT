@@ -13,7 +13,17 @@ import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 
 import { colors } from '@/theme';
 
-export type StoryScene = 'energy' | 'sleep' | 'withdraw' | 'loop' | 'pop' | 'stamp' | 'magnify';
+export type StoryScene =
+  | 'energy'
+  | 'sleep'
+  | 'withdraw'
+  | 'loop'
+  | 'pop'
+  | 'stamp'
+  | 'magnify'
+  | 'question'
+  | 'weigh'
+  | 'verdict';
 
 const INK = colors.primary;
 const SOFT = colors.primarySoft;
@@ -205,6 +215,86 @@ function Magnify() {
   );
 }
 
+// The thought gets questioned: question marks bob around it.
+function Question() {
+  const t = useLoop(1100);
+  const marks = useAnimatedStyle(() => ({ transform: [{ translateY: -6 + t.value * 12 }] }));
+  return (
+    <View>
+      <Bubble label="I'll never pass" />
+      <Animated.View style={[styles.marks, marks]}>
+        <Svg width={190} height={60} viewBox="0 0 190 60">
+          <SvgText x={10} y={40} fontSize={34} fontWeight="800" fill={colors.primary}>
+            ?
+          </SvgText>
+          <SvgText x={160} y={30} fontSize={28} fontWeight="800" fill={colors.primary}>
+            ?
+          </SvgText>
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
+// The evidence is weighed: a scale rocking from side to side.
+function Weigh() {
+  const t = useLoop(1600);
+  const beam = useAnimatedStyle(() => ({ transform: [{ rotate: `${-12 + t.value * 24}deg` }] }));
+  return (
+    <View style={styles.weigh}>
+      <Svg width={40} height={110} viewBox="0 0 40 110" style={styles.post}>
+        <Path d="M20 6 V100 M4 102 H36" stroke={INK} strokeWidth={6} strokeLinecap="round" />
+      </Svg>
+      <Animated.View style={beam}>
+        <Svg width={220} height={90} viewBox="0 0 220 90">
+          <Path d="M10 10 H210" stroke={INK} strokeWidth={6} strokeLinecap="round" />
+          <Path
+            d="M10 10 L-2 50 H54 L42 10"
+            fill={colors.butter}
+            stroke={INK}
+            strokeWidth={4}
+            strokeLinejoin="round"
+          />
+          <Path
+            d="M178 10 L166 50 H222 L210 10"
+            fill={SOFT}
+            stroke={INK}
+            strokeWidth={4}
+            strokeLinejoin="round"
+          />
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
+// A fairer thought comes out, with a tick.
+function Verdict() {
+  const t = useLoop(1400);
+  const tick = useAnimatedStyle(() => ({
+    opacity: t.value,
+    transform: [{ scale: 0.7 + t.value * 0.3 }],
+  }));
+  return (
+    <View>
+      <Bubble label="It was hard" />
+      <Animated.View style={[styles.tick, tick]}>
+        <Svg width={60} height={60} viewBox="0 0 60 60">
+          <Circle cx={30} cy={30} r={26} fill={INK} />
+          <Path
+            d="M18 31l8 8 16-17"
+            stroke="#FFFFFF"
+            strokeWidth={6}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
 const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   energy: Energy,
   sleep: Sleep,
@@ -213,6 +303,9 @@ const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   pop: Pop,
   stamp: Stamp,
   magnify: Magnify,
+  question: Question,
+  weigh: Weigh,
+  verdict: Verdict,
 };
 
 export default function StoryArt({ scene }: { scene: StoryScene }) {
@@ -229,6 +322,10 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center' },
   stamp: { position: 'absolute', right: -10, top: 40 },
   glass: { position: 'absolute', left: 50, top: 30 },
+  marks: { position: 'absolute', left: -10, top: -20 },
+  weigh: { alignItems: 'center', paddingTop: 20 },
+  post: { position: 'absolute', top: 24 },
+  tick: { position: 'absolute', right: -14, top: -10 },
   battery: {
     width: 160,
     height: 70,

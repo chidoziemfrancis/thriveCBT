@@ -5,7 +5,13 @@ import {
 } from '@/features/sessions/content/types';
 import { emotionLabel } from '@/features/sessions/emotions';
 import { trapLabels } from '@/features/sessions/traps';
-import { FLIPPED, type SessionRecord, sortProgress } from '@/features/sessions/sessionLogic';
+import {
+  FLIPPED,
+  type SessionRecord,
+  balancedText,
+  readEvidence,
+  sortProgress,
+} from '@/features/sessions/sessionLogic';
 
 export type SummaryLine = { label: string; value: string };
 
@@ -127,6 +133,31 @@ export function summariseSession(
             lines.push({ label: step.title, value: trapLabels(answer as string[]).join(', ') });
           }
           break;
+        case 'evidence': {
+          const e = readEvidence(answer);
+          if (!e.thought) break;
+          lines.push({ label: 'Thought checked', value: e.thought });
+          if (e.for.length) lines.push({ label: 'Evidence for', value: e.for.join('; ') });
+          if (e.against.length)
+            lines.push({ label: 'Evidence against', value: e.against.join('; ') });
+          break;
+        }
+        case 'rate':
+          if (typeof answer === 'number') lines.push({ label: step.title, value: `${answer}%` });
+          break;
+        case 'fields':
+          if (Array.isArray(answer)) {
+            step.fields.forEach((f, i) => {
+              const value = ((answer as string[])[i] ?? '').trim();
+              if (value) lines.push({ label: f.label, value });
+            });
+          }
+          break;
+        case 'balanced': {
+          const sentence = balancedText(step.frame, answer);
+          if (sentence) lines.push({ label: 'Balanced thought', value: sentence });
+          break;
+        }
         case 'prompt':
           if (typeof answer === 'string' && answer.trim()) {
             lines.push({ label: step.title, value: answer.trim() });

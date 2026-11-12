@@ -74,17 +74,25 @@ export default function SessionCompleteScreen() {
             </View>
             <Text style={styles.rowText}>{content.practice}</Text>
           </View>
-          {content.practiceAction === 'thought-record' && (
+          {content.practiceAction && (
             <Pressable
               accessibilityRole="button"
               onPress={() => {
                 haptics.tap();
-                router.push('/thought-log/new');
+                router.push(
+                  content.practiceAction === 'challenge'
+                    ? '/thought-log/challenge'
+                    : '/thought-log/new'
+                );
               }}
               style={({ pressed }) => [styles.remind, pressed && { opacity: 0.8 }]}
             >
               <Glyph name="bulb" size={16} color={colors.primary} />
-              <Text style={styles.remindText}>New thought record</Text>
+              <Text style={styles.remindText}>
+                {content.practiceAction === 'challenge'
+                  ? 'Challenge a thought'
+                  : 'New thought record'}
+              </Text>
             </Pressable>
           )}
           {reminding ? (

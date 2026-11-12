@@ -27,7 +27,14 @@ export default function ThoughtLogScreen() {
 
   return (
     <Screen
-      footer={<Button onPress={() => router.push('/thought-log/new')}>New thought record</Button>}
+      footer={
+        <>
+          <Button onPress={() => router.push('/thought-log/new')}>New thought record</Button>
+          <Button variant="secondary" onPress={() => router.push('/thought-log/challenge')}>
+            Challenge a thought
+          </Button>
+        </>
+      }
     >
       <BackButton />
       <View style={styles.header}>
@@ -75,6 +82,17 @@ export default function ThoughtLogScreen() {
                 </View>
                 <Text style={styles.thought}>“{r.thought || r.situation}”</Text>
                 {feeling && <Text style={styles.feeling}>{feeling}</Text>}
+                {r.balanced && (
+                  <View style={styles.balanced}>
+                    <Text style={styles.balancedLabel}>
+                      Balanced thought
+                      {r.beliefBefore !== undefined && r.beliefAfter !== undefined
+                        ? ` · belief ${r.beliefBefore}% → ${r.beliefAfter}%`
+                        : ''}
+                    </Text>
+                    <Text style={styles.balancedText}>{r.balanced}</Text>
+                  </View>
+                )}
               </Animated.View>
             );
           })}
@@ -104,6 +122,15 @@ const styles = StyleSheet.create({
   },
   thought: { fontFamily: fonts.bold, fontSize: 16, lineHeight: 22, color: colors.ink },
   feeling: { fontFamily: fonts.medium, fontSize: 13, color: colors.inkMuted },
+  balanced: {
+    gap: 2,
+    marginTop: 4,
+    paddingLeft: 10,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.primary,
+  },
+  balancedLabel: { fontFamily: fonts.bold, fontSize: 12, color: colors.primary },
+  balancedText: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 20, color: colors.ink },
   empty: { alignItems: 'center', gap: 8, marginTop: 48, paddingHorizontal: 12 },
   emptyIcon: {
     width: 56,
