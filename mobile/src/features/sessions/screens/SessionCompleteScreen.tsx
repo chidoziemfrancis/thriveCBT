@@ -80,18 +80,26 @@ export default function SessionCompleteScreen() {
               onPress={() => {
                 haptics.tap();
                 router.push(
-                  content.practiceAction === 'challenge'
-                    ? '/thought-log/challenge'
-                    : '/thought-log/new'
+                  content.practiceAction === 'plan'
+                    ? '/my-week'
+                    : content.practiceAction === 'challenge'
+                      ? '/thought-log/challenge'
+                      : '/thought-log/new'
                 );
               }}
               style={({ pressed }) => [styles.remind, pressed && { opacity: 0.8 }]}
             >
-              <Glyph name="bulb" size={16} color={colors.primary} />
+              <Glyph
+                name={content.practiceAction === 'plan' ? 'calendar' : 'bulb'}
+                size={16}
+                color={colors.primary}
+              />
               <Text style={styles.remindText}>
-                {content.practiceAction === 'challenge'
-                  ? 'Challenge a thought'
-                  : 'New thought record'}
+                {content.practiceAction === 'plan'
+                  ? 'Open my week'
+                  : content.practiceAction === 'challenge'
+                    ? 'Challenge a thought'
+                    : 'New thought record'}
               </Text>
             </Pressable>
           )}
