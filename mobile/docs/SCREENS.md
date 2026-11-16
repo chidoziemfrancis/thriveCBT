@@ -77,6 +77,11 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S27 | Journal list | All entries, newest first, with prompts and mood tags | ✅ |
 | S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ✅ |
 | S28b | Thought log | Every thought record with feeling and trap tags, this week's most common trap, and New thought record. Opens from the Journal tab and the Session 2 and 3 practice | ✅ |
+| S28c | My week | Week strip of planned activities by morning, afternoon and evening; tick one off and rate enjoyment and achievement; expected vs actual card; plan an activity. Opens from the Journal tab and the Session 5 practice | ✅ |
+| S28d | My toolkit | Saved coping cards with Try it and I used this, a quick Did it help? rating, the tool that helped most, and more ideas to save. Opens from the Journal tab and the Session 6 practice | ✅ |
+| S28e | Stress log | Stressful moments with how strong they felt and what helped, and Log a moment. Opens from My toolkit | ✅ |
+| S28f | Relax | Box breathing, muscle relaxation and 5-4-3-2-1 grounding, any time, with Did it help? Opens from Support and the toolkit | ✅ |
+| S28g | My crisis plan | The student's six-step plan with one-tap calls, and Make or Edit my plan. Opens from Support | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
@@ -100,12 +105,12 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M11 | Evidence for and against worksheet | 4 | ✅ (sort Tobi's evidence, then your own, with a tipping scale) |
 | M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ✅ (how true, a friend, worst/best/likely, a year from now) |
 | M13 | Balanced thought builder | 4 | ✅ ("Even though…, I also know…, so…", then belief before and after) |
-| M14 | Activity scheduler (weekly planner) | 5 | ⬜ |
-| M15 | Motivation and enjoyment scale | 5 | ⬜ |
-| M16 | Relaxation audio player (breathing, muscle relaxation, grounding) | 6 | ⬜ |
-| M17 | Stress trigger tracker | 6 | ⬜ |
-| M18 | Coping skills library | 6 | ⬜ |
-| M19 | Crisis coping plan | 6 | ⬜ |
+| M14 | Activity scheduler (weekly planner) | 5 | ✅ (week strip, day and time, a guess at enjoyment; saved to My week) |
+| M15 | Motivation and enjoyment scale | 5 | ✅ (each picked activity rated 0–10 for enjoyment and achievement) |
+| M16 | Relaxation audio player (breathing, muscle relaxation, grounding) | 6 | ✅ (guided by text, timing and haptics; voice tracks to come) |
+| M17 | Stress trigger tracker | 6 | ✅ (body map, triggers rated 0–10, and the stress log) |
+| M18 | Coping skills library | 6 | ✅ (eleven cards in three groups, saved to My toolkit) |
+| M19 | Crisis coping plan | 6 | ✅ (six steps, private, on the Support screen) |
 | M20 | Core belief explorer | 7 | ⬜ |
 | M21 | Positive data log (strengths, wins, kind feedback) | 7 | ⬜ |
 | M22 | Self-compassion exercise | 7 | ⬜ |
@@ -302,7 +307,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 | 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ✅ |
 | 2 | Session 2 and the shared exercises: M6–M9 | ✅ |
 | 3 | Sessions 3 and 4: M10–M13 | ✅ (plus the thought log and Challenge a thought) |
-| 4 | Sessions 5 and 6: M14–M19 | ⬜ |
+| 4 | Sessions 5 and 6: M14–M19 | ✅ |
 | 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |
 | 6 | End of study: S39–S41 | ⬜ |
 | 7 | Backend hand-off: data contract for everything the app stores, and one swap point per store for the real API | ⬜ |

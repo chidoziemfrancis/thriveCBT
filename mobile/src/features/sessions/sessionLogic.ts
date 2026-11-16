@@ -1,4 +1,14 @@
-import type { RecapStep, SessionContent, SessionStep, SortStep, StepAnswer } from './content/types';
+import { readPlan, readRatings } from '@/features/activities/activities';
+import { readTriggers } from '@/features/coping/coping';
+
+import type {
+  PlannerStep,
+  RecapStep,
+  SessionContent,
+  SessionStep,
+  SortStep,
+  StepAnswer,
+} from './content/types';
 import { emotionLabel } from './emotions';
 import { trapLabels } from './traps';
 
@@ -55,7 +65,11 @@ export function stepPosition(content: SessionContent, moduleId: string, stepInde
  * Whether Continue is unlocked: each step asks for one small action first, except reading
  * steps and breathing, which can always be skipped.
  */
-export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): boolean {
+export function isStepReady(
+  step: SessionStep,
+  answer: StepAnswer | undefined,
+  answers: Record<string, StepAnswer> = {}
+): boolean {
   switch (step.kind) {
     case 'info':
     case 'video':
@@ -93,6 +107,31 @@ export function isStepReady(step: SessionStep, answer: StepAnswer | undefined): 
       );
     case 'balanced':
       return Array.isArray(answer) && [0, 1, 2].every((i) => (answer[i] ?? '').toString().trim());
+    case 'activities':
+      return Array.isArray(answer) && answer.length > 0;
+    case 'pleasure': {
+      const picked = list(answers[step.from]);
+      const ratings = readRatings(answer);
+      return picked.every((label) => {
+        const r = ratings.find((x) => x.label === label);
+        return r?.enjoy !== undefined && r.achieve !== undefined;
+      });
+    }
+    case 'ladder':
+      return typeof answer === 'number' && answer >= step.rungs.length;
+    case 'planner':
+      return readPlan(answer).length > 0;
+    case 'bodyMap':
+    case 'toolkit':
+      return Array.isArray(answer) && answer.length > 0;
+    case 'triggers': {
+      const triggers = readTriggers(answer);
+      return triggers.length > 0 && triggers.every((t) => t.level !== undefined);
+    }
+    case 'relax':
+      return true;
+    case 'safety':
+      return step.section === 'pros' || step.section === 'safe' || list(answer).length > 0;
     case 'choice':
     case 'scale':
       return typeof answer === 'number';
@@ -224,4 +263,23 @@ export function reframeText(
   ]
     .filter(Boolean)
     .join('\n');
+}
+
+/** What the planner offers: the activities picked earlier, then any first small step written. */
+export function plannerSuggestions(
+  step: PlannerStep,
+  steps: SessionStep[],
+  answers: Record<string, StepAnswer>
+): string[] {
+  const labels = step.from.flatMap((id) => {
+    const source = steps.find((s) => s.id === id);
+    const answer = answers[id];
+    if (source?.kind === 'activities') return list(answer);
+    if (source?.kind === 'fields') {
+      const last = list(answer)[source.fields.length - 1]?.trim();
+      return last ? [last] : [];
+    }
+    return [];
+  });
+  return [...new Set(labels.filter(Boolean))];
 }
