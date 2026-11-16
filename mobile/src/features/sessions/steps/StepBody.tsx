@@ -1,7 +1,9 @@
+import { readArrow } from '@/features/beliefs/beliefs';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { plannerSuggestions } from '@/features/sessions/sessionLogic';
 
 import ActivitiesStepView from './ActivitiesStepView';
+import ArrowStepView from './ArrowStepView';
 
 import BalancedStepView from './BalancedStepView';
 import BodyMapStepView from './BodyMapStepView';
@@ -95,8 +97,16 @@ export default function StepBody({
     case 'evidence':
       return <EvidenceStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'rate': {
+      const source = steps.find((s) => s.id === step.quote);
       const quoted = step.quote ? answers[step.quote] : undefined;
-      const quote = Array.isArray(quoted) ? (quoted[0] as string) : undefined;
+      const quote =
+        source?.kind === 'arrow'
+          ? readArrow(quoted).belief || undefined
+          : typeof quoted === 'string'
+            ? quoted.trim() || undefined
+            : Array.isArray(quoted)
+              ? (quoted[0] as string)
+              : undefined;
       return <RateStepView step={step} answer={number} quote={quote} onAnswer={onAnswer} />;
     }
     case 'fields':
@@ -144,6 +154,8 @@ export default function StepBody({
       return <ToolkitStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'safety':
       return <SafetyStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'arrow':
+      return <ArrowStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'recap':
       return <RecapStepView step={step} steps={steps} answers={answers} />;
     case 'compare':
