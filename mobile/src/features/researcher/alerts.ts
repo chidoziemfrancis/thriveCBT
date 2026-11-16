@@ -1,3 +1,4 @@
+import { EPQR_ITEMS, WISHED_DEAD_INDEX } from '@/features/assessment/epqr';
 import { PHQ9_OPTIONS, PHQ9_QUESTIONS, SUICIDAL_IDEATION_INDEX } from '@/features/assessment/phq9';
 
 import type { AlertEvent } from './alertStore';
@@ -9,7 +10,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 export const INACTIVE_DAYS = 5;
 export const SEVERE_PHQ9 = 20;
 
-export type AlertKind = 'question9' | 'riskWords' | 'severe' | 'inactive';
+export type AlertKind = 'question9' | 'epqrWish' | 'riskWords' | 'severe' | 'inactive';
 
 /** Something a researcher must act on, raised from a student's answers, messages or activity. */
 export type StudentAlert = {
@@ -40,6 +41,19 @@ export function studentAlerts(student: CaseloadStudent, now = new Date()): Stude
       quote: PHQ9_QUESTIONS[SUICIDAL_IDEATION_INDEX],
       detail: `Answer: ${PHQ9_OPTIONS.find((o) => o.value === phq9.item9)?.label ?? phq9.item9}`,
       at: phq9.at,
+    });
+  }
+
+  if (student.epqr?.answers[WISHED_DEAD_INDEX]) {
+    alerts.push({
+      id: `${student.id}:epqrWish:${student.epqr.at}`,
+      kind: 'epqrWish',
+      student,
+      urgent: true,
+      title: 'Answered Yes to EPQ-R question 76',
+      quote: EPQR_ITEMS[WISHED_DEAD_INDEX],
+      detail: 'Answer: Yes',
+      at: student.epqr.at,
     });
   }
 

@@ -47,6 +47,8 @@ export default function RootLayout() {
           <Stack.Screen name="auth/unlock" options={{ gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="auth/create-pin" options={{ gestureEnabled: false }} />
           <Stack.Screen name="assessment/phq9/results" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="assessment/epqr/index" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="assessment/epqr/done" options={{ gestureEnabled: false }} />
           <Stack.Screen name="assignment/finding" options={{ gestureEnabled: false }} />
           <Stack.Screen name="assignment/meet" options={{ gestureEnabled: false }} />
           <Stack.Screen name="(tabs)" options={{ gestureEnabled: false, animation: 'fade' }} />
