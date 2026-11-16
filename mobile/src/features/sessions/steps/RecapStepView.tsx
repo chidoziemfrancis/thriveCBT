@@ -2,8 +2,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { CheckIcon, CloseIcon } from '@/components/icons';
+import { crisisPlanFrom } from '@/features/coping/coping';
+import CrisisPlanView from '@/features/coping/components/CrisisPlanView';
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { diaryAnswers, reframeAnswers } from '@/features/sessions/sessionLogic';
+import { compassionLines, diaryAnswers, reframeAnswers } from '@/features/sessions/sessionLogic';
 import { colors, fonts } from '@/theme';
 
 import { stepText } from './stepText';
@@ -153,6 +155,24 @@ function Reframe({
   );
 }
 
+// The student's own kind words, read back slowly, one line at a time.
+function Compassion({ step, answers }: { step: RecapStep; answers: Record<string, StepAnswer> }) {
+  const lines = compassionLines(step, answers) ?? [];
+  return (
+    <View style={styles.kind}>
+      {lines.map((line, i) => (
+        <Animated.Text
+          key={line}
+          entering={FadeInDown.delay(400 + i * 1100).duration(600)}
+          style={[styles.kindLine, i === lines.length - 1 && styles.kindLast]}
+        >
+          {line}
+        </Animated.Text>
+      ))}
+    </View>
+  );
+}
+
 export default function RecapStepView({
   step,
   steps,
@@ -172,6 +192,8 @@ export default function RecapStepView({
       {step.of === 'quiz' && <QuizScore steps={steps} answers={answers} />}
       {step.of === 'diary' && <DiaryTriangle step={step} answers={answers} />}
       {step.of === 'reframe' && <Reframe step={step} steps={steps} answers={answers} />}
+      {step.of === 'compassion' && <Compassion step={step} answers={answers} />}
+      {step.of === 'safety' && <CrisisPlanView plan={crisisPlanFrom(steps, answers) ?? {}} />}
     </View>
   );
 }
@@ -179,6 +201,9 @@ export default function RecapStepView({
 const styles = StyleSheet.create({
   wrap: { gap: 24, paddingTop: 12 },
   list: { gap: 14 },
+  kind: { gap: 18, padding: 20, borderRadius: 20, backgroundColor: colors.peach },
+  kindLine: { fontFamily: fonts.medium, fontSize: 17, lineHeight: 25, color: colors.ink },
+  kindLast: { fontFamily: fonts.heavy, fontSize: 19, lineHeight: 27 },
   barRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   barLabel: { width: 112, fontFamily: fonts.bold, fontSize: 14, color: colors.ink },
   track: {
