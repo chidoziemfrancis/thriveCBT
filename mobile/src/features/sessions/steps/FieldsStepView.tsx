@@ -17,7 +17,7 @@ export default function FieldsStepView({
   return (
     <View style={styles.wrap}>
       <View style={stepText.block}>
-        <Text style={stepText.eyebrow}>Ask the questions</Text>
+        <Text style={stepText.eyebrow}>{step.eyebrow ?? 'Ask the questions'}</Text>
         <Text style={stepText.title}>{step.title}</Text>
         {step.hint && <Text style={stepText.body}>{step.hint}</Text>}
       </View>

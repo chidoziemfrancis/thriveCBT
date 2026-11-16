@@ -34,7 +34,7 @@ export default function PromptStepView({
               accessibilityRole="button"
               onPress={() => {
                 haptics.tick();
-                onChange(text.trim() ? `${text.trimEnd()} ${starter}` : starter);
+                onChange(text.trim() && !step.replace ? `${text.trimEnd()} ${starter}` : starter);
               }}
               style={({ pressed }) => [styles.chip, pressed && { opacity: 0.7 }]}
             >

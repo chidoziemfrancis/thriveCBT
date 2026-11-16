@@ -1,3 +1,7 @@
+import { readPlan, readRatings } from '@/features/activities/activities';
+import { readArrow } from '@/features/beliefs/beliefs';
+import { readGoal } from '@/features/wellbeing/wellbeing';
+import { copingCard, readTriggers, spotLabels } from '@/features/coping/coping';
 import {
   CHECKLIST_NONE,
   type SessionContent,
@@ -42,6 +46,7 @@ export function summariseSession(
     let reflection: string | undefined;
     let quizAnswered = 0;
     let quizRight = 0;
+    let safetyFilled = 0;
 
     for (const step of module.steps) {
       const answer = answers[step.id];
@@ -158,12 +163,110 @@ export function summariseSession(
           if (sentence) lines.push({ label: 'Balanced thought', value: sentence });
           break;
         }
+        case 'activities':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({ label: 'Activities picked', value: (answer as string[]).join(', ') });
+          }
+          break;
+        case 'pleasure':
+          for (const r of readRatings(answer)) {
+            if (r.enjoy === undefined && r.achieve === undefined) continue;
+            lines.push({
+              label: r.label,
+              value: `Enjoyment ${r.enjoy ?? '–'}/10 · achievement ${r.achieve ?? '–'}/10`,
+            });
+          }
+          break;
+        case 'ladder':
+          if (typeof answer === 'number') {
+            lines.push({
+              label: 'Broke down a big task',
+              value: answer >= step.rungs.length ? 'Reached the first step' : 'Started',
+            });
+          }
+          break;
+        case 'planner': {
+          const plan = readPlan(answer);
+          if (plan.length === 0) break;
+          lines.push({
+            label: `Planned ${plan.length} ${plan.length === 1 ? 'activity' : 'activities'}`,
+            value: plan
+              .map(
+                (p) =>
+                  `${p.label} (${p.date}, ${p.slot}${p.predicted !== undefined ? `, guessed ${p.predicted}/10` : ''})`
+              )
+              .join('; '),
+          });
+          break;
+        }
+        case 'bodyMap':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({
+              label: 'Where stress shows up',
+              value: spotLabels(answer as string[]).join(', '),
+            });
+          }
+          break;
+        case 'triggers':
+          for (const t of readTriggers(answer)) {
+            lines.push({
+              label: t.label,
+              value: t.level === undefined ? 'Not rated' : `${t.level}/10`,
+            });
+          }
+          break;
+        case 'relax':
+          if (record?.done.includes(module.id) || answer !== undefined) {
+            lines.push({ label: step.title, value: answer === true ? 'Completed' : 'Skipped' });
+          }
+          break;
+        case 'toolkit':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({
+              label: 'Saved to toolkit',
+              value: (answer as string[]).flatMap((id) => copingCard(id)?.title ?? []).join(', '),
+            });
+          }
+          break;
+        case 'safety':
+          // The plan is private to the student, so the researcher only sees that it was written.
+          if (Array.isArray(answer) && answer.length > 0) safetyFilled += 1;
+          break;
+        case 'arrow': {
+          const arrow = readArrow(answer);
+          if (!arrow.thought) break;
+          lines.push({ label: 'Starting thought', value: arrow.thought });
+          if (arrow.levels.length)
+            lines.push({ label: 'Went deeper', value: arrow.levels.join(' → ') });
+          if (arrow.belief) lines.push({ label: 'Core belief', value: arrow.belief });
+          break;
+        }
+        case 'list':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({ label: step.title, value: (answer as string[]).join(', ') });
+          }
+          break;
+        case 'goal': {
+          const goal = readGoal(answer);
+          if (!goal.goal) break;
+          lines.push({ label: `Goal · ${goal.area}`, value: goal.goal });
+          if (goal.steps.length) lines.push({ label: 'Steps', value: goal.steps.join('; ') });
+          if (goal.date) lines.push({ label: 'First step on', value: goal.date });
+          break;
+        }
         case 'prompt':
           if (typeof answer === 'string' && answer.trim()) {
             lines.push({ label: step.title, value: answer.trim() });
           }
           break;
       }
+    }
+
+    if (safetyFilled > 0) {
+      lines.push({
+        label: 'Crisis plan',
+        value: `Made a plan (${safetyFilled} of 6 parts filled)`,
+      });
     }
 
     if (quizAnswered > 0) {

@@ -6,6 +6,10 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import FeatureIcon, { Glyph } from '@/components/icons/FeatureIcon';
 import { ChevronRightIcon, PlusIcon, RefreshIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
+import { dayKey } from '@/features/activities/activities';
+import { usePlannedActivities } from '@/features/activities/activityStore';
+import { usePositiveLog } from '@/features/beliefs/positiveLogStore';
+import { useToolkit } from '@/features/coping/copingStore';
 import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/journalLogic';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
 import {
@@ -96,6 +100,11 @@ export default function JournalScreen() {
 
   const thoughts = useThoughtLog();
   const topTrap = trapCounts(thoughts)[0];
+  const plans = usePlannedActivities();
+  const toolkit = useToolkit();
+  const evidence = usePositiveLog();
+  const todayKey = dayKey(new Date());
+  const upcoming = plans.filter((p) => !p.doneAt && p.date >= todayKey).length;
 
   return (
     <Screen insideTabs>
@@ -198,6 +207,71 @@ export default function JournalScreen() {
           </View>
           <ChevronRightIcon size={16} color={colors.inkFaint} />
         </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            haptics.tick();
+            router.push('/my-week');
+          }}
+          style={({ pressed }) => [styles.logRow, styles.logRowNext, pressed && { opacity: 0.6 }]}
+        >
+          <View style={styles.logIcon}>
+            <Glyph name="calendar" size={18} color={colors.primary} />
+          </View>
+          <View style={styles.logText}>
+            <Text style={styles.logTitle}>My week</Text>
+            <Text style={styles.logMeta}>
+              {upcoming > 0
+                ? `${upcoming} ${upcoming === 1 ? 'activity' : 'activities'} planned`
+                : 'Plan small things that lift your mood'}
+            </Text>
+          </View>
+          <ChevronRightIcon size={16} color={colors.inkFaint} />
+        </Pressable>
+
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            haptics.tick();
+            router.push('/toolkit');
+          }}
+          style={({ pressed }) => [styles.logRow, styles.logRowNext, pressed && { opacity: 0.6 }]}
+        >
+          <View style={styles.logIcon}>
+            <Glyph name="umbrella" size={18} color={colors.primary} />
+          </View>
+          <View style={styles.logText}>
+            <Text style={styles.logTitle}>My toolkit</Text>
+            <Text style={styles.logMeta}>
+              {toolkit.length > 0
+                ? `${toolkit.length} ${toolkit.length === 1 ? 'way' : 'ways'} to cope · stress log`
+                : 'Ways to cope, relax and log stress'}
+            </Text>
+          </View>
+          <ChevronRightIcon size={16} color={colors.inkFaint} />
+        </Pressable>
+
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            haptics.tick();
+            router.push('/evidence-log');
+          }}
+          style={({ pressed }) => [styles.logRow, styles.logRowNext, pressed && { opacity: 0.6 }]}
+        >
+          <View style={styles.logIcon}>
+            <Glyph name="trophy" size={18} color={colors.primary} />
+          </View>
+          <View style={styles.logText}>
+            <Text style={styles.logTitle}>Positive data log</Text>
+            <Text style={styles.logMeta}>
+              {evidence.length > 0
+                ? `${evidence.length} ${evidence.length === 1 ? 'piece' : 'pieces'} of evidence`
+                : 'Strengths, wins and kind words'}
+            </Text>
+          </View>
+          <ChevronRightIcon size={16} color={colors.inkFaint} />
+        </Pressable>
 
         {groups.length === 0 ? (
           <View style={styles.empty}>
@@ -243,6 +317,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: colors.border,
   },
+  logRowNext: { borderTopWidth: 0 },
   logIcon: {
     width: 36,
     height: 36,

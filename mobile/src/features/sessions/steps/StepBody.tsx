@@ -1,23 +1,40 @@
+import { readArrow } from '@/features/beliefs/beliefs';
+import { SKILLS } from '@/features/wellbeing/wellbeing';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
+import { plannerSuggestions } from '@/features/sessions/sessionLogic';
+
+import ActivitiesStepView from './ActivitiesStepView';
+import ArrowStepView from './ArrowStepView';
 
 import BalancedStepView from './BalancedStepView';
+import BodyMapStepView from './BodyMapStepView';
 import BreatheStepView from './BreatheStepView';
 import ChecklistStepView from './ChecklistStepView';
 import ChoiceStepView from './ChoiceStepView';
 import CompareStepView from './CompareStepView';
 import EmotionStepView from './EmotionStepView';
 import EvidenceStepView from './EvidenceStepView';
+import GoalStepView from './GoalStepView';
 import FieldsStepView from './FieldsStepView';
 import InfoStepView from './InfoStepView';
 import JournalStepView from './JournalStepView';
+import JourneyStepView from './JourneyStepView';
+import LadderStepView from './LadderStepView';
+import ListStepView from './ListStepView';
 import MythFactStepView from './MythFactStepView';
+import PlannerStepView from './PlannerStepView';
+import PleasureStepView from './PleasureStepView';
 import PromptStepView from './PromptStepView';
 import RateStepView from './RateStepView';
 import RecapStepView from './RecapStepView';
+import RelaxStepView from './RelaxStepView';
 import RevealStepView from './RevealStepView';
+import SafetyStepView from './SafetyStepView';
 import ScaleStepView from './ScaleStepView';
 import SortStepView from './SortStepView';
+import ToolkitStepView from './ToolkitStepView';
 import TrapsStepView from './TrapsStepView';
+import TriggersStepView from './TriggersStepView';
 import TriangleStepView from './TriangleStepView';
 import VideoStepView from './VideoStepView';
 
@@ -84,8 +101,16 @@ export default function StepBody({
     case 'evidence':
       return <EvidenceStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'rate': {
+      const source = steps.find((s) => s.id === step.quote);
       const quoted = step.quote ? answers[step.quote] : undefined;
-      const quote = Array.isArray(quoted) ? (quoted[0] as string) : undefined;
+      const quote =
+        source?.kind === 'arrow'
+          ? readArrow(quoted).belief || undefined
+          : typeof quoted === 'string'
+            ? quoted.trim() || undefined
+            : Array.isArray(quoted)
+              ? (quoted[0] as string)
+              : undefined;
       return <RateStepView step={step} answer={number} quote={quote} onAnswer={onAnswer} />;
     }
     case 'fields':
@@ -99,6 +124,53 @@ export default function StepBody({
           onAnswer={onAnswer}
         />
       );
+    case 'activities':
+      return <ActivitiesStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'pleasure': {
+      const picked = answers[step.from];
+      return (
+        <PleasureStepView
+          step={step}
+          picked={Array.isArray(picked) ? (picked as string[]) : []}
+          answer={list}
+          onAnswer={onAnswer}
+        />
+      );
+    }
+    case 'ladder':
+      return <LadderStepView step={step} shown={number ?? 0} onShow={onAnswer} />;
+    case 'planner':
+      return (
+        <PlannerStepView
+          step={step}
+          suggestions={plannerSuggestions(step, steps, answers)}
+          answer={list}
+          onAnswer={onAnswer}
+        />
+      );
+    case 'bodyMap':
+      return <BodyMapStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'triggers':
+      return <TriggersStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'relax':
+      return <RelaxStepView step={step} done={answer === true} onDone={() => onAnswer(true)} />;
+    case 'toolkit':
+      return <ToolkitStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'safety':
+      return <SafetyStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'journey':
+      return <JourneyStepView step={step} />;
+    case 'list': {
+      const picks = step.skillsFrom ? answers[step.skillsFrom] : undefined;
+      const skills = Array.isArray(picks)
+        ? (picks as number[]).flatMap((i) => (SKILLS[i] ? [SKILLS[i]] : []))
+        : [];
+      return <ListStepView step={step} answer={list} skills={skills} onAnswer={onAnswer} />;
+    }
+    case 'goal':
+      return <GoalStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'arrow':
+      return <ArrowStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'recap':
       return <RecapStepView step={step} steps={steps} answers={answers} />;
     case 'compare':
