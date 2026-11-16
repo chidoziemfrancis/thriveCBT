@@ -28,7 +28,8 @@ export type PhotoKey =
   | 'week4'
   | 'week5'
   | 'week6'
-  | 'week7';
+  | 'week7'
+  | 'week8';
 
 // Illustrations, not photos, so every student can see themselves in them. Bundled so sessions work
 // offline and every student sees the same pictures. Credits in assets/images/sessions/CREDITS.md.
@@ -63,6 +64,7 @@ export const PHOTOS: Partial<Record<PhotoKey, number>> = {
   week5: require('@/assets/images/sessions/illustrations/week5.svg'),
   week6: require('@/assets/images/sessions/illustrations/week6.svg'),
   week7: require('@/assets/images/sessions/illustrations/week7.svg'),
+  week8: require('@/assets/images/sessions/illustrations/week8.svg'),
 };
 
 /** What each photo shows, read out by screen readers. */
@@ -97,4 +99,5 @@ export const PHOTO_ALT: Record<PhotoKey, string> = {
   week5: 'A smiling student next to a to-do list with two items ticked',
   week6: 'A calm student with eyes closed next to a leaf',
   week7: 'A smiling student next to a tree with its roots showing under the ground',
+  week8: 'Two smiling students in front of a hill with a flag and a rising sun',
 };
