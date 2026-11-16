@@ -74,7 +74,7 @@ export default function StepFlow({
       </ScrollView>
 
       <View style={styles.footer}>
-        <Button disabled={!isStepReady(step, answer)} onPress={next}>
+        <Button disabled={!isStepReady(step, answer, answers)} onPress={next}>
           {last ? saveLabel : 'Continue'}
         </Button>
       </View>

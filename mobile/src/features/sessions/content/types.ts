@@ -206,6 +206,8 @@ export type RateStep = StepBase & {
 /** A few short boxes on one screen, e.g. worst, best and most likely. */
 export type FieldsStep = StepBase & {
   kind: 'fields';
+  /** The small label above the title. */
+  eyebrow?: string;
   title: string;
   hint?: string;
   fields: { label: string; placeholder?: string }[];
@@ -235,6 +237,41 @@ export type PromptStep = StepBase & {
   starters?: string[];
 };
 
+/** Activities that lift mood, in enjoyment, achievement and connection, plus the student's own. */
+export type ActivitiesStep = StepBase & { kind: 'activities'; title: string; body?: string };
+
+/** Each activity picked in `from`, rated 0–10 for enjoyment and achievement. */
+export type PleasureStep = StepBase & {
+  kind: 'pleasure';
+  title: string;
+  body?: string;
+  from: string;
+};
+
+/** A big task broken down rung by rung until the first step feels easy. */
+export type LadderStep = StepBase & {
+  kind: 'ladder';
+  title: string;
+  body: string;
+  goal: string;
+  /** From big to small; the last is the first step. */
+  rungs: string[];
+  lesson: string;
+};
+
+/**
+ * The coming week, with activities placed on a day and time and a guess at how enjoyable each
+ * will be. Suggestions come from the steps in `from`: picked activities, or a fields step's last
+ * box.
+ */
+export type PlannerStep = StepBase & {
+  kind: 'planner';
+  title: string;
+  body?: string;
+  from: string[];
+  goal: number;
+};
+
 export type SessionStep =
   | InfoStep
   | RevealStep
@@ -255,6 +292,10 @@ export type SessionStep =
   | RateStep
   | FieldsStep
   | BalancedStep
+  | ActivitiesStep
+  | PleasureStep
+  | LadderStep
+  | PlannerStep
   | JournalStep;
 
 export type SessionModule = {
@@ -273,7 +314,7 @@ export type SessionContent = {
   takeaways: string[];
   practice: string;
   /** A button under the practice that starts it straight away. */
-  practiceAction?: 'thought-record' | 'challenge';
+  practiceAction?: 'thought-record' | 'challenge' | 'plan';
 };
 
 /** What a student's answer to a step looks like once saved. */
