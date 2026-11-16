@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { CheckIcon, CloseIcon } from '@/components/icons';
+import { crisisPlanFrom } from '@/features/coping/coping';
+import CrisisPlanView from '@/features/coping/components/CrisisPlanView';
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { diaryAnswers, reframeAnswers } from '@/features/sessions/sessionLogic';
 import { colors, fonts } from '@/theme';
@@ -172,6 +174,7 @@ export default function RecapStepView({
       {step.of === 'quiz' && <QuizScore steps={steps} answers={answers} />}
       {step.of === 'diary' && <DiaryTriangle step={step} answers={answers} />}
       {step.of === 'reframe' && <Reframe step={step} steps={steps} answers={answers} />}
+      {step.of === 'safety' && <CrisisPlanView plan={crisisPlanFrom(steps, answers) ?? {}} />}
     </View>
   );
 }

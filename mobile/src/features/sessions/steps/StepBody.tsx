@@ -4,6 +4,7 @@ import { plannerSuggestions } from '@/features/sessions/sessionLogic';
 import ActivitiesStepView from './ActivitiesStepView';
 
 import BalancedStepView from './BalancedStepView';
+import BodyMapStepView from './BodyMapStepView';
 import BreatheStepView from './BreatheStepView';
 import ChecklistStepView from './ChecklistStepView';
 import ChoiceStepView from './ChoiceStepView';
@@ -20,10 +21,14 @@ import PleasureStepView from './PleasureStepView';
 import PromptStepView from './PromptStepView';
 import RateStepView from './RateStepView';
 import RecapStepView from './RecapStepView';
+import RelaxStepView from './RelaxStepView';
 import RevealStepView from './RevealStepView';
+import SafetyStepView from './SafetyStepView';
 import ScaleStepView from './ScaleStepView';
 import SortStepView from './SortStepView';
+import ToolkitStepView from './ToolkitStepView';
 import TrapsStepView from './TrapsStepView';
+import TriggersStepView from './TriggersStepView';
 import TriangleStepView from './TriangleStepView';
 import VideoStepView from './VideoStepView';
 
@@ -129,6 +134,16 @@ export default function StepBody({
           onAnswer={onAnswer}
         />
       );
+    case 'bodyMap':
+      return <BodyMapStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'triggers':
+      return <TriggersStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'relax':
+      return <RelaxStepView step={step} done={answer === true} onDone={() => onAnswer(true)} />;
+    case 'toolkit':
+      return <ToolkitStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'safety':
+      return <SafetyStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'recap':
       return <RecapStepView step={step} steps={steps} answers={answers} />;
     case 'compare':
