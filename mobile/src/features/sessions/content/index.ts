@@ -3,6 +3,7 @@ import { SESSION_2 } from './session2';
 import { SESSION_3 } from './session3';
 import { SESSION_4 } from './session4';
 import { SESSION_5 } from './session5';
+import { SESSION_6 } from './session6';
 import type { SessionContent } from './types';
 
 const CONTENT: Record<number, SessionContent> = {
@@ -11,6 +12,7 @@ const CONTENT: Record<number, SessionContent> = {
   3: SESSION_3,
   4: SESSION_4,
   5: SESSION_5,
+  6: SESSION_6,
 };
 
 /** Undefined for sessions whose content hasn't been written yet. */
