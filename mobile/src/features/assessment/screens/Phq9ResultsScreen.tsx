@@ -6,9 +6,9 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
 import Screen from '@/components/ui/Screen';
+import SupportCard from '@/features/assessment/components/SupportCard';
 import { clearAnswers, getAnswers } from '@/features/assessment/assessmentStore';
 import { recordPhq9Score } from '@/features/assessment/scoreHistory';
-import { SUPPORT_OPTIONS } from '@/features/support/supportOptions';
 import { haptics } from '@/lib/haptics';
 import {
   PHQ9_QUESTIONS,
@@ -39,7 +39,7 @@ export default function Phq9ResultsScreen() {
   function handleContinue() {
     recordPhq9Score(score);
     clearAnswers();
-    router.replace('/assignment/finding');
+    router.replace('/assessment/epqr');
   }
 
   if (needsSupport) {
@@ -58,17 +58,7 @@ export default function Phq9ResultsScreen() {
             </Text>
           </View>
 
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Please reach out to one of these:</Text>
-            {SUPPORT_OPTIONS.map(({ label, Icon }) => (
-              <View key={label} style={styles.supportRow}>
-                <View style={styles.supportIcon}>
-                  <Icon size={18} color={colors.danger} />
-                </View>
-                <Text style={styles.supportLabel}>{label}</Text>
-              </View>
-            ))}
-          </View>
+          <SupportCard />
         </View>
       </Screen>
     );
@@ -78,7 +68,7 @@ export default function Phq9ResultsScreen() {
   const bandIndex = BANDS.indexOf(band);
 
   return (
-    <Screen footer={<Button onPress={handleContinue}>Meet my researcher</Button>}>
+    <Screen footer={<Button onPress={handleContinue}>Continue</Button>}>
       <View style={styles.body}>
         <Animated.View entering={FadeInUp.duration(500)} style={styles.center}>
           <Mascot size={112} mood="cheer" />
@@ -128,18 +118,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surface,
   },
-  cardTitle: { fontFamily: fonts.heavy, fontSize: 16, color: colors.ink },
   band: { fontFamily: fonts.heavy, fontSize: 30, color: colors.ink },
   meter: { flexDirection: 'row', gap: 6 },
   segment: { flex: 1, height: 10, borderRadius: radius.pill, backgroundColor: colors.surfaceMuted },
-  supportRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  supportIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: radius.sm,
-    backgroundColor: colors.dangerSoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  supportLabel: { flex: 1, fontFamily: fonts.bold, fontSize: 15, color: colors.ink },
 });

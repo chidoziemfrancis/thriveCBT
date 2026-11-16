@@ -19,6 +19,12 @@ const JOURNEY: { title: string; detail: string; icon: FeatureIconName; tone: Fea
     tone: 'lavender',
   },
   {
+    title: 'A few questions about you',
+    detail: '100 quick yes or no questions',
+    icon: 'chat',
+    tone: 'butter',
+  },
+  {
     title: '8 weekly sessions',
     detail: 'Short lessons, a mood check and a journal',
     icon: 'book',
