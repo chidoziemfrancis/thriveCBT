@@ -210,6 +210,15 @@ export default function AlertDetailScreen() {
           >
             <Text style={styles.link}>See all PHQ-9 answers</Text>
           </Pressable>
+        ) : alert.kind === 'epqrWish' ? (
+          <Pressable
+            accessibilityRole="link"
+            onPress={() =>
+              router.push({ pathname: '/researcher/student/[id]/epqr', params: { id: student.id } })
+            }
+          >
+            <Text style={styles.link}>See all EPQ-R answers</Text>
+          </Pressable>
         ) : alert.kind === 'riskWords' ? (
           <Pressable
             accessibilityRole="link"

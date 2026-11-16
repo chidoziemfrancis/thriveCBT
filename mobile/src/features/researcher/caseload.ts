@@ -20,6 +20,8 @@ export type CaseloadStudent = {
    * (thoughts of self-harm) on its own because safety checks key off it.
    */
   phq9: { answers: number[]; score: number; item9: number; at: string };
+  /** The EPQ-R taken at the start: all 100 yes/no answers, in question order. */
+  epqr?: { answers: boolean[]; at: string };
   /** Every mood logged since joining, oldest first. */
   moods: MoodEntry[];
   /** Each session's progress and answers, keyed by session number, as on the student side. */
@@ -85,6 +87,13 @@ function phq9(score: number, item9: number, takenAt: string) {
     }
   }
   return { answers, score, item9, at: takenAt };
+}
+
+/** A spread of 100 yes/no answers that varies by student, with question 76 set on its own. */
+function epqr(seed: number, wishedDead: boolean, takenAt: string) {
+  const answers = Array.from({ length: 100 }, (_, i) => (i * 7 + seed * 13) % 10 < 4 + (seed % 3));
+  answers[75] = wishedDead;
+  return { answers, at: takenAt };
 }
 
 /**
@@ -212,6 +221,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'random',
       lastActiveAt: hoursAgo(now, 2),
       phq9: phq9(17, 1, at(now, 1, 9)),
+      epqr: epqr(1, false, at(now, 1, 9)),
       moods: moodHistory(now, 2, [1]),
       sessions: {
         1: session1(
@@ -258,6 +268,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'invite',
       lastActiveAt: hoursAgo(now, 5),
       phq9: phq9(12, 0, at(now, 30, 9)),
+      epqr: epqr(2, false, at(now, 30, 9)),
       moods: withNotes(moodHistory(now, 30, [2, 2, 3, null, 2, 3, 3], 1.4), {
         1: 'Went for a walk with my roommate. Helped a lot.',
       }),
@@ -318,6 +329,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'random',
       lastActiveAt: at(now, 6, 18),
       phq9: phq9(13, 0, at(now, 9, 9)),
+      epqr: epqr(3, true, at(now, 9, 9)),
       moods: moodHistory(now, 4, [2, 1, 2, 2]),
       sessions: {
         1: session1(
@@ -358,6 +370,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'invite',
       lastActiveAt: hoursAgo(now, 20),
       phq9: phq9(14, 0, at(now, 24, 9)),
+      epqr: epqr(4, false, at(now, 24, 9)),
       moods: withNotes(moodHistory(now, 23, [2, 2, 1, 2, null, 1, 2], -1.2), {
         0: 'Couldn’t sleep again. Exams on Monday.',
         3: 'Skipped lectures, didn’t feel like seeing anyone.',
@@ -414,6 +427,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'random',
       lastActiveAt: at(now, 3, 9),
       phq9: phq9(11, 0, at(now, 38, 9)),
+      epqr: epqr(5, false, at(now, 38, 9)),
       moods: moodHistory(now, 36, [2, null, 3, null, 2, null, null], 0.6),
       sessions: {
         1: session1(
@@ -438,6 +452,7 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
       joinedBy: 'invite',
       lastActiveAt: hoursAgo(now, 9),
       phq9: phq9(21, 0, at(now, 17, 9)),
+      epqr: epqr(6, false, at(now, 17, 9)),
       moods: moodHistory(now, 17, [1, 2, 1, 2, 2, null, 2]),
       sessions: {
         1: session1(
