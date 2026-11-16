@@ -1,3 +1,4 @@
+import { readPlan, readRatings } from '@/features/activities/activities';
 import {
   CHECKLIST_NONE,
   type SessionContent,
@@ -156,6 +157,42 @@ export function summariseSession(
         case 'balanced': {
           const sentence = balancedText(step.frame, answer);
           if (sentence) lines.push({ label: 'Balanced thought', value: sentence });
+          break;
+        }
+        case 'activities':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({ label: 'Activities picked', value: (answer as string[]).join(', ') });
+          }
+          break;
+        case 'pleasure':
+          for (const r of readRatings(answer)) {
+            if (r.enjoy === undefined && r.achieve === undefined) continue;
+            lines.push({
+              label: r.label,
+              value: `Enjoyment ${r.enjoy ?? '–'}/10 · achievement ${r.achieve ?? '–'}/10`,
+            });
+          }
+          break;
+        case 'ladder':
+          if (typeof answer === 'number') {
+            lines.push({
+              label: 'Broke down a big task',
+              value: answer >= step.rungs.length ? 'Reached the first step' : 'Started',
+            });
+          }
+          break;
+        case 'planner': {
+          const plan = readPlan(answer);
+          if (plan.length === 0) break;
+          lines.push({
+            label: `Planned ${plan.length} ${plan.length === 1 ? 'activity' : 'activities'}`,
+            value: plan
+              .map(
+                (p) =>
+                  `${p.label} (${p.date}, ${p.slot}${p.predicted !== undefined ? `, guessed ${p.predicted}/10` : ''})`
+              )
+              .join('; '),
+          });
           break;
         }
         case 'prompt':
