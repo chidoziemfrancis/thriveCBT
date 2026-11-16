@@ -1,5 +1,6 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
 import { readArrow } from '@/features/beliefs/beliefs';
+import { readGoal } from '@/features/wellbeing/wellbeing';
 import { copingCard, readTriggers, spotLabels } from '@/features/coping/coping';
 import {
   CHECKLIST_NONE,
@@ -238,6 +239,19 @@ export function summariseSession(
           if (arrow.levels.length)
             lines.push({ label: 'Went deeper', value: arrow.levels.join(' → ') });
           if (arrow.belief) lines.push({ label: 'Core belief', value: arrow.belief });
+          break;
+        }
+        case 'list':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({ label: step.title, value: (answer as string[]).join(', ') });
+          }
+          break;
+        case 'goal': {
+          const goal = readGoal(answer);
+          if (!goal.goal) break;
+          lines.push({ label: `Goal · ${goal.area}`, value: goal.goal });
+          if (goal.steps.length) lines.push({ label: 'Steps', value: goal.steps.join('; ') });
+          if (goal.date) lines.push({ label: 'First step on', value: goal.date });
           break;
         }
         case 'prompt':
