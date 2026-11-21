@@ -1,4 +1,7 @@
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
+import { plannerSuggestions } from '@/features/sessions/sessionLogic';
+
+import ActivitiesStepView from './ActivitiesStepView';
 
 import BalancedStepView from './BalancedStepView';
 import BreatheStepView from './BreatheStepView';
@@ -10,7 +13,10 @@ import EvidenceStepView from './EvidenceStepView';
 import FieldsStepView from './FieldsStepView';
 import InfoStepView from './InfoStepView';
 import JournalStepView from './JournalStepView';
+import LadderStepView from './LadderStepView';
 import MythFactStepView from './MythFactStepView';
+import PlannerStepView from './PlannerStepView';
+import PleasureStepView from './PleasureStepView';
 import PromptStepView from './PromptStepView';
 import RateStepView from './RateStepView';
 import RecapStepView from './RecapStepView';
@@ -96,6 +102,30 @@ export default function StepBody({
           step={step}
           answer={list}
           evidence={answers[step.evidence]}
+          onAnswer={onAnswer}
+        />
+      );
+    case 'activities':
+      return <ActivitiesStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'pleasure': {
+      const picked = answers[step.from];
+      return (
+        <PleasureStepView
+          step={step}
+          picked={Array.isArray(picked) ? (picked as string[]) : []}
+          answer={list}
+          onAnswer={onAnswer}
+        />
+      );
+    }
+    case 'ladder':
+      return <LadderStepView step={step} shown={number ?? 0} onShow={onAnswer} />;
+    case 'planner':
+      return (
+        <PlannerStepView
+          step={step}
+          suggestions={plannerSuggestions(step, steps, answers)}
+          answer={list}
           onAnswer={onAnswer}
         />
       );

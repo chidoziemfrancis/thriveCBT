@@ -77,6 +77,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S27 | Journal list | All entries, newest first, with prompts and mood tags | ✅ |
 | S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ✅ |
 | S28b | Thought log | Every thought record with feeling and trap tags, this week's most common trap, and New thought record. Opens from the Journal tab and the Session 2 and 3 practice | ✅ |
+| S28c | My week | Week strip of planned activities by morning, afternoon and evening; tick one off and rate enjoyment and achievement; expected vs actual card; plan an activity. Opens from the Journal tab and the Session 5 practice | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
@@ -100,8 +101,8 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M11 | Evidence for and against worksheet | 4 | ✅ (sort Tobi's evidence, then your own, with a tipping scale) |
 | M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ✅ (how true, a friend, worst/best/likely, a year from now) |
 | M13 | Balanced thought builder | 4 | ✅ ("Even though…, I also know…, so…", then belief before and after) |
-| M14 | Activity scheduler (weekly planner) | 5 | ⬜ |
-| M15 | Motivation and enjoyment scale | 5 | ⬜ |
+| M14 | Activity scheduler (weekly planner) | 5 | ✅ (week strip, day and time, a guess at enjoyment; saved to My week) |
+| M15 | Motivation and enjoyment scale | 5 | ✅ (each picked activity rated 0–10 for enjoyment and achievement) |
 | M16 | Relaxation audio player (breathing, muscle relaxation, grounding) | 6 | ⬜ |
 | M17 | Stress trigger tracker | 6 | ⬜ |
 | M18 | Coping skills library | 6 | ⬜ |

@@ -18,6 +18,8 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ChevronLeftIcon } from '@/components/icons';
+import { readPlan, toPlanned } from '@/features/activities/activities';
+import { addPlans } from '@/features/activities/activityStore';
 import { addJournalEntry } from '@/features/journal/journalStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
@@ -111,6 +113,9 @@ export default function SessionModuleScreen() {
       const record = recordFromReframe(current, module.steps, answers);
       if (record) addThoughtRecord({ ...record, sessionId });
     }
+    if (current.kind === 'planner') {
+      addPlans(readPlan(value).map((item) => toPlanned(item, sessionId)));
+    }
     if (isLastStep) return finishModule();
     haptics.tick();
     setDirection(1);
@@ -124,19 +129,21 @@ export default function SessionModuleScreen() {
     setStepIndex((i) => i - 1);
   }
 
-  const ready = isStepReady(step, answer);
+  const ready = isStepReady(step, answer, answers);
   const label =
     step.kind === 'breathe' && answer !== true
       ? 'Skip for now'
       : step.kind === 'journal'
         ? 'Save and continue'
-        : step.kind === 'recap' && step.of === 'diary'
-          ? 'Save my diary'
-          : step.kind === 'recap' && step.of === 'reframe'
-            ? 'Save my balanced thought'
-            : isLastStep && moduleIndex === content.modules.length - 1
-              ? 'Finish session'
-              : 'Continue';
+        : step.kind === 'planner'
+          ? 'Save my plan'
+          : step.kind === 'recap' && step.of === 'diary'
+            ? 'Save my diary'
+            : step.kind === 'recap' && step.of === 'reframe'
+              ? 'Save my balanced thought'
+              : isLastStep && moduleIndex === content.modules.length - 1
+                ? 'Finish session'
+                : 'Continue';
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>

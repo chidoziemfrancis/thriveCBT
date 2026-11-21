@@ -23,7 +23,9 @@ export type StoryScene =
   | 'magnify'
   | 'question'
   | 'weigh'
-  | 'verdict';
+  | 'verdict'
+  | 'spiral'
+  | 'steps';
 
 const INK = colors.primary;
 const SOFT = colors.primarySoft;
@@ -295,6 +297,61 @@ function Verdict() {
   );
 }
 
+// Doing less, feeling worse: a loop that winds tighter and tighter.
+function Spiral() {
+  const reduce = useReducedMotion();
+  const spin = useSharedValue(0);
+  useEffect(() => {
+    if (reduce) return;
+    spin.set(withRepeat(withTiming(1, { duration: 5000, easing: Easing.linear }), -1));
+  }, [reduce, spin]);
+  const style = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${spin.value * 360}deg` }, { scale: 1 - spin.value * 0.25 }],
+  }));
+  return (
+    <Animated.View style={style}>
+      <Svg width={160} height={160} viewBox="0 0 160 160">
+        <Path
+          d="M80 80m0-8a8 8 0 1 1-8 8a16 16 0 0 1 16-16a24 24 0 0 1 24 24a32 32 0 0 1-32 32a40 40 0 0 1-40-40a48 48 0 0 1 48-48a56 56 0 0 1 56 56"
+          stroke={INK}
+          strokeWidth={5}
+          strokeLinecap="round"
+          fill="none"
+        />
+        <Circle cx={80} cy={72} r={7} fill={colors.butter} stroke={INK} strokeWidth={3} />
+      </Svg>
+    </Animated.View>
+  );
+}
+
+// One small step, then another: a dot climbing a short flight of stairs.
+function Steps() {
+  const t = useLoop(2400);
+  const climb = useAnimatedStyle(() => {
+    const step = Math.min(2, Math.floor(t.value * 3));
+    return { transform: [{ translateX: step * 44 }, { translateY: -step * 34 }] };
+  });
+  return (
+    <View>
+      <Svg width={190} height={140} viewBox="0 0 190 140">
+        <Path
+          d="M6 132h50v-34h44v-34h44v-34h40"
+          stroke={INK}
+          strokeWidth={5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </Svg>
+      <Animated.View style={[styles.climber, climb]}>
+        <Svg width={30} height={30} viewBox="0 0 30 30">
+          <Circle cx={15} cy={15} r={12} fill={colors.butter} stroke={INK} strokeWidth={3} />
+        </Svg>
+      </Animated.View>
+    </View>
+  );
+}
+
 const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   energy: Energy,
   sleep: Sleep,
@@ -306,6 +363,8 @@ const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   question: Question,
   weigh: Weigh,
   verdict: Verdict,
+  spiral: Spiral,
+  steps: Steps,
 };
 
 export default function StoryArt({ scene }: { scene: StoryScene }) {
@@ -326,6 +385,7 @@ const styles = StyleSheet.create({
   weigh: { alignItems: 'center', paddingTop: 20 },
   post: { position: 'absolute', top: 24 },
   tick: { position: 'absolute', right: -14, top: -10 },
+  climber: { position: 'absolute', left: 18, top: 102 },
   battery: {
     width: 160,
     height: 70,
