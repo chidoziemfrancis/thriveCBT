@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeftIcon } from '@/components/icons';
 import { readPlan, toPlanned } from '@/features/activities/activities';
 import { addPlans } from '@/features/activities/activityStore';
+import { addPositive } from '@/features/beliefs/positiveLogStore';
 import { crisisPlanFrom } from '@/features/coping/coping';
 import { saveCrisisPlan, saveTools } from '@/features/coping/copingStore';
 import { addJournalEntry } from '@/features/journal/journalStore';
@@ -27,6 +28,7 @@ import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { completeModule, saveAnswer, useSessionProgress } from '@/features/sessions/progressStore';
 import {
+  compassionLines,
   diaryText,
   reframeText,
   isStepReady,
@@ -116,6 +118,17 @@ export default function SessionModuleScreen() {
       if (record) addThoughtRecord({ ...record, sessionId });
     }
     if (current.kind === 'toolkit' && Array.isArray(value)) saveTools(value as string[]);
+    if (current.kind === 'fields' && current.positive && Array.isArray(value)) {
+      const kinds = current.positive;
+      addPositive(
+        (value as string[]).flatMap((text, i) => (kinds[i] ? [{ kind: kinds[i], text }] : []))
+      );
+    }
+    if (current.kind === 'recap' && current.of === 'compassion') {
+      const lines = compassionLines(current, answers);
+      if (lines)
+        addJournalEntry({ prompt: 'Kind words to myself', text: lines.join('\n'), sessionId });
+    }
     if (current.kind === 'recap' && current.of === 'safety') {
       const plan = crisisPlanFrom(module.steps, answers);
       if (plan) saveCrisisPlan(plan);

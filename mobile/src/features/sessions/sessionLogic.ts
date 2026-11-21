@@ -1,4 +1,5 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
+import { readArrow } from '@/features/beliefs/beliefs';
 import { readTriggers } from '@/features/coping/coping';
 
 import type {
@@ -130,6 +131,10 @@ export function isStepReady(
     }
     case 'relax':
       return true;
+    case 'arrow': {
+      const arrow = readArrow(answer);
+      return arrow.thought.length > 0 && arrow.belief.length > 0;
+    }
     case 'safety':
       return step.section === 'pros' || step.section === 'safe' || list(answer).length > 0;
     case 'choice':
@@ -282,4 +287,19 @@ export function plannerSuggestions(
     return [];
   });
   return [...new Set(labels.filter(Boolean))];
+}
+
+/** What a self-compassion recap says back, line by line, or null until both parts are written. */
+export function compassionLines(step: RecapStep, answers: Record<string, StepAnswer>) {
+  if (!step.compassion) return null;
+  const text = (id: string) =>
+    typeof answers[id] === 'string' ? (answers[id] as string).trim() : '';
+  const hard = text(step.compassion.hard);
+  const kind = text(step.compassion.kind);
+  if (!hard || !kind) return null;
+  return [
+    `This is hard: ${hard.replace(/[.\s]+$/, '')}.`,
+    'I’m not the only one who feels like this.',
+    kind,
+  ];
 }

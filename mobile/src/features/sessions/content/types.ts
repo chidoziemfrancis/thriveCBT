@@ -1,4 +1,5 @@
 import type { FeatureIconName, FeatureIconTone } from '@/components/icons/FeatureIcon';
+import type { PositiveKind } from '@/features/beliefs/beliefs';
 import type { Exercise, SafetySection } from '@/features/coping/coping';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
@@ -42,8 +43,8 @@ export type RevealStep = StepBase & {
     /** An illustration on the face-down card, in place of the icon. */
     picture?: PhotoKey;
   }[];
-  /** Cards sit on a drawing of a person instead of in a grid. */
-  figure?: 'body';
+  /** Cards sit on a drawing (a person, or a tree top to bottom) instead of in a grid. */
+  figure?: 'body' | 'tree';
 };
 
 /** The checklist answer for "None of these", which clears every other pick. */
@@ -133,13 +134,15 @@ export type JournalStep = StepBase & {
 /** A look back over this part's answers: the check-in as bars, the quiz score, or a diary. */
 export type RecapStep = StepBase & {
   kind: 'recap';
-  of: 'scales' | 'quiz' | 'diary' | 'reframe' | 'safety';
+  of: 'scales' | 'quiz' | 'diary' | 'reframe' | 'safety' | 'compassion';
   title: string;
   body: string;
   /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
   diary?: { situation: string; thought: string; feeling: string; action?: string; traps?: string };
   /** For a reframe: the evidence, the balanced thought, and belief before and after. */
   reframe?: { evidence: string; balanced: string; before: string; after: string };
+  /** For self-compassion: what's hard, and the kind words written for it. */
+  compassion?: { hard: string; kind: string };
 };
 
 /** The three corners of the CBT triangle. */
@@ -212,6 +215,8 @@ export type FieldsStep = StepBase & {
   title: string;
   hint?: string;
   fields: { label: string; placeholder?: string }[];
+  /** Saves each box to the positive data log as this kind. */
+  positive?: PositiveKind[];
 };
 
 /** A balanced thought built from a sentence frame, with chips from the student's own evidence. */
@@ -236,6 +241,8 @@ export type PromptStep = StepBase & {
   hint: string;
   placeholder?: string;
   starters?: string[];
+  /** A starter replaces what's written instead of adding to it, for picking a whole answer. */
+  replace?: boolean;
 };
 
 /** Activities that lift mood, in enjoyment, achievement and connection, plus the student's own. */
@@ -258,6 +265,10 @@ export type LadderStep = StepBase & {
   /** From big to small; the last is the first step. */
   rungs: string[];
   lesson: string;
+  /** Button words for the first tap and the rest. Defaults to making it smaller. */
+  more?: [string, string];
+  /** The tag on the last rung. Defaults to "First step". */
+  lastLabel?: string;
 };
 
 /**
@@ -305,6 +316,18 @@ export type SafetyStep = StepBase & {
   suggestions?: string[];
 };
 
+/**
+ * The downward arrow: a thought, then "what would that say about you?" a level at a time, until
+ * the core belief underneath is named.
+ */
+export type ArrowStep = StepBase & {
+  kind: 'arrow';
+  title: string;
+  body?: string;
+  question: string;
+  maxDepth: number;
+};
+
 export type SessionStep =
   | InfoStep
   | RevealStep
@@ -334,6 +357,7 @@ export type SessionStep =
   | RelaxStep
   | ToolkitStep
   | SafetyStep
+  | ArrowStep
   | JournalStep;
 
 export type SessionModule = {
@@ -352,7 +376,7 @@ export type SessionContent = {
   takeaways: string[];
   practice: string;
   /** A button under the practice that starts it straight away. */
-  practiceAction?: 'thought-record' | 'challenge' | 'plan' | 'toolkit';
+  practiceAction?: 'thought-record' | 'challenge' | 'plan' | 'toolkit' | 'evidence';
 };
 
 /** What a student's answer to a step looks like once saved. */

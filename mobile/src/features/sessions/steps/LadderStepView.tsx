@@ -57,7 +57,7 @@ export default function LadderStepView({
             >
               <Down />
               <View style={[styles.rung, last && styles.first]}>
-                {last && <Text style={styles.firstLabel}>First step</Text>}
+                {last && <Text style={styles.firstLabel}>{step.lastLabel ?? 'First step'}</Text>}
                 <Text style={[styles.rungText, last && styles.firstText]}>{text}</Text>
               </View>
             </Animated.View>
@@ -79,7 +79,7 @@ export default function LadderStepView({
           style={({ pressed }) => [styles.smaller, pressed && { opacity: 0.7 }]}
         >
           <Text style={styles.smallerText}>
-            {shown === 0 ? 'Make it smaller' : 'Smaller still'}
+            {(step.more ?? ['Make it smaller', 'Smaller still'])[shown === 0 ? 0 : 1]}
           </Text>
         </Pressable>
       )}

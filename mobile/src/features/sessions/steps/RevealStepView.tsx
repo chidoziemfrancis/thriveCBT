@@ -20,7 +20,7 @@ export default function RevealStepView({
   revealed: string[];
   onReveal: (ids: string[]) => void;
 }) {
-  if (step.figure === 'body') {
+  if (step.figure) {
     return <BodyRevealView step={step} revealed={revealed} onReveal={onReveal} />;
   }
   return (

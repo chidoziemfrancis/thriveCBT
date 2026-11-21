@@ -82,6 +82,7 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S28e | Stress log | Stressful moments with how strong they felt and what helped, and Log a moment. Opens from My toolkit | ✅ |
 | S28f | Relax | Box breathing, muscle relaxation and 5-4-3-2-1 grounding, any time, with Did it help? Opens from Support and the toolkit | ✅ |
 | S28g | My crisis plan | The student's six-step plan with one-tap calls, and Make or Edit my plan. Opens from Support | ✅ |
+| S28h | Positive data log | Evidence for the new belief from Session 7: the belief, a running count, add a strength, win, kind words or other evidence, and the list. Opens from the Journal tab and the Session 7 practice | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
@@ -111,9 +112,9 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M17 | Stress trigger tracker | 6 | ✅ (body map, triggers rated 0–10, and the stress log) |
 | M18 | Coping skills library | 6 | ✅ (eleven cards in three groups, saved to My toolkit) |
 | M19 | Crisis coping plan | 6 | ✅ (six steps, private, on the Support screen) |
-| M20 | Core belief explorer | 7 | ⬜ |
-| M21 | Positive data log (strengths, wins, kind feedback) | 7 | ⬜ |
-| M22 | Self-compassion exercise | 7 | ⬜ |
+| M20 | Core belief explorer | 7 | ✅ (tree of leaves, branches and roots; the downward arrow to a named belief, rated 0–100%) |
+| M21 | Positive data log (strengths, wins, kind feedback) | 7 | ✅ (three to start, then one a day in its own screen) |
+| M22 | Self-compassion exercise | 7 | ✅ (what’s hard, not alone, kind words read back, hand on heart) |
 | M23 | Relapse prevention plan (triggers, warning signs, coping, support) | 8 | ⬜ |
 | M24 | Skills summary | 8 | ⬜ |
 | M25 | Future goal planner | 8 | ⬜ |

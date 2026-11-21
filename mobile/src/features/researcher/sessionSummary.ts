@@ -1,4 +1,5 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
+import { readArrow } from '@/features/beliefs/beliefs';
 import { copingCard, readTriggers, spotLabels } from '@/features/coping/coping';
 import {
   CHECKLIST_NONE,
@@ -230,6 +231,15 @@ export function summariseSession(
           // The plan is private to the student, so the researcher only sees that it was written.
           if (Array.isArray(answer) && answer.length > 0) safetyFilled += 1;
           break;
+        case 'arrow': {
+          const arrow = readArrow(answer);
+          if (!arrow.thought) break;
+          lines.push({ label: 'Starting thought', value: arrow.thought });
+          if (arrow.levels.length)
+            lines.push({ label: 'Went deeper', value: arrow.levels.join(' → ') });
+          if (arrow.belief) lines.push({ label: 'Core belief', value: arrow.belief });
+          break;
+        }
         case 'prompt':
           if (typeof answer === 'string' && answer.trim()) {
             lines.push({ label: step.title, value: answer.trim() });
