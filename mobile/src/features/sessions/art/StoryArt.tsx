@@ -25,7 +25,9 @@ export type StoryScene =
   | 'weigh'
   | 'verdict'
   | 'spiral'
-  | 'steps';
+  | 'steps'
+  | 'bucket'
+  | 'drain';
 
 const INK = colors.primary;
 const SOFT = colors.primarySoft;
@@ -352,6 +354,40 @@ function Steps() {
   );
 }
 
+// Stress pours in until the bucket spills over; with a tap at the bottom, it drains as it fills.
+function Bucket({ draining }: { draining: boolean }) {
+  const t = useLoop(draining ? 2600 : 3000);
+  const water = useAnimatedStyle(() => ({
+    height: `${draining ? 40 + t.value * 15 : 20 + t.value * 80}%`,
+  }));
+  return (
+    <View style={styles.bucket}>
+      <View style={styles.bucketInside}>
+        <Animated.View style={[styles.water, water]} />
+      </View>
+      <Svg width={150} height={150} viewBox="0 0 150 150" style={styles.bucketLine}>
+        <Path
+          d="M10 20 L26 140 H124 L140 20"
+          stroke={INK}
+          strokeWidth={5}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {draining && (
+          <Path
+            d="M110 128 h24 v10 M134 138 q0 6 -3 10"
+            stroke={INK}
+            strokeWidth={4}
+            strokeLinecap="round"
+            fill="none"
+          />
+        )}
+      </Svg>
+    </View>
+  );
+}
+
 const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   energy: Energy,
   sleep: Sleep,
@@ -365,6 +401,8 @@ const SCENES: Record<StoryScene, () => React.JSX.Element> = {
   verdict: Verdict,
   spiral: Spiral,
   steps: Steps,
+  bucket: () => <Bucket draining={false} />,
+  drain: () => <Bucket draining />,
 };
 
 export default function StoryArt({ scene }: { scene: StoryScene }) {
@@ -385,6 +423,20 @@ const styles = StyleSheet.create({
   weigh: { alignItems: 'center', paddingTop: 20 },
   post: { position: 'absolute', top: 24 },
   tick: { position: 'absolute', right: -14, top: -10 },
+  bucket: { width: 150, height: 150 },
+  bucketInside: {
+    position: 'absolute',
+    left: 22,
+    right: 22,
+    top: 20,
+    bottom: 10,
+    justifyContent: 'flex-end',
+    overflow: 'hidden',
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+  },
+  water: { backgroundColor: '#9CC8E8', borderTopLeftRadius: 4, borderTopRightRadius: 4 },
+  bucketLine: { position: 'absolute' },
   climber: { position: 'absolute', left: 18, top: 102 },
   battery: {
     width: 160,

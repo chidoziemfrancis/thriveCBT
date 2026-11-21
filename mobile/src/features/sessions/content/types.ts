@@ -1,4 +1,5 @@
 import type { FeatureIconName, FeatureIconTone } from '@/components/icons/FeatureIcon';
+import type { Exercise, SafetySection } from '@/features/coping/coping';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
 import type { StoryScene } from '@/features/sessions/art/StoryArt';
@@ -132,7 +133,7 @@ export type JournalStep = StepBase & {
 /** A look back over this part's answers: the check-in as bars, the quiz score, or a diary. */
 export type RecapStep = StepBase & {
   kind: 'recap';
-  of: 'scales' | 'quiz' | 'diary' | 'reframe';
+  of: 'scales' | 'quiz' | 'diary' | 'reframe' | 'safety';
   title: string;
   body: string;
   /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
@@ -272,6 +273,38 @@ export type PlannerStep = StepBase & {
   goal: number;
 };
 
+/** Tap where stress shows up in your body. */
+export type BodyMapStep = StepBase & {
+  kind: 'bodyMap';
+  title: string;
+  body: string;
+  /** Said once at least one spot is picked. */
+  response: string;
+};
+
+/** Pick what stresses you, then how much each one does, 0 to 10. */
+export type TriggersStep = StepBase & { kind: 'triggers'; title: string; body?: string };
+
+/** A guided relaxation exercise. It can be skipped, like breathing. */
+export type RelaxStep = StepBase & {
+  kind: 'relax';
+  exercise: Exercise;
+  title: string;
+  body: string;
+};
+
+/** Coping cards to save to the student's toolkit. */
+export type ToolkitStep = StepBase & { kind: 'toolkit'; title: string; body?: string };
+
+/** One part of the crisis plan, as a short list in the student's own words. */
+export type SafetyStep = StepBase & {
+  kind: 'safety';
+  section: SafetySection;
+  title: string;
+  hint: string;
+  suggestions?: string[];
+};
+
 export type SessionStep =
   | InfoStep
   | RevealStep
@@ -296,6 +329,11 @@ export type SessionStep =
   | PleasureStep
   | LadderStep
   | PlannerStep
+  | BodyMapStep
+  | TriggersStep
+  | RelaxStep
+  | ToolkitStep
+  | SafetyStep
   | JournalStep;
 
 export type SessionModule = {
@@ -314,7 +352,7 @@ export type SessionContent = {
   takeaways: string[];
   practice: string;
   /** A button under the practice that starts it straight away. */
-  practiceAction?: 'thought-record' | 'challenge' | 'plan';
+  practiceAction?: 'thought-record' | 'challenge' | 'plan' | 'toolkit';
 };
 
 /** What a student's answer to a step looks like once saved. */

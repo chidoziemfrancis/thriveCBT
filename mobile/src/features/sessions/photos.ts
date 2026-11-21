@@ -26,7 +26,8 @@ export type PhotoKey =
   | 'trap-always'
   | 'trap-allornothing'
   | 'week4'
-  | 'week5';
+  | 'week5'
+  | 'week6';
 
 // Illustrations, not photos, so every student can see themselves in them. Bundled so sessions work
 // offline and every student sees the same pictures. Credits in assets/images/sessions/CREDITS.md.
@@ -59,6 +60,7 @@ export const PHOTOS: Partial<Record<PhotoKey, number>> = {
   'trap-allornothing': require('@/assets/images/sessions/illustrations/trap-allornothing.svg'),
   week4: require('@/assets/images/sessions/illustrations/week4.svg'),
   week5: require('@/assets/images/sessions/illustrations/week5.svg'),
+  week6: require('@/assets/images/sessions/illustrations/week6.svg'),
 };
 
 /** What each photo shows, read out by screen readers. */
@@ -91,4 +93,5 @@ export const PHOTO_ALT: Record<PhotoKey, string> = {
   'trap-allornothing': 'A serious student next to a circle split into black and white',
   week4: 'A student studying a thought through a magnifying glass',
   week5: 'A smiling student next to a to-do list with two items ticked',
+  week6: 'A calm student with eyes closed next to a leaf',
 };

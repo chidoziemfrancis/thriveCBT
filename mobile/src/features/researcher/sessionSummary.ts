@@ -1,4 +1,5 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
+import { copingCard, readTriggers, spotLabels } from '@/features/coping/coping';
 import {
   CHECKLIST_NONE,
   type SessionContent,
@@ -43,6 +44,7 @@ export function summariseSession(
     let reflection: string | undefined;
     let quizAnswered = 0;
     let quizRight = 0;
+    let safetyFilled = 0;
 
     for (const step of module.steps) {
       const answer = answers[step.id];
@@ -195,12 +197,52 @@ export function summariseSession(
           });
           break;
         }
+        case 'bodyMap':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({
+              label: 'Where stress shows up',
+              value: spotLabels(answer as string[]).join(', '),
+            });
+          }
+          break;
+        case 'triggers':
+          for (const t of readTriggers(answer)) {
+            lines.push({
+              label: t.label,
+              value: t.level === undefined ? 'Not rated' : `${t.level}/10`,
+            });
+          }
+          break;
+        case 'relax':
+          if (record?.done.includes(module.id) || answer !== undefined) {
+            lines.push({ label: step.title, value: answer === true ? 'Completed' : 'Skipped' });
+          }
+          break;
+        case 'toolkit':
+          if (Array.isArray(answer) && answer.length > 0) {
+            lines.push({
+              label: 'Saved to toolkit',
+              value: (answer as string[]).flatMap((id) => copingCard(id)?.title ?? []).join(', '),
+            });
+          }
+          break;
+        case 'safety':
+          // The plan is private to the student, so the researcher only sees that it was written.
+          if (Array.isArray(answer) && answer.length > 0) safetyFilled += 1;
+          break;
         case 'prompt':
           if (typeof answer === 'string' && answer.trim()) {
             lines.push({ label: step.title, value: answer.trim() });
           }
           break;
       }
+    }
+
+    if (safetyFilled > 0) {
+      lines.push({
+        label: 'Crisis plan',
+        value: `Made a plan (${safetyFilled} of 6 parts filled)`,
+      });
     }
 
     if (quizAnswered > 0) {

@@ -20,6 +20,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeftIcon } from '@/components/icons';
 import { readPlan, toPlanned } from '@/features/activities/activities';
 import { addPlans } from '@/features/activities/activityStore';
+import { crisisPlanFrom } from '@/features/coping/coping';
+import { saveCrisisPlan, saveTools } from '@/features/coping/copingStore';
 import { addJournalEntry } from '@/features/journal/journalStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
@@ -113,6 +115,11 @@ export default function SessionModuleScreen() {
       const record = recordFromReframe(current, module.steps, answers);
       if (record) addThoughtRecord({ ...record, sessionId });
     }
+    if (current.kind === 'toolkit' && Array.isArray(value)) saveTools(value as string[]);
+    if (current.kind === 'recap' && current.of === 'safety') {
+      const plan = crisisPlanFrom(module.steps, answers);
+      if (plan) saveCrisisPlan(plan);
+    }
     if (current.kind === 'planner') {
       addPlans(readPlan(value).map((item) => toPlanned(item, sessionId)));
     }
@@ -131,19 +138,21 @@ export default function SessionModuleScreen() {
 
   const ready = isStepReady(step, answer, answers);
   const label =
-    step.kind === 'breathe' && answer !== true
+    (step.kind === 'breathe' || step.kind === 'relax') && answer !== true
       ? 'Skip for now'
       : step.kind === 'journal'
         ? 'Save and continue'
         : step.kind === 'planner'
           ? 'Save my plan'
-          : step.kind === 'recap' && step.of === 'diary'
-            ? 'Save my diary'
-            : step.kind === 'recap' && step.of === 'reframe'
-              ? 'Save my balanced thought'
-              : isLastStep && moduleIndex === content.modules.length - 1
-                ? 'Finish session'
-                : 'Continue';
+          : step.kind === 'recap' && step.of === 'safety'
+            ? 'Save my crisis plan'
+            : step.kind === 'recap' && step.of === 'diary'
+              ? 'Save my diary'
+              : step.kind === 'recap' && step.of === 'reframe'
+                ? 'Save my balanced thought'
+                : isLastStep && moduleIndex === content.modules.length - 1
+                  ? 'Finish session'
+                  : 'Continue';
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -205,7 +214,9 @@ export default function SessionModuleScreen() {
             style={({ pressed }) => [
               styles.continue,
               !ready && styles.continueLocked,
-              step.kind === 'breathe' && answer !== true && styles.continueQuiet,
+              (step.kind === 'breathe' || step.kind === 'relax') &&
+                answer !== true &&
+                styles.continueQuiet,
               pressed && { transform: [{ scale: 0.98 }] },
             ]}
           >
@@ -213,7 +224,8 @@ export default function SessionModuleScreen() {
               style={[
                 styles.continueText,
                 !ready && { color: colors.inkFaint },
-                step.kind === 'breathe' && answer !== true && { color: colors.primary },
+                (step.kind === 'breathe' || step.kind === 'relax') &&
+                  answer !== true && { color: colors.primary },
               ]}
             >
               {label}

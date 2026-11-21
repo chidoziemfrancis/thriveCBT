@@ -1,4 +1,5 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
+import { readTriggers } from '@/features/coping/coping';
 
 import type {
   PlannerStep,
@@ -120,6 +121,17 @@ export function isStepReady(
       return typeof answer === 'number' && answer >= step.rungs.length;
     case 'planner':
       return readPlan(answer).length > 0;
+    case 'bodyMap':
+    case 'toolkit':
+      return Array.isArray(answer) && answer.length > 0;
+    case 'triggers': {
+      const triggers = readTriggers(answer);
+      return triggers.length > 0 && triggers.every((t) => t.level !== undefined);
+    }
+    case 'relax':
+      return true;
+    case 'safety':
+      return step.section === 'pros' || step.section === 'safe' || list(answer).length > 0;
     case 'choice':
     case 'scale':
       return typeof answer === 'number';
