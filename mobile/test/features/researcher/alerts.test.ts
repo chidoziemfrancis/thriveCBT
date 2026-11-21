@@ -87,3 +87,20 @@ describe('alert status', () => {
     });
   });
 });
+
+describe('EPQ-R question 76', () => {
+  it('raises an urgent alert when a student answered Yes', () => {
+    const student = tolu;
+    const answers = Array(100).fill(false);
+    answers[75] = true;
+    const alerts = studentAlerts({ ...student, epqr: { answers, at: student.phq9.at } });
+    const alert = alerts.find((a) => a.kind === 'epqrWish');
+    expect(alert).toMatchObject({ urgent: true, detail: 'Answer: Yes' });
+    expect(
+      studentAlerts({
+        ...student,
+        epqr: { answers: Array(100).fill(false), at: student.phq9.at },
+      }).some((a) => a.kind === 'epqrWish')
+    ).toBe(false);
+  });
+});

@@ -6,6 +6,7 @@ import { Glyph } from '@/components/icons/FeatureIcon';
 import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
+import { epqrSummary } from '@/features/assessment/epqr';
 import { severityBand } from '@/features/assessment/phq9';
 import { daysAgoLabel } from '@/features/journal/journalLogic';
 import { MOODS } from '@/features/mood/moods';
@@ -195,6 +196,20 @@ export default function StudentProfileScreen() {
             {student.phq9.score} · {severityBand(student.phq9.score)}
           </Text>
         </Row>
+        {student.epqr && (
+          <Row
+            label="EPQ-R"
+            onPress={() => {
+              haptics.tick();
+              router.push({
+                pathname: '/researcher/student/[id]/epqr',
+                params: { id: student.id },
+              });
+            }}
+          >
+            <Text style={styles.value}>{epqrSummary(student.epqr.answers)}</Text>
+          </Row>
+        )}
         <Row
           label="Sessions"
           onPress={() => {

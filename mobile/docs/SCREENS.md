@@ -56,6 +56,8 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S16 | What to expect | The study journey: check-in, 8 sessions, weekly calls, final check-in | ✅ |
 | S17 | PHQ-9 question (×9) | Baseline check-in, one question per screen, slider and 14-day visual | ✅ |
 | S18 | PHQ-9 results | Starting score and severity band | ✅ |
+| S18b | EPQ-R | 100 yes/no personality questions after the PHQ-9 at baseline, one per screen with a breather every 25 and carry-on from where the student stopped | ✅ |
+| S18c | EPQ-R done | Thanks and on to meeting the researcher; a Yes to question 76 shows crisis support and alerts the researcher. Scores are not shown to the student | ✅ |
 | S19 | Crisis support | Shown instead of results if question 9 is above "Not at all": support options, alerts the researcher | ✅ (researcher alert R18; live link needs the backend) |
 
 ### 2.3 Researcher assignment
@@ -199,6 +201,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 10" and an Invite button | WhatsApp chat list and filter chips | ✅ PR #27 |
 | R5 | Student profile (hub) | Avatar, name, week, last active; Message · Call · Schedule buttons; an alert line when needed; rows that open R6–R10 | WhatsApp contact info: summary, actions, then rows to detail screens | ✅ PR #27 (rows for R7–R10 to add) |
 | R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted | The paper PHQ-9 form | ✅ PR #27 |
+| R6b | EPQ-R answers | Extraversion, Neuroticism, Psychoticism and Lie scores with what each means, then all 100 answers; question 76 highlighted when Yes | The paper EPQ-R form | ✅ |
 | R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
 | R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
 | R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
@@ -272,10 +275,10 @@ The admin side is a **separate website**, not part of the mobile app, and is bui
 ## 5. Main flows
 
 **Invited student:**
-Welcome → Invite code (filled from link) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → Meet your researcher → Notifications → Home
+Welcome → Invite code (filled from link) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → EPQ-R ×100 → Meet your researcher → Notifications → Home
 
 **Self sign-up student:**
-Welcome → Invite code (skip) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → **Finding your researcher** → Meet your researcher → Notifications → Home
+Welcome → Invite code (skip) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → EPQ-R ×100 → **Finding your researcher** → Meet your researcher → Notifications → Home
 
 **Student at risk (PHQ-9 question 9 above zero):**
 PHQ-9 → Crisis support → researcher gets an alert (R18) → student continues to assignment as normal
