@@ -56,6 +56,8 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S16 | What to expect | The study journey: check-in, 8 sessions, weekly calls, final check-in | ✅ |
 | S17 | PHQ-9 question (×9) | Baseline check-in, one question per screen, slider and 14-day visual | ✅ |
 | S18 | PHQ-9 results | Starting score and severity band | ✅ |
+| S18b | EPQ-R | 100 yes/no personality questions after the PHQ-9 at baseline, one per screen with a breather every 25 and carry-on from where the student stopped | ✅ |
+| S18c | EPQ-R done | Thanks and on to meeting the researcher; a Yes to question 76 shows crisis support and alerts the researcher. Scores are not shown to the student | ✅ |
 | S19 | Crisis support | Shown instead of results if question 9 is above "Not at all": support options, alerts the researcher | ✅ (researcher alert R18; live link needs the backend) |
 
 ### 2.3 Researcher assignment
@@ -77,6 +79,14 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S27 | Journal list | All entries, newest first, with prompts and mood tags | ✅ |
 | S28 | Journal entry | Write or edit an entry; clearly shows whether the researcher can read it | ✅ |
 | S28b | Thought log | Every thought record with feeling and trap tags, this week's most common trap, and New thought record. Opens from the Journal tab and the Session 2 and 3 practice | ✅ |
+| S28c | My week | Week strip of planned activities by morning, afternoon and evening; tick one off and rate enjoyment and achievement; expected vs actual card; plan an activity. Opens from the Journal tab and the Session 5 practice | ✅ |
+| S28d | My toolkit | Saved coping cards with Try it and I used this, a quick Did it help? rating, the tool that helped most, and more ideas to save. Opens from the Journal tab and the Session 6 practice | ✅ |
+| S28e | Stress log | Stressful moments with how strong they felt and what helped, and Log a moment. Opens from My toolkit | ✅ |
+| S28f | Relax | Box breathing, muscle relaxation and 5-4-3-2-1 grounding, any time, with Did it help? Opens from Support and the toolkit | ✅ |
+| S28g | My crisis plan | The student's six-step plan with one-tap calls, and Make or Edit my plan. Opens from Support | ✅ |
+| S28h | Positive data log | Evidence for the new belief from Session 7: the belief, a running count, add a strength, win, kind words or other evidence, and the list. Opens from the Journal tab and the Session 7 practice | ✅ |
+| S28i | My staying-well plan | The Session 8 plan: a note for a hard day, triggers, warning signs, what I'll do, who I'll tell, and the goal with steps to tick off. Opens from Support and the Session 8 practice | ✅ |
+| S28j | Practice | This week's practice with a Monday-to-Sunday strip ticked automatically from the app or by hand, and every week's practice with days done. Card on Home | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
@@ -100,19 +110,19 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M11 | Evidence for and against worksheet | 4 | ✅ (sort Tobi's evidence, then your own, with a tipping scale) |
 | M12 | Guided questions ("Is this 100% true?", "What would you tell a friend?") | 4 | ✅ (how true, a friend, worst/best/likely, a year from now) |
 | M13 | Balanced thought builder | 4 | ✅ ("Even though…, I also know…, so…", then belief before and after) |
-| M14 | Activity scheduler (weekly planner) | 5 | ⬜ |
-| M15 | Motivation and enjoyment scale | 5 | ⬜ |
-| M16 | Relaxation audio player (breathing, muscle relaxation, grounding) | 6 | ⬜ |
-| M17 | Stress trigger tracker | 6 | ⬜ |
-| M18 | Coping skills library | 6 | ⬜ |
-| M19 | Crisis coping plan | 6 | ⬜ |
-| M20 | Core belief explorer | 7 | ⬜ |
-| M21 | Positive data log (strengths, wins, kind feedback) | 7 | ⬜ |
-| M22 | Self-compassion exercise | 7 | ⬜ |
-| M23 | Relapse prevention plan (triggers, warning signs, coping, support) | 8 | ⬜ |
-| M24 | Skills summary | 8 | ⬜ |
-| M25 | Future goal planner | 8 | ⬜ |
-| M26 | Homework tracker | All | ⬜ |
+| M14 | Activity scheduler (weekly planner) | 5 | ✅ (week strip, day and time, a guess at enjoyment; saved to My week) |
+| M15 | Motivation and enjoyment scale | 5 | ✅ (each picked activity rated 0–10 for enjoyment and achievement) |
+| M16 | Relaxation audio player (breathing, muscle relaxation, grounding) | 6 | ✅ (guided by text, timing and haptics; voice tracks to come) |
+| M17 | Stress trigger tracker | 6 | ✅ (body map, triggers rated 0–10, and the stress log) |
+| M18 | Coping skills library | 6 | ✅ (eleven cards in three groups, saved to My toolkit) |
+| M19 | Crisis coping plan | 6 | ✅ (six steps, private, on the Support screen) |
+| M20 | Core belief explorer | 7 | ✅ (tree of leaves, branches and roots; the downward arrow to a named belief, rated 0–100%) |
+| M21 | Positive data log (strengths, wins, kind feedback) | 7 | ✅ (three to start, then one a day in its own screen) |
+| M22 | Self-compassion exercise | 7 | ✅ (what’s hard, not alone, kind words read back, hand on heart) |
+| M23 | Relapse prevention plan (triggers, warning signs, coping, support) | 8 | ✅ (four lists with chips from earlier sessions, saved to Support) |
+| M24 | Skills summary | 8 | ✅ (the eight weeks in the student's own numbers, then top skills) |
+| M25 | Future goal planner | 8 | ✅ (area, a three-month goal, small steps and a start day) |
+| M26 | Homework tracker | All | ✅ (card on Home; days tick from app use or by hand) |
 
 ### 2.6 Researcher contact
 
@@ -191,6 +201,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 10" and an Invite button | WhatsApp chat list and filter chips | ✅ PR #27 |
 | R5 | Student profile (hub) | Avatar, name, week, last active; Message · Call · Schedule buttons; an alert line when needed; rows that open R6–R10 | WhatsApp contact info: summary, actions, then rows to detail screens | ✅ PR #27 (rows for R7–R10 to add) |
 | R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted | The paper PHQ-9 form | ✅ PR #27 |
+| R6b | EPQ-R answers | Extraversion, Neuroticism, Psychoticism and Lie scores with what each means, then all 100 answers; question 76 highlighted when Yes | The paper EPQ-R form | ✅ |
 | R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
 | R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
 | R8a | Session detail | What the student did in each part: checklist picks, myth answers, breathing done or skipped, self-check ratings, quiz score, reflection | Google Classroom: a submitted assignment | ✅ PR #30 |
@@ -264,10 +275,10 @@ The admin side is a **separate website**, not part of the mobile app, and is bui
 ## 5. Main flows
 
 **Invited student:**
-Welcome → Invite code (filled from link) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → Meet your researcher → Notifications → Home
+Welcome → Invite code (filled from link) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → EPQ-R ×100 → Meet your researcher → Notifications → Home
 
 **Self sign-up student:**
-Welcome → Invite code (skip) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → **Finding your researcher** → Meet your researcher → Notifications → Home
+Welcome → Invite code (skip) → Email → Create password → Verify → Study information → Consent → Name → Birthday → Undergrad check → What to expect → PHQ-9 ×9 → Results → EPQ-R ×100 → **Finding your researcher** → Meet your researcher → Notifications → Home
 
 **Student at risk (PHQ-9 question 9 above zero):**
 PHQ-9 → Crisis support → researcher gets an alert (R18) → student continues to assignment as normal
@@ -302,8 +313,8 @@ Screens first, so the backend starts against a finished app. Everything is front
 | 1 | Missing account and onboarding screens: S8/S9, S15, S22, S30 note, S32 | ✅ |
 | 2 | Session 2 and the shared exercises: M6–M9 | ✅ |
 | 3 | Sessions 3 and 4: M10–M13 | ✅ (plus the thought log and Challenge a thought) |
-| 4 | Sessions 5 and 6: M14–M19 | ⬜ |
-| 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |
+| 4 | Sessions 5 and 6: M14–M19 | ✅ |
+| 5 | Sessions 7 and 8, homework: M20–M26 | ✅ |
 | 6 | End of study: S39–S41 | ⬜ |
 | 7 | Backend hand-off: data contract for everything the app stores, and one swap point per store for the real API | ⬜ |
 

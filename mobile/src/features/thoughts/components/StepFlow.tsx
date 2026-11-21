@@ -17,13 +17,16 @@ export default function StepFlow({
   steps,
   saveLabel,
   onSave,
+  initial = {},
 }: {
   steps: SessionStep[];
   saveLabel: string;
+  /** Earlier answers to start from, when editing something saved. */
+  initial?: Record<string, StepAnswer>;
   onSave: (answers: Record<string, StepAnswer>) => void;
 }) {
   const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, StepAnswer>>({});
+  const [answers, setAnswers] = useState<Record<string, StepAnswer>>(initial);
   const step = steps[index];
   const answer = answers[step.id];
   const last = index === steps.length - 1;
@@ -74,7 +77,7 @@ export default function StepFlow({
       </ScrollView>
 
       <View style={styles.footer}>
-        <Button disabled={!isStepReady(step, answer)} onPress={next}>
+        <Button disabled={!isStepReady(step, answer, answers)} onPress={next}>
           {last ? saveLabel : 'Continue'}
         </Button>
       </View>

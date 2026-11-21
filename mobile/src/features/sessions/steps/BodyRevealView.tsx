@@ -11,6 +11,7 @@ import Animated, {
 
 import { Glyph } from '@/components/icons/FeatureIcon';
 import BodyFigure, { FIGURE, SPOTS } from '@/features/sessions/art/BodyFigure';
+import Tree, { TREE, TREE_SPOTS } from '@/features/sessions/art/Tree';
 import type { RevealStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
@@ -32,7 +33,7 @@ function Pulse() {
   return <Animated.View style={[styles.pulse, style]} />;
 }
 
-/** Tap the glowing spots on a person to see where depression shows up. */
+/** Tap the glowing spots on a drawing, a person or a tree, to uncover each idea. */
 export default function BodyRevealView({
   step,
   revealed,
@@ -44,6 +45,8 @@ export default function BodyRevealView({
 }) {
   const [shown, setShown] = useState<string | null>(revealed.at(-1) ?? null);
   const card = step.cards.find((c) => c.id === shown);
+  const tree = step.figure === 'tree';
+  const size = tree ? TREE : FIGURE;
 
   return (
     <View style={styles.wrap}>
@@ -54,11 +57,12 @@ export default function BodyRevealView({
         </Text>
       </View>
 
-      <View style={styles.stage}>
-        <BodyFigure color={colors.primary} fill={colors.primarySoft} />
-        {step.cards.map((c) => {
-          if (!c.spot) return null;
-          const { x, y } = SPOTS[c.spot];
+      <View style={[styles.stage, { width: size.width, height: size.height }]}>
+        {tree ? <Tree /> : <BodyFigure color={colors.primary} fill={colors.primarySoft} />}
+        {step.cards.map((c, i) => {
+          const at = tree ? TREE_SPOTS[i] : c.spot ? SPOTS[c.spot] : undefined;
+          if (!at) return null;
+          const { x, y } = at;
           const open = revealed.includes(c.id);
           const active = shown === c.id;
           return (
@@ -74,7 +78,7 @@ export default function BodyRevealView({
               }}
               style={[
                 styles.spotWrap,
-                { left: x * FIGURE.width - SPOT / 2, top: y * FIGURE.height - SPOT / 2 },
+                { left: x * size.width - SPOT / 2, top: y * size.height - SPOT / 2 },
               ]}
             >
               {!open && <Pulse />}
@@ -96,7 +100,9 @@ export default function BodyRevealView({
         </Animated.View>
       ) : (
         <View style={[styles.detail, styles.detailEmpty]}>
-          <Text style={styles.empty}>Start with the head.</Text>
+          <Text style={styles.empty}>
+            Start with the {step.cards[0]?.label.toLowerCase() ?? 'top'}.
+          </Text>
         </View>
       )}
     </View>
@@ -105,7 +111,7 @@ export default function BodyRevealView({
 
 const styles = StyleSheet.create({
   wrap: { gap: 18, paddingTop: 12 },
-  stage: { alignSelf: 'center', width: FIGURE.width, height: FIGURE.height },
+  stage: { alignSelf: 'center' },
   spotWrap: {
     position: 'absolute',
     width: SPOT,

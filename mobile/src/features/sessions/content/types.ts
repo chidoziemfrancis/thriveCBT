@@ -1,5 +1,8 @@
 import type { FeatureIconName, FeatureIconTone } from '@/components/icons/FeatureIcon';
+import type { PositiveKind } from '@/features/beliefs/beliefs';
+import type { Exercise, SafetySection } from '@/features/coping/coping';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
+import type { WellSection } from '@/features/wellbeing/wellbeing';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
 import type { StoryScene } from '@/features/sessions/art/StoryArt';
 import type { PhotoKey } from '@/features/sessions/photos';
@@ -41,8 +44,8 @@ export type RevealStep = StepBase & {
     /** An illustration on the face-down card, in place of the icon. */
     picture?: PhotoKey;
   }[];
-  /** Cards sit on a drawing of a person instead of in a grid. */
-  figure?: 'body';
+  /** Cards sit on a drawing (a person, or a tree top to bottom) instead of in a grid. */
+  figure?: 'body' | 'tree';
 };
 
 /** The checklist answer for "None of these", which clears every other pick. */
@@ -132,13 +135,15 @@ export type JournalStep = StepBase & {
 /** A look back over this part's answers: the check-in as bars, the quiz score, or a diary. */
 export type RecapStep = StepBase & {
   kind: 'recap';
-  of: 'scales' | 'quiz' | 'diary' | 'reframe';
+  of: 'scales' | 'quiz' | 'diary' | 'reframe' | 'safety' | 'compassion' | 'wellbeing';
   title: string;
   body: string;
   /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
   diary?: { situation: string; thought: string; feeling: string; action?: string; traps?: string };
   /** For a reframe: the evidence, the balanced thought, and belief before and after. */
   reframe?: { evidence: string; balanced: string; before: string; after: string };
+  /** For self-compassion: what's hard, and the kind words written for it. */
+  compassion?: { hard: string; kind: string };
 };
 
 /** The three corners of the CBT triangle. */
@@ -206,9 +211,13 @@ export type RateStep = StepBase & {
 /** A few short boxes on one screen, e.g. worst, best and most likely. */
 export type FieldsStep = StepBase & {
   kind: 'fields';
+  /** The small label above the title. */
+  eyebrow?: string;
   title: string;
   hint?: string;
   fields: { label: string; placeholder?: string }[];
+  /** Saves each box to the positive data log as this kind. */
+  positive?: PositiveKind[];
 };
 
 /** A balanced thought built from a sentence frame, with chips from the student's own evidence. */
@@ -233,7 +242,109 @@ export type PromptStep = StepBase & {
   hint: string;
   placeholder?: string;
   starters?: string[];
+  /** A starter replaces what's written instead of adding to it, for picking a whole answer. */
+  replace?: boolean;
 };
+
+/** Activities that lift mood, in enjoyment, achievement and connection, plus the student's own. */
+export type ActivitiesStep = StepBase & { kind: 'activities'; title: string; body?: string };
+
+/** Each activity picked in `from`, rated 0–10 for enjoyment and achievement. */
+export type PleasureStep = StepBase & {
+  kind: 'pleasure';
+  title: string;
+  body?: string;
+  from: string;
+};
+
+/** A big task broken down rung by rung until the first step feels easy. */
+export type LadderStep = StepBase & {
+  kind: 'ladder';
+  title: string;
+  body: string;
+  goal: string;
+  /** From big to small; the last is the first step. */
+  rungs: string[];
+  lesson: string;
+  /** Button words for the first tap and the rest. Defaults to making it smaller. */
+  more?: [string, string];
+  /** The tag on the last rung. Defaults to "First step". */
+  lastLabel?: string;
+};
+
+/**
+ * The coming week, with activities placed on a day and time and a guess at how enjoyable each
+ * will be. Suggestions come from the steps in `from`: picked activities, or a fields step's last
+ * box.
+ */
+export type PlannerStep = StepBase & {
+  kind: 'planner';
+  title: string;
+  body?: string;
+  from: string[];
+  goal: number;
+};
+
+/** Tap where stress shows up in your body. */
+export type BodyMapStep = StepBase & {
+  kind: 'bodyMap';
+  title: string;
+  body: string;
+  /** Said once at least one spot is picked. */
+  response: string;
+};
+
+/** Pick what stresses you, then how much each one does, 0 to 10. */
+export type TriggersStep = StepBase & { kind: 'triggers'; title: string; body?: string };
+
+/** A guided relaxation exercise. It can be skipped, like breathing. */
+export type RelaxStep = StepBase & {
+  kind: 'relax';
+  exercise: Exercise;
+  title: string;
+  body: string;
+};
+
+/** Coping cards to save to the student's toolkit. */
+export type ToolkitStep = StepBase & { kind: 'toolkit'; title: string; body?: string };
+
+/** One part of the crisis plan, as a short list in the student's own words. */
+export type SafetyStep = StepBase & {
+  kind: 'safety';
+  section: SafetySection;
+  title: string;
+  hint: string;
+  suggestions?: string[];
+};
+
+/**
+ * The downward arrow: a thought, then "what would that say about you?" a level at a time, until
+ * the core belief underneath is named.
+ */
+export type ArrowStep = StepBase & {
+  kind: 'arrow';
+  title: string;
+  body?: string;
+  question: string;
+  maxDepth: number;
+};
+
+/** The eight weeks told back with the student's own numbers. */
+export type JourneyStep = StepBase & { kind: 'journey'; title: string; body?: string };
+
+/** One list in the staying-well plan, with chips from earlier sessions. */
+export type ListStep = StepBase & {
+  kind: 'list';
+  section: WellSection;
+  title: string;
+  hint: string;
+  suggestions?: string[];
+  /** A checklist step whose picks are offered too, e.g. the top skills. */
+  skillsFrom?: string;
+};
+
+/** One goal for the next three months, broken into small steps, with a date to start. */
+export type GoalStep = StepBase & { kind: 'goal'; title: string; body?: string };
 
 export type SessionStep =
   | InfoStep
@@ -255,6 +366,19 @@ export type SessionStep =
   | RateStep
   | FieldsStep
   | BalancedStep
+  | ActivitiesStep
+  | PleasureStep
+  | LadderStep
+  | PlannerStep
+  | BodyMapStep
+  | TriggersStep
+  | RelaxStep
+  | ToolkitStep
+  | SafetyStep
+  | ArrowStep
+  | JourneyStep
+  | ListStep
+  | GoalStep
   | JournalStep;
 
 export type SessionModule = {
@@ -273,7 +397,9 @@ export type SessionContent = {
   takeaways: string[];
   practice: string;
   /** A button under the practice that starts it straight away. */
-  practiceAction?: 'thought-record' | 'challenge';
+  practiceAction?: 'thought-record' | 'challenge' | 'plan' | 'toolkit' | 'evidence' | 'wellbeing';
+  /** The last session: the finish screen celebrates the whole programme. */
+  finale?: boolean;
 };
 
 /** What a student's answer to a step looks like once saved. */

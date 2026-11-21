@@ -10,8 +10,9 @@ import Screen from '@/components/ui/Screen';
 import { askForReminders, remindersAllowed } from '@/features/onboarding/reminders';
 import SunRise from '@/features/sessions/art/SunRise';
 import { sessionContent } from '@/features/sessions/content';
-import { completeSession } from '@/features/sessions/progressStore';
+import { completeSession, useSessionProgress } from '@/features/sessions/progressStore';
 import { SESSIONS } from '@/features/sessions/sessions';
+import { SKILLS } from '@/features/wellbeing/wellbeing';
 import { haptics } from '@/lib/haptics';
 import { getPreferences, setPreference } from '@/lib/preferences';
 import { colors, fonts, radius, type } from '@/theme';
@@ -22,6 +23,11 @@ export default function SessionCompleteScreen() {
   const content = sessionContent(sessionId);
   const session = SESSIONS.find((s) => s.id === sessionId);
   const [reminding, setReminding] = useState(false);
+  const picks = useSessionProgress()[sessionId]?.answers?.['top-skills'];
+  const topSkills =
+    content?.finale && Array.isArray(picks)
+      ? (picks as number[]).flatMap((i) => (SKILLS[i] ? [SKILLS[i]] : []))
+      : [];
 
   useEffect(() => {
     remindersAllowed().then((allowed) => setReminding(allowed && getPreferences().notifyMood));
@@ -50,13 +56,21 @@ export default function SessionCompleteScreen() {
 
         <Animated.View entering={FadeInDown.delay(300).duration(400)} style={styles.header}>
           <Text style={styles.eyebrow}>Week {session.id} done</Text>
-          <Text style={type.title}>Well done for showing up</Text>
-          <Text style={type.body}>You finished “{session.title}”. That’s a real step.</Text>
+          <Text style={type.title}>
+            {content.finale ? 'You’ve finished ThriveCBT' : 'Well done for showing up'}
+          </Text>
+          <Text style={type.body}>
+            {content.finale
+              ? 'Eight weeks of showing up for yourself. The skills are yours to keep.'
+              : `You finished “${session.title}”. That’s a real step.`}
+          </Text>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(400).duration(400)}>
-          <Text style={styles.sectionTitle}>What you learned</Text>
-          {content.takeaways.map((takeaway, i) => (
+          <Text style={styles.sectionTitle}>
+            {topSkills.length > 0 ? 'Your top skills' : 'What you learned'}
+          </Text>
+          {(topSkills.length > 0 ? topSkills : content.takeaways).map((takeaway, i) => (
             <View key={takeaway} style={[styles.row, i > 0 && styles.divider]}>
               <View style={styles.check}>
                 <CheckIcon size={11} color={colors.onPrimary} />
@@ -80,18 +94,48 @@ export default function SessionCompleteScreen() {
               onPress={() => {
                 haptics.tap();
                 router.push(
-                  content.practiceAction === 'challenge'
-                    ? '/thought-log/challenge'
-                    : '/thought-log/new'
+                  content.practiceAction === 'wellbeing'
+                    ? '/staying-well'
+                    : content.practiceAction === 'evidence'
+                      ? '/evidence-log'
+                      : content.practiceAction === 'toolkit'
+                        ? '/toolkit'
+                        : content.practiceAction === 'plan'
+                          ? '/my-week'
+                          : content.practiceAction === 'challenge'
+                            ? '/thought-log/challenge'
+                            : '/thought-log/new'
                 );
               }}
               style={({ pressed }) => [styles.remind, pressed && { opacity: 0.8 }]}
             >
-              <Glyph name="bulb" size={16} color={colors.primary} />
+              <Glyph
+                name={
+                  content.practiceAction === 'wellbeing'
+                    ? 'flag'
+                    : content.practiceAction === 'evidence'
+                      ? 'trophy'
+                      : content.practiceAction === 'toolkit'
+                        ? 'umbrella'
+                        : content.practiceAction === 'plan'
+                          ? 'calendar'
+                          : 'bulb'
+                }
+                size={16}
+                color={colors.primary}
+              />
               <Text style={styles.remindText}>
-                {content.practiceAction === 'challenge'
-                  ? 'Challenge a thought'
-                  : 'New thought record'}
+                {content.practiceAction === 'wellbeing'
+                  ? 'Open my staying-well plan'
+                  : content.practiceAction === 'evidence'
+                    ? 'Add today’s evidence'
+                    : content.practiceAction === 'toolkit'
+                      ? 'Open my toolkit'
+                      : content.practiceAction === 'plan'
+                        ? 'Open my week'
+                        : content.practiceAction === 'challenge'
+                          ? 'Challenge a thought'
+                          : 'New thought record'}
               </Text>
             </Pressable>
           )}
