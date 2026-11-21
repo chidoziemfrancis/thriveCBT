@@ -24,6 +24,8 @@ import { addPositive } from '@/features/beliefs/positiveLogStore';
 import { crisisPlanFrom } from '@/features/coping/coping';
 import { saveCrisisPlan, saveTools } from '@/features/coping/copingStore';
 import { addJournalEntry } from '@/features/journal/journalStore';
+import { wellPlanFrom } from '@/features/wellbeing/wellbeing';
+import { saveWellPlan } from '@/features/wellbeing/wellPlanStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { completeModule, saveAnswer, useSessionProgress } from '@/features/sessions/progressStore';
@@ -124,6 +126,10 @@ export default function SessionModuleScreen() {
         (value as string[]).flatMap((text, i) => (kinds[i] ? [{ kind: kinds[i], text }] : []))
       );
     }
+    if (current.kind === 'recap' && current.of === 'wellbeing') {
+      const plan = wellPlanFrom(answers);
+      if (plan) saveWellPlan(plan);
+    }
     if (current.kind === 'recap' && current.of === 'compassion') {
       const lines = compassionLines(current, answers);
       if (lines)
@@ -159,13 +165,15 @@ export default function SessionModuleScreen() {
           ? 'Save my plan'
           : step.kind === 'recap' && step.of === 'safety'
             ? 'Save my crisis plan'
-            : step.kind === 'recap' && step.of === 'diary'
-              ? 'Save my diary'
-              : step.kind === 'recap' && step.of === 'reframe'
-                ? 'Save my balanced thought'
-                : isLastStep && moduleIndex === content.modules.length - 1
-                  ? 'Finish session'
-                  : 'Continue';
+            : step.kind === 'recap' && step.of === 'wellbeing'
+              ? 'Save my staying-well plan'
+              : step.kind === 'recap' && step.of === 'diary'
+                ? 'Save my diary'
+                : step.kind === 'recap' && step.of === 'reframe'
+                  ? 'Save my balanced thought'
+                  : isLastStep && moduleIndex === content.modules.length - 1
+                    ? 'Finish session'
+                    : 'Continue';
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>

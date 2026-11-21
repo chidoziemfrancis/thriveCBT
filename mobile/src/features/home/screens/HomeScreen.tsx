@@ -10,6 +10,7 @@ import DailyMood from '@/features/home/components/DailyMood';
 import EmergencyContactCard from '@/features/home/components/EmergencyContactCard';
 import HomeHero from '@/features/home/components/HomeHero';
 import WeekTiles from '@/features/home/components/WeekTiles';
+import HomeworkCard from '@/features/homework/components/HomeworkCard';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
 import { logMood, setTodaysMoodNote, todaysMood } from '@/features/mood/moodStore';
@@ -95,7 +96,11 @@ export default function HomeScreen() {
           />
         </Animated.View>
 
-        <Animated.View entering={stagger(3)} style={styles.checkIn}>
+        <Animated.View entering={stagger(3)}>
+          <HomeworkCard sessionId={session.id} />
+        </Animated.View>
+
+        <Animated.View entering={stagger(4)} style={styles.checkIn}>
           <Text style={styles.heading}>Your check-in</Text>
           <CheckInCard researcher={researcher} />
         </Animated.View>

@@ -2,6 +2,7 @@ import type { FeatureIconName, FeatureIconTone } from '@/components/icons/Featur
 import type { PositiveKind } from '@/features/beliefs/beliefs';
 import type { Exercise, SafetySection } from '@/features/coping/coping';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
+import type { WellSection } from '@/features/wellbeing/wellbeing';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
 import type { StoryScene } from '@/features/sessions/art/StoryArt';
 import type { PhotoKey } from '@/features/sessions/photos';
@@ -134,7 +135,7 @@ export type JournalStep = StepBase & {
 /** A look back over this part's answers: the check-in as bars, the quiz score, or a diary. */
 export type RecapStep = StepBase & {
   kind: 'recap';
-  of: 'scales' | 'quiz' | 'diary' | 'reframe' | 'safety' | 'compassion';
+  of: 'scales' | 'quiz' | 'diary' | 'reframe' | 'safety' | 'compassion' | 'wellbeing';
   title: string;
   body: string;
   /** For a diary: which steps hold each answer, so they can be laid out as a triangle. */
@@ -328,6 +329,23 @@ export type ArrowStep = StepBase & {
   maxDepth: number;
 };
 
+/** The eight weeks told back with the student's own numbers. */
+export type JourneyStep = StepBase & { kind: 'journey'; title: string; body?: string };
+
+/** One list in the staying-well plan, with chips from earlier sessions. */
+export type ListStep = StepBase & {
+  kind: 'list';
+  section: WellSection;
+  title: string;
+  hint: string;
+  suggestions?: string[];
+  /** A checklist step whose picks are offered too, e.g. the top skills. */
+  skillsFrom?: string;
+};
+
+/** One goal for the next three months, broken into small steps, with a date to start. */
+export type GoalStep = StepBase & { kind: 'goal'; title: string; body?: string };
+
 export type SessionStep =
   | InfoStep
   | RevealStep
@@ -358,6 +376,9 @@ export type SessionStep =
   | ToolkitStep
   | SafetyStep
   | ArrowStep
+  | JourneyStep
+  | ListStep
+  | GoalStep
   | JournalStep;
 
 export type SessionModule = {
@@ -376,7 +397,9 @@ export type SessionContent = {
   takeaways: string[];
   practice: string;
   /** A button under the practice that starts it straight away. */
-  practiceAction?: 'thought-record' | 'challenge' | 'plan' | 'toolkit' | 'evidence';
+  practiceAction?: 'thought-record' | 'challenge' | 'plan' | 'toolkit' | 'evidence' | 'wellbeing';
+  /** The last session: the finish screen celebrates the whole programme. */
+  finale?: boolean;
 };
 
 /** What a student's answer to a step looks like once saved. */

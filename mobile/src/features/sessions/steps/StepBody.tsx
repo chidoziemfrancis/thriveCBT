@@ -1,4 +1,5 @@
 import { readArrow } from '@/features/beliefs/beliefs';
+import { SKILLS } from '@/features/wellbeing/wellbeing';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { plannerSuggestions } from '@/features/sessions/sessionLogic';
 
@@ -13,10 +14,13 @@ import ChoiceStepView from './ChoiceStepView';
 import CompareStepView from './CompareStepView';
 import EmotionStepView from './EmotionStepView';
 import EvidenceStepView from './EvidenceStepView';
+import GoalStepView from './GoalStepView';
 import FieldsStepView from './FieldsStepView';
 import InfoStepView from './InfoStepView';
 import JournalStepView from './JournalStepView';
+import JourneyStepView from './JourneyStepView';
 import LadderStepView from './LadderStepView';
+import ListStepView from './ListStepView';
 import MythFactStepView from './MythFactStepView';
 import PlannerStepView from './PlannerStepView';
 import PleasureStepView from './PleasureStepView';
@@ -154,6 +158,17 @@ export default function StepBody({
       return <ToolkitStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'safety':
       return <SafetyStepView step={step} answer={list} onAnswer={onAnswer} />;
+    case 'journey':
+      return <JourneyStepView step={step} />;
+    case 'list': {
+      const picks = step.skillsFrom ? answers[step.skillsFrom] : undefined;
+      const skills = Array.isArray(picks)
+        ? (picks as number[]).flatMap((i) => (SKILLS[i] ? [SKILLS[i]] : []))
+        : [];
+      return <ListStepView step={step} answer={list} skills={skills} onAnswer={onAnswer} />;
+    }
+    case 'goal':
+      return <GoalStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'arrow':
       return <ArrowStepView step={step} answer={list} onAnswer={onAnswer} />;
     case 'recap':

@@ -83,6 +83,8 @@ Either way, the student then sees a **"Meet your researcher"** screen, so they k
 | S28f | Relax | Box breathing, muscle relaxation and 5-4-3-2-1 grounding, any time, with Did it help? Opens from Support and the toolkit | ✅ |
 | S28g | My crisis plan | The student's six-step plan with one-tap calls, and Make or Edit my plan. Opens from Support | ✅ |
 | S28h | Positive data log | Evidence for the new belief from Session 7: the belief, a running count, add a strength, win, kind words or other evidence, and the list. Opens from the Journal tab and the Session 7 practice | ✅ |
+| S28i | My staying-well plan | The Session 8 plan: a note for a hard day, triggers, warning signs, what I'll do, who I'll tell, and the goal with steps to tick off. Opens from Support and the Session 8 practice | ✅ |
+| S28j | Practice | This week's practice with a Monday-to-Sunday strip ticked automatically from the app or by hand, and every week's practice with days done. Card on Home | ✅ |
 | S29 | Progress | Mood trend graph, PHQ-9 baseline vs final, sessions done, activity levels | ✅ |
 | S30 | Daily mood check | Faces gauge (sad to happy) with optional note | ✅ (note shown on Progress and the researcher's mood history) |
 | S31 | Badges | Rewards earned for sessions and activities (Session 5 gamification) | Post-MVP |
@@ -115,10 +117,10 @@ The 8 sessions are built from a small set of reusable module screens, not 40 one
 | M20 | Core belief explorer | 7 | ✅ (tree of leaves, branches and roots; the downward arrow to a named belief, rated 0–100%) |
 | M21 | Positive data log (strengths, wins, kind feedback) | 7 | ✅ (three to start, then one a day in its own screen) |
 | M22 | Self-compassion exercise | 7 | ✅ (what’s hard, not alone, kind words read back, hand on heart) |
-| M23 | Relapse prevention plan (triggers, warning signs, coping, support) | 8 | ⬜ |
-| M24 | Skills summary | 8 | ⬜ |
-| M25 | Future goal planner | 8 | ⬜ |
-| M26 | Homework tracker | All | ⬜ |
+| M23 | Relapse prevention plan (triggers, warning signs, coping, support) | 8 | ✅ (four lists with chips from earlier sessions, saved to Support) |
+| M24 | Skills summary | 8 | ✅ (the eight weeks in the student's own numbers, then top skills) |
+| M25 | Future goal planner | 8 | ✅ (area, a three-month goal, small steps and a start day) |
+| M26 | Homework tracker | All | ✅ (card on Home; days tick from app use or by hand) |
 
 ### 2.6 Researcher contact
 
@@ -309,7 +311,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 | 2 | Session 2 and the shared exercises: M6–M9 | ✅ |
 | 3 | Sessions 3 and 4: M10–M13 | ✅ (plus the thought log and Challenge a thought) |
 | 4 | Sessions 5 and 6: M14–M19 | ✅ |
-| 5 | Sessions 7 and 8, homework: M20–M26 | ⬜ |
+| 5 | Sessions 7 and 8, homework: M20–M26 | ✅ |
 | 6 | End of study: S39–S41 | ⬜ |
 | 7 | Backend hand-off: data contract for everything the app stores, and one swap point per store for the real API | ⬜ |
 

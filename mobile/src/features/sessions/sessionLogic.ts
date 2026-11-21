@@ -1,6 +1,7 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
 import { readArrow } from '@/features/beliefs/beliefs';
 import { readTriggers } from '@/features/coping/coping';
+import { goalReady, readGoal } from '@/features/wellbeing/wellbeing';
 
 import type {
   PlannerStep,
@@ -131,6 +132,12 @@ export function isStepReady(
     }
     case 'relax':
       return true;
+    case 'journey':
+      return true;
+    case 'list':
+      return list(answer).length > 0;
+    case 'goal':
+      return goalReady(readGoal(answer));
     case 'arrow': {
       const arrow = readArrow(answer);
       return arrow.thought.length > 0 && arrow.belief.length > 0;

@@ -9,11 +9,13 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { useCrisisPlan } from '@/features/coping/copingStore';
 import { SUPPORT_OPTIONS } from '@/features/support/supportOptions';
+import { useWellPlan } from '@/features/wellbeing/wellPlanStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
 export default function SupportScreen() {
   const plan = useCrisisPlan();
+  const wellPlan = useWellPlan();
   return (
     <Screen footer={<Button onPress={() => router.back()}>Back to home</Button>}>
       <View style={styles.body}>
@@ -37,6 +39,16 @@ export default function SupportScreen() {
               icon: 'shield' as const,
               href: '/crisis-plan' as const,
             },
+            ...(wellPlan
+              ? [
+                  {
+                    title: 'My staying-well plan',
+                    meta: 'Warning signs, what to do, who to tell',
+                    icon: 'flag' as const,
+                    href: '/staying-well' as const,
+                  },
+                ]
+              : []),
             {
               title: 'Relax',
               meta: 'Breathing, muscle relaxation, grounding',
