@@ -104,3 +104,37 @@ describe('EPQ-R question 76', () => {
     ).toBe(false);
   });
 });
+
+describe('final PHQ-9', () => {
+  const final = (score: number, item9 = 0) => ({
+    answers: Array(9).fill(0),
+    score,
+    item9,
+    at: '2026-11-02T18:00:00.000Z',
+  });
+
+  it('raises an urgent alert when the score rises by 5 or more', () => {
+    const base = { ...tolu, phq9: { ...tolu.phq9, score: 12, item9: 0 }, messages: [] };
+    const alert = studentAlerts({ ...base, phq9Final: final(17) }, now).find(
+      (a) => a.kind === 'phq9Rise'
+    );
+    expect(alert).toMatchObject({ urgent: true, final: true, title: 'Final PHQ-9 went up by 5' });
+    expect(
+      studentAlerts({ ...base, phq9Final: final(16) }, now).some((a) => a.kind === 'phq9Rise')
+    ).toBe(false);
+  });
+
+  it('raises question 9 on the final PHQ-9 with its own id', () => {
+    const alerts = studentAlerts({ ...tolu, phq9Final: final(8, 1) }, now).filter(
+      (a) => a.kind === 'question9'
+    );
+    expect(alerts.map((a) => a.final)).toEqual([true, false]);
+    expect(new Set(alerts.map((a) => a.id)).size).toBe(2);
+  });
+
+  it('includes a mock student who has finished, with no alerts for an improved score', () => {
+    const adaeze = students.find((s) => s.id === 's-adaeze')!;
+    expect(adaeze.phq9Final?.score).toBeLessThan(adaeze.phq9.score);
+    expect(studentAlerts(adaeze, now).some((a) => a.final)).toBe(false);
+  });
+});

@@ -6,6 +6,7 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
+import { getFinalPhq9 } from '@/features/assessment/scoreHistory';
 import { firstName } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
@@ -30,6 +31,7 @@ function readProfile() {
     week: currentStudyWeek(),
     researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
     consent: getConsent(),
+    graduated: Boolean(getFinalPhq9()),
   };
 }
 
@@ -116,6 +118,13 @@ export default function ProfileScreen() {
         </SettingsGroup>
 
         <SettingsGroup>
+          {profile.graduated && (
+            <SettingsRow
+              icon="trophy"
+              label="Your certificate"
+              onPress={() => router.push('/end-of-study/certificate')}
+            />
+          )}
           {contact && (
             <SettingsRow
               icon="phone"

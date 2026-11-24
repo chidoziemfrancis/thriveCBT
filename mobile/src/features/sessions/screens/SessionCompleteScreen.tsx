@@ -7,6 +7,7 @@ import { CheckIcon } from '@/components/icons';
 import { Glyph } from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
+import { getFinalPhq9 } from '@/features/assessment/scoreHistory';
 import { askForReminders, remindersAllowed } from '@/features/onboarding/reminders';
 import SunRise from '@/features/sessions/art/SunRise';
 import { sessionContent } from '@/features/sessions/content';
@@ -23,6 +24,7 @@ export default function SessionCompleteScreen() {
   const content = sessionContent(sessionId);
   const session = SESSIONS.find((s) => s.id === sessionId);
   const [reminding, setReminding] = useState(false);
+  const [checkInDue] = useState(() => Boolean(content?.finale) && !getFinalPhq9());
   const picks = useSessionProgress()[sessionId]?.answers?.['top-skills'];
   const topSkills =
     content?.finale && Array.isArray(picks)
@@ -50,7 +52,20 @@ export default function SessionCompleteScreen() {
   }
 
   return (
-    <Screen footer={<Button onPress={() => router.replace('/dashboard')}>Back to home</Button>}>
+    <Screen
+      footer={
+        checkInDue ? (
+          <>
+            <Button onPress={() => router.replace('/end-of-study')}>One last check-in</Button>
+            <Button variant="ghost" onPress={() => router.replace('/dashboard')}>
+              Later
+            </Button>
+          </>
+        ) : (
+          <Button onPress={() => router.replace('/dashboard')}>Back to home</Button>
+        )
+      }
+    >
       <View style={styles.body}>
         <SunRise />
 
