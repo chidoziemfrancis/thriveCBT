@@ -7,8 +7,8 @@ import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
 import Screen from '@/components/ui/Screen';
 import SupportCard from '@/features/assessment/components/SupportCard';
-import { clearAnswers, getAnswers } from '@/features/assessment/assessmentStore';
-import { recordPhq9Score } from '@/features/assessment/scoreHistory';
+import { clearAnswers, getAnswers, getPhq9Mode } from '@/features/assessment/assessmentStore';
+import { recordFinalPhq9, recordPhq9Score } from '@/features/assessment/scoreHistory';
 import { haptics } from '@/lib/haptics';
 import {
   PHQ9_QUESTIONS,
@@ -21,26 +21,43 @@ import { colors, fonts, radius, type } from '@/theme';
 const BANDS = ['Minimal', 'Mild', 'Moderate', 'Moderately severe', 'Severe'];
 
 export default function Phq9ResultsScreen() {
-  const [{ score, needsSupport }] = useState(() => {
+  const [{ score, needsSupport, final }] = useState(() => {
     const answers = getAnswers();
     return {
       score: phq9Score(answers),
       needsSupport: (answers[SUICIDAL_IDEATION_INDEX] ?? 0) > 0,
+      final: getPhq9Mode() === 'final',
     };
   });
 
   // The crisis screen stays still on purpose: a celebratory buzz there would feel wrong.
   useEffect(() => {
-    if (needsSupport) return;
+    if (needsSupport || final) return;
     const timer = setTimeout(haptics.heartbeat, 300);
     return () => clearTimeout(timer);
-  }, [needsSupport]);
+  }, [needsSupport, final]);
+
+  // The week-8 check-in has its own results, so this screen only shows when support is needed.
+  useEffect(() => {
+    if (!final || needsSupport) return;
+    recordFinalPhq9(score);
+    clearAnswers();
+    router.replace('/end-of-study/weeks');
+  }, [final, needsSupport, score]);
 
   function handleContinue() {
+    if (final) {
+      recordFinalPhq9(score);
+      clearAnswers();
+      router.replace('/end-of-study/weeks');
+      return;
+    }
     recordPhq9Score(score);
     clearAnswers();
     router.replace('/assessment/epqr');
   }
+
+  if (final && !needsSupport) return null;
 
   if (needsSupport) {
     return (

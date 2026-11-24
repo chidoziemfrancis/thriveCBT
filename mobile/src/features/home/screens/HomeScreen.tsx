@@ -3,8 +3,11 @@ import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
+import { getFinalPhq9 } from '@/features/assessment/scoreHistory';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import EndOfStudyCard from '@/features/endOfStudy/components/EndOfStudyCard';
+import { programmeFinished } from '@/features/endOfStudy/endOfStudy';
 import CheckInCard from '@/features/home/components/CheckInCard';
 import DailyMood from '@/features/home/components/DailyMood';
 import EmergencyContactCard from '@/features/home/components/EmergencyContactCard';
@@ -31,11 +34,12 @@ function readBasics() {
     name: getOnboardingData().name,
     week: currentStudyWeek(),
     researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
+    finalTaken: Boolean(getFinalPhq9()),
   };
 }
 
 export default function HomeScreen() {
-  const [{ name, week, researcher }, setBasics] = useState(readBasics);
+  const [{ name, week, researcher, finalTaken }, setBasics] = useState(readBasics);
   // Re-read on focus so a name changed in Profile, or a new study week, shows straight away.
   useFocusEffect(useCallback(() => setBasics(readBasics()), []));
   const [mood, setMood] = useState(() => todaysMood());
@@ -45,6 +49,7 @@ export default function HomeScreen() {
   const content = sessionContent(session.id);
   const record = progress[session.id];
   const minutes = content?.modules.reduce((sum, m) => sum + m.minutes, 0) ?? 0;
+  const finished = programmeFinished(progress);
 
   function handleLogMood(value: number) {
     setMood(logMood(value));
@@ -75,6 +80,8 @@ export default function HomeScreen() {
 
       <View style={styles.body}>
         <EmergencyContactCard />
+
+        {finished && <EndOfStudyCard state={finalTaken ? 'done' : 'due'} />}
 
         <Animated.View entering={stagger(1)}>
           <DailyMood
