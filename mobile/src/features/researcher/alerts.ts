@@ -2,15 +2,17 @@ import { EPQR_ITEMS, WISHED_DEAD_INDEX } from '@/features/assessment/epqr';
 import { PHQ9_OPTIONS, PHQ9_QUESTIONS, SUICIDAL_IDEATION_INDEX } from '@/features/assessment/phq9';
 
 import type { AlertEvent } from './alertStore';
-import type { CaseloadStudent } from './caseload';
+import type { CaseloadStudent, Phq9Taken } from './caseload';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 // Draft thresholds until the study team confirms them.
 export const INACTIVE_DAYS = 5;
 export const SEVERE_PHQ9 = 20;
+/** The usual line for a real change on the PHQ-9. */
+export const PHQ9_RISE = 5;
 
-export type AlertKind = 'question9' | 'epqrWish' | 'riskWords' | 'severe' | 'inactive';
+export type AlertKind = 'question9' | 'epqrWish' | 'riskWords' | 'phq9Rise' | 'severe' | 'inactive';
 
 /** Something a researcher must act on, raised from a student's answers, messages or activity. */
 export type StudentAlert = {
@@ -24,23 +26,63 @@ export type StudentAlert = {
   quote?: string;
   detail?: string;
   at: string;
+  /** Set when the alert comes from the week-8 PHQ-9 rather than the one at sign-up. */
+  final?: boolean;
 };
+
+function phq9Alerts(student: CaseloadStudent, taken: Phq9Taken, final: boolean): StudentAlert[] {
+  const alerts: StudentAlert[] = [];
+  const which = final ? 'final PHQ-9' : 'PHQ-9';
+  if (taken.item9 > 0) {
+    alerts.push({
+      id: `${student.id}:question9:${taken.at}`,
+      kind: 'question9',
+      student,
+      urgent: true,
+      title: final
+        ? 'Answered question 9 above zero on the final PHQ-9'
+        : 'Answered question 9 above zero',
+      quote: PHQ9_QUESTIONS[SUICIDAL_IDEATION_INDEX],
+      detail: `Answer: ${PHQ9_OPTIONS.find((o) => o.value === taken.item9)?.label ?? taken.item9}`,
+      at: taken.at,
+      final,
+    });
+  }
+  if (taken.score >= SEVERE_PHQ9) {
+    alerts.push({
+      id: `${student.id}:severe:${taken.at}`,
+      kind: 'severe',
+      student,
+      urgent: false,
+      title: `Severe ${which} score (${taken.score})`,
+      detail: `${taken.score} of 27`,
+      at: taken.at,
+      final,
+    });
+  }
+  return alerts;
+}
 
 /** Every alert a student has raised, most serious kind first. */
 export function studentAlerts(student: CaseloadStudent, now = new Date()): StudentAlert[] {
   const alerts: StudentAlert[] = [];
-  const { phq9 } = student;
+  const { phq9, phq9Final } = student;
+  const start = phq9Alerts(student, phq9, false);
+  const end = phq9Final ? phq9Alerts(student, phq9Final, true) : [];
+  const isQ9 = (a: StudentAlert) => a.kind === 'question9';
 
-  if (phq9.item9 > 0) {
+  alerts.push(...end.filter(isQ9), ...start.filter(isQ9));
+
+  if (phq9Final && phq9Final.score - phq9.score >= PHQ9_RISE) {
     alerts.push({
-      id: `${student.id}:question9:${phq9.at}`,
-      kind: 'question9',
+      id: `${student.id}:phq9Rise:${phq9Final.at}`,
+      kind: 'phq9Rise',
       student,
       urgent: true,
-      title: 'Answered question 9 above zero',
-      quote: PHQ9_QUESTIONS[SUICIDAL_IDEATION_INDEX],
-      detail: `Answer: ${PHQ9_OPTIONS.find((o) => o.value === phq9.item9)?.label ?? phq9.item9}`,
-      at: phq9.at,
+      title: `Final PHQ-9 went up by ${phq9Final.score - phq9.score}`,
+      detail: `${phq9.score} at the start, ${phq9Final.score} at week 8`,
+      at: phq9Final.at,
+      final: true,
     });
   }
 
@@ -82,17 +124,7 @@ export function studentAlerts(student: CaseloadStudent, now = new Date()): Stude
     });
   }
 
-  if (phq9.score >= SEVERE_PHQ9) {
-    alerts.push({
-      id: `${student.id}:severe:${phq9.at}`,
-      kind: 'severe',
-      student,
-      urgent: false,
-      title: `Severe PHQ-9 score (${phq9.score})`,
-      detail: `${phq9.score} of 27`,
-      at: phq9.at,
-    });
-  }
+  alerts.push(...end.filter((a) => !isQ9(a)), ...start.filter((a) => !isQ9(a)));
 
   return alerts;
 }

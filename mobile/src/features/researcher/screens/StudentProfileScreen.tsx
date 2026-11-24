@@ -8,6 +8,7 @@ import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import { epqrSummary } from '@/features/assessment/epqr';
 import { severityBand } from '@/features/assessment/phq9';
+import { phq9Outcome } from '@/features/endOfStudy/endOfStudy';
 import { daysAgoLabel } from '@/features/journal/journalLogic';
 import { MOODS } from '@/features/mood/moods';
 import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
@@ -95,6 +96,25 @@ function Row({
   );
 }
 
+/** The change from the first PHQ-9 to the week-8 one, using the same 5-point line as the app. */
+function changeLabel(start: number, end: number) {
+  const diff = end - start;
+  const outcome = phq9Outcome(start, end);
+  const sign = diff > 0 ? '+' : diff < 0 ? '−' : '';
+  const words =
+    outcome === 'lighter' ? 'improved' : outcome === 'heavier' ? 'worse' : 'about the same';
+  return `${sign}${Math.abs(diff)}, ${words}`;
+}
+
+function changeColor(start: number, end: number) {
+  const outcome = phq9Outcome(start, end);
+  return outcome === 'lighter'
+    ? colors.primary
+    : outcome === 'heavier'
+      ? colors.danger
+      : colors.ink;
+}
+
 // Video calls are built later; until then the Call button says so honestly.
 function comingSoon(what: string) {
   Alert.alert('Coming soon', `${what} for researchers is on the way.`);
@@ -127,7 +147,8 @@ export default function StudentProfileScreen() {
         <StudentAvatar id={student.id} name={student.name} size={88} />
         <Text style={styles.name}>{student.name}</Text>
         <Text style={styles.meta}>
-          Week {student.week} · {activeLabel(student.lastActiveAt, now)}
+          {student.phq9Final ? 'Completed' : `Week ${student.week}`} ·{' '}
+          {activeLabel(student.lastActiveAt, now)}
         </Text>
       </View>
 
@@ -186,7 +207,7 @@ export default function StudentProfileScreen() {
           </Text>
         </Row>
         <Row
-          label="PHQ-9"
+          label={student.phq9Final ? 'PHQ-9 at start' : 'PHQ-9'}
           onPress={() => {
             haptics.tick();
             router.push({ pathname: '/researcher/student/[id]/phq9', params: { id: student.id } });
@@ -196,6 +217,34 @@ export default function StudentProfileScreen() {
             {student.phq9.score} · {severityBand(student.phq9.score)}
           </Text>
         </Row>
+        {student.phq9Final && (
+          <>
+            <Row
+              label="PHQ-9 at week 8"
+              onPress={() => {
+                haptics.tick();
+                router.push({
+                  pathname: '/researcher/student/[id]/phq9',
+                  params: { id: student.id, which: 'final' },
+                });
+              }}
+            >
+              <Text style={styles.value}>
+                {student.phq9Final.score} · {severityBand(student.phq9Final.score)}
+              </Text>
+            </Row>
+            <Row label="Change">
+              <Text
+                style={[
+                  styles.value,
+                  { color: changeColor(student.phq9.score, student.phq9Final.score) },
+                ]}
+              >
+                {changeLabel(student.phq9.score, student.phq9Final.score)}
+              </Text>
+            </Row>
+          </>
+        )}
         {student.epqr && (
           <Row
             label="EPQ-R"

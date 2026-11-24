@@ -201,11 +201,14 @@ export default function AlertDetailScreen() {
             {alert.detail}
           </Text>
         )}
-        {alert.kind === 'question9' || alert.kind === 'severe' ? (
+        {alert.kind === 'question9' || alert.kind === 'severe' || alert.kind === 'phq9Rise' ? (
           <Pressable
             accessibilityRole="link"
             onPress={() =>
-              router.push({ pathname: '/researcher/student/[id]/phq9', params: { id: student.id } })
+              router.push({
+                pathname: '/researcher/student/[id]/phq9',
+                params: alert.final ? { id: student.id, which: 'final' } : { id: student.id },
+              })
             }
           >
             <Text style={styles.link}>See all PHQ-9 answers</Text>

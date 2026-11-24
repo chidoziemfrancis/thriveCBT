@@ -28,27 +28,34 @@ function longDate(iso: string) {
  * one question per line with the answer beside it.
  */
 export default function Phq9AnswersScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, which } = useLocalSearchParams<{ id: string; which?: 'final' }>();
   const { students } = useResearcher();
   const student = students.find((s) => s.id === id);
+  const taken = which === 'final' ? student?.phq9Final : student?.phq9;
 
-  if (!student) {
+  if (!student || !taken) {
     return (
       <Screen>
         <BackButton />
-        <Text style={[type.body, styles.missing]}>This student isn’t in your caseload.</Text>
+        <Text style={[type.body, styles.missing]}>
+          {student
+            ? 'This student hasn’t taken the final PHQ-9 yet.'
+            : 'This student isn’t in your caseload.'}
+        </Text>
       </Screen>
     );
   }
 
-  const { answers, score, at } = student.phq9;
+  const { answers, score, at } = taken;
 
   return (
     <Screen>
       <BackButton />
 
       <View style={styles.header}>
-        <Text style={type.title}>PHQ-9 answers</Text>
+        <Text style={type.title}>
+          {which === 'final' ? 'Week 8 PHQ-9 answers' : 'PHQ-9 answers'}
+        </Text>
         <Text style={styles.meta}>
           {student.name} · {longDate(at)}
         </Text>

@@ -8,6 +8,8 @@ import type { SessionRecord } from '@/features/sessions/sessionLogic';
 
 import type { CallOutcome } from './callLog';
 
+export type Phq9Taken = { answers: number[]; score: number; item9: number; at: string };
+
 export type CaseloadStudent = {
   id: string;
   name: string;
@@ -16,10 +18,12 @@ export type CaseloadStudent = {
   joinedBy: AssignmentMethod;
   lastActiveAt: string;
   /**
-   * The latest PHQ-9: each answer (0 to 3, in question order), the total, and question 9
+   * The PHQ-9 from sign-up: each answer (0 to 3, in question order), the total, and question 9
    * (thoughts of self-harm) on its own because safety checks key off it.
    */
-  phq9: { answers: number[]; score: number; item9: number; at: string };
+  phq9: Phq9Taken;
+  /** The same questionnaire again at the end of week 8, once the student has taken it. */
+  phq9Final?: Phq9Taken;
   /** The EPQ-R taken at the start: all 100 yes/no answers, in question order. */
   epqr?: { answers: boolean[]; at: string };
   /** Every mood logged since joining, oldest first. */
@@ -504,6 +508,40 @@ export function mockCaseload(now = new Date()): { students: CaseloadStudent[]; c
           'My roommate made jollof and we ate together. Small thing but it helped.',
         ],
         [5, 21, 40, 'researcher', 'That’s not a small thing at all. I’m really glad you had that.'],
+      ]),
+    },
+    {
+      id: 's-adaeze',
+      name: 'Adaeze Okafor',
+      week: 8,
+      joinedAt: at(now, 58, 9),
+      joinedBy: 'random',
+      lastActiveAt: hoursAgo(now, 20),
+      phq9: phq9(13, 0, at(now, 58, 9)),
+      phq9Final: phq9(7, 0, at(now, 1, 18)),
+      epqr: epqr(7, false, at(now, 58, 9)),
+      moods: moodHistory(now, 56, [1, 2, null, 2, 3, null, 2], 1.2),
+      sessions: {
+        1: session1(
+          at(now, 54, 20),
+          { noticed: [1, 2], pressures: [0, 2], scales: [3, 3, 2, 2, 3], quiz: [0, 0, 0] },
+          'Exams and home at the same time. I stopped going out.'
+        ),
+        ...laterSessions(now, 7, 58),
+      },
+      journal: [],
+      pastCalls: callHistory(now, 58, 11, [
+        [24, 3],
+        [20, 3],
+        'missed',
+        [26, 3, 'Felt lighter after this one.'],
+        [22, 4],
+        [18, 3],
+        [25, 4],
+      ]),
+      messages: chat(now, 's-adaeze', [
+        [2, 19, 0, 'student', 'Finished the last session. Thank you for everything.'],
+        [2, 19, 30, 'researcher', 'You worked so hard, Adaeze. I’m proud of you.'],
       ]),
     },
   ];
