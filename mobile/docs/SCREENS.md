@@ -161,9 +161,10 @@ A simple one-to-one chat so a student can message their researcher between weekl
 | # | Screen | What it does | Status |
 |---|---|---|---|
 | S38 | Emergency support | Always one tap away: crisis helpline, campus counselling, emergency contact, the student's crisis plan | 🟡 (real contacts ⬜) |
-| S39 | Final PHQ-9 | Same 9 questions at week 8 | ⬜ (reuses S17) |
-| S40 | Before vs after | Baseline compared with final score | ⬜ |
-| S41 | Graduation | Completion certificate and badge | ⬜ |
+| S39 | Final PHQ-9 | Opens once Session 8 is done: from the Session 8 screen ("One last check-in") or a card on Home. Same 9 questions as S17; question 9 still shows support first | ✅ |
+| S39b | Your 8 weeks | Effort before any score: sessions finished, thoughts worked on, days practised, check-ins | ✅ |
+| S40 | Then and now | Start and week-8 bands in words on the five-part meter, score in small print. Headline by result: down 5+ "lighter", within 4 "about the same", up 5+ "heavier". Talk-to-someone link when worse or the final score is 15+ | ✅ |
+| S41 | Certificate | Name, "completed the 8-week ThriveCBT programme", dates, outline rosette badge, links to the staying-well plan, toolkit and crisis plan. No mention of depression and no share button, for privacy. Kept in Profile and as a Home row | ✅ |
 
 ### 2.8 Profile and settings
 
@@ -200,7 +201,7 @@ Researchers use the app as case managers: keeping their students safe, supported
 | R3 | Today | Greeting, **Next call** (with Join from 10 minutes before), **Needs you** (question 9, inactivity, severe score) and **Later today** | Spring Health home: upcoming appointment first | ✅ PR #26 |
 | R4 | Students | Search, chips (All · Needs you · Quiet), rows with week, last active and one mark (urgent, quiet or mood face), capacity "6 / 10" and an Invite button | WhatsApp chat list and filter chips | ✅ PR #27 |
 | R5 | Student profile (hub) | Avatar, name, week, last active; Message · Call · Schedule buttons; an alert line when needed; rows that open R6–R10 | WhatsApp contact info: summary, actions, then rows to detail screens | ✅ PR #27 (rows for R7–R10 to add) |
-| R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted | The paper PHQ-9 form | ✅ PR #27 |
+| R6 | PHQ-9 answers | Date, score out of 27 and band, all nine questions with the student's answers; question 9 highlighted. Opens the sign-up or the week-8 PHQ-9. Student profile shows both, the change, and "Completed". Final question 9 and a rise of 5+ raise urgent alerts | The paper PHQ-9 form | ✅ PR #27, week 8 ✅ |
 | R6b | EPQ-R answers | Extraversion, Neuroticism, Psychoticism and Lie scores with what each means, then all 100 answers; question 76 highlighted when Yes | The paper EPQ-R form | ✅ |
 | R7 | Mood history | This week / 30 days chart with faces on the line, then week-by-week rows (seven faces and "Mostly low") since they joined | Student mood trend; Apple Health weekly summaries | ✅ PR #29 |
 | R8 | Sessions | All 8 sessions with status (done with date, in progress, not started) | Google Classroom: a student's work per assignment | ✅ PR #30 |
@@ -300,6 +301,8 @@ Accept invite → Profile setup → Availability → Home → Invite students �
 8. **Chat as research data.** Are chat messages part of the study data (analysed, exported), or only for support? This changes the consent wording.
 9. **Chat reply hours.** What reply time should students expect from researchers, and are weekends covered?
 10. **Risk words.** Which words or phrases should trigger the chat risk prompt (C4)? A clinician on the team should approve the list.
+11. **Before and after.** Students see their start and week-8 PHQ-9 side by side at the end (S40). The trend stays hidden during the 8 weeks. Is that fine for the study, and is a 5-point change the right line for "lighter" and "heavier"?
+12. **Certificate.** Should students be able to save or share it? It's private for now, since a shared certificate shows they joined a mental health study.
 
 ---
 
@@ -315,7 +318,7 @@ Screens first, so the backend starts against a finished app. Everything is front
 | 3 | Sessions 3 and 4: M10–M13 | ✅ (plus the thought log and Challenge a thought) |
 | 4 | Sessions 5 and 6: M14–M19 | ✅ |
 | 5 | Sessions 7 and 8, homework: M20–M26 | ✅ |
-| 6 | End of study: S39–S41 | ⬜ |
+| 6 | End of study: S39–S41 | ✅ |
 | 7 | Backend hand-off: data contract for everything the app stores, and one swap point per store for the real API | ⬜ |
 
 Waiting on the study team: R20, real helpline numbers (S38), the risk word list (C4), legal text (S46), session videos (M2), and the open questions in section 6. Needs the backend: R2, real video calls, live chat, C5, C6 and the invite link domain.
