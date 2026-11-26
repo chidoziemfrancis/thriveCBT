@@ -1,10 +1,33 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { LoggerModule } from 'nestjs-pino';
+
+import { ConfigModule } from './config/config.module.js';
+import { ConfigService } from './config/config.service.js';
+import { HealthModule } from './modules/health/health.module.js';
+import { PrismaModule } from './prisma/prisma.module.js';
+import { CryptoModule } from './shared/crypto/crypto.module.js';
+import { AllExceptionsFilter } from './shared/errors/all-exceptions.filter.js';
+import { loggingConfig } from './shared/logging/logging.config.js';
+
+const RATE_LIMIT = { ttl: 60_000, limit: 100 };
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule,
+    LoggerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: loggingConfig,
+    }),
+    ThrottlerModule.forRoot([RATE_LIMIT]),
+    PrismaModule,
+    CryptoModule,
+    HealthModule,
+  ],
+  providers: [
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+  ],
 })
 export class AppModule {}
