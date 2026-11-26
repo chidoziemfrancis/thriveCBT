@@ -21,11 +21,10 @@ Run from the repo root.
 | Command                           | Does                                                          |
 | --------------------------------- | ------------------------------------------------------------- |
 | `npm run start:dev`               | Start the API with reloading (http://localhost:3000/v1)       |
-| `npm run lint`                    | oxlint over `src/` and `test/`                                |
+| `npm run lint`                    | oxlint over `src/` and `scripts/`                             |
 | `npm run format` / `format:check` | Prettier                                                      |
 | `npm run typecheck`               | TypeScript, no output                                         |
 | `npm run test`                    | Unit tests (Vitest)                                           |
-| `npm run test:e2e`                | End-to-end tests against the test database                    |
 | `npm run db:up` / `db:down`       | Start or stop local PostgreSQL (Docker)                       |
 | `npm run db:migrate`              | Apply migrations, or create one after a schema change         |
 | `npm run db:reset`                | Drop, migrate and seed the local database                     |
@@ -33,7 +32,7 @@ Run from the repo root.
 | `npm run prisma:validate`         | Check the Prisma schema                                       |
 | `npm run docs`                    | Regenerate `docs/api/openapi.json` and the Postman collection |
 
-Commands for the database and docs arrive in phase B0; until then only the first six exist.
+Local database: either Docker (`npm run db:up`, port 5433) or a local PostgreSQL. Set `DATABASE_URL` in `.env`; see [docs/runbooks/local-setup.md](docs/runbooks/local-setup.md).
 
 **Before every commit:** `npm run lint && npm run format:check && npm run typecheck && npm run test`. If you touched an endpoint, also `npm run docs`. If you touched the schema, also `npm run prisma:validate`.
 
@@ -45,53 +44,56 @@ src/
 ├─ app.module.ts           imports modules, nothing else
 ├─ config/                 settings, validated by Zod at startup
 ├─ prisma/                 PrismaModule, PrismaService, database-error mapping
-├─ shared/                 used by two or more modules; no study rules
-│  ├─ errors/  pipes/  interceptors/  guards/  decorators/
+├─ shared/                 anything used by more than one feature or module; no study rules
+│  ├─ errors/              AppError, the global filter, and every error code
+│  │  └─ codes/            one file per module: health.errors.ts, phq9.errors.ts, …
+│  ├─ pipes/  logging/  openapi/  guards/  decorators/
 │  ├─ crypto/  sync/  utils/  types/  constants/
 ├─ integrations/           one wrapper per outside service: email/, push/, video/
 ├─ events/                 event names and their data
 ├─ jobs/                   scheduled tasks; they call module services
 └─ modules/
-   ├─ health/              a module with one feature is flat
-   └─ assessments/         a module with several features: one folder each
+   ├─ health/              one feature: role folders directly in the module
+   │  ├─ health.module.ts
+   │  ├─ controllers/  services/  repositories/  dto/  tests/
+   └─ assessments/         two or more features: one folder per feature
       ├─ assessments.module.ts
-      ├─ shared/           shared by this module's features only
       ├─ phq9/
+      │  ├─ controllers/  services/  repositories/  dto/  tests/
       └─ epqr/
+         ├─ controllers/  services/  repositories/  dto/  tests/
 prisma/
 ├─ schema/
 │  ├─ base.prisma          generator and database only
 │  └─ <module>/<model>.prisma
 ├─ migrations/
 └─ seed/
-test/
-├─ e2e/  factories/  utils/
 scripts/                   commands run by hand
 ```
 
-### Every feature has the same files
+### Every feature groups its files by role
 
 ```
-<feature>.controller.ts    HTTP only: read the request, call the service, return
-<feature>.service.ts       the rules
-<feature>.repository.ts    the only file that touches Prisma
-dto/                       Zod schemas and their inferred types
-<feature>.errors.ts        this feature's error codes
-<feature>.service.spec.ts  tests for the service
+controllers/<feature>.controller.ts    HTTP only: read the request, call the service, return
+services/<feature>.service.ts          the rules
+repositories/<feature>.repository.ts   the only file that touches Prisma
+dto/<name>.dto.ts                      Zod schemas and their inferred types
+tests/<feature>.service.spec.ts        unit tests for the service
 ```
 
-A module file (`<module>.module.ts`) wires its features together and contains no logic.
+A module file (`<module>.module.ts`) wires its features together and contains no logic. Error codes don't live in modules; they're in `src/shared/errors/codes/`.
 
 ## Structure rules
 
-1. **One feature, flat module. Two or more features, one folder each.** The module file only imports them.
-2. **Shared code lives at the lowest level all its users can reach:** the feature folder, then `modules/<module>/shared/`, then `src/shared/`. Move it up only when a second user needs it.
-3. **`src/shared/` never imports from `src/modules/`,** and never holds study rules. "A PHQ-9 rise of 5 points" belongs in `assessments`, even though it's one line.
-4. **A feature never imports another feature's repository.** It calls that feature's service, or listens for an event in `src/events/`.
-5. **Modules talk through events where the link is a side effect.** Saving a PHQ-9 publishes `phq9.submitted`; `alerts` listens. `assessments` never imports `alerts`.
-6. **Controllers never touch Prisma. Services never touch `Request` or `Response`.**
-7. **Outside services only through `src/integrations/`.** No email, push or video SDK imported anywhere else.
-8. **Create a folder when its first file arrives,** not before.
+1. **Files are grouped by role** in `controllers/`, `services/`, `repositories/`, `dto/` and `tests/`. A module with one feature has these folders directly; a module with two or more features has one folder per feature, each with its own role folders. The module file only imports them.
+2. **Anything used by more than one feature or module goes in `src/shared/`.** There are no `shared/` folders inside modules. Code used by one feature stays in that feature.
+3. **Error handling is global.** `AppError`, the global filter and every error code live in `src/shared/errors/`; each module's codes are one file in `src/shared/errors/codes/`.
+4. **`src/shared/` never imports from `src/modules/`,** and never holds study rules. "A PHQ-9 rise of 5 points" belongs in `assessments`, even though it's one line.
+5. **A feature never imports another feature's repository.** It calls that feature's service, or listens for an event in `src/events/`.
+6. **Modules talk through events where the link is a side effect.** Saving a PHQ-9 publishes `phq9.submitted`; `alerts` listens. `assessments` never imports `alerts`.
+7. **Controllers never touch Prisma. Services never touch `Request` or `Response`.**
+8. **Outside services only through `src/integrations/`.** No email, push or video SDK imported anywhere else.
+9. **Create a folder when its first file arrives,** not before.
 
 ## Naming
 
@@ -126,7 +128,7 @@ A module file (`<module>.module.ts`) wires its features together and contains no
 ## Errors
 
 - Throw only `AppError` from our own code: `throw new AppError(PHQ9_ERRORS.ALREADY_SUBMITTED)`. Never throw raw strings, plain `Error`, or NestJS `HttpException` subclasses from a service.
-- Shared codes live in `src/shared/errors/error-codes.ts`. Feature codes live in `<feature>.errors.ts`, each with a status and a user-safe message.
+- All error codes are global. Common ones (`NOT_FOUND`, `FORBIDDEN`, …) live in `src/shared/errors/error-codes.ts`; each module's own codes live in `src/shared/errors/codes/<module>.errors.ts`, each with a status and a user-safe message. No module keeps its own errors folder.
 - The global filter turns everything into:
   ```json
   { "error": { "code": "…", "message": "…", "details": {}, "requestId": "…" } }
@@ -149,10 +151,8 @@ This is health data. These rules have no exceptions.
 
 ## Tests
 
-- Every service has a `*.service.spec.ts` covering its rules and each error it can throw.
-- Every endpoint has an end-to-end test in `test/e2e/` for the success case, validation failure, wrong role, and each feature error.
-- Build test data with `test/factories/`, not inline objects.
-- End-to-end tests use the `thrivecbt_test` database, reset between files. Never point tests at the development database.
+- Every service has a `tests/<feature>.service.spec.ts` covering its rules and each error it can throw. Unit tests for `src/shared/`, `src/config/` and `src/prisma/` sit in a `tests/` folder beside the code they test.
+- Unit tests never touch a real database or outside service; pass fakes into the class under test.
 - A bug fix comes with a test that fails without it.
 
 ## API docs
@@ -180,17 +180,17 @@ Avoid comments. Clear names, small functions and tests should explain the code. 
 ### A new module
 
 1. Create `src/modules/<module>/` with `<module>.module.ts`.
-2. One feature: put the feature files directly in the module folder. More: one folder per feature.
+2. One feature: add `controllers/`, `services/`, `repositories/`, `dto/` and `tests/` directly in the module. More: one folder per feature, each with those role folders.
 3. Import the module in `app.module.ts`.
 4. Add its models under `prisma/schema/<module>/`, one per file, then `npm run db:migrate`.
-5. Add error codes, Zod schemas, tests, a factory and a seed file.
+5. Add its error codes as `src/shared/errors/codes/<module>.errors.ts`, plus Zod schemas, unit tests and a seed file.
 6. Run `npm run docs` and tick the item in `docs/backend-todo.md`.
 
 ### A new model
 
 1. Create `prisma/schema/<module>/<model-name>.prisma` with the standard fields above.
 2. `npm run prisma:validate`, then `npm run db:migrate` with a short, clear migration name.
-3. Add a factory in `test/factories/` and seed data if it helps local work.
+3. Add seed data if it helps local work.
 
 ### A new outside service
 

@@ -6,42 +6,40 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ## Before we start
 
-- [ ] Confirm decisions: Zod, Docker for the local database, plain JSON responses
+- [x] Confirm decisions: Zod, Docker for the local database, plain JSON responses
 - [ ] Ask Dr Akande where study data must be stored (affects hosting in B7)
 - [ ] Study team: can researchers read the journal? (needed before B4)
 - [ ] Study team: does the crisis plan stay on the phone only? (needed before B4)
-- [ ] Install Docker Desktop on the development Mac
+- [x] Install Docker Desktop on the development Mac
 
 ## B0 Foundation · `feat/backend-foundation`
 
-- [~] `docs/` folder: plan, to-do, API docs guide, Postman guide, decisions, runbooks
-- [ ] Remove stray `eas.json` and `app.json` from the root; tidy `.gitignore`
-- [ ] Pin and install packages (Prisma 7.10.1, Zod, nestjs-zod, Swagger, Pino, throttler, Helmet, openapi-to-postmanv2)
-- [ ] `src/config/`: settings checked by Zod at startup
-- [ ] Prisma: `prisma.config.ts`, `prisma/schema/base.prisma`, one model per file
-- [ ] Models: `users/user.prisma`, `audit/audit-log.prisma`; first migration
-- [ ] `src/prisma/`: PrismaModule, PrismaService, database-error mapping
-- [ ] `src/shared/errors/`: AppError, error codes, error shape, global filter
-- [ ] `src/shared/pipes/`: Zod validation pipe
-- [ ] `src/shared/interceptors/`: request ID, log redaction
-- [ ] `src/shared/crypto/`: field encryption, token hashing
-- [ ] `src/modules/health/`: `GET /v1/health` with a database check
-- [ ] `main.ts`: `/v1` prefix, Helmet, CORS, body limit, rate limits, shutdown hooks
-- [ ] Remove the starter `app.controller.ts`, `app.service.ts` and their test
-- [ ] `docker-compose.yml`: PostgreSQL 17, dev and test databases
-- [ ] Swagger at `/v1/docs` and `/v1/docs-json`
-- [ ] `scripts/generate-openapi.ts` → `docs/api/openapi.json`
-- [ ] `scripts/generate-postman.ts` → `postman/thrivecbt.postman_collection.json`
-- [ ] Postman local environment; login script that saves tokens (ready for B2)
-- [ ] Seed: `prisma/seed/index.ts`, `users.seed.ts`
-- [ ] Test helpers: `test/utils/test-app.ts`, `reset-db.ts`, `test/factories/user.factory.ts`
-- [ ] Unit tests: error filter, database-error mapping, encryption, config
-- [ ] E2E test: health
-- [ ] `package.json` scripts: `db:*`, `prisma:validate`, `docs`, `docs:openapi`, `docs:postman`
-- [ ] CI: `.github/workflows/backend.yml` (validate, lint, typecheck, tests, docs up to date, e2e)
-- [~] `AGENTS.md` and `CLAUDE.md`
-- [ ] README: setup in four commands
-- [ ] Runbook: local setup checked end to end on a clean clone
+- [x] `docs/` folder: plan, to-do, API docs guide, Postman guide, decisions, runbooks
+- [x] Remove stray `eas.json` and `app.json` from the root; tidy `.gitignore`
+- [x] Pin and install packages (Prisma 7.10.1, Zod, Swagger, Pino, throttler, Helmet, openapi-to-postmanv2)
+- [x] `src/config/`: settings checked by Zod at startup
+- [x] Prisma: `prisma.config.ts`, `prisma/schema/base.prisma`, one model per file
+- [x] Models: `users/user.prisma`, `audit/audit-log.prisma`; first migration
+- [x] `src/prisma/`: PrismaModule, PrismaService, database-error mapping
+- [x] `src/shared/errors/`: AppError, error codes, error shape, global filter
+- [x] `src/shared/pipes/`: Zod validation pipe
+- [x] `src/shared/logging/`: request ID, log redaction
+- [x] `src/shared/crypto/`: field encryption, token hashing
+- [x] `src/modules/health/`: `GET /v1/health` with a database check
+- [x] `main.ts`: `/v1` prefix, Helmet, CORS, body limit, rate limits, shutdown hooks
+- [x] Remove the starter `app.controller.ts`, `app.service.ts` and their test
+- [~] `docker-compose.yml`: PostgreSQL 17 (written; not yet run, Docker Desktop was stuck)
+- [x] Swagger at `/v1/docs` and `/v1/docs-json`
+- [x] `scripts/generate-openapi.mjs` → `docs/api/openapi.json`
+- [x] `scripts/generate-postman.mjs` → `postman/thrivecbt.postman_collection.json`
+- [x] Postman local environment; login script that saves tokens (ready for B2)
+- [x] Seed: `prisma/seed/index.ts`, `users.seed.ts`
+- [x] Unit tests: error filter, database-error mapping, encryption, config
+- [x] `package.json` scripts: `db:*`, `prisma:validate`, `docs`, `docs:openapi`, `docs:postman`
+- [x] CI: `.github/workflows/backend.yml` (validate, lint, format, typecheck, unit tests, docs up to date)
+- [x] `AGENTS.md` and `CLAUDE.md`
+- [x] README: setup in four commands
+- [~] Runbook: local setup checked end to end on a clean clone (checked with local PostgreSQL; Docker path still to check)
 
 ## B1 Data contract · `feat/data-contract`
 
@@ -56,7 +54,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 - [ ] Models: StudentProfile, ResearcherProfile, RefreshToken, PasswordReset, Invite
 - [ ] `users` module: `students/`, `researchers/`
-- [ ] `auth` module: `login/`, `password-reset/`, `invites/`, `shared/`
+- [ ] `auth` module: `login/`, `password-reset/`, `invites/`
 - [ ] `integrations/email/`
 - [ ] Guards and decorators: auth, roles, `@CurrentUser()`, `@Roles()`, `@Public()`
 - [ ] Strict rate limits on login and password reset

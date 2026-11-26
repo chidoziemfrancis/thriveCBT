@@ -1,6 +1,6 @@
 # 0004 Modules, feature folders and shared code
 
-Status: Accepted
+Status: Accepted; file layout and shared code replaced by 0006
 Date: 2026-11-26
 
 ## Decision

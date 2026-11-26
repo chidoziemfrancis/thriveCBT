@@ -1,6 +1,6 @@
 # 0003 One error shape and error codes
 
-Status: Accepted
+Status: Accepted; where codes live is replaced by 0006
 Date: 2026-11-26
 
 ## Context

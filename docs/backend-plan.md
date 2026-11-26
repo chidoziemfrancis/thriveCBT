@@ -13,11 +13,11 @@ Replace the phone-only storage and the mock caseload in the mobile app with a se
 | Framework      | NestJS 12, ES modules                                       | Already in the repo                                                                                                                   |
 | Database       | PostgreSQL 17                                               | Reliable, available on every host                                                                                                     |
 | Database tool  | Prisma 7.10.1, pinned                                       | Typed queries, migrations, one file per model. Prisma's npm `latest` tag points at an 8.0 release candidate, so the version is pinned |
-| Validation     | Zod, through nestjs-zod                                     | Each check and its type written once; also drives Swagger                                                                             |
+| Validation     | Zod 4                                                       | Each check and its type written once; its JSON Schema output also drives Swagger                                                      |
 | Logging        | Pino, through nestjs-pino                                   | Structured logs with sensitive fields blanked                                                                                         |
 | API docs       | Swagger (OpenAPI) and Postman, both generated from the code | See section 7                                                                                                                         |
 | Passwords      | argon2                                                      | Current standard                                                                                                                      |
-| Tests          | Vitest and Supertest                                        | Already in the repo                                                                                                                   |
+| Tests          | Vitest                                                      | Already in the repo                                                                                                                   |
 | Local database | Docker Compose                                              | Same database as production, on your machine                                                                                          |
 
 ## 3. Folder layout
@@ -25,7 +25,7 @@ Replace the phone-only storage and the mock caseload in the mobile app with a se
 ```
 eCBT/                              repo root = backend
 ├─ AGENTS.md                       rules for people and agents
-├─ docker-compose.yml              local PostgreSQL (dev and test databases)
+├─ docker-compose.yml              local PostgreSQL
 ├─ prisma.config.ts
 ├─ .env.example
 ├─ .github/workflows/backend.yml
@@ -43,46 +43,45 @@ eCBT/                              repo root = backend
 │  ├─ app.module.ts
 │  ├─ config/                      settings, checked at startup
 │  ├─ prisma/                      PrismaModule and PrismaService
-│  ├─ shared/                      used across modules, no study rules
-│  │  ├─ errors/  pipes/  interceptors/  guards/
+│  ├─ shared/                      used by more than one feature or module; no study rules
+│  │  ├─ errors/  pipes/  logging/  openapi/  guards/
 │  │  ├─ decorators/  crypto/  sync/  utils/  types/  constants/
 │  ├─ integrations/                email/, push/, video/: one wrapper per outside service
 │  ├─ events/                      event names and their data
 │  ├─ jobs/                        scheduled tasks
 │  └─ modules/
-│     ├─ health/                   one feature: flat
-│     └─ assessments/              several features: one folder each
+│     ├─ health/                   one feature: role folders in the module
+│     │  ├─ health.module.ts
+│     │  └─ controllers/ services/ repositories/ dto/ tests/
+│     └─ assessments/              several features: one folder per feature
 │        ├─ assessments.module.ts
-│        ├─ shared/
-│        ├─ phq9/
-│        └─ epqr/
-├─ test/
-│  ├─ e2e/  factories/  utils/
+│        ├─ phq9/                  controllers/ services/ repositories/ dto/ tests/
+│        └─ epqr/                  same
 ├─ mobile/                         student and researcher app (separate project)
 └─ pwa/                            web project, parked (see section 10)
 ```
 
-### Every feature folder has the same shape
+### Every feature groups its files by role
 
 ```
-<feature>.controller.ts    HTTP only: read the request, call the service, return
-<feature>.service.ts       the rules
-<feature>.repository.ts    the only file that touches Prisma
-dto/                       Zod schemas and their types
-<feature>.errors.ts        this feature's error codes
-<feature>.service.spec.ts
+controllers/<feature>.controller.ts    HTTP only: read the request, call the service, return
+services/<feature>.service.ts          the rules
+repositories/<feature>.repository.ts   the only file that touches Prisma
+dto/<name>.dto.ts                      Zod schemas and their types
+tests/<feature>.service.spec.ts        unit tests
 ```
 
 ### Rules
 
-1. A module with one feature stays flat. A module with two or more features gets one folder per feature, and the module file only imports them.
-2. Shared code sits at the lowest level all its users can reach: the feature folder, then `modules/<module>/shared/`, then `src/shared/`. It moves up only when a second user needs it.
-3. `src/shared/` never imports from `modules/`. Study rules stay in their module, even simple ones.
-4. A feature never uses another feature's repository. It calls that feature's service, or listens for its event.
-5. Controllers never touch Prisma. Services never touch HTTP request or response objects.
-6. Files and folders are kebab-case and named after their feature (`phq9.service.ts`).
-7. A folder is created when its first file arrives, not before.
-8. Prisma schema folders mirror the module folders, one model per file, named after the model (`phq9-result.prisma`). An enum lives in the file of the model that uses it.
+1. Files are grouped by role. A module with one feature has the role folders directly; a module with two or more features has one folder per feature, each with its own role folders. The module file only imports them.
+2. Anything used by more than one feature or module goes in `src/shared/`. There are no `shared/` folders inside modules.
+3. Error handling is global: `AppError`, the global filter and every error code live in `src/shared/errors/`, with each module's codes in `src/shared/errors/codes/<module>.errors.ts`.
+4. `src/shared/` never imports from `modules/`. Study rules stay in their module, even simple ones.
+5. A feature never uses another feature's repository. It calls that feature's service, or listens for its event.
+6. Controllers never touch Prisma. Services never touch HTTP request or response objects.
+7. Files and folders are kebab-case and named after their feature (`phq9.service.ts`).
+8. A folder is created when its first file arrives, not before.
+9. Prisma schema folders mirror the module folders, one model per file, named after the model (`phq9-result.prisma`). An enum lives in the file of the model that uses it.
 
 ## 4. API conventions
 
@@ -111,7 +110,7 @@ dto/                       Zod schemas and their types
 
 ## 5. Error handling
 
-`AppError(code, status, message, details?)` is the only error our own code throws. Shared codes live in `src/shared/errors/error-codes.ts`; each feature lists its own in `<feature>.errors.ts`.
+`AppError(code, status, message, details?)` is the only error our own code throws. Common codes live in `src/shared/errors/error-codes.ts`; each module's codes live in `src/shared/errors/codes/<module>.errors.ts`.
 
 One global filter turns every failure into the error shape above:
 
@@ -152,7 +151,7 @@ Both are generated from the code, so they can't drift from what the API really d
 
 - Served at `/v1/docs` (interactive page) and `/v1/docs-json` (the raw OpenAPI file).
 - On in local and staging. Off in production.
-- Built from the Zod schemas in each `dto/` folder through nestjs-zod, so request and response fields, types and limits come from the same code that validates them.
+- Built from the Zod schemas in each `dto/` folder (Zod 4's `z.toJSONSchema`, through the decorators in `src/shared/openapi/`), so request and response fields, types and limits come from the same code that validates them.
 - Every controller is tagged with its module, so endpoints are grouped the same way as the folders.
 - Every endpoint lists its success response and its error responses, all using the shared error shape, with an example of each.
 - Login is set up once in the page (Bearer token), so protected endpoints can be tried directly.
@@ -191,19 +190,19 @@ Both are generated from the code, so they can't drift from what the API really d
 ### B0 Foundation
 
 1. Remove the stray `eas.json` and `app.json` from the root; check `.gitignore` covers `.env`, `dist`, coverage and generated Prisma code.
-2. Install, at pinned versions: prisma and @prisma/client 7.10.1, @prisma/adapter-pg, pg, zod, nestjs-zod, @nestjs/swagger, nestjs-pino, pino-http, @nestjs/throttler, helmet, openapi-to-postmanv2.
+2. Install, at pinned versions: prisma and @prisma/client 7.10.1, @prisma/adapter-pg, pg, zod, @nestjs/swagger, nestjs-pino, pino-http, @nestjs/throttler, helmet, openapi-to-postmanv2.
 3. `src/config/`: Zod checks for `NODE_ENV`, `PORT`, `DATABASE_URL`, `CORS_ORIGINS`, `LOG_LEVEL`, `FIELD_ENCRYPTION_KEY`. The app stops at startup with a clear message if one is missing.
 4. Prisma: `prisma.config.ts` pointing at `prisma/schema/`; `base.prisma`; first models `users/user.prisma` and `audit/audit-log.prisma`; first migration; `src/prisma/` with the service (pg adapter, connect at start, close on shutdown) and the database-error mapping.
 5. `src/shared/errors/`: `app-error.ts`, `error-codes.ts`, `error-response.ts`, `all-exceptions.filter.ts`.
-6. `src/shared/pipes/zod-validation.pipe.ts`; `src/shared/interceptors/` for request IDs and log redaction.
+6. `src/shared/pipes/zod-validation.pipe.ts`; `src/shared/logging/` for request IDs and log redaction.
 7. `src/shared/crypto/`: `field-cipher.ts`, `token-hash.ts`.
 8. `src/modules/health/`: `GET /v1/health` returns `{ "status": "ok", "database": "ok" }`, or 503 when the database is down.
 9. `main.ts`: `/v1` prefix, Helmet, CORS, 1 MB limit, rate limiting, Swagger, global filter and validation, clean shutdown.
-10. `docker-compose.yml`: PostgreSQL 17 with `thrivecbt` and `thrivecbt_test`.
+10. `docker-compose.yml`: PostgreSQL 17.
 11. Swagger set up; `scripts/generate-openapi.ts` and `scripts/generate-postman.ts`; first `openapi.json` and collection (health only); local Postman environment.
-12. Tests: unit tests for the error filter, database-error mapping, encryption and config; e2e for health; helpers `test/utils/test-app.ts`, `test/utils/reset-db.ts`, `test/factories/user.factory.ts`.
+12. Unit tests: the error filter, database-error mapping, encryption, logging, config and health.
 13. Scripts: `db:up`, `db:down`, `db:migrate`, `db:reset`, `db:seed`, `db:studio`, `prisma:validate`, `docs`, `docs:openapi`, `docs:postman`.
-14. `.github/workflows/backend.yml`: install, Prisma validate, lint, typecheck, unit tests, docs up to date, e2e with a PostgreSQL service.
+14. `.github/workflows/backend.yml`: install, Prisma validate, lint, format, typecheck, unit tests, docs up to date.
 15. `AGENTS.md` and a one-line `CLAUDE.md` pointing to it; README setup in four commands.
 
 Done when: `docker compose up` and `npm run start:dev` work; `/v1/health` reports the database; `/v1/docs` loads; the Postman collection imports and Health runs; a bad request returns the error shape; every check passes locally and in CI.
@@ -259,8 +258,7 @@ Done when the team signs it off.
 ## 9. Testing
 
 - Unit tests for every service and every error path.
-- End-to-end tests for every endpoint against a real test database, reset between files.
-- Factories so each test reads in a few lines.
+- Kept to unit tests for the MVP; end-to-end tests can be added before launch if the team wants them.
 - Every pull request runs everything in CI, and each commit is checked on its own before pushing.
 
 ## 10. Web side (parked)

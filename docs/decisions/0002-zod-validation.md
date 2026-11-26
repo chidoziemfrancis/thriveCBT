@@ -1,6 +1,6 @@
 # 0002 Zod for validation and Swagger
 
-Status: Proposed (confirm before B0 code)
+Status: Accepted
 Date: 2026-11-26
 
 ## Context
@@ -9,7 +9,9 @@ Every request must be checked, and Swagger must describe the same shapes.
 
 ## Decision
 
-Zod schemas in each feature's `dto/` folder, used by a global validation pipe and turned into Swagger through nestjs-zod.
+Zod 4 schemas in each feature's `dto/` folder. `ZodValidationPipe` checks each body, query or param, and Zod 4's built-in JSON Schema output (`z.toJSONSchema`) feeds Swagger through small decorators in `src/shared/openapi/` (`ApiZodBody`, `ApiZodResponse`, `ApiErrors`).
+
+`nestjs-zod` was the first plan, but it doesn't support NestJS 12 yet, and Zod 4 makes it unnecessary.
 
 ## Options considered
 
