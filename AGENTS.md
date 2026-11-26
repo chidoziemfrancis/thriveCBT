@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Rules for anyone, person or AI agent, working on the ThriveCBT backend. Read this before changing code. The reasoning behind these rules is in [docs/backend-plan.md](docs/backend-plan.md) and [docs/decisions/](docs/decisions/). What's left to build is in [docs/backend-todo.md](docs/backend-todo.md).
+Rules for anyone, person or AI agent, working on the ThriveCBT backend. Read this before changing code. The reasoning behind these rules is in [docs/backend-plan.md](docs/backend-plan.md). What's left to build is in [docs/backend-todo.md](docs/backend-todo.md).
 
 ## What this is
 

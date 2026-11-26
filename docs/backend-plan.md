@@ -273,11 +273,11 @@ The backend plans for it now: the lead role, the `/v1/admin/...` routes in the d
 
 ## 11. Decisions
 
-| Decision                        | Choice        | Status                                   |
-| ------------------------------- | ------------- | ---------------------------------------- |
-| Validation                      | Zod           | Assumed, confirm                         |
-| Local database                  | Docker        | Assumed, confirm                         |
-| Success responses               | Plain JSON    | Assumed, confirm                         |
-| Hosting                         | Decided in B7 | Waiting on where the data must be stored |
-| Journal visible to researchers? |               | Study team, before B4                    |
-| Crisis plan stays on the phone? | Yes, for now  | Study team, before B4                    |
+| Decision                        | Choice                       | Status                                   |
+| ------------------------------- | ---------------------------- | ---------------------------------------- |
+| Validation                      | Zod                          | Confirmed                                |
+| Local database                  | Docker or a local PostgreSQL | Confirmed                                |
+| Success responses               | Plain JSON                   | Confirmed                                |
+| Hosting                         | Decided in B7                | Waiting on where the data must be stored |
+| Journal visible to researchers? |                              | Study team, before B4                    |
+| Crisis plan stays on the phone? | Yes, for now                 | Study team, before B4                    |

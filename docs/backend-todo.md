@@ -14,7 +14,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ## B0 Foundation · `feat/backend-foundation`
 
-- [x] `docs/` folder: plan, to-do, API docs guide, Postman guide, decisions, runbooks
+- [x] `docs/` folder: plan, to-do, API docs guide, Postman guide, runbooks
 - [x] Remove stray `eas.json` and `app.json` from the root; tidy `.gitignore`
 - [x] Pin and install packages (Prisma 7.10.1, Zod, Swagger, Pino, throttler, Helmet, openapi-to-postmanv2)
 - [x] `src/config/`: settings checked by Zod at startup
