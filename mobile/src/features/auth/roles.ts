@@ -1,10 +1,13 @@
 import type { Href } from 'expo-router';
 
-export type Role = 'student' | 'researcher';
+import type { Role } from './types/auth.types';
+
+export type { Role };
 
 const HOME_BY_ROLE: Record<Role, Href> = {
   student: '/dashboard',
   researcher: '/researcher',
+  lead: '/researcher',
 };
 
 export function homeFor(role: Role): Href {

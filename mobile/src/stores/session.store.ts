@@ -13,6 +13,7 @@ type SessionState = {
   user: SessionUser | null;
   signIn: (accessToken: string | null, user: SessionUser) => void;
   setAccessToken: (accessToken: string) => void;
+  setUser: (user: SessionUser) => void;
   signOut: () => void;
 };
 
@@ -24,6 +25,7 @@ export const useSessionStore = create<SessionState>()(
       user: null,
       signIn: (accessToken, user) => set({ status: 'signedIn', accessToken, user }),
       setAccessToken: (accessToken) => set({ accessToken }),
+      setUser: (user) => set({ user }),
       signOut: () => set({ status: 'signedOut', accessToken: null, user: null }),
     }),
     {
