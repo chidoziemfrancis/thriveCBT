@@ -218,7 +218,7 @@ Done when the team signs it off.
 
 ### B2 Accounts and login
 
-- Modules: `users` (`students/`, `researchers/`), `auth` (`login/`, `password-reset/`, `invites/`), `integrations/email/`.
+- Modules: `users` (`accounts/`, `students/`, `researchers/`), `auth` (`login/`, `email-codes/`, `verify-email/`, `password-reset/`, `invites/`), `integrations/email/` (Unosend).
 - Split into B2.1 sign-up and login, B2.2 guards and roles, B2.3 email codes, B2.4 researcher invites, B2.5 student profile and settings, B2.6 app switch-over; see the to-do.
 - Models: StudentProfile, ResearcherProfile, RefreshToken, EmailCode, Invite.
 - Endpoints: register, login, refresh, logout, password reset request and confirm, researcher invites (lead only), accept invite, `GET` and `PATCH /v1/me`.

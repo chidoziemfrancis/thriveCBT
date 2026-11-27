@@ -184,7 +184,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"H7Et63P.c@sK.eWxx.z9xTxwlfePP.H.SOgWQRt.5.hL.ZDlavcwJQJ\",\n  \"role\": \"researcher\",\n  \"status\": \"withdrawn\",\n  \"createdAt\": \"6400-02-29T22:57:24Z\"\n}",
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"+zLnbYFAF2G.wsQn8gsP.LMI4y'So7U.YmTVrm.hi-E'.fXr.cVlr5'Npyn@5sn1VOBE.ghkm.pQ.y.LZERG.VXmpswHK9.P.9NgNJ0kxDm.BT6T4dgP9.rQclf8tJ.3.iepwZCDijXe\",\n  \"role\": \"student\",\n  \"status\": \"active\",\n  \"emailVerified\": true,\n  \"createdAt\": \"0051-09-19T19:13:16.0743193843Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -305,7 +305,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
+              "raw": "{\n  \"email\": \"hq5YOlN_apV.CZc.zM-Lnp+.HRwnC-KRc.Qj5aM.x-_KLGJ_dp.faY1ofw-.On9mvVlJv+.w'ONG8LiUG_@0ziCF.W1.eoiQnfj.u3Nc.cxVN6Vt.zF.2rBthHZ.7.DApK.vBevVZl\",\n  \"password\": \"        \"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -338,7 +338,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"hq5YOlN_apV.CZc.zM-Lnp+.HRwnC-KRc.Qj5aM.x-_KLGJ_dp.faY1ofw-.On9mvVlJv+.w'ONG8LiUG_@0ziCF.W1.eoiQnfj.u3Nc.cxVN6Vt.zF.2rBthHZ.7.DApK.vBevVZl\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -354,7 +354,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"Cjp.XVR9DAej'Mg.bh0ocedlUc.BQVdUoYCI.jy+@0LWu2QGf.8qj.h.vRpCJfrHtEXJ\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"createdAt\": \"9200-02-29T19:10:50Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"email\": \"RVJM'iOS5F.bSQqDAc3w.iKGWvO.H@AVVHjLjH3.gslj.1Y.l3.jUY9zepCu.tkAa\",\n    \"role\": \"lead\",\n    \"status\": \"active\",\n    \"emailVerified\": true,\n    \"createdAt\": \"3808-02-29T23:51:58.548Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -382,7 +382,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"hq5YOlN_apV.CZc.zM-Lnp+.HRwnC-KRc.Qj5aM.x-_KLGJ_dp.faY1ofw-.On9mvVlJv+.w'ONG8LiUG_@0ziCF.W1.eoiQnfj.u3Nc.cxVN6Vt.zF.2rBthHZ.7.DApK.vBevVZl\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -426,7 +426,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"hq5YOlN_apV.CZc.zM-Lnp+.HRwnC-KRc.Qj5aM.x-_KLGJ_dp.faY1ofw-.On9mvVlJv+.w'ONG8LiUG_@0ziCF.W1.eoiQnfj.u3Nc.cxVN6Vt.zF.2rBthHZ.7.DApK.vBevVZl\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -470,7 +470,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"hq5YOlN_apV.CZc.zM-Lnp+.HRwnC-KRc.Qj5aM.x-_KLGJ_dp.faY1ofw-.On9mvVlJv+.w'ONG8LiUG_@0ziCF.W1.eoiQnfj.u3Nc.cxVN6Vt.zF.2rBthHZ.7.DApK.vBevVZl\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -539,7 +539,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+              "raw": "{\n  \"email\": \"IZSv43NlZm.5BATFporw.51X.O.0lBk.5YIm'zELnf.y._Vn_e@TfXIuBREFA.yvNATdSNdp.x1.F9kJz.ZCxmU.B.lgw7kPwZvp.Sj\",\n  \"password\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -572,7 +572,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IZSv43NlZm.5BATFporw.51X.O.0lBk.5YIm'zELnf.y._Vn_e@TfXIuBREFA.yvNATdSNdp.x1.F9kJz.ZCxmU.B.lgw7kPwZvp.Sj\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -588,7 +588,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"Cjp.XVR9DAej'Mg.bh0ocedlUc.BQVdUoYCI.jy+@0LWu2QGf.8qj.h.vRpCJfrHtEXJ\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"createdAt\": \"9200-02-29T19:10:50Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"email\": \"RVJM'iOS5F.bSQqDAc3w.iKGWvO.H@AVVHjLjH3.gslj.1Y.l3.jUY9zepCu.tkAa\",\n    \"role\": \"lead\",\n    \"status\": \"active\",\n    \"emailVerified\": true,\n    \"createdAt\": \"3808-02-29T23:51:58.548Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -616,7 +616,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IZSv43NlZm.5BATFporw.51X.O.0lBk.5YIm'zELnf.y._Vn_e@TfXIuBREFA.yvNATdSNdp.x1.F9kJz.ZCxmU.B.lgw7kPwZvp.Sj\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -660,7 +660,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IZSv43NlZm.5BATFporw.51X.O.0lBk.5YIm'zELnf.y._Vn_e@TfXIuBREFA.yvNATdSNdp.x1.F9kJz.ZCxmU.B.lgw7kPwZvp.Sj\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -704,7 +704,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IZSv43NlZm.5BATFporw.51X.O.0lBk.5YIm'zELnf.y._Vn_e@TfXIuBREFA.yvNATdSNdp.x1.F9kJz.ZCxmU.B.lgw7kPwZvp.Sj\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -748,7 +748,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IZSv43NlZm.5BATFporw.51X.O.0lBk.5YIm'zELnf.y._Vn_e@TfXIuBREFA.yvNATdSNdp.x1.F9kJz.ZCxmU.B.lgw7kPwZvp.Sj\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1145,6 +1145,626 @@
                 }
               ],
               "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_FAILED\",\n    \"message\": \"Some fields are missing or invalid.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Confirm the email address with the 6-digit code",
+          "request": {
+            "name": "Confirm the email address with the 6-digit code",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "auth",
+                "verify-email"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"404442\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Email confirmed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "verify-email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"404442\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"+zLnbYFAF2G.wsQn8gsP.LMI4y'So7U.YmTVrm.hi-E'.fXr.cVlr5'Npyn@5sn1VOBE.ghkm.pQ.y.LZERG.VXmpswHK9.P.9NgNJ0kxDm.BT6T4dgP9.rQclf8tJ.3.iepwZCDijXe\",\n  \"role\": \"student\",\n  \"status\": \"active\",\n  \"emailVerified\": true,\n  \"createdAt\": \"0051-09-19T19:13:16.0743193843Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "VALIDATION_FAILED, AUTH_CODE_INVALID, AUTH_CODE_EXPIRED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "verify-email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"404442\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_FAILED\",\n    \"message\": \"Some fields are missing or invalid.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "verify-email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"404442\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHENTICATED\",\n    \"message\": \"Please log in again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "AUTH_CODE_TOO_MANY_TRIES",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "verify-email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"404442\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"AUTH_CODE_TOO_MANY_TRIES\",\n    \"message\": \"Too many wrong codes. Ask for a new one.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Send a new code; the old one stops working",
+          "request": {
+            "name": "Send a new code; the old one stops working",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "auth",
+                "verify-email",
+                "resend"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "verify-email",
+                    "resend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHENTICATED\",\n    \"message\": \"Please log in again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "RATE_LIMITED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "verify-email",
+                    "resend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many attempts. Please wait a moment and try again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Email a reset code, if the account exists",
+          "request": {
+            "name": "Email a reset code, if the account exists",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "auth",
+                "password-reset",
+                "request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"iIm5.5BZcR-MM3I.vE4z2.5L5NHt-Ym.Sk3vLxU@TkUTzC9Lss.HribCt.z7XTnHMzZ.Pc.ek.G1t.5pvOA-hw.Vou.dAihiTP.u.ZaVzkGjWxZ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "VALIDATION_FAILED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "password-reset",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"iIm5.5BZcR-MM3I.vE4z2.5L5NHt-Ym.Sk3vLxU@TkUTzC9Lss.HribCt.z7XTnHMzZ.Pc.ek.G1t.5pvOA-hw.Vou.dAihiTP.u.ZaVzkGjWxZ\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_FAILED\",\n    \"message\": \"Some fields are missing or invalid.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "RATE_LIMITED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "password-reset",
+                    "request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"iIm5.5BZcR-MM3I.vE4z2.5L5NHt-Ym.Sk3vLxU@TkUTzC9Lss.HribCt.z7XTnHMzZ.Pc.ek.G1t.5pvOA-hw.Vou.dAihiTP.u.ZaVzkGjWxZ\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many attempts. Please wait a moment and try again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Set a new password with the code; logs out every device",
+          "request": {
+            "name": "Set a new password with the code; logs out every device",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "auth",
+                "password-reset",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"y4FwqcDg.iGnll_NJPS.xmrrW0GdmD.Lgsu9wfRde2.XcAKB@BEJc.cMWPW.eZNMwRv.eu4M.gSyvcKaCGTg.sp.ivx50BNDAjI.aGSeVYyyX.aIbVP.jdmZfVEr\",\n  \"code\": \"420412\",\n  \"password\": \"        \"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "VALIDATION_FAILED, AUTH_CODE_INVALID, AUTH_CODE_EXPIRED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "password-reset",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"y4FwqcDg.iGnll_NJPS.xmrrW0GdmD.Lgsu9wfRde2.XcAKB@BEJc.cMWPW.eZNMwRv.eu4M.gSyvcKaCGTg.sp.ivx50BNDAjI.aGSeVYyyX.aIbVP.jdmZfVEr\",\n  \"code\": \"420412\",\n  \"password\": \"        \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_FAILED\",\n    \"message\": \"Some fields are missing or invalid.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "AUTH_CODE_TOO_MANY_TRIES, RATE_LIMITED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "password-reset",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"y4FwqcDg.iGnll_NJPS.xmrrW0GdmD.Lgsu9wfRde2.XcAKB@BEJc.cMWPW.eZNMwRv.eu4M.gSyvcKaCGTg.sp.ivx50BNDAjI.aGSeVYyyX.aIbVP.jdmZfVEr\",\n  \"code\": \"420412\",\n  \"password\": \"        \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"AUTH_CODE_TOO_MANY_TRIES\",\n    \"message\": \"Too many wrong codes. Ask for a new one.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }

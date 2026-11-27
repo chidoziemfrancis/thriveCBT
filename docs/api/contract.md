@@ -35,16 +35,19 @@ Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTH
 | POST   | `/v1/me/push-tokens`              | Logged in                   | `{ token, platform }`       | `204`                                     | B6    |
 | DELETE | `/v1/me/push-tokens/:token`       | Logged in                   |                             | `204`                                     | B6    |
 
-`user` is `{ id, email, role: "student" | "researcher" | "lead", status: "active" | "suspended" | "withdrawn", createdAt }`. B2.3 adds `emailVerified`.
+`user` is `{ id, email, role: "student" | "researcher" | "lead", status: "active" | "suspended" | "withdrawn", createdAt }`. plus `emailVerified` (true once the email code is confirmed).
 
 - Emails are trimmed and lowercased.
 - Passwords: 8 to 128 characters, with at least one letter and one number (the same rule as the app).
 - Access tokens last 15 minutes. Refresh tokens last 30 days, are stored only as a hash, and are replaced on every refresh. Reusing an old refresh token ends that whole login on every device. Logout ends the login the token belongs to.
 - A wrong password and an unknown email give the same error and take the same time.
-- Email verification and password reset use the 6-digit codes the app's screens expect. Codes are stored hashed, last 15 minutes and allow 5 tries.
+- Email verification and password reset use the 6-digit codes the app's screens expect. Codes are stored hashed, last 15 minutes and allow 5 tries; asking for a new code retires the old one.
+- Sign-up emails a verification code. If the email can't be sent, sign-up still succeeds and the student can ask for a new code.
+- A password reset logs out every device and also confirms the email.
+- Emails are sent through Unosend. Resend returns `503 EMAIL_SEND_FAILED` if Unosend can't take the email; a reset request always returns `204`.
 - The app PIN never leaves the phone.
 
-Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400).
+Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400), `EMAIL_SEND_FAILED` (503).
 
 ## 3. Student operations
 

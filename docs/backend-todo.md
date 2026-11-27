@@ -128,10 +128,12 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ### B2.3 Email codes
 
-- [ ] `integrations/email/`: printed to the log locally; choose a provider before launch
-- [ ] EmailCode model: 6-digit codes, hashed, 15 minutes, 5 tries
-- [ ] Verify email after sign-up, and resend
-- [ ] Password reset: request and confirm with a code
+- [x] `integrations/email/`: Unosend, or printed to the log locally; production refuses the log
+- [x] EmailCode model: 6-digit codes, hashed, 15 minutes, 5 tries; a new code retires the old one
+- [x] Verify email after sign-up (code sent on sign-up), and resend
+- [x] Password reset: request and confirm with a code; logs out every device
+- [ ] Unosend: add the API key and verify the sending domain, then send one real test email
+- [ ] Decide whether unverified students can use the app before confirming their email (B3)
 
 ### B2.4 Researcher invites
 

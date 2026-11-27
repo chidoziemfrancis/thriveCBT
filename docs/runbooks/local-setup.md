@@ -47,6 +47,20 @@ If `brew services` fails, start it directly:
 pg_ctl -D /opt/homebrew/var/postgresql@14 -l /opt/homebrew/var/postgresql@14/server.log start
 ```
 
+## Emails
+
+Locally, `EMAIL_TRANSPORT=log` prints every email, including verification and reset codes, to the server log instead of sending it.
+
+To send real emails through Unosend, set:
+
+```
+EMAIL_TRANSPORT=unosend
+UNOSEND_API_KEY=un_...          # from the Unosend dashboard; never commit it
+EMAIL_FROM=ThriveCBT <no-reply@your-verified-domain>
+```
+
+The sender address must be on a domain verified in Unosend.
+
 ## Encryption key
 
 Generate a local key and put it in `.env` as `FIELD_ENCRYPTION_KEY`:
