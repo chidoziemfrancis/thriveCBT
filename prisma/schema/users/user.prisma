@@ -22,6 +22,7 @@ model User {
   withdrawal        Withdrawal?
   sessionProgress   SessionProgress[]
   moodEntries       MoodEntry[]
+  journalEntries    JournalEntry[]
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 

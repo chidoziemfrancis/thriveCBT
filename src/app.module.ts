@@ -12,6 +12,7 @@ import { AssessmentsModule } from './modules/assessments/assessments.module.js';
 import { AssignmentModule } from './modules/assignment/assignment.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { HealthModule } from './modules/health/health.module.js';
+import { JournalModule } from './modules/journal/journal.module.js';
 import { MoodModule } from './modules/mood/mood.module.js';
 import { SessionsModule } from './modules/sessions/sessions.module.js';
 import { WithdrawalModule } from './modules/withdrawal/withdrawal.module.js';
@@ -55,6 +56,7 @@ const ACCESS_TOKEN_TTL = '15m';
     WithdrawalModule,
     SessionsModule,
     MoodModule,
+    JournalModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
