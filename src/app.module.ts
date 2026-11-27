@@ -7,6 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
 
 import { ConfigModule } from './config/config.module.js';
 import { ConfigService } from './config/config.service.js';
+import { ActivitiesModule } from './modules/activities/activities.module.js';
 import { AlertsModule } from './modules/alerts/alerts.module.js';
 import { AssessmentsModule } from './modules/assessments/assessments.module.js';
 import { AssignmentModule } from './modules/assignment/assignment.module.js';
@@ -61,6 +62,7 @@ const ACCESS_TOKEN_TTL = '15m';
     JournalModule,
     ThoughtsModule,
     BeliefsModule,
+    ActivitiesModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

@@ -19,19 +19,21 @@ export function assertNotStale<T>(
   }
 }
 
-/**
- * Checks a change to one synced item. Someone else's id is treated as not found, never as a
- * clash, so ids can't be probed. A deleted item stays deleted: the phone gets the deleted
- * marker back and removes its copy.
- */
 export function assertCanChange<T>(
   saved: { studentId: string; updatedAt: Date; deletedAt: Date | null } | null,
   studentId: string,
   incoming: Date,
   current: () => T,
+  { revive = false }: { revive?: boolean } = {},
 ): void {
   if (saved && saved.studentId !== studentId)
     throw new AppError(COMMON_ERRORS.NOT_FOUND);
+  if (
+    saved?.deletedAt &&
+    revive &&
+    incoming.getTime() > saved.deletedAt.getTime()
+  )
+    return;
   if (saved?.deletedAt) {
     throw new AppError(SYNC_ERRORS.STALE_UPDATE, {
       details: { current: current() },

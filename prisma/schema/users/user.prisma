@@ -25,6 +25,7 @@ model User {
   journalEntries    JournalEntry[]
   thoughtRecords    ThoughtRecord[]
   positiveEntries   PositiveEntry[]
+  plannedActivities PlannedActivity[]
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 

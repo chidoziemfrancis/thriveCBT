@@ -84,4 +84,27 @@ describe('assertCanChange', () => {
       }),
     );
   });
+
+  it('brings back a deleted item when asked and the change is newer than the delete', () => {
+    const deleted = saved({ deletedAt: at('2026-11-27T10:30:00Z') });
+    const revive = { revive: true };
+    expect(() =>
+      assertCanChange(
+        deleted,
+        's1',
+        at('2026-11-27T11:00:00Z'),
+        () => null,
+        revive,
+      ),
+    ).not.toThrow();
+    expect(() =>
+      assertCanChange(
+        deleted,
+        's1',
+        at('2026-11-27T10:00:00Z'),
+        () => null,
+        revive,
+      ),
+    ).toThrow(expect.objectContaining({ code: 'SYNC_STALE_UPDATE' }));
+  });
 });

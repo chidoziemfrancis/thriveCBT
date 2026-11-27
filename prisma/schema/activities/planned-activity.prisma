@@ -1,0 +1,30 @@
+model PlannedActivity {
+  id        String       @id @db.Uuid
+  studentId String       @map("student_id") @db.Uuid
+  date      String
+  slot      ActivitySlot
+  label     String
+  predicted Int?
+  sessionId Int?         @map("session_id")
+  doneAt    DateTime?    @map("done_at")
+  enjoy     Int?
+  achieve   Int?
+  updatedAt DateTime     @map("updated_at")
+  deletedAt DateTime?    @map("deleted_at")
+  syncedAt  DateTime     @updatedAt @map("synced_at")
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, syncedAt])
+  @@index([studentId, date])
+  @@map("planned_activities")
+}
+
+enum ActivitySlot {
+  MORNING
+  AFTERNOON
+  EVENING
+
+  @@map("activity_slot")
+}
