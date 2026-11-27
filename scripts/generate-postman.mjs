@@ -11,6 +11,20 @@ const SAVE_TOKENS = [
 ];
 
 const openapi = JSON.parse(readFileSync('docs/api/openapi.json', 'utf8'));
+
+// A free-form map (e.g. session answers) gets a random number of example keys from the
+// converter; pinning it to one keeps the file the same on every run. Only this copy changes.
+function pinMaps(node) {
+  if (Array.isArray(node)) return node.forEach(pinMaps);
+  if (!node || typeof node !== 'object') return;
+  if (node.type === 'object' && node.additionalProperties && !node.properties) {
+    node.minProperties = 1;
+    node.maxProperties = 1;
+  }
+  Object.values(node).forEach(pinMaps);
+}
+pinMaps(openapi);
+
 const convert = promisify(converter.convert);
 const result = await convert(
   { type: 'json', data: openapi },

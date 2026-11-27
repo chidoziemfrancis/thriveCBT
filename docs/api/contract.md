@@ -103,26 +103,27 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 - Consent is built (B2): agreeing to the same version twice keeps the first date; `GET` returns the latest, or `404` before any.
 - The server scores the PHQ-9 and EPQ-R; the app doesn't send scores.
 - EPQ-R scale scores are never returned to the student, matching the app.
-- PHQ-9 (built in B3.2): answers are nine numbers from 0 to 3; the server scores it and returns `{ id, kind, score, band, needsSupport, takenAt }`, where `needsSupport` is true when question 9 is above zero. A `final` needs the baseline first (`PHQ9_BASELINE_FIRST`); the "only after Session 8" check arrives with sessions in B4. Sending the same kind again returns the saved result unchanged and re-checks its alerts, so a retry after a dropped connection never loses an alert.
+- PHQ-9 (built in B3.2): answers are nine numbers from 0 to 3; the server scores it and returns `{ id, kind, score, band, needsSupport, takenAt }`, where `needsSupport` is true when question 9 is above zero. A `final` needs the baseline first (`PHQ9_BASELINE_FIRST`); a `final` opens once Session 8 is finished on the server (`PHQ9_FINAL_NOT_OPEN`), so the app sends waiting session progress first. Sending the same kind again returns the saved result unchanged and re-checks its alerts, so a retry after a dropped connection never loses an alert.
 - PHQ-9 question 9 above zero (urgent), a final PHQ-9 at least 5 above the baseline (urgent), and a score of 20 or more raise alerts in the same request; So does EPQ-R question 76 answered Yes (urgent). If an alert can't be saved, the request fails. An unmatched student's alerts go to the study lead and move to the researcher when the student is matched.
 - EPQ-R (built in B3.3): taken once, at the start. The server scores the four scales (P, E, N, L) and keeps them for the researcher; the student only gets `needsSupport` (Yes to question 76). Sending again returns the first result unchanged and re-checks its alert.
 - Assignment (built in B3.1): an invite code (from the join link or typed, spaces and case ignored) always goes to that researcher, as in the app. Without a code, the student goes at random to a researcher who is accepting students and has space (10 each), preferring the fewest students. Asking again returns the same match. The researcher gets an email either way, and when nobody has space every study lead is told a student is waiting; a failed email never undoes the match.
 - `GET /v1/invite-codes/:code` uses the strict rate limit, so codes can't be guessed in bulk.
 
-Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_BASELINE_FIRST` (409), `EPQR_NOT_TAKEN` (404), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400), `STUDY_WITHDRAWN` (403).
+Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_BASELINE_FIRST` (409), `PHQ9_FINAL_NOT_OPEN` (409), `EPQR_NOT_TAKEN` (404), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400), `STUDY_WITHDRAWN` (403).
 
 ### 3.3 Sessions
 
-| Method | Path                         | Body                              | Returns              |
-| ------ | ---------------------------- | --------------------------------- | -------------------- |
-| GET    | `/v1/me/sessions`            |                                   | `items` of `session` |
-| PUT    | `/v1/me/sessions/:sessionId` | `{ done, answers, completedAt? }` | `session`            |
+| Method | Path                                 | Body                                         | Returns                                                                     |
+| ------ | ------------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------- |
+| GET    | `/v1/me/sessions?since=<serverTime>` |                                              | `{ items: [session], serverTime }`: all, or only what changed after `since` |
+| PUT    | `/v1/me/sessions/:sessionId`         | `{ done, answers, completedAt?, updatedAt }` | `session`                                                                   |
 
 - `session`: `{ sessionId (1-8), done: [moduleId], answers: { stepId: answer }, completedAt, updatedAt }`.
 - An `answer` is a number, a list of numbers, a list of strings, true/false or text, exactly as the app saves it today.
-- The phone sends the whole record for that session; the server keeps the newest by `updatedAt`.
+- Built in B4.1. The phone sends the whole record for that session with `updatedAt`, the time it made the change; the newest change wins, and an older one gets `SYNC_STALE_UPDATE` with the saved record. Sending the same change twice is safe. A finished session stays finished, whatever an older phone sends later.
+- Sessions follow the sync rules in 3.4; `since` is the server's `serverTime` from the last pull, never the phone's clock.
 
-Errors: `SESSION_NOT_FOUND` (404, outside 1 to 8).
+Errors: `SESSION_NOT_FOUND` (404, outside 1 to 8), `SYNC_STALE_UPDATE` (409), `CONSENT_REQUIRED` and `STUDY_WITHDRAWN` (403).
 
 ### 3.4 Student tools (synced)
 
@@ -156,11 +157,12 @@ Single records, replaced whole:
 
 Sync rules:
 
-1. The phone keeps the time of its last successful pull and sends it as `since`.
+1. The phone keeps the server's `serverTime` from its last successful pull and sends it as `since`; the server compares it with when it saved each change, so a phone with the wrong clock still gets everything.
 2. Changes made offline wait in a queue on the phone and are sent oldest first when back online, retrying with growing gaps.
 3. `PUT` with the same `id` twice is safe; the second just updates.
-4. If the phone and server both changed an item, the newer `updatedAt` wins.
-5. After sending its queue, the phone pulls with `since`, then stores `serverTime` for next time.
+4. Every `PUT` carries `updatedAt`, when the phone made the change. If the phone and server both changed an item, the newer `updatedAt` wins.
+5. Synced data belongs to one student: if someone else signs in on the phone, its waiting changes and copies are cleared before anything is sent.
+6. After sending its queue, the phone pulls with `since`, then stores `serverTime` for next time.
 
 Errors: `SYNC_STALE_UPDATE` (409, an older edit arrived after a newer one; the response holds the current item).
 
@@ -316,7 +318,7 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B3    | Assignment         | studentId, researcherId, method, assignedAt                                                                                                  |
 | B3    | Withdrawal         | studentId (one each), reason, withdrawnAt; kept after the account closes                                                                     |
 | B3    | Alert              | studentId, researcherId (empty until matched), kind, urgent, title, quote, detail, sourceId (one alert per kind and source), raisedAt        |
-| B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt                                                                                      |
+| B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt, updatedAt (the phone's change time), syncedAt (the server's save time)              |
 | B4    | MoodEntry          | studentId, mood, note, at                                                                                                                    |
 | B4    | JournalEntry       | studentId, prompt, text (encrypted), mood, sessionId, at, editedAt                                                                           |
 | B4    | ThoughtRecord      | studentId, situation, thought, feeling, action, traps, sessionId, balanced, beliefBefore, beliefAfter, at                                    |

@@ -206,11 +206,20 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ## B4 Sessions and student tools · `feat/student-sync`
 
-- [ ] `src/shared/sync/` helpers
-- [ ] Models: SessionProgress, SessionAnswer, MoodEntry, JournalEntry, ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
-- [ ] Modules: `sessions`, `mood`, `journal`, `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
+### B4.1 Sync foundation and sessions · `feat/sessions-sync`
+
+- [x] `src/shared/sync/`: `since` and list schemas, newest-change-wins check (`SYNC_STALE_UPDATE` with the saved item)
+- [x] SessionProgress model; `GET /v1/me/sessions?since=` and `PUT /v1/me/sessions/:sessionId`
+- [x] Final PHQ-9 only after Session 8 is finished (`PHQ9_FINAL_NOT_OPEN`)
+- [x] App: `src/lib/sync/` engine (offline queue, retries with growing gaps, pulls with `since`, one student's data per phone)
+- [x] App: session progress synced; progress saved before sync is uploaded once
+- [x] App: home counts the study week from the server's `startedAt`
+
+### Still to do in B4
+
+- [ ] Models: MoodEntry, JournalEntry, ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
+- [ ] Modules: `mood`, `journal`, `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
 - [ ] Journal text encrypted
-- [ ] App: `mobile/src/lib/sync/` engine
 - [ ] App: each store switched over
 
 ## B5 Researcher side · `feat/researcher-api`
