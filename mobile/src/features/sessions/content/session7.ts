@@ -1,4 +1,4 @@
-import { NEW_BELIEFS } from '@/features/beliefs/beliefs';
+import { NEW_BELIEFS } from '@/features/beliefs/utils/beliefs';
 
 import type { SessionContent } from './types';
 

@@ -8,8 +8,8 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { emotionLabel } from '@/features/sessions/constants/emotions';
 import { trapLabels } from '@/features/sessions/constants/traps';
-import { trapCounts } from '@/features/thoughts/thoughtLog';
-import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
+import { trapCounts } from '@/features/thoughts/utils/thoughtLog';
+import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
 import { colors, fonts, radius, type } from '@/theme';
 
 function day(iso: string) {

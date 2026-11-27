@@ -4,9 +4,9 @@ import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 
 import { CloseIcon } from '@/components/icons';
-import { CORE_BELIEFS, readArrow, writeArrow } from '@/features/beliefs/beliefs';
+import { CORE_BELIEFS, readArrow, writeArrow } from '@/features/beliefs/utils/beliefs';
 import type { ArrowStep } from '@/features/sessions/content/types';
-import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
+import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

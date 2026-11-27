@@ -1,7 +1,7 @@
 import * as Crypto from 'expo-crypto';
 
 import { readJson, writeJson } from '@/lib/storage';
-import { queueChange, registerSyncKind } from '@/lib/sync';
+import { mergeServerItems, notOnServer, queueChange, registerSyncKind } from '@/lib/sync';
 
 import { MOODS_PATH, moodPath } from '../api/mood.service';
 import type { SaveMoodBody, ServerMood } from '../types/mood.types';
@@ -83,33 +83,22 @@ export function setTodaysMoodNote(note: string, now = new Date()): StoredMood | 
   return updated;
 }
 
-const isNewer = (a: string, b: string | undefined) => !b || a >= b;
-
 /** Takes the server's moods where they're newer, and removes ones deleted elsewhere. */
 export function applyServerMoods(items: ServerMood[]) {
-  const byId = new Map(getMoodLog().map((entry) => [entry.id, entry]));
-  for (const item of items) {
-    const local = byId.get(item.id);
-    if (item.deletedAt) {
-      byId.delete(item.id);
-      continue;
-    }
-    if (local && !isNewer(item.updatedAt, local.updatedAt)) continue;
-    byId.set(item.id, {
+  save(
+    mergeServerItems(getMoodLog(), items, (item) => ({
       id: item.id,
       mood: item.mood,
       at: item.at,
       ...(item.note ? { note: item.note } : {}),
       updatedAt: item.updatedAt,
-    });
-  }
-  save([...byId.values()]);
+    }))
+  );
 }
 
 /** Sends moods saved before sync existed, unless the server already has them. */
 export function uploadLocalMoods(serverItems: ServerMood[]) {
-  const onServer = new Set(serverItems.map((item) => item.id));
-  for (const entry of getMoodLog()) if (!onServer.has(entry.id)) send(entry);
+  notOnServer(getMoodLog(), serverItems).forEach(send);
 }
 
 export function clearLocalMoods() {

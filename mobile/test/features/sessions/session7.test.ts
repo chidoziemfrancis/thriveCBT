@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { readArrow, writeArrow } from '@/features/beliefs/beliefs';
+import { readArrow, writeArrow } from '@/features/beliefs/utils/beliefs';
 import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_7 } from '@/features/sessions/content/session7';
@@ -8,6 +8,10 @@ import type { RecapStep } from '@/features/sessions/content/types';
 import { compassionLines, isStepReady } from '@/features/sessions/utils/sessionLogic';
 
 const mockMemory = new Map<string, unknown>();
+let mockId = 0;
+jest.mock('expo-crypto', () => ({
+  randomUUID: () => `00000000-0000-4000-8000-${String(++mockId).padStart(12, '0')}`,
+}));
 jest.mock('@/lib/storage', () => ({
   readJson: (key: string, fallback: unknown) =>
     mockMemory.has(key) ? mockMemory.get(key) : fallback,
@@ -16,9 +20,9 @@ jest.mock('@/lib/storage', () => ({
 }));
 
 function loadStore() {
-  let store!: typeof import('@/features/beliefs/positiveLogStore');
+  let store!: typeof import('@/features/beliefs/store/positiveLogStore');
   jest.isolateModules(() => {
-    store = require('@/features/beliefs/positiveLogStore');
+    store = require('@/features/beliefs/store/positiveLogStore');
   });
   return store;
 }

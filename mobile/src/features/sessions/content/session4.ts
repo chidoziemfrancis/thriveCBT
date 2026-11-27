@@ -2,7 +2,7 @@ import {
   CHALLENGE_BALANCED,
   CHALLENGE_EVIDENCE,
   CHALLENGE_QUESTIONS,
-} from '@/features/thoughts/challengeSteps';
+} from '@/features/thoughts/constants/challengeSteps';
 
 import type { SessionContent } from './types';
 

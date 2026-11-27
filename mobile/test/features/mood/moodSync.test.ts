@@ -10,6 +10,7 @@ let mockId = 0;
 jest.mock('expo-crypto', () => ({ randomUUID: () => `id-${++mockId}` }));
 const mockQueue = jest.fn<(change: unknown) => void>();
 jest.mock('@/lib/sync', () => ({
+  ...jest.requireActual<object>('@/lib/sync/items'),
   queueChange: (change: unknown) => mockQueue(change),
   registerSyncKind: () => undefined,
 }));

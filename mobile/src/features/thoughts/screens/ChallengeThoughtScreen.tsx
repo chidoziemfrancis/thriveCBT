@@ -1,9 +1,9 @@
 import { addJournalEntry } from '@/features/journal/store/journalStore';
 import { reframeText } from '@/features/sessions/utils/sessionLogic';
-import { CHALLENGE_RECAP, CHALLENGE_STEPS } from '@/features/thoughts/challengeSteps';
+import { CHALLENGE_RECAP, CHALLENGE_STEPS } from '@/features/thoughts/constants/challengeSteps';
 import StepFlow from '@/features/thoughts/components/StepFlow';
-import { recordFromReframe } from '@/features/thoughts/thoughtLog';
-import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';
+import { recordFromReframe } from '@/features/thoughts/utils/thoughtLog';
+import { addThoughtRecord } from '@/features/thoughts/store/thoughtLogStore';
 
 /** Weigh the evidence, ask the questions and build a balanced thought, any day of the week. */
 export default function ChallengeThoughtScreen() {

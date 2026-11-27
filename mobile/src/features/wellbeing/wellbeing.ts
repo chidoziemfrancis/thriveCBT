@@ -1,11 +1,11 @@
 import type { PlannedActivity } from '@/features/activities/activities';
-import type { PositiveEntry } from '@/features/beliefs/beliefs';
+import type { PositiveEntry } from '@/features/beliefs/utils/beliefs';
 import type { StressEntry } from '@/features/coping/copingStore';
 import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
 import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { TRAPS } from '@/features/sessions/constants/traps';
-import type { ThoughtRecord } from '@/features/thoughts/thoughtLog';
+import type { ThoughtRecord } from '@/features/thoughts/utils/thoughtLog';
 
 /** The skills from the eight weeks, for picking the ones that helped most. */
 export const SKILLS = [

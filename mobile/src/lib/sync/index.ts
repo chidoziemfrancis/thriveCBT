@@ -6,3 +6,4 @@ export {
   syncNow,
   type SyncKind,
 } from './engine';
+export { isUuid, mergeServerItems, notOnServer, withUuids } from './items';

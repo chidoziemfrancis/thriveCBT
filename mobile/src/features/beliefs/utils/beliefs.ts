@@ -55,4 +55,11 @@ export function positiveKind(id: PositiveKind) {
   return POSITIVE_KINDS.find((k) => k.id === id) ?? POSITIVE_KINDS[3];
 }
 
-export type PositiveEntry = { id: string; at: string; kind: PositiveKind; text: string };
+export type PositiveEntry = {
+  id: string;
+  at: string;
+  kind: PositiveKind;
+  text: string;
+  /** When the phone last changed it; the newest change wins when syncing. */
+  updatedAt?: string;
+};

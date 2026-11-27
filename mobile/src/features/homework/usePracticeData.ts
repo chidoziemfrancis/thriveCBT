@@ -1,8 +1,8 @@
 import { usePlannedActivities } from '@/features/activities/activityStore';
-import { usePositiveLog } from '@/features/beliefs/positiveLogStore';
+import { usePositiveLog } from '@/features/beliefs/store/positiveLogStore';
 import { useStressLog, useToolUses } from '@/features/coping/copingStore';
 import { getMoodLog } from '@/features/mood/store/moodStore';
-import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
+import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
 
 import type { PracticeData } from './homework';
 import { useHomeworkTicks } from './homeworkStore';

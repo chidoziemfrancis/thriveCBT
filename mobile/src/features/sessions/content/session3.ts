@@ -1,4 +1,4 @@
-import { RECORD_STEPS } from '@/features/thoughts/recordSteps';
+import { RECORD_STEPS } from '@/features/thoughts/constants/recordSteps';
 
 import { TRAPS } from '../constants/traps';
 import type { SessionContent } from './types';

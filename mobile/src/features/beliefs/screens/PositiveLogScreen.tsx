@@ -7,8 +7,12 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { POSITIVE_KINDS, type PositiveKind, positiveKind } from '@/features/beliefs/beliefs';
-import { addPositive, removePositive, usePositiveLog } from '@/features/beliefs/positiveLogStore';
+import { POSITIVE_KINDS, type PositiveKind, positiveKind } from '@/features/beliefs/utils/beliefs';
+import {
+  addPositive,
+  removePositive,
+  usePositiveLog,
+} from '@/features/beliefs/store/positiveLogStore';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';

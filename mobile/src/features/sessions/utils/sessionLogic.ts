@@ -1,5 +1,5 @@
 import { readPlan, readRatings } from '@/features/activities/activities';
-import { readArrow } from '@/features/beliefs/beliefs';
+import { readArrow } from '@/features/beliefs/utils/beliefs';
 import { readTriggers } from '@/features/coping/coping';
 import { goalReady, readGoal } from '@/features/wellbeing/wellbeing';
 

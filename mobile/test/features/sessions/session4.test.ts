@@ -11,8 +11,8 @@ import {
   reframeText,
   writeEvidence,
 } from '@/features/sessions/utils/sessionLogic';
-import { CHALLENGE_RECAP, CHALLENGE_STEPS } from '@/features/thoughts/challengeSteps';
-import { recordFromReframe } from '@/features/thoughts/thoughtLog';
+import { CHALLENGE_RECAP, CHALLENGE_STEPS } from '@/features/thoughts/constants/challengeSteps';
+import { recordFromReframe } from '@/features/thoughts/utils/thoughtLog';
 
 const steps = SESSION_4.modules.flatMap((m) => m.steps);
 const find = (id: string) => steps.find((s) => s.id === id)!;

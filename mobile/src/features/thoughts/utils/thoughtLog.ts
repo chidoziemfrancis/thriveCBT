@@ -16,6 +16,8 @@ export type ThoughtRecord = {
   balanced?: string;
   beliefBefore?: number;
   beliefAfter?: number;
+  /** When the phone last changed it; the newest change wins when syncing. */
+  updatedAt?: string;
 };
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;

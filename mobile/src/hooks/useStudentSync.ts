@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 
+import '@/features/beliefs';
 import '@/features/journal';
 import '@/features/mood';
 import '@/features/sessions';
+import '@/features/thoughts';
 import { startSync } from '@/lib/sync';
 import { useSessionStore } from '@/stores/session.store';
 

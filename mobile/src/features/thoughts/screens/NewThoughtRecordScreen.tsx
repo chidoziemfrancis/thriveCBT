@@ -1,9 +1,9 @@
 import { addJournalEntry } from '@/features/journal/store/journalStore';
 import { diaryText } from '@/features/sessions/utils/sessionLogic';
 import StepFlow from '@/features/thoughts/components/StepFlow';
-import { RECORD_RECAP, RECORD_STEPS } from '@/features/thoughts/recordSteps';
-import { recordFromDiary } from '@/features/thoughts/thoughtLog';
-import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';
+import { RECORD_RECAP, RECORD_STEPS } from '@/features/thoughts/constants/recordSteps';
+import { recordFromDiary } from '@/features/thoughts/utils/thoughtLog';
+import { addThoughtRecord } from '@/features/thoughts/store/thoughtLogStore';
 
 /** A thought record outside any session, for catching thoughts as they happen during the week. */
 export default function NewThoughtRecordScreen() {

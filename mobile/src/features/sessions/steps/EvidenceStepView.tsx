@@ -6,7 +6,7 @@ import { CloseIcon, PlusIcon } from '@/components/icons';
 import BalanceScale from '@/features/sessions/art/BalanceScale';
 import type { EvidenceStep } from '@/features/sessions/content/types';
 import { readEvidence, writeEvidence } from '@/features/sessions/utils/sessionLogic';
-import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
+import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

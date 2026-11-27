@@ -1,8 +1,12 @@
 import { describe, expect, it, jest } from '@jest/globals';
 
-import { RECORD_RECAP } from '@/features/thoughts/recordSteps';
-import { type ThoughtRecord, recordFromDiary, trapCounts } from '@/features/thoughts/thoughtLog';
-import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';
+import { RECORD_RECAP } from '@/features/thoughts/constants/recordSteps';
+import {
+  type ThoughtRecord,
+  recordFromDiary,
+  trapCounts,
+} from '@/features/thoughts/utils/thoughtLog';
+import { addThoughtRecord } from '@/features/thoughts/store/thoughtLogStore';
 
 // The store reads storage as soon as it loads, so the mock keeps its own memory.
 jest.mock('@/lib/storage', () => {

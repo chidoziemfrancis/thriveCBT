@@ -1,4 +1,4 @@
-import { readArrow } from '@/features/beliefs/beliefs';
+import { readArrow } from '@/features/beliefs/utils/beliefs';
 import { SKILLS } from '@/features/wellbeing/wellbeing';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import { plannerSuggestions } from '@/features/sessions/utils/sessionLogic';

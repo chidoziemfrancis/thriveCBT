@@ -8,7 +8,7 @@ import { ChevronRightIcon, PlusIcon, RefreshIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
 import { dayKey } from '@/features/activities/activities';
 import { usePlannedActivities } from '@/features/activities/activityStore';
-import { usePositiveLog } from '@/features/beliefs/positiveLogStore';
+import { usePositiveLog } from '@/features/beliefs/store/positiveLogStore';
 import { useToolkit } from '@/features/coping/copingStore';
 import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/utils/journalLogic';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/constants/journalPrompts';
@@ -19,8 +19,8 @@ import {
   useJournal,
 } from '@/features/journal/store/journalStore';
 import MoodFace from '@/features/mood/components/MoodFace';
-import { trapCounts } from '@/features/thoughts/thoughtLog';
-import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
+import { trapCounts } from '@/features/thoughts/utils/thoughtLog';
+import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

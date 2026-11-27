@@ -20,7 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeftIcon } from '@/components/icons';
 import { readPlan, toPlanned } from '@/features/activities/activities';
 import { addPlans } from '@/features/activities/activityStore';
-import { addPositive } from '@/features/beliefs/positiveLogStore';
+import { addPositive } from '@/features/beliefs/store/positiveLogStore';
 import { crisisPlanFrom } from '@/features/coping/coping';
 import { saveCrisisPlan, saveTools } from '@/features/coping/copingStore';
 import { addJournalEntry } from '@/features/journal/store/journalStore';
@@ -42,8 +42,8 @@ import {
   stepPosition,
 } from '@/features/sessions/utils/sessionLogic';
 import StepBody from '@/features/sessions/steps/StepBody';
-import { recordFromDiary, recordFromReframe } from '@/features/thoughts/thoughtLog';
-import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';
+import { recordFromDiary, recordFromReframe } from '@/features/thoughts/utils/thoughtLog';
+import { addThoughtRecord } from '@/features/thoughts/store/thoughtLogStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
