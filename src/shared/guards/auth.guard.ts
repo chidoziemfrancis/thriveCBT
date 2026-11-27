@@ -3,9 +3,11 @@ import {
   type ExecutionContext,
   Injectable,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
 
+import { IS_PUBLIC } from '../decorators/public.decorator.js';
 import { AppError } from '../errors/app-error.js';
 import { COMMON_ERRORS } from '../errors/error-codes.js';
 import type { AuthRole, AuthUser } from '../types/auth-user.js';
@@ -14,9 +16,18 @@ const ROLES: AuthRole[] = ['student', 'researcher', 'lead'];
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwt: JwtService) {}
+  constructor(
+    private readonly jwt: JwtService,
+    private readonly reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) return true;
+
     const request = context.switchToHttp().getRequest<Request>();
     const [scheme, token] = (request.headers.authorization ?? '').split(' ');
     if (scheme !== 'Bearer' || !token)

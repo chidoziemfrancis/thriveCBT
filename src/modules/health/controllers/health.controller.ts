@@ -2,6 +2,8 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 
+import { Public } from '../../../shared/decorators/public.decorator.js';
+
 import {
   ApiErrors,
   ApiZodResponse,
@@ -14,6 +16,7 @@ import { HEALTH_ERRORS } from '../../../shared/errors/codes/health.errors.js';
 import { HealthService } from '../services/health.service.js';
 
 @ApiTags('health')
+@Public()
 @SkipThrottle()
 @Controller('health')
 export class HealthController {

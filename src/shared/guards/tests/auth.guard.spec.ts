@@ -1,10 +1,15 @@
 import type { ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 
+import { IS_PUBLIC } from '../../decorators/public.decorator.js';
 import { AuthGuard } from '../auth.guard.js';
 
 const jwt = new JwtService({ secret: 'test-secret-test-secret-test-secret' });
-const guard = new AuthGuard(jwt);
+const reflector = new Reflector();
+const handler = () => undefined;
+class Controller {}
+const guard = new AuthGuard(jwt, reflector);
 
 function contextWith(authorization?: string) {
   const request: { headers: Record<string, string>; user?: unknown } = {
@@ -12,6 +17,8 @@ function contextWith(authorization?: string) {
   };
   const context = {
     switchToHttp: () => ({ getRequest: () => request }),
+    getHandler: () => handler,
+    getClass: () => Controller,
   } as unknown as ExecutionContext;
   return { context, request };
 }
@@ -56,5 +63,17 @@ describe('AuthGuard', () => {
         code: 'UNAUTHENTICATED',
       });
     }
+  });
+
+  it('lets anyone through a route marked @Public()', async () => {
+    const open = () => undefined;
+    Reflect.defineMetadata(IS_PUBLIC, true, open);
+    const request = { headers: {} };
+    const context = {
+      switchToHttp: () => ({ getRequest: () => request }),
+      getHandler: () => open,
+      getClass: () => Controller,
+    } as unknown as ExecutionContext;
+    await expect(guard.canActivate(context)).resolves.toBe(true);
   });
 });

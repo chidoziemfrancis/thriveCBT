@@ -1,9 +1,8 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../../../shared/decorators/current-user.decorator.js';
 import { COMMON_ERRORS } from '../../../../shared/errors/error-codes.js';
-import { AuthGuard } from '../../../../shared/guards/auth.guard.js';
 import {
   ApiErrors,
   ApiZodResponse,
@@ -14,7 +13,6 @@ import { AccountsService } from '../services/accounts.service.js';
 
 @ApiTags('me')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
 @Controller('me')
 export class MeController {
   constructor(private readonly accounts: AccountsService) {}

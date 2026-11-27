@@ -1,6 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { Public } from '../../../../shared/decorators/public.decorator.js';
 import { AUTH_ERRORS } from '../../../../shared/errors/codes/auth.errors.js';
 import { COMMON_ERRORS } from '../../../../shared/errors/error-codes.js';
 import {
@@ -27,6 +28,7 @@ import { LoginService } from '../services/login.service.js';
 import { TokensService } from '../services/tokens.service.js';
 
 @ApiTags('auth')
+@Public()
 @Controller('auth')
 export class LoginController {
   constructor(
