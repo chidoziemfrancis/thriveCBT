@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { AssignmentMethod } from '../../../generated/prisma/client.js';
+import {
+  STUDENT_ASSIGNED,
+  StudentAssignedEvent,
+} from '../../../events/student-assigned.event.js';
 import { EmailService } from '../../../integrations/email/email.service.js';
 import { AppError } from '../../../shared/errors/app-error.js';
 import { ASSIGNMENT_ERRORS } from '../../../shared/errors/codes/assignment.errors.js';
@@ -51,6 +56,7 @@ export class AssignmentService {
     private readonly repository: AssignmentRepository,
     private readonly students: StudentsService,
     private readonly email: EmailService,
+    private readonly events: EventEmitter2,
   ) {}
 
   async preview(inviteCode: string): Promise<ResearcherCard> {
@@ -106,6 +112,10 @@ export class AssignmentService {
       if (!isDuplicate(error)) throw error;
       return this.get(studentId);
     }
+    await this.events.emitAsync(
+      STUDENT_ASSIGNED,
+      new StudentAssignedEvent(studentId, researcherId),
+    );
     if (method === AssignmentMethod.INVITE)
       await this.tellResearcher(studentId, assignment);
     return toDto(assignment);

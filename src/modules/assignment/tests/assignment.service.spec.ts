@@ -1,3 +1,5 @@
+import type { EventEmitter2 } from '@nestjs/event-emitter';
+
 import type { EmailService } from '../../../integrations/email/email.service.js';
 import type { StudentsService } from '../../users/students/services/students.service.js';
 import { assignSchema } from '../dto/assignment.dto.js';
@@ -56,12 +58,14 @@ function setup(
   const email = {
     send: vi.fn(async (_message: { to: string; text: string }) => undefined),
   };
+  const events = { emitAsync: vi.fn(async () => []) };
   const service = new AssignmentService(
     repository as unknown as AssignmentRepository,
     students as unknown as StudentsService,
     email as unknown as EmailService,
+    events as unknown as EventEmitter2,
   );
-  return { service, repository, email };
+  return { service, repository, email, events };
 }
 
 describe('pickResearcher', () => {
@@ -91,6 +95,15 @@ describe('AssignmentService', () => {
         to: 'grace@uni.edu',
         text: expect.stringContaining('Kemi accepted your invite'),
       }),
+    );
+  });
+
+  it('announces the match so alerts waiting for a researcher move to them', async () => {
+    const { service, events } = setup({ codeOwner: true });
+    await service.assign('s1', 'GRACE1', NOW);
+    expect(events.emitAsync).toHaveBeenCalledWith(
+      'student.assigned',
+      expect.objectContaining({ studentId: 's1', researcherId: 'r-grace' }),
     );
   });
 
