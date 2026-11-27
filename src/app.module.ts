@@ -7,6 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { ConfigModule } from './config/config.module.js';
 import { ConfigService } from './config/config.service.js';
 import { HealthModule } from './modules/health/health.module.js';
+import { UsersModule } from './modules/users/users.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { CryptoModule } from './shared/crypto/crypto.module.js';
 import { AllExceptionsFilter } from './shared/errors/all-exceptions.filter.js';
@@ -34,6 +35,7 @@ const ACCESS_TOKEN_TTL = '15m';
     PrismaModule,
     CryptoModule,
     HealthModule,
+    UsersModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
