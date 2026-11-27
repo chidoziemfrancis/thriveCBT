@@ -27,6 +27,27 @@ describe('parseEnv', () => {
     expect(env.CORS_ORIGINS).toEqual(['https://a.test', 'https://b.test']);
   });
 
+  it('refuses to print emails to the log in production', () => {
+    expect(() => parseEnv({ ...valid, NODE_ENV: 'production' })).toThrow(
+      /EMAIL_TRANSPORT/,
+    );
+    expect(
+      parseEnv({ ...valid, NODE_ENV: 'development' }).EMAIL_TRANSPORT,
+    ).toBe('log');
+  });
+
+  it('needs an API key when sending through Unosend', () => {
+    expect(() => parseEnv({ ...valid, EMAIL_TRANSPORT: 'unosend' })).toThrow(
+      /UNOSEND_API_KEY/,
+    );
+    const env = parseEnv({
+      ...valid,
+      EMAIL_TRANSPORT: 'unosend',
+      UNOSEND_API_KEY: 'un_test',
+    });
+    expect(env.UNOSEND_API_URL).toBe('https://api.unosend.co/v1');
+  });
+
   it('names every setting that is missing or wrong', () => {
     expect(() =>
       parseEnv({
