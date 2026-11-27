@@ -37,7 +37,11 @@ export class WithdrawalService {
     if (existing) return { at: existing.withdrawnAt.toISOString() };
 
     try {
-      const withdrawal = await this.repository.withdraw(studentId, reason, now);
+      const withdrawal = await this.repository.withdraw(
+        studentId,
+        reason || undefined,
+        now,
+      );
       await this.tellResearcher(studentId);
       return { at: withdrawal.withdrawnAt.toISOString() };
     } catch (error) {

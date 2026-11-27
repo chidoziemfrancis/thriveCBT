@@ -5546,13 +5546,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "reason": {},
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
                   "confirm": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "reason",
                   "confirm"
                 ],
                 "additionalProperties": false

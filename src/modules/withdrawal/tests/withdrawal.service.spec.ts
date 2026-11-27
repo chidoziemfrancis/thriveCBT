@@ -99,9 +99,10 @@ describe('WithdrawalService', () => {
     expect(unmatched.email.send).not.toHaveBeenCalled();
   });
 
-  it('treats a blank reason as no reason', () => {
-    expect(
-      withdrawSchema.parse({ reason: '   ', confirm: 'WITHDRAW' }),
-    ).toEqual({ reason: undefined, confirm: 'WITHDRAW' });
+  it('treats a blank reason as no reason', async () => {
+    const { service, repository } = setup();
+    const body = withdrawSchema.parse({ reason: '   ', confirm: 'WITHDRAW' });
+    await service.withdraw('s1', body, NOW);
+    expect(repository.withdraw).toHaveBeenCalledWith('s1', undefined, NOW);
   });
 });
