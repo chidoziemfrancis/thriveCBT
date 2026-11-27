@@ -4,6 +4,64 @@ Tick items as they're merged into `dev`. Each phase is one branch and one pull r
 
 Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
+## What needs a backend
+
+Every app feature that needs the server, split by who uses it. The phase in brackets is when it gets built.
+
+### Student side
+
+- [ ] Accounts: sign up, log in, log out, stay logged in, reset password (B2)
+- [ ] Profile: name, email, avatar, notification settings (B2)
+- [ ] Consent: save that the student agreed, with date and version (B3)
+- [ ] Eligibility and onboarding answers (B3)
+- [ ] PHQ-9 at sign-up and at week 8 (B3)
+- [ ] EPQ-R: the 100 answers at sign-up (B3)
+- [ ] Researcher assignment: which researcher the student is matched with (B3)
+- [ ] Sessions: progress and answers for all 8 sessions (B4)
+- [ ] Mood log: daily mood and notes (B4)
+- [ ] Journal entries, encrypted (B4)
+- [ ] Thought log: thought records and challenged thoughts (B4)
+- [ ] My week: planned activities and their ratings (B4)
+- [ ] Coping: toolkit, tool use, stress log (B4)
+- [ ] Positive evidence log (B4)
+- [ ] Staying-well plan and goal (B4)
+- [ ] Homework: practice ticks per week (B4)
+- [ ] Emergency contact, encrypted (B5)
+- [ ] Crisis plan: only how many parts are filled; the plan stays on the phone (B4)
+- [ ] Check-ins: see upcoming calls, give feedback after a call (B5)
+- [ ] Chat with their researcher (B6)
+- [ ] Push notifications: daily reminders, call reminders (B6)
+- [ ] Video call: join the weekly check-in (B7)
+- [ ] Withdraw from the study (B3)
+- [ ] Download my data (B7)
+
+### Researcher side
+
+- [ ] Accounts: accept invite, log in, reset password (B2)
+- [ ] Profile and settings: name, photo, reply hours (B5)
+- [ ] Availability: times open for check-ins (B5)
+- [ ] Caseload: list of their own students, with week, last active and mood (B5)
+- [ ] Student profile: everything on the student side for one student, read-only (B5)
+- [ ] PHQ-9 and EPQ-R answers, including start vs week 8 (B5)
+- [ ] Alerts: PHQ-9 question 9, EPQ-R question 76, risk words in chat, severe or rising scores, inactive students (B3, B5, B6)
+- [ ] Alert handling: acknowledge, add a note, mark handled (B5)
+- [ ] Booking check-ins: create, reschedule, cancel, repeat weekly (B5)
+- [ ] Call notes after each call, encrypted (B5)
+- [ ] Call log: past calls, missed calls, student feedback (B5)
+- [ ] Chat with their students: quick replies, follow-up flag (B6)
+- [ ] Emergency contact view, with every view recorded (B5)
+- [ ] Push notifications: new alerts, new messages, upcoming calls (B6)
+- [ ] Video call: start the weekly check-in (B7)
+
+### Shared by both
+
+- [ ] Login and roles (B2)
+- [ ] Push notifications (B6)
+- [ ] Chat (B6)
+- [ ] Video calls (B7)
+- [ ] Alerts (B3, B5)
+- [ ] Audit log (B5)
+
 ## Before we start
 
 - [x] Confirm decisions: Zod, Docker for the local database, plain JSON responses
