@@ -13,3 +13,25 @@ export const clientUpdatedAt = z.iso.datetime();
 export function syncListSchema<T extends z.ZodType>(item: T) {
   return z.object({ items: z.array(item), serverTime: z.iso.datetime() });
 }
+
+/** Synced items get their id from the phone, so an item made offline keeps it everywhere. */
+export const syncItemParamsSchema = z.object({ id: z.uuid() });
+
+/** What every synced item carries besides its own fields. */
+export const syncMetaSchema = z.object({
+  id: z.uuid(),
+  updatedAt: z.iso.datetime(),
+  deletedAt: z.iso.datetime().nullable(),
+});
+
+export function syncMeta(row: {
+  id: string;
+  updatedAt: Date;
+  deletedAt: Date | null;
+}) {
+  return {
+    id: row.id,
+    updatedAt: row.updatedAt.toISOString(),
+    deletedAt: row.deletedAt?.toISOString() ?? null,
+  };
+}

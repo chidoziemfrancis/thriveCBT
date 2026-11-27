@@ -1,0 +1,20 @@
+/// A mood the student logged. The id comes from the phone. `updatedAt` is when the phone made the
+/// change (the newest wins); `syncedAt` is when the server saved it, which `since` pulls use.
+/// A deleted entry keeps a marker, with the note cleared, so other phones learn it's gone.
+model MoodEntry {
+  id        String    @id @db.Uuid
+  studentId String    @map("student_id") @db.Uuid
+  mood      Int
+  note      String?
+  at        DateTime
+  updatedAt DateTime  @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  syncedAt  DateTime  @updatedAt @map("synced_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, syncedAt])
+  @@index([studentId, at])
+  @@map("mood_entries")
+}

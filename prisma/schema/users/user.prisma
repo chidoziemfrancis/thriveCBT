@@ -21,6 +21,7 @@ model User {
   epqrResult        EpqrResult?
   withdrawal        Withdrawal?
   sessionProgress   SessionProgress[]
+  moodEntries       MoodEntry[]
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 
