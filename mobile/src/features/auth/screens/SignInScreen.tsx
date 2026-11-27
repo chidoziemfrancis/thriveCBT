@@ -81,8 +81,8 @@ export default function SignInScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!canSubmit} onPress={handleSubmit}>
-          {busy ? 'One moment…' : hasAccount ? 'Sign in' : 'Continue'}
+        <Button disabled={!canSubmit} loading={busy} onPress={handleSubmit}>
+          {hasAccount ? 'Sign in' : 'Continue'}
         </Button>
       }
     >

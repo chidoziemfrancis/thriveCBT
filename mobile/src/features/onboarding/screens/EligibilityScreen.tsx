@@ -33,8 +33,12 @@ export default function OnboardingEligibilityScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={isUndergraduate === null || save.isPending} onPress={handleContinue}>
-          {save.isPending ? 'Saving…' : 'Continue'}
+        <Button
+          disabled={isUndergraduate === null || save.isPending}
+          onPress={handleContinue}
+          loading={save.isPending}
+        >
+          Continue
         </Button>
       }
     >

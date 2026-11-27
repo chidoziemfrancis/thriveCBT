@@ -45,8 +45,12 @@ export default function OnboardingDobScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!touched || save.isPending} onPress={handleContinue}>
-          {save.isPending ? 'Saving…' : 'Continue'}
+        <Button
+          disabled={!touched || save.isPending}
+          onPress={handleContinue}
+          loading={save.isPending}
+        >
+          Continue
         </Button>
       }
     >

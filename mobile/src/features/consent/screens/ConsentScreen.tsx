@@ -33,8 +33,12 @@ export default function ConsentScreen() {
     <Screen
       footer={
         <>
-          <Button disabled={!allTicked || giveConsent.isPending} onPress={handleAgree}>
-            {giveConsent.isPending ? 'Saving…' : 'I give my consent'}
+          <Button
+            disabled={!allTicked || giveConsent.isPending}
+            onPress={handleAgree}
+            loading={giveConsent.isPending}
+          >
+            I give my consent
           </Button>
           <Button variant="ghost" onPress={() => router.back()}>
             Read the study information again

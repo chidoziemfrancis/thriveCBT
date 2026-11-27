@@ -32,8 +32,12 @@ export default function CreatePasswordScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!valid || register.isPending} onPress={handleContinue}>
-          {register.isPending ? 'Creating your account…' : 'Create account'}
+        <Button
+          disabled={!valid || register.isPending}
+          onPress={handleContinue}
+          loading={register.isPending}
+        >
+          Create account
         </Button>
       }
     >

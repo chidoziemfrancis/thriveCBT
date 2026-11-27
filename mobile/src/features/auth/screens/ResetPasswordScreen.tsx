@@ -60,8 +60,8 @@ export default function ResetPasswordScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!ready} onPress={reset}>
-          {confirm.isPending ? 'Saving…' : 'Reset password'}
+        <Button disabled={!ready} onPress={reset} loading={confirm.isPending}>
+          Reset password
         </Button>
       }
     >
