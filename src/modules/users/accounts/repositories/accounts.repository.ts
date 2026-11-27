@@ -33,6 +33,47 @@ export class AccountsRepository {
     });
   }
 
+  async inviteCodeTaken(inviteCode: string): Promise<boolean> {
+    return (
+      (await this.prisma.researcherProfile.count({ where: { inviteCode } })) > 0
+    );
+  }
+
+  createResearcher(data: {
+    email: string;
+    passwordHash: string;
+    name: string;
+    inviteCode: string;
+    verifiedAt: Date;
+  }): Promise<User> {
+    return this.prisma.user.create({
+      data: {
+        email: data.email,
+        passwordHash: data.passwordHash,
+        role: UserRole.RESEARCHER,
+        emailVerifiedAt: data.verifiedAt,
+        researcherProfile: {
+          create: { name: data.name, inviteCode: data.inviteCode },
+        },
+      },
+    });
+  }
+
+  createLead(
+    email: string,
+    passwordHash: string,
+    verifiedAt: Date,
+  ): Promise<User> {
+    return this.prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        role: UserRole.LEAD,
+        emailVerifiedAt: verifiedAt,
+      },
+    });
+  }
+
   createStudent(email: string, passwordHash: string): Promise<User> {
     return this.prisma.user.create({
       data: {

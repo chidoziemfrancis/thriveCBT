@@ -2,6 +2,7 @@ import type { User } from '../../../../generated/prisma/client.js';
 import type { AccountsRepository } from '../repositories/accounts.repository.js';
 import {
   AccountsService,
+  inviteCodeCandidates,
   normaliseEmail,
 } from '../services/accounts.service.js';
 
@@ -43,5 +44,20 @@ describe('AccountsService', () => {
     await expect(setup().service.getById('gone')).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
+  });
+});
+
+describe('researcher invite codes', () => {
+  it('match the app: up to five letters of the first name and a digit', () => {
+    expect(inviteCodeCandidates('Grace Bello').slice(0, 2)).toEqual([
+      'GRACE1',
+      'GRACE2',
+    ]);
+    expect(inviteCodeCandidates('Oluwaseun')[0]).toBe('OLUWA1');
+    expect(inviteCodeCandidates('  Ẹmeka ')[0]).toBe('EMEKA1');
+  });
+
+  it('falls back to a random code when the name is too short to use', () => {
+    expect(inviteCodeCandidates('Al')).toEqual([]);
   });
 });
