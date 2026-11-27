@@ -233,10 +233,16 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] The student's own words in both are encrypted on the server, like the journal
 - [x] App: thought log and positive log synced; old ids get a UUID; shared item helpers in `src/lib/sync/items.ts` used by mood and journal too
 
+### B4.3b Planned activities · `feat/activities-sync`
+
+- [x] PlannedActivity model; `GET /v1/me/planned-activities?since=`, `PUT` and `DELETE /v1/me/planned-activities/:id`
+- [x] A removed plan comes back when the same plan is made again
+- [x] App: My week synced (plans keep one id per day, slot and activity, so the same plan never doubles up); old plans get that id too
+
 ### Still to do in B4
 
-- [ ] Models: PlannedActivity, ToolkitItem, ToolUse, StressEntry, WellPlan, HomeworkTick
-- [ ] Modules: `activities`, `coping` (`toolkit/`, `stress-log/`), `wellbeing`, `homework`
+- [ ] Models: ToolkitItem, ToolUse, StressEntry, WellPlan, HomeworkTick
+- [ ] Modules: `coping` (`toolkit/`, `stress-log/`), `wellbeing`, `homework`
 - [ ] App: each store switched over
 
 ## B5 Researcher side · `feat/researcher-api`

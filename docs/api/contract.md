@@ -161,7 +161,8 @@ Sync rules:
 2. Changes made offline wait in a queue on the phone and are sent oldest first when back online, retrying with growing gaps.
 3. `PUT` with the same `id` twice is safe; the second just updates. Another student's `id` answers `NOT_FOUND`, never a clash.
 4. A deleted item stays deleted: its marker comes back in pulls with its private fields (notes, text) cleared, a later `PUT` gets `SYNC_STALE_UPDATE` with the marker, and deleting something the server never saw, or twice, is a `204`.
-5. Built so far: `moods` (B4.2a), `journal` (B4.2b), `thought-records` and `positive-entries` (B4.3a). The others follow in B4.3b and B4.4.
+5. Built so far: `moods` (B4.2a), `journal` (B4.2b), `thought-records` and `positive-entries` (B4.3a), and `planned-activities` (B4.3b). The others follow in B4.4.
+   6a. A planned activity's id comes from its day, slot and activity (a version-8 UUID made on the phone), so the same plan made twice is one plan. Because of that, planning it again after deleting it brings it back, when the change is newer than the delete.
 6. The student's own words are encrypted on the server (AES-256-GCM with the field key) and only decrypted on their way back to that student: journal text, a thought record's situation, thought, action and balanced thought, and positive entry text. Chosen feelings, traps and ratings stay readable for the researcher's summaries. Deleting an item erases its private fields.
 7. Every `PUT` carries `updatedAt`, when the phone made the change. If the phone and server both changed an item, the newer `updatedAt` wins.
 8. Synced data belongs to one student: if someone else signs in on the phone, its waiting changes and copies are cleared before anything is sent.
@@ -325,7 +326,7 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B4    | MoodEntry          | id (from the phone), studentId, mood, note, at, updatedAt, deletedAt, syncedAt                                                                                             |
 | B4    | JournalEntry       | id (from the phone), studentId, prompt, text (encrypted), mood, sessionId, at, editedAt, updatedAt, deletedAt, syncedAt                                                    |
 | B4    | ThoughtRecord      | id (from the phone), studentId, situation, thought, action, balanced (encrypted), feeling, traps, sessionId, beliefBefore, beliefAfter, at, updatedAt, deletedAt, syncedAt |
-| B4    | PlannedActivity    | studentId, date, slot, label, predicted, sessionId, doneAt, enjoy, achieve                                                                                                 |
+| B4    | PlannedActivity    | id (from the phone), studentId, date, slot, label, predicted, sessionId, doneAt, enjoy, achieve, updatedAt, deletedAt, syncedAt                                            |
 | B4    | ToolkitItem        | studentId, cardId                                                                                                                                                          |
 | B4    | ToolUse            | studentId, cardId, helped, at                                                                                                                                              |
 | B4    | StressEntry        | studentId, situation, level, helped, at                                                                                                                                    |
