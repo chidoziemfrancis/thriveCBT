@@ -48,4 +48,19 @@ export const AUTH_ERRORS = {
     status: HttpStatus.TOO_MANY_REQUESTS,
     message: 'Too many wrong codes. Ask for a new one.',
   },
+  INVITE_INVALID: {
+    code: 'AUTH_INVITE_INVALID',
+    status: HttpStatus.BAD_REQUEST,
+    message: 'This invite link isn’t valid. Ask the study lead for a new one.',
+  },
+  INVITE_EXPIRED: {
+    code: 'AUTH_INVITE_EXPIRED',
+    status: HttpStatus.BAD_REQUEST,
+    message: 'This invite has expired. Ask the study lead for a new one.',
+  },
+  INVITE_EMAIL_TAKEN: {
+    code: 'AUTH_INVITE_EMAIL_TAKEN',
+    status: HttpStatus.CONFLICT,
+    message: 'That email already has an account.',
+  },
 } as const;

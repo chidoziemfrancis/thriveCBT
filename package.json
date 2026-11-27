@@ -20,6 +20,7 @@
     "docs:postman": "node scripts/generate-postman.mjs",
     "format": "prettier --write \"src/**/*.ts\" \"prisma/**/*.ts\" \"scripts/**/*.mjs\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"prisma/**/*.ts\" \"scripts/**/*.mjs\"",
+    "lead:create": "nest build && node scripts/create-lead.mjs",
     "lint": "oxlint src/ scripts/",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",

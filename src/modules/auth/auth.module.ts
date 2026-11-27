@@ -4,6 +4,9 @@ import { EmailModule } from '../../integrations/email/email.module.js';
 import { UsersModule } from '../users/users.module.js';
 import { EmailCodesRepository } from './email-codes/repositories/email-codes.repository.js';
 import { EmailCodesService } from './email-codes/services/email-codes.service.js';
+import { InvitesController } from './invites/controllers/invites.controller.js';
+import { InvitesRepository } from './invites/repositories/invites.repository.js';
+import { InvitesService } from './invites/services/invites.service.js';
 import { LoginController } from './login/controllers/login.controller.js';
 import { RefreshTokensRepository } from './login/repositories/refresh-tokens.repository.js';
 import { LoginService } from './login/services/login.service.js';
@@ -19,6 +22,7 @@ import { VerifyEmailService } from './verify-email/services/verify-email.service
     LoginController,
     VerifyEmailController,
     PasswordResetController,
+    InvitesController,
   ],
   providers: [
     LoginService,
@@ -28,6 +32,8 @@ import { VerifyEmailService } from './verify-email/services/verify-email.service
     EmailCodesRepository,
     VerifyEmailService,
     PasswordResetService,
+    InvitesService,
+    InvitesRepository,
   ],
   exports: [TokensService],
 })

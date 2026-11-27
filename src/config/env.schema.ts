@@ -32,6 +32,7 @@ export const envSchema = z
     EMAIL_FROM: z.string().default('ThriveCBT <no-reply@thrivecbt.app>'),
     UNOSEND_API_KEY: z.string().optional(),
     UNOSEND_API_URL: z.url().default('https://api.unosend.co/v1'),
+    APP_LINK_BASE: z.string().default('thrivecbt://'),
   })
   .refine(
     (env) => env.EMAIL_TRANSPORT !== 'unosend' || Boolean(env.UNOSEND_API_KEY),
