@@ -184,7 +184,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"9878Fa71-eFBd-4Fdd-b8A8-aeE6BCEa3Cc5\",\n  \"email\": \"XdM1pPChr.tU.oPjQ.yNu6qBpyblQ.R2Ko8S.y-.NP5DQNa9cL9.7.fdTL@VkQH.QrXg.LrzRjt1c.rvL.lU\",\n  \"role\": \"student\",\n  \"status\": \"active\",\n  \"createdAt\": \"4400-02-29T21:57:32.303Z\"\n}",
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"H7Et63P.c@sK.eWxx.z9xTxwlfePP.H.SOgWQRt.5.hL.ZDlavcwJQJ\",\n  \"role\": \"researcher\",\n  \"status\": \"withdrawn\",\n  \"createdAt\": \"6400-02-29T22:57:24Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -305,7 +305,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"s95Gl20DBX.e@FWyJGj.ziGCOiT.5w6d5SS.VI9D1E47hf1.AFoz.RMjV\",\n  \"password\": \"        \"\n}",
+              "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -338,7 +338,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"s95Gl20DBX.e@FWyJGj.ziGCOiT.5w6d5SS.VI9D1E47hf1.AFoz.RMjV\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -354,7 +354,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"email\": \"Py.7mO5K7.8Gx+dAYwWO.bia.CH3.J_Q.CkpL+'YF.I4@LbWIQVznlgF.FO8.7S4cZASy.g.Vhz\",\n    \"role\": \"student\",\n    \"status\": \"withdrawn\",\n    \"createdAt\": \"3196-02-29T18:26:19Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"Cjp.XVR9DAej'Mg.bh0ocedlUc.BQVdUoYCI.jy+@0LWu2QGf.8qj.h.vRpCJfrHtEXJ\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"createdAt\": \"9200-02-29T19:10:50Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -382,7 +382,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"s95Gl20DBX.e@FWyJGj.ziGCOiT.5w6d5SS.VI9D1E47hf1.AFoz.RMjV\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -426,7 +426,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"s95Gl20DBX.e@FWyJGj.ziGCOiT.5w6d5SS.VI9D1E47hf1.AFoz.RMjV\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -443,6 +443,50 @@
                 }
               ],
               "body": "{\n  \"error\": {\n    \"code\": \"AUTH_EMAIL_TAKEN\",\n    \"message\": \"An account with that email already exists. Try logging in instead.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "RATE_LIMITED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"_t.irHGWOa.LiBt2t-.l.4y7C@ciA.8.wtGOELaAjL3.tz.4EWtQZgi.Ik.X0Y.azAcE\",\n  \"password\": \"        \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many attempts. Please wait a moment and try again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -495,7 +539,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"'6l6mE4ACc.z1Y7YjES.gc@tr.NEc9k6t.w1aU.zPI5cSOS.MjrKMIlm\",\n  \"password\": \"string\"\n}",
+              "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -528,7 +572,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"'6l6mE4ACc.z1Y7YjES.gc@tr.NEc9k6t.w1aU.zPI5cSOS.MjrKMIlm\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -544,7 +588,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n    \"email\": \"Py.7mO5K7.8Gx+dAYwWO.bia.CH3.J_Q.CkpL+'YF.I4@LbWIQVznlgF.FO8.7S4cZASy.g.Vhz\",\n    \"role\": \"student\",\n    \"status\": \"withdrawn\",\n    \"createdAt\": \"3196-02-29T18:26:19Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"Cjp.XVR9DAej'Mg.bh0ocedlUc.BQVdUoYCI.jy+@0LWu2QGf.8qj.h.vRpCJfrHtEXJ\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"createdAt\": \"9200-02-29T19:10:50Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -572,7 +616,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"'6l6mE4ACc.z1Y7YjES.gc@tr.NEc9k6t.w1aU.zPI5cSOS.MjrKMIlm\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -616,7 +660,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"'6l6mE4ACc.z1Y7YjES.gc@tr.NEc9k6t.w1aU.zPI5cSOS.MjrKMIlm\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -660,7 +704,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"'6l6mE4ACc.z1Y7YjES.gc@tr.NEc9k6t.w1aU.zPI5cSOS.MjrKMIlm\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -677,6 +721,50 @@
                 }
               ],
               "body": "{\n  \"error\": {\n    \"code\": \"AUTH_ACCOUNT_SUSPENDED\",\n    \"message\": \"This account is paused. Please contact the research team.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "RATE_LIMITED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "login"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"7lzrMC'tl.iCWYkgcdM.TM-Y.ylsFdq_xN4.r'Kk-odH7n.w.5HBpDcBk+@JK3c.NpdGDsq.NmymHtpvab.3MN.j.4rVdFQO.RiDI.kg8JS.mknGab\",\n  \"password\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many attempts. Please wait a moment and try again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -911,6 +999,50 @@
                 }
               ],
               "body": "{\n  \"error\": {\n    \"code\": \"AUTH_ACCOUNT_SUSPENDED\",\n    \"message\": \"This account is paused. Please contact the research team.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "RATE_LIMITED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "auth",
+                    "refresh"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"stringstringstringstring\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many attempts. Please wait a moment and try again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }

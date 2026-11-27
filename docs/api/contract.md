@@ -13,6 +13,8 @@ This says what the backend stores and which endpoints the mobile app calls. It's
 - Times are ISO 8601 in UTC. Dates without a time (a planned day) are `YYYY-MM-DD`.
 - IDs are UUID v7. Student records that sync (section 3.4) get their ID from the phone.
 - A researcher can only reach students assigned to them. Asking for anyone else returns `404 NOT_FOUND`, so the API never confirms another student exists.
+- Every route needs a login unless it's marked open (health, docs, and the `/v1/auth/...` routes). A logged-in user calling a route for another role gets `403 FORBIDDEN`.
+- Rate limits per device address: 100 requests a minute overall; 5 a minute for sign-up, login and password reset; 20 a minute for refresh. Over the limit returns `429 RATE_LIMITED`.
 
 Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTHENTICATED` (401), `FORBIDDEN` (403), `NOT_FOUND` (404), `CONFLICT` (409), `PAYLOAD_TOO_LARGE` (413), `RATE_LIMITED` (429), `INTERNAL` (500), `SERVICE_UNAVAILABLE` (503).
 

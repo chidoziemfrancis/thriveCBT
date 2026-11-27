@@ -122,9 +122,9 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ### B2.2 Guards and roles
 
-- [ ] Login required on every route unless marked `@Public()`
-- [ ] Roles: `@Roles('student' | 'researcher' | 'lead')` and a roles guard
-- [ ] Strict rate limits on register, login, refresh and password reset
+- [x] Login required on every route unless marked `@Public()`; health, docs and auth routes are public
+- [x] Roles: `@Roles('student' | 'researcher' | 'lead')` and a roles guard (403 `FORBIDDEN`)
+- [x] Strict rate limits: 5 a minute on register and login, 20 on refresh (password reset uses the same in B2.3)
 
 ### B2.3 Email codes
 
@@ -192,6 +192,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [ ] Data deletion on withdrawal
 - [ ] Admin routes: `settings/` (StudySetting model), `audit-log/`
 - [ ] Hosting: staging and production, managed PostgreSQL, daily backups, secrets store, uptime alerts
+- [ ] Trust the hosting proxy (`app.set('trust proxy', …)`) so rate limits count each device, not the proxy
 - [ ] Runbooks: restore a backup, rotate a key, crisis alerts not arriving
 - [ ] Security review
 - [ ] App: turn off open-all-sessions testing; real helpline numbers and voice tracks

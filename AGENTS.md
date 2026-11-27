@@ -123,7 +123,8 @@ A module file (`<module>.module.ts`) wires its features together and contains no
 - Times are ISO 8601 strings in UTC.
 - Synced student data uses three routes per kind: `GET ?since=`, `PUT /:id` (create or update), `DELETE /:id`. Newest change wins.
 - Every request body, query and param is validated by a Zod schema from the feature's `dto/` folder. No unvalidated input reaches a service.
-- Every endpoint guards its role. A researcher may only read students assigned to them; check that in the service, not just the route.
+- Every route needs a login by default. Mark open routes with `@Public()`, and limit a route to roles with `@Roles('researcher')`. A researcher may only read students assigned to them; check that in the service, not just the route.
+- Login, sign-up and password-reset routes use `@Throttle(STRICT_RATE_LIMIT)` from `src/shared/constants/rate-limits.ts`.
 
 ## Errors
 
