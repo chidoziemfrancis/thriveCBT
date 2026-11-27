@@ -10,6 +10,7 @@ on:
 env:
   DATABASE_URL: postgresql://thrivecbt:thrivecbt@localhost:5432/thrivecbt
   FIELD_ENCRYPTION_KEY: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+  JWT_ACCESS_SECRET: ci-only-jwt-secret-not-used-anywhere-real
 
 jobs:
   checks:

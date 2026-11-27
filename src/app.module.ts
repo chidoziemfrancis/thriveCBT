@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 
@@ -12,6 +13,7 @@ import { AllExceptionsFilter } from './shared/errors/all-exceptions.filter.js';
 import { loggingConfig } from './shared/logging/logging.config.js';
 
 const RATE_LIMIT = { ttl: 60_000, limit: 100 };
+const ACCESS_TOKEN_TTL = '15m';
 
 @Module({
   imports: [
@@ -21,6 +23,14 @@ const RATE_LIMIT = { ttl: 60_000, limit: 100 };
       useFactory: loggingConfig,
     }),
     ThrottlerModule.forRoot([RATE_LIMIT]),
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get('JWT_ACCESS_SECRET'),
+        signOptions: { expiresIn: ACCESS_TOKEN_TTL },
+      }),
+    }),
     PrismaModule,
     CryptoModule,
     HealthModule,

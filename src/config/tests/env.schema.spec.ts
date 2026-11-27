@@ -3,6 +3,7 @@ import { parseEnv } from '../env.schema.js';
 const valid = {
   DATABASE_URL: 'postgresql://user:pass@localhost:5432/thrivecbt',
   FIELD_ENCRYPTION_KEY: Buffer.alloc(32, 1).toString('base64'),
+  JWT_ACCESS_SECRET: 'a'.repeat(32),
 };
 
 describe('parseEnv', () => {
@@ -31,7 +32,10 @@ describe('parseEnv', () => {
       parseEnv({
         DATABASE_URL: 'mysql://localhost/db',
         FIELD_ENCRYPTION_KEY: 'short',
+        JWT_ACCESS_SECRET: 'short',
       }),
-    ).toThrow(/DATABASE_URL[\s\S]*FIELD_ENCRYPTION_KEY/);
+    ).toThrow(
+      /DATABASE_URL[\s\S]*JWT_ACCESS_SECRET[\s\S]*FIELD_ENCRYPTION_KEY/,
+    );
   });
 });
