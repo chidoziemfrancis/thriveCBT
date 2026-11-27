@@ -6,8 +6,7 @@ import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanim
 import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import type { Researcher } from '@/features/assignment/assign';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
+import { ResearcherPhoto, type ResearcherCard } from '@/features/assignment';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { logMood } from '@/features/mood/moodStore';
 import { MOODS } from '@/features/mood/moods';
@@ -32,7 +31,7 @@ function timeAgo(iso: string, now: Date) {
   return days === 1 ? 'Yesterday' : `${days} days`;
 }
 
-function Lead({ item, researcher }: { item: AppNotification; researcher?: Researcher }) {
+function Lead({ item, researcher }: { item: AppNotification; researcher?: ResearcherCard }) {
   if (item.kind === 'chat') {
     return (
       <View style={[styles.lead, styles.photo]}>
@@ -79,7 +78,7 @@ function Row({
   isNew: boolean;
   first: boolean;
   now: Date;
-  researcher?: Researcher;
+  researcher?: ResearcherCard;
   onLogMood: (mood: number) => void;
 }) {
   const mood = item.kind === 'mood';

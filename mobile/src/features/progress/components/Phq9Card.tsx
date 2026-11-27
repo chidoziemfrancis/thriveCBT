@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { severityBand } from '@/features/assessment/phq9';
-import type { Phq9Result } from '@/features/assessment/scoreHistory';
+import { severityBand } from '@/features/assessment';
+import type { Phq9Result } from '@/features/assessment';
 import { colors, fonts } from '@/theme';
 
 // From "Moderately severe" up, a gentle route to support sits right next to the score.

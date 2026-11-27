@@ -8,7 +8,7 @@ import {
   PHQ9_QUESTIONS,
   SUICIDAL_IDEATION_INDEX,
   severityBand,
-} from '@/features/assessment/phq9';
+} from '@/features/assessment';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { colors, fonts, radius, type } from '@/theme';
 

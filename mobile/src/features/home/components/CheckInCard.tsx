@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CameraIcon, ChatIcon } from '@/components/icons';
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { Researcher, firstName } from '@/features/assignment/assign';
+import { firstName, type ResearcherCard } from '@/features/assignment';
 import { useChat } from '@/features/chat/chatStore';
 import {
   CheckIn,
@@ -15,7 +15,7 @@ import {
 } from '@/features/checkin/checkinLogic';
 import { getNextCheckIn } from '@/features/checkin/checkinStore';
 import { haptics } from '@/lib/haptics';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
+import { ResearcherPhoto } from '@/features/assignment';
 import { colors, fonts, radius } from '@/theme';
 
 const TICK_MS = 30_000;
@@ -30,7 +30,7 @@ function useNow() {
   return now;
 }
 
-export default function CheckInCard({ researcher }: { researcher: Researcher | undefined }) {
+export default function CheckInCard({ researcher }: { researcher: ResearcherCard | undefined }) {
   const { unread } = useChat();
   const now = useNow();
   const [checkIn, setCheckIn] = useState<CheckIn | null>(null);

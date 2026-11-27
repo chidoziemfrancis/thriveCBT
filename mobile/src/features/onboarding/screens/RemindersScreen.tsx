@@ -5,16 +5,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Glyph, type FeatureIconName } from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { firstName, getMyResearcher } from '@/features/assignment';
 import { askForReminders, skipReminders } from '@/features/onboarding/reminders';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 
 export default function RemindersScreen() {
   const [asking, setAsking] = useState(false);
-  const researcher = MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId);
+  const researcher = getMyResearcher();
   const name = researcher ? firstName(researcher.name) : 'your researcher';
 
   const reasons: { icon: FeatureIconName; text: string }[] = [

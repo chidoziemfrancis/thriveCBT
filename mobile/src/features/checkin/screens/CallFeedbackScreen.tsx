@@ -7,9 +7,7 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { firstName, getMyResearcher } from '@/features/assignment';
 import { formatDuration } from '@/features/checkin/checkinLogic';
 import { completeCheckIn, getNextCheckIn } from '@/features/checkin/checkinStore';
 import MoodFace from '@/features/mood/components/MoodFace';
@@ -22,9 +20,7 @@ export default function CallFeedbackScreen() {
   const seconds = Number(secondsParam) || 0;
   const [rating, setRating] = useState<number | null>(null);
   const [note, setNote] = useState('');
-  const [researcher] = useState(() =>
-    MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId)
-  );
+  const [researcher] = useState(() => getMyResearcher());
 
   function finish(withRating: number | null) {
     const checkIn = getNextCheckIn(researcher?.id);

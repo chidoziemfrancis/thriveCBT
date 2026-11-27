@@ -6,13 +6,8 @@ import {
   setAnswer,
   getAnswers,
   clearAnswers,
-} from '@/features/assessment/assessmentStore';
-import {
-  getBaselinePhq9,
-  getFinalPhq9,
-  recordFinalPhq9,
-  recordPhq9Score,
-} from '@/features/assessment/scoreHistory';
+} from '@/features/assessment/store/assessmentStore';
+import { getBaselinePhq9, getFinalPhq9, savePhq9OnPhone } from '@/features/assessment';
 import {
   allPracticeDays,
   finalCheckInDue,
@@ -64,17 +59,21 @@ describe('finalCheckInDue', () => {
   });
 });
 
+function fromServer(kind: 'baseline' | 'final', score: number, takenAt: string) {
+  return { id: kind, kind, score, band: 'Mild' as const, needsSupport: false, takenAt };
+}
+
 describe('final PHQ-9 storage', () => {
   it('keeps the baseline and the week-8 score apart', () => {
-    recordPhq9Score(13, new Date('2026-09-01T10:00:00Z'));
-    recordFinalPhq9(7, new Date('2026-10-27T10:00:00Z'));
+    savePhq9OnPhone(fromServer('baseline', 13, '2026-09-01T10:00:00.000Z'));
+    savePhq9OnPhone(fromServer('final', 7, '2026-10-27T10:00:00.000Z'));
     expect(getBaselinePhq9()?.score).toBe(13);
     expect(getFinalPhq9()).toEqual({ score: 7, at: '2026-10-27T10:00:00.000Z', kind: 'final' });
   });
 
-  it('saves the final score only once', () => {
-    recordFinalPhq9(7, new Date('2026-10-27T10:00:00Z'));
-    recordFinalPhq9(9, new Date('2026-10-28T10:00:00Z'));
+  it('keeps one final score, the one the server saved', () => {
+    savePhq9OnPhone(fromServer('final', 7, '2026-10-27T10:00:00.000Z'));
+    savePhq9OnPhone(fromServer('final', 7, '2026-10-27T10:00:00.000Z'));
     expect(getFinalPhq9()?.score).toBe(7);
   });
 

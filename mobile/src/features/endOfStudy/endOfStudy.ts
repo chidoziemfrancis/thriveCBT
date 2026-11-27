@@ -1,4 +1,4 @@
-import type { Phq9Result } from '@/features/assessment/scoreHistory';
+import type { Phq9Result } from '@/features/assessment';
 import { type PracticeData, practiceDays } from '@/features/homework/homework';
 import type { SessionRecord } from '@/features/sessions/sessionLogic';
 import { SESSIONS } from '@/features/sessions/sessions';

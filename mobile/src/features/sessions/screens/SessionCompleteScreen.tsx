@@ -7,7 +7,7 @@ import { CheckIcon } from '@/components/icons';
 import { Glyph } from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { getFinalPhq9 } from '@/features/assessment/scoreHistory';
+import { getFinalPhq9 } from '@/features/assessment';
 import { askForReminders, remindersAllowed } from '@/features/onboarding/reminders';
 import SunRise from '@/features/sessions/art/SunRise';
 import { sessionContent } from '@/features/sessions/content';

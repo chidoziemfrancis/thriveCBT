@@ -5,8 +5,8 @@ import Animated, { FadeInRight } from 'react-native-reanimated';
 
 import AnswerPills from '@/components/questionnaire/AnswerPills';
 import QuestionnaireLayout from '@/components/questionnaire/QuestionnaireLayout';
-import { getAnswers, setAnswer } from '@/features/assessment/assessmentStore';
-import { PHQ9_OPTIONS, PHQ9_QUESTIONS } from '@/features/assessment/phq9';
+import { getAnswers, setAnswer } from '../store/assessmentStore';
+import { PHQ9_OPTIONS, PHQ9_QUESTIONS } from '../utils/phq9';
 import { colors, fonts } from '@/theme';
 
 export default function Phq9QuestionScreen() {

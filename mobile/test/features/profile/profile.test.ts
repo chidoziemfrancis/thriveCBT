@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from '@jest/globals';
 
-import { isValidPhone } from '@/features/profile/contactValidation';
-import { WITHDRAW_PHRASE, confirmsWithdrawal } from '@/features/profile/withdrawalStore';
+import { isValidPhone } from '@/features/profile/utils/contactValidation';
+import { WITHDRAW_PHRASE, confirmsWithdrawal } from '@/features/profile/store/withdrawalStore';
 
 jest.mock('@/lib/storage', () => ({
   readJson: (_key: string, fallback: unknown) => fallback,

@@ -5,7 +5,7 @@ import { haptics } from '@/lib/haptics';
 import { getPreferences, type Preferences, setPreference } from '@/lib/preferences';
 
 import { profileKeys, profileService } from '../api/profile.service';
-import { savePreferencesOnPhone } from '../phoneCopy';
+import { savePreferencesOnPhone } from '../store/phoneCopy';
 import type { PreferencesUpdate, ServerPreferences } from '../types/profile.types';
 
 type SettingKey = keyof ServerPreferences & keyof Preferences;

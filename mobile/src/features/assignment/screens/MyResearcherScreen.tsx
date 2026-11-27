@@ -7,14 +7,13 @@ import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { REPLY_HOURS } from '@/features/chat/chatLogic';
 import { checkInPhase, countdownLabel, whenLabel } from '@/features/checkin/checkinLogic';
 import { getNextCheckIn } from '@/features/checkin/checkinStore';
 import { haptics } from '@/lib/haptics';
+import ResearcherPhoto from '../components/ResearcherPhoto';
+import { getMyResearcher } from '../store/assignmentStore';
+import { firstName } from '../utils/names';
 import { colors, fonts, radius, type } from '@/theme';
 
 const PHOTO = 96;
@@ -27,7 +26,7 @@ export default function MyResearcherScreen() {
   const [now, setNow] = useState(() => new Date());
   useFocusEffect(useCallback(() => setNow(new Date()), []));
 
-  const researcher = MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId);
+  const researcher = getMyResearcher();
 
   if (!researcher) {
     return (

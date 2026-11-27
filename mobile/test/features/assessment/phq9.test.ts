@@ -6,8 +6,13 @@ import {
   SUICIDAL_IDEATION_INDEX,
   phq9Score,
   severityBand,
-} from '@/features/assessment/phq9';
-import { getPhq9Scores, recordPhq9Score } from '@/features/assessment/scoreHistory';
+} from '@/features/assessment';
+import {
+  getBaselinePhq9,
+  getFinalPhq9,
+  getPhq9Scores,
+  savePhq9OnPhone,
+} from '@/features/assessment';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({
@@ -59,13 +64,25 @@ describe('phq9Score', () => {
   });
 });
 
-describe('PHQ-9 score history', () => {
-  it('keeps every score in the order taken', () => {
-    recordPhq9Score(14, new Date('2026-09-01T10:00:00Z'));
-    recordPhq9Score(8, new Date('2026-10-27T10:00:00Z'));
+describe('PHQ-9 phone copy', () => {
+  const result = (kind: 'baseline' | 'final', score: number, takenAt: string) => ({
+    id: kind,
+    kind,
+    score,
+    band: 'Mild' as const,
+    needsSupport: false,
+    takenAt,
+  });
+
+  it('keeps the server’s baseline and final, each once, baseline first', () => {
+    savePhq9OnPhone(result('final', 8, '2026-10-27T10:00:00.000Z'));
+    savePhq9OnPhone(result('baseline', 14, '2026-09-01T10:00:00.000Z'));
+    savePhq9OnPhone(result('baseline', 14, '2026-09-01T10:00:00.000Z'));
     expect(getPhq9Scores()).toEqual([
       { score: 14, at: '2026-09-01T10:00:00.000Z' },
-      { score: 8, at: '2026-10-27T10:00:00.000Z' },
+      { score: 8, at: '2026-10-27T10:00:00.000Z', kind: 'final' },
     ]);
+    expect(getBaselinePhq9()?.score).toBe(14);
+    expect(getFinalPhq9()?.score).toBe(8);
   });
 });

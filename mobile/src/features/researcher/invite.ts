@@ -1,4 +1,5 @@
-import { firstName, type Researcher } from '@/features/assignment/assign';
+import { firstName } from '@/features/assignment';
+import { type Researcher } from '@/features/researcher/mockResearchers';
 
 // Placeholder until the study has a domain; the code is what students actually need.
 export const INVITE_BASE_URL = 'https://thrivecbt.app/join/';

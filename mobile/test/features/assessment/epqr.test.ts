@@ -7,13 +7,14 @@ import {
   epqrMax,
   epqrScores,
   epqrSummary,
-} from '@/features/assessment/epqr';
+} from '@/features/assessment';
 import {
-  finishEpqr,
+  clearEpqrAnswers,
   getEpqrAnswers,
   getEpqrResult,
+  saveEpqrOnPhone,
   setEpqrAnswer,
-} from '@/features/assessment/epqrStore';
+} from '@/features/assessment/store/epqrStore';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({
@@ -61,15 +62,17 @@ describe('EPQ-R scoring', () => {
 });
 
 describe('EPQ-R answers', () => {
-  it('keeps answers in progress and scores them when finished', () => {
+  it('keeps answers in progress until they’re cleared', () => {
     setEpqrAnswer(0, true);
     setEpqrAnswer(2, false);
     expect(getEpqrAnswers()).toEqual([true, undefined, false]);
-    for (let i = 0; i < 100; i++) setEpqrAnswer(i, i === WISHED_DEAD_INDEX);
-    const result = finishEpqr(new Date('2026-11-16T09:00:00Z'));
-    expect(result.wishedDead).toBe(true);
-    expect(result.scores.N).toBe(1);
-    expect(getEpqrResult()).toEqual(result);
+    clearEpqrAnswers();
     expect(getEpqrAnswers()).toEqual([]);
+  });
+
+  it('keeps only what the server said, never scores', () => {
+    const saved = { id: 'e1', needsSupport: true, takenAt: '2026-11-16T09:00:00.000Z' };
+    saveEpqrOnPhone(saved);
+    expect(getEpqrResult()).toEqual(saved);
   });
 });

@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -8,23 +8,25 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
-import { researcherForCode } from '@/features/assignment/assign';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { MIN_CODE_LENGTH, useInviteCode } from '@/features/assignment';
 import { getUserSession, setUserSession } from '@/features/auth/store/userSession';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
-const MIN_CODE_LENGTH = 4;
-
 export default function InviteCodeScreen() {
   const [code, setCode] = useState(() => getUserSession().inviteCode ?? '');
-  const match = researcherForCode(MOCK_RESEARCHERS, code);
-  const unknown = !match && code.trim().length >= MIN_CODE_LENGTH;
+  const lookup = useInviteCode(code);
+  const match = lookup.data;
+  const typedEnough = code.replace(/\s/g, '').length >= MIN_CODE_LENGTH;
+  const unknown = typedEnough && lookup.error?.code === 'ASSIGNMENT_CODE_NOT_FOUND';
+  const failed = typedEnough && lookup.error && !unknown ? lookup.error.message : null;
+
+  useEffect(() => {
+    if (match) haptics.success();
+  }, [match]);
 
   function handleChange(value: string) {
-    const next = value.toUpperCase();
-    if (!match && researcherForCode(MOCK_RESEARCHERS, next)) haptics.success();
-    setCode(next);
+    setCode(value.toUpperCase());
   }
 
   function goOn(inviteCode: string | undefined) {
@@ -36,7 +38,11 @@ export default function InviteCodeScreen() {
     <Screen
       footer={
         <>
-          <Button disabled={!match} onPress={() => goOn(match?.inviteCode)}>
+          <Button
+            disabled={!match}
+            loading={lookup.isFetching}
+            onPress={() => goOn(code.replace(/\s/g, ''))}
+          >
             Continue
           </Button>
           <Button variant="ghost" onPress={() => goOn(undefined)}>
@@ -65,7 +71,7 @@ export default function InviteCodeScreen() {
             autoComplete="off"
             maxLength={12}
             returnKeyType="done"
-            onSubmitEditing={() => match && goOn(match.inviteCode)}
+            onSubmitEditing={() => match && goOn(code.replace(/\s/g, ''))}
             style={[styles.input, unknown && styles.inputError]}
           />
         </View>
@@ -83,6 +89,11 @@ export default function InviteCodeScreen() {
         {unknown && (
           <Text style={styles.error} accessibilityLiveRegion="polite">
             We couldn’t find that code. Check it with the researcher who sent it.
+          </Text>
+        )}
+        {failed && (
+          <Text style={styles.error} accessibilityLiveRegion="polite">
+            {failed}
           </Text>
         )}
       </View>

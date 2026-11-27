@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { initials } from '@/features/assignment/assign';
+import { initials } from '@/features/assignment';
 import { colors, fonts } from '@/theme';
 
 const PALETTE = [

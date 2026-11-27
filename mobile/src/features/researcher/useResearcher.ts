@@ -1,8 +1,7 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 
-import { MAX_CASELOAD } from '@/features/assignment/assign';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { MAX_CASELOAD, MOCK_RESEARCHERS } from '@/features/researcher/mockResearchers';
 import { useSessionStore } from '@/stores/session.store';
 
 import { mockCaseload } from './caseload';

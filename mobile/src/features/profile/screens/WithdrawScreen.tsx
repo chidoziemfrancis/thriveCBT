@@ -8,11 +8,8 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
 import { signOut } from '@/features/auth/signOut';
-import {
-  WITHDRAW_PHRASE,
-  confirmsWithdrawal,
-  recordWithdrawal,
-} from '@/features/profile/withdrawalStore';
+import { useWithdraw } from '../hooks/useWithdraw';
+import { WITHDRAW_PHRASE, confirmsWithdrawal } from '../store/withdrawalStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -28,21 +25,29 @@ export default function WithdrawScreen() {
   const [reason, setReason] = useState('');
   const [typed, setTyped] = useState('');
   const confirmed = confirmsWithdrawal(typed);
+  const leave = useWithdraw();
 
-  async function withdraw() {
+  function withdraw() {
     if (!confirmed) return;
-    recordWithdrawal(reason.trim() || undefined);
     haptics.tap();
-    await signOut();
-    router.dismissAll();
-    router.replace('/profile/withdrawn');
+    leave.mutate(
+      { reason: reason.trim() || undefined, confirm: typed },
+      {
+        onSuccess: async () => {
+          await signOut();
+          router.dismissAll();
+          router.replace('/profile/withdrawn');
+        },
+      }
+    );
   }
 
   return (
     <Screen
       footer={
         <>
-          <Button disabled={!confirmed} onPress={withdraw}>
+          {leave.isError && <Text style={styles.error}>{leave.error.message}</Text>}
+          <Button disabled={!confirmed} loading={leave.isPending} onPress={withdraw}>
             Withdraw from the study
           </Button>
           <Button variant="ghost" onPress={() => router.back()}>
@@ -101,6 +106,7 @@ export default function WithdrawScreen() {
 }
 
 const styles = StyleSheet.create({
+  error: { fontFamily: fonts.medium, fontSize: 14, color: colors.danger, textAlign: 'center' },
   body: { marginTop: 12, gap: 16 },
   center: { alignItems: 'center' },
   centerText: { textAlign: 'center' },

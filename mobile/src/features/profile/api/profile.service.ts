@@ -5,6 +5,8 @@ import type {
   Profile,
   ProfileUpdate,
   ServerPreferences,
+  ServerWithdrawal,
+  WithdrawBody,
 } from '../types/profile.types';
 
 export const profileKeys = {
@@ -20,4 +22,6 @@ export const profileService = {
   getPreferences: () => api.get<ServerPreferences>('/me/preferences').then((r) => r.data),
   updatePreferences: (body: PreferencesUpdate) =>
     api.patch<ServerPreferences>('/me/preferences', body).then((r) => r.data),
+  withdraw: (body: WithdrawBody) =>
+    api.post<ServerWithdrawal>('/me/withdraw', body).then((r) => r.data),
 };

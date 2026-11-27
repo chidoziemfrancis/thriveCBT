@@ -7,12 +7,12 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
-import { isValidPhone } from '@/features/profile/contactValidation';
+import { isValidPhone } from '@/features/profile/utils/contactValidation';
 import {
   getEmergencyContact,
   removeEmergencyContact,
   saveEmergencyContact,
-} from '@/features/profile/emergencyContactStore';
+} from '@/features/profile/store/emergencyContactStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

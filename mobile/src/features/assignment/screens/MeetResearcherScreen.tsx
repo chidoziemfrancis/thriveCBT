@@ -7,19 +7,17 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import type { FeatureIconName } from '@/components/icons/FeatureIcon';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { haptics } from '@/lib/haptics';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
+import ResearcherPhoto from '../components/ResearcherPhoto';
+import { getMyResearcher } from '../store/assignmentStore';
+import { firstName } from '../utils/names';
 import { colors, fonts, radius, type } from '@/theme';
 import { afterMatching } from '@/features/onboarding/reminders';
 
 const AVATAR = 112;
 
 export default function MeetResearcherScreen() {
-  const assignment = getAssignment();
-  const researcher = MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId);
+  const researcher = getMyResearcher();
 
   useEffect(() => {
     if (!researcher) return;

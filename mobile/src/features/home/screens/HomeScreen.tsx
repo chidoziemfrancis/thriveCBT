@@ -3,9 +3,8 @@ import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { getFinalPhq9 } from '@/features/assessment/scoreHistory';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { getFinalPhq9 } from '@/features/assessment';
+import { getMyResearcher } from '@/features/assignment';
 import EndOfStudyCard from '@/features/endOfStudy/components/EndOfStudyCard';
 import { programmeFinished } from '@/features/endOfStudy/endOfStudy';
 import CheckInCard from '@/features/home/components/CheckInCard';
@@ -29,11 +28,10 @@ const GUTTER = 24;
 const stagger = (index: number) => FadeInDown.delay(70 * index).duration(380);
 
 function readBasics() {
-  const assignment = getAssignment();
   return {
     name: getOnboardingData().name,
     week: currentStudyWeek(),
-    researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
+    researcher: getMyResearcher(),
     finalTaken: Boolean(getFinalPhq9()),
   };
 }

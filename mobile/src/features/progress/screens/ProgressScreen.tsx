@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import Screen from '@/components/ui/Screen';
-import { getPhq9Scores } from '@/features/assessment/scoreHistory';
+import { getPhq9Scores } from '@/features/assessment';
 import MoodNotes from '@/features/mood/components/MoodNotes';
 import { moodNotes } from '@/features/mood/moodLog';
 import { getMoodLog } from '@/features/mood/moodStore';

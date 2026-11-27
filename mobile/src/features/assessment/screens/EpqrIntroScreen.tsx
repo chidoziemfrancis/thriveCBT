@@ -6,8 +6,8 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import Mascot from '@/components/mascot/Mascot';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { EPQR_ITEMS } from '@/features/assessment/epqr';
-import { getEpqrAnswers } from '@/features/assessment/epqrStore';
+import { EPQR_ITEMS } from '../utils/epqr';
+import { getEpqrAnswers } from '../store/epqrStore';
 import { colors, fonts, type } from '@/theme';
 
 /** Sets up the 100 yes/no questions, or offers to carry on from where the student stopped. */

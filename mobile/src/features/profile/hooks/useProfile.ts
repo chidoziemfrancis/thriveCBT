@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api-error';
 
 import { profileKeys, profileService } from '../api/profile.service';
-import { saveProfileOnPhone } from '../phoneCopy';
+import { saveProfileOnPhone } from '../store/phoneCopy';
 import type { Profile, ProfileUpdate } from '../types/profile.types';
 
 const onboardingStatusKey = ['onboarding', 'status'] as const;

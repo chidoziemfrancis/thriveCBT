@@ -14,16 +14,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Mascot from '@/components/mascot/Mascot';
 import BackButton from '@/components/ui/BackButton';
-import { Researcher, firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { firstName, getMyResearcher, type ResearcherCard } from '@/features/assignment';
+import { ResearcherPhoto } from '@/features/assignment';
 import { ChatRow, REPLY_HOURS, toChatRows } from '@/features/chat/chatLogic';
 import { sendMessage, setChatOpen, useChat } from '@/features/chat/chatStore';
 import ChatComposer from '@/features/chat/components/ChatComposer';
 import MessageBubble from '@/features/chat/components/MessageBubble';
 import TypingBubble from '@/features/chat/components/TypingBubble';
 import { haptics } from '@/lib/haptics';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
 import { colors, fonts, radius, type } from '@/theme';
 
 // Shown after a flagged message is visibly sent, so the student sees it went through first.
@@ -37,7 +35,7 @@ function openers(name: string) {
   ];
 }
 
-function Header({ researcher, typing }: { researcher: Researcher; typing: boolean }) {
+function Header({ researcher, typing }: { researcher: ResearcherCard; typing: boolean }) {
   return (
     <View style={styles.header}>
       <BackButton />
@@ -67,7 +65,7 @@ function EmptyChat({
   researcher,
   onPick,
 }: {
-  researcher: Researcher;
+  researcher: ResearcherCard;
   onPick: (text: string) => void;
 }) {
   const name = firstName(researcher.name);
@@ -103,10 +101,7 @@ export default function ChatScreen() {
   // Other screens can open the chat with a message ready to send.
   const { draft } = useLocalSearchParams<{ draft?: string }>();
   const [text, setText] = useState(draft ?? '');
-  const researcher = useMemo(
-    () => MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId),
-    []
-  );
+  const researcher = useMemo(() => getMyResearcher(), []);
 
   useFocusEffect(
     useCallback(() => {

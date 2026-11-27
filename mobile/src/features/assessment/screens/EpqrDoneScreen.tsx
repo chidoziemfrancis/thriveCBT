@@ -1,22 +1,40 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 
 import Mascot from '@/components/mascot/Mascot';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import SupportCard from '@/features/assessment/components/SupportCard';
-import { getEpqrResult } from '@/features/assessment/epqrStore';
+import SupportCard from '../components/SupportCard';
+import { useSubmitEpqr } from '../hooks/useAssessments';
+import { clearEpqrAnswers, getEpqrAnswers, getEpqrResult } from '../store/epqrStore';
+import { EPQR_ITEMS, WISHED_DEAD_INDEX } from '../utils/epqr';
 import { haptics } from '@/lib/haptics';
-import { type } from '@/theme';
+import { colors, fonts, type } from '@/theme';
 
 /**
  * The end of the questionnaire. Scores go to the researcher only; a Yes to having wished to be
  * dead gets the same support screen as PHQ-9 question 9.
  */
 export default function EpqrDoneScreen() {
-  const [wishedDead] = useState(() => getEpqrResult()?.wishedDead ?? false);
+  const [answers] = useState(() => {
+    const saved = getEpqrAnswers();
+    return EPQR_ITEMS.map((_, i) => saved[i] === true);
+  });
+  const [earlier] = useState(getEpqrResult);
+  const alreadySaved = earlier !== null;
+  const wishedDead = earlier ? earlier.needsSupport : answers[WISHED_DEAD_INDEX];
+  const submit = useSubmitEpqr();
+  const { mutate } = submit;
+
+  // Saved as soon as the screen opens, so a Yes to question 76 reaches the researcher even if
+  // the app is closed here. Sending again is safe: the server keeps the first answers.
+  const save = useCallback(() => {
+    if (!alreadySaved) mutate(answers, { onSuccess: clearEpqrAnswers });
+  }, [alreadySaved, mutate, answers]);
+  useEffect(save, [save]);
+  const saved = alreadySaved || submit.isSuccess;
 
   useEffect(() => {
     if (wishedDead) return;
@@ -25,9 +43,15 @@ export default function EpqrDoneScreen() {
   }, [wishedDead]);
 
   const footer = (
-    <Button onPress={() => router.replace('/assignment/finding')}>
-      {wishedDead ? 'Continue' : 'Meet my researcher'}
-    </Button>
+    <>
+      {submit.isError && <Text style={styles.error}>{submit.error.message}</Text>}
+      <Button
+        loading={submit.isPending}
+        onPress={() => (saved ? router.replace('/assignment/finding') : save())}
+      >
+        {submit.isError ? 'Try again' : wishedDead ? 'Continue' : 'Meet my researcher'}
+      </Button>
+    </>
   );
 
   return (
@@ -66,4 +90,5 @@ const styles = StyleSheet.create({
   center: { alignItems: 'center' },
   centerText: { textAlign: 'center' },
   copy: { gap: 8 },
+  error: { fontFamily: fonts.medium, fontSize: 14, color: colors.danger, textAlign: 'center' },
 });

@@ -3,10 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { LifebuoyIcon } from '@/components/icons';
-import { initials } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { getMyResearcher, initials, ResearcherPhoto } from '@/features/assignment';
 import CallView from '@/features/checkin/components/CallView';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { colors, fonts, radius } from '@/theme';
@@ -14,7 +11,7 @@ import { colors, fonts, radius } from '@/theme';
 export default function CallScreen() {
   const params = useLocalSearchParams<{ mic?: string; cam?: string }>();
   const [{ researcher, studentName }] = useState(() => ({
-    researcher: MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId),
+    researcher: getMyResearcher(),
     studentName: getOnboardingData().name ?? '',
   }));
 

@@ -1,5 +1,10 @@
-import { EPQR_ITEMS, WISHED_DEAD_INDEX } from '@/features/assessment/epqr';
-import { PHQ9_OPTIONS, PHQ9_QUESTIONS, SUICIDAL_IDEATION_INDEX } from '@/features/assessment/phq9';
+import {
+  EPQR_ITEMS,
+  WISHED_DEAD_INDEX,
+  PHQ9_OPTIONS,
+  PHQ9_QUESTIONS,
+  SUICIDAL_IDEATION_INDEX,
+} from '@/features/assessment';
 
 import type { AlertEvent } from './alertStore';
 import type { CaseloadStudent, Phq9Taken } from './caseload';

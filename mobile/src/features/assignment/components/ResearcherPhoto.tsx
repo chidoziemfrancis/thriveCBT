@@ -1,8 +1,8 @@
 import { Image } from 'expo-image';
 import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 
-import { Researcher, initials } from '@/features/assignment/assign';
-import { RESEARCHER_PHOTOS } from '@/features/assignment/researcherPhotos';
+import { RESEARCHER_PHOTOS } from '../constants/researcherPhotos';
+import { initials } from '../utils/names';
 
 /**
  * Fills its avatar container with the researcher's photo, or falls back to their initials.
@@ -12,7 +12,7 @@ export default function ResearcherPhoto({
   researcher,
   initialsStyle,
 }: {
-  researcher: Researcher | undefined;
+  researcher: { id: string; name: string } | undefined;
   initialsStyle: StyleProp<TextStyle>;
 }) {
   const photo = researcher ? RESEARCHER_PHOTOS[researcher.id] : undefined;

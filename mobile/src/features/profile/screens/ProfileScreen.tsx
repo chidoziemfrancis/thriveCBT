@@ -6,17 +6,15 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import { getFinalPhq9 } from '@/features/assessment/scoreHistory';
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { getFinalPhq9 } from '@/features/assessment';
+import { firstName, getMyResearcher } from '@/features/assignment';
 import { signOut } from '@/features/auth/signOut';
 import UserAvatar from '@/features/avatar/components/UserAvatar';
 import { getConsent } from '@/features/consent/consentStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
-import { useEmergencyContact } from '@/features/profile/emergencyContactStore';
+import { useEmergencyContact } from '@/features/profile/store/emergencyContactStore';
 import { OPEN_ALL_SESSIONS_FOR_TESTING, canPreviewSessions } from '@/features/sessions/preview';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { setPreference, usePreferences } from '@/lib/preferences';
@@ -24,12 +22,11 @@ import { useSessionStore } from '@/stores/session.store';
 import { colors, fonts } from '@/theme';
 
 function readProfile() {
-  const assignment = getAssignment();
   return {
     name: getOnboardingData().name ?? '',
     email: useSessionStore.getState().user?.email ?? '',
     week: currentStudyWeek(),
-    researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
+    researcher: getMyResearcher(),
     consent: getConsent(),
     graduated: Boolean(getFinalPhq9()),
   };

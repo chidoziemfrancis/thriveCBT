@@ -7,7 +7,7 @@ import { CheckIcon, ChevronRightIcon } from '@/components/icons';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { getBaselinePhq9, getFinalPhq9 } from '@/features/assessment/scoreHistory';
+import { getBaselinePhq9, getFinalPhq9 } from '@/features/assessment';
 import Rosette from '@/features/endOfStudy/components/Rosette';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { SESSIONS } from '@/features/sessions/sessions';

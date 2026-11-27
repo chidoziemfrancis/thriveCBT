@@ -1,9 +1,7 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useMemo, useState, useSyncExternalStore } from 'react';
 
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { firstName, getMyResearcher, getAssignment } from '@/features/assignment';
 import { useChat } from '@/features/chat/chatStore';
 import { checkInPhase } from '@/features/checkin/checkinLogic';
 import { getNextCheckIn } from '@/features/checkin/checkinStore';
@@ -49,7 +47,7 @@ export function useNotifications() {
 
   const { items, researcher } = useMemo(() => {
     const assignment = getAssignment();
-    const researcher = MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId);
+    const researcher = getMyResearcher();
     const checkIn = getNextCheckIn(researcher?.id, now);
     const joinedAt = getConsent()?.agreedAt ?? assignment?.assignedAt;
     const week = currentStudyWeek(now);

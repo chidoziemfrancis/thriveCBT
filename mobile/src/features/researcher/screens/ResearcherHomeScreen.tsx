@@ -4,8 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { CameraIcon, ChevronRightIcon } from '@/components/icons';
 import Screen from '@/components/ui/Screen';
-import { firstName } from '@/features/assignment/assign';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
+import { firstName, ResearcherPhoto } from '@/features/assignment';
 import { JOIN_EARLY_MIN, countdownLabel } from '@/features/checkin/checkinLogic';
 import type { Call, CaseloadStudent } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';

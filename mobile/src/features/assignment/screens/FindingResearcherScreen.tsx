@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Easing,
@@ -14,12 +14,13 @@ import Animated, {
 import Mascot from '@/components/mascot/Mascot';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { assignResearcher } from '@/features/assignment/assign';
-import { getAssignment, saveAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { getUserSession } from '@/features/auth/store/userSession';
-import { colors, type } from '@/theme';
 import { afterMatching } from '@/features/onboarding/reminders';
+import type { ApiError } from '@/lib/api-error';
+import { colors, type } from '@/theme';
+
+import { useAssign } from '../hooks/useAssignment';
+import { getAssignment } from '../store/assignmentStore';
 
 // Long enough to read the message and feel the match is considered, short enough not to drag.
 const SEARCH_MS = 2200;
@@ -47,25 +48,56 @@ function PulseRing({ delay }: { delay: number }) {
 
 export default function FindingResearcherScreen() {
   const reduceMotion = useReducedMotion();
+  const assign = useAssign();
   const [noneAvailable, setNoneAvailable] = useState(false);
+  const [error, setError] = useState<ApiError | null>(null);
+  const { mutate } = assign;
+
+  // The search runs for at least SEARCH_MS even when the server answers sooner, so the match
+  // feels considered rather than instant.
+  const findResearcher = useCallback(() => {
+    const started = Date.now();
+    const after = (then: () => void) =>
+      setTimeout(then, Math.max(0, SEARCH_MS - (Date.now() - started)));
+    mutate(getUserSession().inviteCode, {
+      onSuccess: () => after(() => router.replace('/assignment/meet')),
+      onError: (apiError) =>
+        after(() =>
+          apiError.code === 'ASSIGNMENT_NO_RESEARCHER' ? setNoneAvailable(true) : setError(apiError)
+        ),
+    });
+  }, [mutate]);
 
   useEffect(() => {
     if (getAssignment()) {
       router.replace('/assignment/meet');
       return;
     }
+    findResearcher();
+  }, [findResearcher]);
 
-    const timer = setTimeout(() => {
-      const result = assignResearcher(MOCK_RESEARCHERS, getUserSession().inviteCode);
-      if (!result) {
-        setNoneAvailable(true);
-        return;
-      }
-      saveAssignment(result.researcher.id, result.method);
-      router.replace('/assignment/meet');
-    }, SEARCH_MS);
-    return () => clearTimeout(timer);
-  }, []);
+  if (error) {
+    return (
+      <Screen
+        footer={
+          <Button
+            onPress={() => {
+              setError(null);
+              findResearcher();
+            }}
+          >
+            Try again
+          </Button>
+        }
+      >
+        <Animated.View entering={FadeIn} style={styles.body}>
+          <Mascot size={120} mood="calm" />
+          <Text style={[type.title, styles.center]}>We couldn’t find your researcher</Text>
+          <Text style={[type.body, styles.center]}>{error.message}</Text>
+        </Animated.View>
+      </Screen>
+    );
+  }
 
   if (noneAvailable) {
     return (

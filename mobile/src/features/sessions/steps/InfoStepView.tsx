@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { firstName } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { firstName, getMyResearcher, ResearcherPhoto } from '@/features/assignment';
 import { getNextCheckIn } from '@/features/checkin/checkinStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
@@ -18,7 +15,7 @@ import StepArt from './StepArt';
 import { stepText } from './stepText';
 
 function readContext() {
-  const researcher = MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId);
+  const researcher = getMyResearcher();
   const checkIn = researcher ? getNextCheckIn(researcher.id) : null;
   return {
     name: (getOnboardingData().name ?? '').split(' ')[0],

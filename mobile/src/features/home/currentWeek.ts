@@ -1,4 +1,4 @@
-import { getAssignment } from '@/features/assignment/assignmentStore';
+import { getAssignment } from '@/features/assignment';
 import { getConsent } from '@/features/consent/consentStore';
 
 import { weekOfStudy } from './studyWeek';

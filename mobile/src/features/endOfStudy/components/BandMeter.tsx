@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { severityBand } from '@/features/assessment/phq9';
+import { severityBand } from '@/features/assessment';
 import { colors, fonts, radius } from '@/theme';
 
 const BANDS = ['Minimal', 'Mild', 'Moderate', 'Moderately severe', 'Severe'];

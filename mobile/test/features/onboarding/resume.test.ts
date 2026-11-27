@@ -23,6 +23,8 @@ jest.mock('expo-sqlite/kv-store', () => ({
 const mockGet = jest.fn<(url: string) => Promise<{ data: unknown }>>();
 jest.mock('@/lib/axios', () => ({ api: { get: (url: string) => mockGet(url) } }));
 
+import { getPhq9Scores } from '@/features/assessment';
+import { getMyResearcher } from '@/features/assignment';
 import { getConsent } from '@/features/consent/consentStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { pullStudentToPhone, resumeRoute, routeForStep } from '@/features/onboarding/resume';
@@ -44,6 +46,9 @@ describe('routeForStep', () => {
     expect(routeForStep('profile')).toBe('/onboarding/name');
     expect(routeForStep('eligibility')).toBe('/onboarding/eligibility');
     expect(routeForStep('not-eligible')).toBe('/onboarding/not-eligible');
+    expect(routeForStep('phq9')).toBe('/onboarding/what-to-expect');
+    expect(routeForStep('epqr')).toBe('/assessment/epqr');
+    expect(routeForStep('assignment')).toBe('/assignment/finding');
     expect(routeForStep('done')).toBeNull();
   });
 });
@@ -80,6 +85,31 @@ describe('pullStudentToPhone', () => {
           },
         };
       }
+      if (url === '/me/phq9') {
+        return {
+          data: {
+            items: [
+              {
+                id: 'p1',
+                kind: 'baseline',
+                score: 9,
+                band: 'Mild',
+                needsSupport: true,
+                takenAt: '2026-11-27T08:00:00.000Z',
+              },
+            ],
+          },
+        };
+      }
+      if (url === '/me/assignment') {
+        return {
+          data: {
+            researcher: { id: 'r1', name: 'Grace Bello', title: 'PhD student', bio: null },
+            method: 'invite',
+            assignedAt: '2026-11-27T08:10:00.000Z',
+          },
+        };
+      }
       return { data: { version: 'draft-2026-11-03', agreedAt: '2026-11-27T07:12:01.270Z' } };
     });
 
@@ -95,6 +125,8 @@ describe('pullStudentToPhone', () => {
       version: 'draft-2026-11-03',
       agreedAt: '2026-11-27T07:12:01.270Z',
     });
+    expect(getPhq9Scores()).toEqual([{ score: 9, at: '2026-11-27T08:00:00.000Z' }]);
+    expect(getMyResearcher()).toMatchObject({ id: 'r1', name: 'Grace Bello' });
   });
 
   it('keeps what is on the phone when the server can’t be reached', async () => {

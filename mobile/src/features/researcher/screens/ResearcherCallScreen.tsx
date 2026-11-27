@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import { initials } from '@/features/assignment/assign';
+import { initials } from '@/features/assignment';
 import CallView, { CALL_AVATAR } from '@/features/checkin/components/CallView';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { useResearcher } from '@/features/researcher/useResearcher';

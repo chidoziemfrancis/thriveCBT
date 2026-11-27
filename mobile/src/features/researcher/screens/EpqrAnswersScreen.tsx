@@ -9,7 +9,7 @@ import {
   WISHED_DEAD_INDEX,
   epqrMax,
   epqrScores,
-} from '@/features/assessment/epqr';
+} from '@/features/assessment';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { colors, fonts, radius, type } from '@/theme';
 

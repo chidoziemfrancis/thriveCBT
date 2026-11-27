@@ -7,7 +7,7 @@ import { Glyph } from '@/components/icons/FeatureIcon';
 import {
   dismissEmergencyContactCard,
   useEmergencyContact,
-} from '@/features/profile/emergencyContactStore';
+} from '@/features/profile/store/emergencyContactStore';
 import { colors, fonts, radius } from '@/theme';
 
 /** A gentle nudge until a contact is added; dismissible because adding one is optional. */

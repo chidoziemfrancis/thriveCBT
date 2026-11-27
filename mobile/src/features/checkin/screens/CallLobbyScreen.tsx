@@ -8,9 +8,7 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { firstName, initials } from '@/features/assignment/assign';
-import { getAssignment } from '@/features/assignment/assignmentStore';
-import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
+import { firstName, getMyResearcher, initials } from '@/features/assignment';
 import CallControl from '@/features/checkin/components/CallControl';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { colors, fonts, radius, type } from '@/theme';
@@ -50,7 +48,7 @@ export default function CallLobbyScreen() {
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
   const [{ researcher, studentName }] = useState(() => ({
-    researcher: MOCK_RESEARCHERS.find((r) => r.id === getAssignment()?.researcherId),
+    researcher: getMyResearcher(),
     studentName: getOnboardingData().name ?? '',
   }));
 

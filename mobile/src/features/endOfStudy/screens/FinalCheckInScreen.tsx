@@ -6,8 +6,7 @@ import Mascot from '@/components/mascot/Mascot';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { startPhq9 } from '@/features/assessment/assessmentStore';
-import { PHQ9_QUESTIONS } from '@/features/assessment/phq9';
+import { startPhq9, PHQ9_QUESTIONS } from '@/features/assessment';
 import { colors, fonts, type } from '@/theme';
 
 const POINTS = [

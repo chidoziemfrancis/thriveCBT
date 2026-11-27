@@ -3,8 +3,8 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import { MAX_CASELOAD } from '@/features/assignment/assign';
-import ResearcherPhoto from '@/features/assignment/components/ResearcherPhoto';
+import { MAX_CASELOAD } from '@/features/researcher/mockResearchers';
+import { ResearcherPhoto } from '@/features/assignment';
 import { signOut } from '@/features/auth/signOut';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
 import { hoursSummary } from '@/features/researcher/schedule';

@@ -7,8 +7,8 @@ import Mascot from '@/components/mascot/Mascot';
 import AnswerPills from '@/components/questionnaire/AnswerPills';
 import QuestionnaireLayout from '@/components/questionnaire/QuestionnaireLayout';
 import Button from '@/components/ui/Button';
-import { EPQR_BREAKS, EPQR_ITEMS } from '@/features/assessment/epqr';
-import { finishEpqr, getEpqrAnswers, setEpqrAnswer } from '@/features/assessment/epqrStore';
+import { EPQR_BREAKS, EPQR_ITEMS } from '../utils/epqr';
+import { getEpqrAnswers, setEpqrAnswer } from '../store/epqrStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
@@ -43,7 +43,6 @@ export default function EpqrQuestionScreen() {
     next[index] = value === 1;
     setAnswers(next);
     if (index === total - 1) {
-      finishEpqr();
       router.replace('/assessment/epqr/done');
       return;
     }

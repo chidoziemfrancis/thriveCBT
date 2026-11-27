@@ -1,5 +1,5 @@
-import type { AssignmentMethod } from '@/features/assignment/assign';
 import type { Message } from '@/features/chat/chatLogic';
+import type { Assignment } from '@/features/assignment';
 import { containsRiskLanguage } from '@/features/chat/riskLanguage';
 import type { JournalEntry } from '@/features/journal/journalStore';
 import type { MoodEntry } from '@/features/mood/moodLog';
@@ -15,7 +15,7 @@ export type CaseloadStudent = {
   name: string;
   week: number;
   joinedAt: string;
-  joinedBy: AssignmentMethod;
+  joinedBy: Assignment['method'];
   lastActiveAt: string;
   /**
    * The PHQ-9 from sign-up: each answer (0 to 3, in question order), the total, and question 9
