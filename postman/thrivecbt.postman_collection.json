@@ -331,7 +331,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"name\": \"<string>\",\n  \"dateOfBirth\": \"<date>\",\n  \"isUndergraduate\": \"<boolean>\",\n  \"avatarId\": \"<string>\",\n  \"studyWeek\": \"<integer>\",\n  \"joinedAt\": \"<dateTime>\"\n}",
+              "body": "{\n  \"name\": \"<string>\",\n  \"dateOfBirth\": \"<date>\",\n  \"isUndergraduate\": \"<boolean>\",\n  \"avatarId\": \"<string>\",\n  \"studyWeek\": \"<integer>\",\n  \"joinedAt\": \"<dateTime>\",\n  \"startedAt\": \"<dateTime>\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -537,7 +537,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"name\": \"<string>\",\n  \"dateOfBirth\": \"<date>\",\n  \"isUndergraduate\": \"<boolean>\",\n  \"avatarId\": \"<string>\",\n  \"studyWeek\": \"<integer>\",\n  \"joinedAt\": \"<dateTime>\"\n}",
+              "body": "{\n  \"name\": \"<string>\",\n  \"dateOfBirth\": \"<date>\",\n  \"isUndergraduate\": \"<boolean>\",\n  \"avatarId\": \"<string>\",\n  \"studyWeek\": \"<integer>\",\n  \"joinedAt\": \"<dateTime>\",\n  \"startedAt\": \"<dateTime>\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -1249,7 +1249,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"nextStep\": \"<string>\",\n  \"emailVerified\": \"<boolean>\",\n  \"consented\": \"<boolean>\",\n  \"profileComplete\": \"<boolean>\",\n  \"isUndergraduate\": \"<boolean>\"\n}",
+              "body": "{\n  \"nextStep\": \"<string>\",\n  \"emailVerified\": \"<boolean>\",\n  \"consented\": \"<boolean>\",\n  \"profileComplete\": \"<boolean>\",\n  \"isUndergraduate\": \"<boolean>\",\n  \"phq9Done\": \"<boolean>\",\n  \"epqrDone\": \"<boolean>\",\n  \"matched\": \"<boolean>\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -2377,7 +2377,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "AUTH_ACCOUNT_SUSPENDED",
+              "name": "AUTH_ACCOUNT_SUSPENDED, AUTH_ACCOUNT_WITHDRAWN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2655,7 +2655,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "AUTH_ACCOUNT_SUSPENDED",
+              "name": "AUTH_ACCOUNT_SUSPENDED, AUTH_ACCOUNT_WITHDRAWN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5011,7 +5011,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "FORBIDDEN",
+              "name": "CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5269,7 +5269,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "FORBIDDEN",
+              "name": "CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5524,7 +5524,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "FORBIDDEN",
+              "name": "CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5746,7 +5746,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "FORBIDDEN",
+              "name": "CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -5947,7 +5947,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "FORBIDDEN",
+              "name": "CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -6205,7 +6205,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "name": "FORBIDDEN",
+              "name": "CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -6229,6 +6229,246 @@
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"answers\": [\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "name": "study",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "Leave the study: closes the account, signs out everywhere and tells the researcher",
+          "request": {
+            "name": "Leave the study: closes the account, signs out everywhere and tells the researcher",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "withdraw"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"\",\n  \"confirm\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "When the student withdrew; sending again returns the first date",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "withdraw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"\",\n  \"confirm\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"at\": \"<dateTime>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "VALIDATION_FAILED, WITHDRAW_CONFIRM_MISMATCH",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "withdraw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"\",\n  \"confirm\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "withdraw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"\",\n  \"confirm\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "withdraw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"\",\n  \"confirm\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"

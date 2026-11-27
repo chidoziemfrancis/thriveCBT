@@ -186,14 +186,17 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Yes to question 76 raises an urgent alert in the same request; sending again returns the first result
 - [x] Emails agreed from the notifications table: password changed (student), matched at random (researcher), every researcher full (study lead)
 
+### B3.4 Study entry rules · `feat/study-entry`
+
+- [x] Withdrawal model and `POST /v1/me/withdraw`: typed confirmation, closes the account and signs out everywhere in one step, emails the researcher without the reason; sending again returns the first date
+- [x] Withdrawn accounts can't log in or refresh (`AUTH_ACCOUNT_WITHDRAWN`)
+- [x] `CONSENT_REQUIRED` and `STUDY_WITHDRAWN` on study data routes, checked on each call (`@StudyData()`)
+- [x] Study week counts from the first consent; profile gains `startedAt`
+- [x] Onboarding status gains `phq9`, `epqr` and `assignment`
+
 ### Still to do in B3
 
-- [ ] Models: Withdrawal (Consent done in B2.5b, Assignment in B3.1, Phq9Result and Alert in B3.2, EpqrResult in B3.3)
-- [ ] `assessments` (`phq9/`, `epqr/`), `withdrawal`, `alerts` modules; `CONSENT_REQUIRED` on data routes
-- [ ] Onboarding status gains `phq9`, `epqr` and `assignment`
-- [ ] Withdrawal email to the researcher (agreed)
-- [ ] Study week counts from the consent date, as the app does (B2.5 uses the sign-up date until consent exists)
-- [ ] App: consent, both PHQ-9s, EPQ-R, assignment, withdrawal switched over
+- [ ] B3.5 App: consent, both PHQ-9s, EPQ-R, assignment and withdrawal switched over; the app handles `CONSENT_REQUIRED`, `STUDY_WITHDRAWN` and `AUTH_ACCOUNT_WITHDRAWN`, and resumes at the new onboarding steps
 
 ## B4 Sessions and student tools · `feat/student-sync`
 

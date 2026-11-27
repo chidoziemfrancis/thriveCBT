@@ -51,7 +51,7 @@ Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTH
 - Emails are sent through Unosend. Resend returns `503 EMAIL_SEND_FAILED` if Unosend can't take the email; a reset request always returns `204`.
 - The app PIN never leaves the phone.
 
-Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400), `AUTH_INVITE_EXPIRED` (400), `AUTH_INVITE_EMAIL_TAKEN` (409), `EMAIL_SEND_FAILED` (503).
+Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_ACCOUNT_WITHDRAWN` (403, login and refresh after withdrawing), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400), `AUTH_INVITE_EXPIRED` (400), `AUTH_INVITE_EMAIL_TAKEN` (409), `EMAIL_SEND_FAILED` (503).
 
 ## 3. Student operations
 
@@ -65,21 +65,22 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 | PATCH  | `/v1/me/preferences` | any of the preference fields                              | `preferences` |
 
 - Student accounts only; anyone else gets `403 FORBIDDEN`.
-- `profile`: `{ name, dateOfBirth, isUndergraduate, avatarId, studyWeek, joinedAt }`. Empty fields are `null`.
+- `profile`: `{ name, dateOfBirth, isUndergraduate, avatarId, studyWeek, joinedAt, startedAt }`. Empty fields are `null`.
   - `name`: 1 to 60 characters, trimmed.
   - `dateOfBirth`: `YYYY-MM-DD`, a real date in the past.
   - `avatarId`: one of the app's avatars, `avatar-01` to `avatar-08`.
-  - `studyWeek` (1 to 8) is worked out on the server from `joinedAt` (sign-up for now; B3 switches it to the consent date, as the app does).
+  - `joinedAt` is the sign-up date; `startedAt` is the day the student first consented, which is when the study starts (agreeing to a newer version later doesn't restart it). `null` before consent.
+  - `studyWeek` (1 to 8) is worked out on the server from `startedAt`, or from `joinedAt` before consent.
 - `preferences`: `{ notifySessions, notifyMood, moodReminderTime, notifyMessages, notifyCheckIns }`. All notifications start on; `moodReminderTime` is `08:00`, `12:00`, `18:00` (default) or `21:00`. Vibration and the reminder-asked flag stay on the phone.
 - `PATCH` takes any of the fields and refuses an empty body.
 
 ### 3.1b Onboarding status
 
-| Method | Path                | Returns                                                                    |
-| ------ | ------------------- | -------------------------------------------------------------------------- |
-| GET    | `/v1/me/onboarding` | `{ nextStep, emailVerified, consented, profileComplete, isUndergraduate }` |
+| Method | Path                | Returns                                                                                                 |
+| ------ | ------------------- | ------------------------------------------------------------------------------------------------------- |
+| GET    | `/v1/me/onboarding` | `{ nextStep, emailVerified, consented, profileComplete, isUndergraduate, phq9Done, epqrDone, matched }` |
 
-- `nextStep` follows the app's screens: `verify-email`, `consent`, `profile` (name and date of birth), `eligibility`, `not-eligible`, `done`. B3 adds `phq9`, `epqr` and `assignment` before `done`.
+- `nextStep` follows the app's screens: `verify-email`, `consent`, `profile` (name and date of birth), `eligibility`, `not-eligible`, `phq9` (the baseline), `epqr`, `assignment`, `done`. Reminders and the PIN stay on the phone, after `assignment`.
 - Worked out from what's saved, so the app reopens at the right screen on any phone. Students only.
 
 ### 3.2 Study entry: consent, assessments, assignment
@@ -97,6 +98,8 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 | POST   | `/v1/me/assignment`      | `{ inviteCode? }`                                     | same as GET                                                                                           |
 | POST   | `/v1/me/withdraw`        | `{ reason?, confirm: "WITHDRAW" }`                    | `{ at }`                                                                                              |
 
+- Study data routes (`/v1/me/phq9`, `/v1/me/epqr`, `GET` and `POST /v1/me/assignment`, and every B4 data route) answer `CONSENT_REQUIRED` before consent and `STUDY_WITHDRAWN` after withdrawing, checked on each call. Account, profile, settings, consent, onboarding and withdraw don't need consent.
+- Withdrawal (built in B3.4): `confirm` must be `WITHDRAW` (spaces and case ignored), as in the app. In one step the server records the withdrawal and the optional reason, closes the account (`status: "withdrawn"`) and signs the student out on every device; data saved so far stays, as the consent form says. The researcher gets an email, never with the reason. Sending again returns the first date.
 - Consent is built (B2): agreeing to the same version twice keeps the first date; `GET` returns the latest, or `404` before any.
 - The server scores the PHQ-9 and EPQ-R; the app doesn't send scores.
 - EPQ-R scale scores are never returned to the student, matching the app.
@@ -106,7 +109,7 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 - Assignment (built in B3.1): an invite code (from the join link or typed, spaces and case ignored) always goes to that researcher, as in the app. Without a code, the student goes at random to a researcher who is accepting students and has space (10 each), preferring the fewest students. Asking again returns the same match. The researcher gets an email either way, and when nobody has space every study lead is told a student is waiting; a failed email never undoes the match.
 - `GET /v1/invite-codes/:code` uses the strict rate limit, so codes can't be guessed in bulk.
 
-Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_BASELINE_FIRST` (409), `EPQR_NOT_TAKEN` (404), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400).
+Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_BASELINE_FIRST` (409), `EPQR_NOT_TAKEN` (404), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400), `STUDY_WITHDRAWN` (403).
 
 ### 3.3 Sessions
 
@@ -290,7 +293,7 @@ Quick replies are saved on the researcher's phone; the server doesn't need them.
 | Researcher | Non-urgent alert (severe score, inactive 5 days)                   |                                         | B6   | In app only                              |
 | Researcher | New message from a student (`notify.messages`)                     |                                         | Yes  | B6                                       |
 | Researcher | Their check-in is about to start (`notify.calls`)                  |                                         | Yes  | B6                                       |
-| Researcher | A student withdraws                                                | Yes                                     | B6   | Agreed (B3.4)                            |
+| Researcher | A student withdraws                                                | Yes                                     | B6   | Email built (B3.4)                       |
 | Study lead | Urgent alert for a student with no researcher yet                  | Same urgent email                       |      | Built (B3.2)                             |
 | Study lead | Matching fails because every researcher is full                    | "A student is waiting for a researcher" |      | Built (B3.3)                             |
 
@@ -311,7 +314,7 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B3    | Phq9Result         | studentId, kind (baseline or final, one each), answers, score, item9, takenAt                                                                |
 | B3    | EpqrResult         | studentId (one each), answers, psychoticism, extraversion, neuroticism, lie, wishedDead, takenAt                                             |
 | B3    | Assignment         | studentId, researcherId, method, assignedAt                                                                                                  |
-| B3    | Withdrawal         | studentId, reason, at                                                                                                                        |
+| B3    | Withdrawal         | studentId (one each), reason, withdrawnAt; kept after the account closes                                                                     |
 | B3    | Alert              | studentId, researcherId (empty until matched), kind, urgent, title, quote, detail, sourceId (one alert per kind and source), raisedAt        |
 | B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt                                                                                      |
 | B4    | MoodEntry          | studentId, mood, note, at                                                                                                                    |
