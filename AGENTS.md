@@ -31,6 +31,7 @@ Run from the repo root.
 | `npm run db:seed`                 | Add test accounts and data                                    |
 | `npm run prisma:validate`         | Check the Prisma schema                                       |
 | `npm run docs`                    | Regenerate `docs/api/openapi.json` and the Postman collection |
+| `npm run lead:create -- <email>`  | Create a study lead account; prints a temporary password once |
 
 Local database: either Docker (`npm run db:up`, port 5433) or a local PostgreSQL. Set `DATABASE_URL` in `.env`; see [docs/runbooks/local-setup.md](docs/runbooks/local-setup.md).
 

@@ -32,6 +32,7 @@ Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTH
 | POST   | `/v1/auth/password-reset/request` | Anyone                      | `{ email }`                 | `204`, even if the email is unknown       | B2.3  |
 | POST   | `/v1/auth/password-reset/confirm` | Anyone                      | `{ email, code, password }` | `204`                                     | B2.3  |
 | POST   | `/v1/auth/invites/accept`         | Invited researcher          | `{ token, password }`       | `{ user, accessToken, refreshToken }`     | B2.4  |
+| POST   | `/v1/admin/researcher-invites`    | Study lead                  | `{ email, name }`           | `201 { id, email, name, expiresAt }`      | B2.4  |
 | POST   | `/v1/me/push-tokens`              | Logged in                   | `{ token, platform }`       | `204`                                     | B6    |
 | DELETE | `/v1/me/push-tokens/:token`       | Logged in                   |                             | `204`                                     | B6    |
 
@@ -44,10 +45,11 @@ Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTH
 - Email verification and password reset use the 6-digit codes the app's screens expect. Codes are stored hashed, last 15 minutes and allow 5 tries; asking for a new code retires the old one.
 - Sign-up emails a verification code. If the email can't be sent, sign-up still succeeds and the student can ask for a new code.
 - A password reset logs out every device and also confirms the email.
+- Researchers can't sign up. The study lead invites them by email; the email links to `thrivecbt://researcher/accept-invite?token=…`, valid for 7 days. A new invite to the same email retires the old one. Accepting creates a researcher account with a confirmed email and an invite code for students (for example `GRACE1`), then logs them in. The first lead account is made with `npm run lead:create -- <email>`.
 - Emails are sent through Unosend. Resend returns `503 EMAIL_SEND_FAILED` if Unosend can't take the email; a reset request always returns `204`.
 - The app PIN never leaves the phone.
 
-Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400), `EMAIL_SEND_FAILED` (503).
+Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400), `AUTH_INVITE_EXPIRED` (400), `AUTH_INVITE_EMAIL_TAKEN` (409), `EMAIL_SEND_FAILED` (503).
 
 ## 3. Student operations
 
@@ -250,10 +252,10 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B0    | User               | email, passwordHash (B2.1), role, status, emailVerifiedAt (B2.3)                                          |
 | B0    | AuditLog           | actorId, action, targetType, targetId, metadata, requestId (append-only)                                  |
 | B2    | StudentProfile     | userId, joinedAt; name, dateOfBirth, isUndergraduate, avatarId, preferences (JSON) in B2.5                |
-| B2    | ResearcherProfile  | userId, name, title, bio, photoUrl, capacity, accepting, inviteCode, hours (JSON), notify (JSON)          |
+| B2    | ResearcherProfile  | userId, name, title, bio, capacity, accepting, inviteCode; photoUrl, hours and notify in B5               |
 | B2    | RefreshToken       | userId, tokenHash, familyId, expiresAt, revokedAt                                                         |
 | B2    | EmailCode          | userId, purpose (verify email or reset password), codeHash, expiresAt, attempts, usedAt                   |
-| B2    | Invite             | email, tokenHash, invitedById, expiresAt, acceptedAt                                                      |
+| B2    | Invite             | email, name, tokenHash, invitedById, expiresAt, acceptedAt, revokedAt                                     |
 | B3    | Consent            | studentId, version, agreedAt                                                                              |
 | B3    | Phq9Result         | studentId, kind, answers, score, at                                                                       |
 | B3    | EpqrResult         | studentId, answers, scores, at                                                                            |

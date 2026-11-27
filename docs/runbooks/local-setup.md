@@ -61,6 +61,16 @@ EMAIL_FROM=ThriveCBT <no-reply@your-verified-domain>
 
 The sender address must be on a domain verified in Unosend.
 
+## Study lead and researchers
+
+Seeded accounts all use the password `Password123` (for example `lead@thrivecbt.test`). To create a real study lead:
+
+```bash
+npm run lead:create -- lead@example.com   # prints a temporary password once
+```
+
+The lead invites researchers with `POST /v1/admin/researcher-invites` (in Postman: admin → invite). Locally, the invite link appears in the server log.
+
 ## Encryption key
 
 Generate a local key and put it in `.env` as `FIELD_ENCRYPTION_KEY`:

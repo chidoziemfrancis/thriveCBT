@@ -137,9 +137,10 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ### B2.4 Researcher invites
 
-- [ ] ResearcherProfile and Invite models
-- [ ] `scripts/create-lead` and `scripts/invite-researcher` (no web admin yet)
-- [ ] Accept an invite and set a password
+- [x] ResearcherProfile and Invite models; invite codes like `GRACE1`
+- [x] `npm run lead:create -- <email>` makes the first lead; leads invite with `POST /v1/admin/researcher-invites` (Postman until the web admin)
+- [x] Accept an invite and set a password; email link opens the app
+- [ ] App: build the R2 accept-invite screen for `thrivecbt://researcher/accept-invite?token=…` (B2.6)
 
 ### B2.5 Student profile and settings
 
