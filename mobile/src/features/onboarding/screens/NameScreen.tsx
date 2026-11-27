@@ -7,24 +7,26 @@ import Screen from '@/components/ui/Screen';
 import SpeechBubble from '@/components/mascot/SpeechBubble';
 import StepHeader from '@/components/ui/StepHeader';
 import TextField from '@/components/ui/TextField';
-import { getOnboardingData, setOnboardingData } from '@/features/onboarding/onboardingStore';
+import FormError from '@/features/auth/components/FormError';
+import { getOnboardingData } from '@/features/onboarding/onboardingStore';
+import { useUpdateProfile } from '@/features/profile';
 import { type } from '@/theme';
 
 export default function OnboardingNameScreen() {
   const [name, setName] = useState(() => getOnboardingData().name ?? '');
-  const canContinue = name.trim().length > 0;
+  const save = useUpdateProfile();
+  const canContinue = name.trim().length > 0 && !save.isPending;
 
   function handleContinue() {
     if (!canContinue) return;
-    setOnboardingData({ name: name.trim() });
-    router.push('/onboarding/dob');
+    save.mutate({ name: name.trim() }, { onSuccess: () => router.push('/onboarding/dob') });
   }
 
   return (
     <Screen
       footer={
         <Button disabled={!canContinue} onPress={handleContinue}>
-          Continue
+          {save.isPending ? 'Saving…' : 'Continue'}
         </Button>
       }
     >
@@ -52,6 +54,7 @@ export default function OnboardingNameScreen() {
           returnKeyType="next"
           onSubmitEditing={handleContinue}
         />
+        <FormError message={save.error?.message} />
       </View>
     </Screen>
   );

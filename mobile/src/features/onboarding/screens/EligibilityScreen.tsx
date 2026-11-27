@@ -7,7 +7,9 @@ import ChoiceButton from '@/components/ui/ChoiceButton';
 import Screen from '@/components/ui/Screen';
 import SpeechBubble from '@/components/mascot/SpeechBubble';
 import StepHeader from '@/components/ui/StepHeader';
-import { getOnboardingData, setOnboardingData } from '@/features/onboarding/onboardingStore';
+import FormError from '@/features/auth/components/FormError';
+import { getOnboardingData } from '@/features/onboarding/onboardingStore';
+import { useUpdateProfile } from '@/features/profile';
 import { type } from '@/theme';
 
 export default function OnboardingEligibilityScreen() {
@@ -15,17 +17,24 @@ export default function OnboardingEligibilityScreen() {
     () => getOnboardingData().isUndergraduate ?? null
   );
 
+  const save = useUpdateProfile();
+
   function handleContinue() {
-    if (isUndergraduate === null) return;
-    setOnboardingData({ isUndergraduate });
-    router.push(isUndergraduate ? '/onboarding/what-to-expect' : '/onboarding/not-eligible');
+    if (isUndergraduate === null || save.isPending) return;
+    save.mutate(
+      { isUndergraduate },
+      {
+        onSuccess: () =>
+          router.push(isUndergraduate ? '/onboarding/what-to-expect' : '/onboarding/not-eligible'),
+      }
+    );
   }
 
   return (
     <Screen
       footer={
-        <Button disabled={isUndergraduate === null} onPress={handleContinue}>
-          Continue
+        <Button disabled={isUndergraduate === null || save.isPending} onPress={handleContinue}>
+          {save.isPending ? 'Saving…' : 'Continue'}
         </Button>
       }
     >
@@ -53,6 +62,7 @@ export default function OnboardingEligibilityScreen() {
             No, I’m not
           </ChoiceButton>
         </View>
+        <FormError message={save.error?.message} />
       </View>
     </Screen>
   );
