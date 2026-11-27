@@ -1,0 +1,19 @@
+/// One row per student and session. `updatedAt` is when the phone made the change (the newest
+/// wins); `syncedAt` is when the server saved it, which `since` pulls are measured against.
+model SessionProgress {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  studentId   String    @map("student_id") @db.Uuid
+  sessionId   Int       @map("session_id")
+  done        String[]
+  answers     Json      @default("{}")
+  completedAt DateTime? @map("completed_at")
+  updatedAt   DateTime  @map("updated_at")
+  syncedAt    DateTime  @updatedAt @map("synced_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, sessionId])
+  @@index([studentId, syncedAt])
+  @@map("session_progress")
+}

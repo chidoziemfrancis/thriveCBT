@@ -20,6 +20,7 @@ model User {
   phq9Results       Phq9Result[]
   epqrResult        EpqrResult?
   withdrawal        Withdrawal?
+  sessionProgress   SessionProgress[]
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 
