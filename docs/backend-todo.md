@@ -227,10 +227,16 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Journal text encrypted on the server; a test checks it's never stored readable; deleting erases it
 - [x] App: journal synced, deletes included; entries from before sync get a UUID
 
+### B4.3a Thought records and positive log · `feat/thoughts-positive-sync`
+
+- [x] ThoughtRecord and PositiveEntry models; `GET ?since=`, `PUT` and `DELETE` for `/v1/me/thought-records` and `/v1/me/positive-entries`
+- [x] The student's own words in both are encrypted on the server, like the journal
+- [x] App: thought log and positive log synced; old ids get a UUID; shared item helpers in `src/lib/sync/items.ts` used by mood and journal too
+
 ### Still to do in B4
 
-- [ ] Models: ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
-- [ ] Modules: `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
+- [ ] Models: PlannedActivity, ToolkitItem, ToolUse, StressEntry, WellPlan, HomeworkTick
+- [ ] Modules: `activities`, `coping` (`toolkit/`, `stress-log/`), `wellbeing`, `homework`
 - [ ] App: each store switched over
 
 ## B5 Researcher side · `feat/researcher-api`
