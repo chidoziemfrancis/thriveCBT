@@ -10,8 +10,10 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { z } from 'zod';
 
 import { CurrentUser } from '../../../../shared/decorators/current-user.decorator.js';
+import { StudyData } from '../../../../shared/decorators/study-data.decorator.js';
 import { Roles } from '../../../../shared/decorators/roles.decorator.js';
 import { PHQ9_ERRORS } from '../../../../shared/errors/codes/phq9.errors.js';
+import { STUDY_ERRORS } from '../../../../shared/errors/codes/study.errors.js';
 import { COMMON_ERRORS } from '../../../../shared/errors/error-codes.js';
 import {
   ApiErrors,
@@ -32,6 +34,7 @@ import { Phq9Service } from '../services/phq9.service.js';
 @ApiTags('assessments')
 @ApiBearerAuth()
 @Roles('student')
+@StudyData()
 @Controller('me/phq9')
 export class Phq9Controller {
   constructor(private readonly phq9: Phq9Service) {}
@@ -42,7 +45,12 @@ export class Phq9Controller {
     summary: 'The student’s PHQ-9 results, oldest first',
   })
   @ApiZodResponse(200, phq9ResultsSchema, 'The results')
-  @ApiErrors(COMMON_ERRORS.UNAUTHENTICATED, COMMON_ERRORS.FORBIDDEN)
+  @ApiErrors(
+    STUDY_ERRORS.CONSENT_REQUIRED,
+    STUDY_ERRORS.WITHDRAWN,
+    COMMON_ERRORS.UNAUTHENTICATED,
+    COMMON_ERRORS.FORBIDDEN,
+  )
   async list(
     @CurrentUser() user: AuthUser,
   ): Promise<z.infer<typeof phq9ResultsSchema>> {
@@ -65,6 +73,8 @@ export class Phq9Controller {
   @ApiErrors(
     COMMON_ERRORS.VALIDATION_FAILED,
     PHQ9_ERRORS.BASELINE_FIRST,
+    STUDY_ERRORS.CONSENT_REQUIRED,
+    STUDY_ERRORS.WITHDRAWN,
     COMMON_ERRORS.UNAUTHENTICATED,
     COMMON_ERRORS.FORBIDDEN,
   )

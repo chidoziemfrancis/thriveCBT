@@ -9,8 +9,10 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../../../../shared/decorators/current-user.decorator.js';
+import { StudyData } from '../../../../shared/decorators/study-data.decorator.js';
 import { Roles } from '../../../../shared/decorators/roles.decorator.js';
 import { EPQR_ERRORS } from '../../../../shared/errors/codes/epqr.errors.js';
+import { STUDY_ERRORS } from '../../../../shared/errors/codes/study.errors.js';
 import { COMMON_ERRORS } from '../../../../shared/errors/error-codes.js';
 import {
   ApiErrors,
@@ -30,6 +32,7 @@ import { EpqrService } from '../services/epqr.service.js';
 @ApiTags('assessments')
 @ApiBearerAuth()
 @Roles('student')
+@StudyData()
 @Controller('me/epqr')
 export class EpqrController {
   constructor(private readonly epqr: EpqrService) {}
@@ -43,6 +46,8 @@ export class EpqrController {
   @ApiZodResponse(200, epqrResultSchema, 'The saved result')
   @ApiErrors(
     EPQR_ERRORS.NOT_TAKEN,
+    STUDY_ERRORS.CONSENT_REQUIRED,
+    STUDY_ERRORS.WITHDRAWN,
     COMMON_ERRORS.UNAUTHENTICATED,
     COMMON_ERRORS.FORBIDDEN,
   )
@@ -65,6 +70,8 @@ export class EpqrController {
   )
   @ApiErrors(
     COMMON_ERRORS.VALIDATION_FAILED,
+    STUDY_ERRORS.CONSENT_REQUIRED,
+    STUDY_ERRORS.WITHDRAWN,
     COMMON_ERRORS.UNAUTHENTICATED,
     COMMON_ERRORS.FORBIDDEN,
   )

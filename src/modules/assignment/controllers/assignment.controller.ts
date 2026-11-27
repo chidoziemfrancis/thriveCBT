@@ -12,8 +12,10 @@ import { Throttle } from '@nestjs/throttler';
 
 import { STRICT_RATE_LIMIT } from '../../../shared/constants/rate-limits.js';
 import { CurrentUser } from '../../../shared/decorators/current-user.decorator.js';
+import { StudyData } from '../../../shared/decorators/study-data.decorator.js';
 import { Roles } from '../../../shared/decorators/roles.decorator.js';
 import { ASSIGNMENT_ERRORS } from '../../../shared/errors/codes/assignment.errors.js';
+import { STUDY_ERRORS } from '../../../shared/errors/codes/study.errors.js';
 import { COMMON_ERRORS } from '../../../shared/errors/error-codes.js';
 import {
   ApiErrors,
@@ -34,6 +36,8 @@ import {
 import { AssignmentService } from '../services/assignment.service.js';
 
 const ACCESS = [COMMON_ERRORS.UNAUTHENTICATED, COMMON_ERRORS.FORBIDDEN];
+
+const STUDY = [STUDY_ERRORS.CONSENT_REQUIRED, STUDY_ERRORS.WITHDRAWN];
 
 @ApiTags('assignment')
 @ApiBearerAuth()
@@ -62,17 +66,19 @@ export class AssignmentController {
   }
 
   @Get('me/assignment')
+  @StudyData()
   @ApiOperation({
     operationId: 'getAssignment',
     summary: 'The student’s researcher',
   })
   @ApiZodResponse(200, assignmentSchema, 'The match')
-  @ApiErrors(COMMON_ERRORS.NOT_FOUND, ...ACCESS)
+  @ApiErrors(COMMON_ERRORS.NOT_FOUND, ...STUDY, ...ACCESS)
   get(@CurrentUser() user: AuthUser): Promise<AssignmentDto> {
     return this.assignment.get(user.id);
   }
 
   @Post('me/assignment')
+  @StudyData()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     operationId: 'assignResearcher',
@@ -89,6 +95,7 @@ export class AssignmentController {
     COMMON_ERRORS.VALIDATION_FAILED,
     ASSIGNMENT_ERRORS.CODE_NOT_FOUND,
     ASSIGNMENT_ERRORS.NO_RESEARCHER,
+    ...STUDY,
     ...ACCESS,
   )
   assign(

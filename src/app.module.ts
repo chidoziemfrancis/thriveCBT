@@ -20,6 +20,7 @@ import { CryptoModule } from './shared/crypto/crypto.module.js';
 import { AllExceptionsFilter } from './shared/errors/all-exceptions.filter.js';
 import { AuthGuard } from './shared/guards/auth.guard.js';
 import { RolesGuard } from './shared/guards/roles.guard.js';
+import { StudyGuard } from './shared/guards/study.guard.js';
 import { loggingConfig } from './shared/logging/logging.config.js';
 
 const ACCESS_TOKEN_TTL = '15m';
@@ -56,6 +57,7 @@ const ACCESS_TOKEN_TTL = '15m';
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
+    { provide: APP_GUARD, useClass: StudyGuard },
   ],
 })
 export class AppModule {}
