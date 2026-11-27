@@ -69,6 +69,8 @@ Features gain `api/`, `hooks/`, `schemas/`, `types/` and `index.ts` when they co
 12. **Zustand stores stay small and phone-only.** Persist with `kvStorage`, never secrets.
 13. **Never log request or response bodies, tokens, codes or passwords.**
 14. **Moving off mock data happens feature by feature**: when a feature switches to the API, its mock code is deleted in the same change.
+15. **Phone copies, for now.** Many screens still read the student's name, consent and settings from the older phone stores (`onboardingStore`, `consentStore`, `lib/preferences`), which also keeps the app working offline. Those copies are only ever written from server responses: after a successful save, and after login or app open (`pullStudentToPhone`). Moving a screen to `useProfile()` and friends removes its need for the copy. These phone stores are imported directly until their feature moves; everything else goes through a feature's `index.ts`.
+16. **Resuming onboarding:** after login, and when a logged-in student without a PIN opens the app, `resumeRoute()` asks `GET /me/onboarding` for the next step and opens that screen. Offline, the app carries on as it was.
 
 ## Running against the backend
 

@@ -159,7 +159,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] App API foundation: axios client, TanStack Query, Zustand session store, generated types, rules in `mobile/docs/API-CLIENT.md`
 - [x] Sign-up (email first), verify email with resend, login, forgot and reset password and logout use the API; mock accounts removed (B2.6a)
 - [ ] Try the app on a phone against the local backend (`mobile/.env` with the Mac's address)
-- [ ] Onboarding (consent, name, date of birth, eligibility, reminders, resume) and profile use the API (B2.6b)
+- [x] Onboarding (consent, name, date of birth, eligibility, resume on any phone) and profile (name, avatar, notification switches) use the API; the phone keeps an offline copy written only from server responses (B2.6b)
 - [ ] Student join link (`join/[code]`): the code stays on the phone until B3 sends it to `POST /v1/me/assignment`
 - [ ] Remove the mock accounts
 
