@@ -148,6 +148,12 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Notification settings as columns with defaults (all on, mood reminder 18:00)
 - [x] `GET/PATCH /v1/me/profile`, `GET/PATCH /v1/me/preferences` (students only)
 
+### B2.5b Onboarding gaps
+
+- [x] `POST /v1/auth/check-email` for the email-first sign-in screen (strict rate limit)
+- [x] Consent pulled forward from B3: Consent model, `GET/POST /v1/me/consent`
+- [x] `GET /v1/me/onboarding`: next step from saved data (verify email, consent, profile, eligibility, done)
+
 ### B2.6 App switch-over
 
 - [ ] `mobile/src/lib/api/` client: tokens in secure storage, automatic refresh
@@ -156,8 +162,9 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ## B3 Study core · `feat/study-core`
 
-- [ ] Models: Consent, Phq9Result, EpqrResult, Assignment, Withdrawal, Alert
-- [ ] `consent`, `assessments` (`phq9/`, `epqr/`), `assignment`, `withdrawal`, `alerts` modules
+- [ ] Models: Phq9Result, EpqrResult, Assignment, Withdrawal, Alert (Consent done in B2.5b)
+- [ ] `assessments` (`phq9/`, `epqr/`), `assignment`, `withdrawal`, `alerts` modules; `CONSENT_REQUIRED` on data routes
+- [ ] Onboarding status gains `phq9`, `epqr` and `assignment`
 - [ ] `src/events/`: PHQ-9 and EPQ-R submitted
 - [ ] Alerts on the server: question 9, EPQ-R 76, final rise of 5+, severe score
 - [ ] Assignment: random, max 10 per researcher

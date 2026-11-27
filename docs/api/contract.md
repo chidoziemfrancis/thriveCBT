@@ -20,25 +20,27 @@ Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTH
 
 ## 2. Shared: login and accounts
 
-| Method | Path                              | Who                         | Body                        | Returns                                   | Phase |
-| ------ | --------------------------------- | --------------------------- | --------------------------- | ----------------------------------------- | ----- |
-| POST   | `/v1/auth/register`               | Anyone (students only)      | `{ email, password }`       | `201 { user, accessToken, refreshToken }` | B2.1  |
-| POST   | `/v1/auth/login`                  | Anyone                      | `{ email, password }`       | `{ user, accessToken, refreshToken }`     | B2.1  |
-| POST   | `/v1/auth/refresh`                | Anyone with a refresh token | `{ refreshToken }`          | `{ accessToken, refreshToken }`           | B2.1  |
-| POST   | `/v1/auth/logout`                 | Anyone with a refresh token | `{ refreshToken }`          | `204`                                     | B2.1  |
-| GET    | `/v1/me`                          | Logged in                   |                             | `user`                                    | B2.1  |
-| POST   | `/v1/auth/verify-email`           | Logged in                   | `{ code }`                  | `user`                                    | B2.3  |
-| POST   | `/v1/auth/verify-email/resend`    | Logged in                   |                             | `204`                                     | B2.3  |
-| POST   | `/v1/auth/password-reset/request` | Anyone                      | `{ email }`                 | `204`, even if the email is unknown       | B2.3  |
-| POST   | `/v1/auth/password-reset/confirm` | Anyone                      | `{ email, code, password }` | `204`                                     | B2.3  |
-| POST   | `/v1/auth/invites/accept`         | Invited researcher          | `{ token, password }`       | `{ user, accessToken, refreshToken }`     | B2.4  |
-| POST   | `/v1/admin/researcher-invites`    | Study lead                  | `{ email, name }`           | `201 { id, email, name, expiresAt }`      | B2.4  |
-| POST   | `/v1/me/push-tokens`              | Logged in                   | `{ token, platform }`       | `204`                                     | B6    |
-| DELETE | `/v1/me/push-tokens/:token`       | Logged in                   |                             | `204`                                     | B6    |
+| Method | Path                              | Who                         | Body                        | Returns                                                  | Phase |
+| ------ | --------------------------------- | --------------------------- | --------------------------- | -------------------------------------------------------- | ----- |
+| POST   | `/v1/auth/check-email`            | Anyone                      | `{ email }`                 | `{ exists }`: log in if true, create a password if false | B2    |
+| POST   | `/v1/auth/register`               | Anyone (students only)      | `{ email, password }`       | `201 { user, accessToken, refreshToken }`                | B2.1  |
+| POST   | `/v1/auth/login`                  | Anyone                      | `{ email, password }`       | `{ user, accessToken, refreshToken }`                    | B2.1  |
+| POST   | `/v1/auth/refresh`                | Anyone with a refresh token | `{ refreshToken }`          | `{ accessToken, refreshToken }`                          | B2.1  |
+| POST   | `/v1/auth/logout`                 | Anyone with a refresh token | `{ refreshToken }`          | `204`                                                    | B2.1  |
+| GET    | `/v1/me`                          | Logged in                   |                             | `user`                                                   | B2.1  |
+| POST   | `/v1/auth/verify-email`           | Logged in                   | `{ code }`                  | `user`                                                   | B2.3  |
+| POST   | `/v1/auth/verify-email/resend`    | Logged in                   |                             | `204`                                                    | B2.3  |
+| POST   | `/v1/auth/password-reset/request` | Anyone                      | `{ email }`                 | `204`, even if the email is unknown                      | B2.3  |
+| POST   | `/v1/auth/password-reset/confirm` | Anyone                      | `{ email, code, password }` | `204`                                                    | B2.3  |
+| POST   | `/v1/auth/invites/accept`         | Invited researcher          | `{ token, password }`       | `{ user, accessToken, refreshToken }`                    | B2.4  |
+| POST   | `/v1/admin/researcher-invites`    | Study lead                  | `{ email, name }`           | `201 { id, email, name, expiresAt }`                     | B2.4  |
+| POST   | `/v1/me/push-tokens`              | Logged in                   | `{ token, platform }`       | `204`                                                    | B6    |
+| DELETE | `/v1/me/push-tokens/:token`       | Logged in                   |                             | `204`                                                    | B6    |
 
 `user` is `{ id, email, role: "student" | "researcher" | "lead", status: "active" | "suspended" | "withdrawn", createdAt }`. plus `emailVerified` (true once the email code is confirmed).
 
 - Emails are trimmed and lowercased.
+- `check-email` exists because the app asks for the email first. Sign-up already reveals a taken email, so it reveals nothing new; it uses the strict rate limit.
 - Passwords: 8 to 128 characters, with at least one letter and one number (the same rule as the app).
 - Access tokens last 15 minutes. Refresh tokens last 30 days, are stored only as a hash, and are replaced on every refresh. Reusing an old refresh token ends that whole login on every device. Logout ends the login the token belongs to.
 - A wrong password and an unknown email give the same error and take the same time.
@@ -71,6 +73,15 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 - `preferences`: `{ notifySessions, notifyMood, moodReminderTime, notifyMessages, notifyCheckIns }`. All notifications start on; `moodReminderTime` is `08:00`, `12:00`, `18:00` (default) or `21:00`. Vibration and the reminder-asked flag stay on the phone.
 - `PATCH` takes any of the fields and refuses an empty body.
 
+### 3.1b Onboarding status
+
+| Method | Path                | Returns                                                                    |
+| ------ | ------------------- | -------------------------------------------------------------------------- |
+| GET    | `/v1/me/onboarding` | `{ nextStep, emailVerified, consented, profileComplete, isUndergraduate }` |
+
+- `nextStep` follows the app's screens: `verify-email`, `consent`, `profile` (name and date of birth), `eligibility`, `not-eligible`, `done`. B3 adds `phq9`, `epqr` and `assignment` before `done`.
+- Worked out from what's saved, so the app reopens at the right screen on any phone. Students only.
+
 ### 3.2 Study entry: consent, assessments, assignment
 
 | Method | Path                | Body                                                  | Returns                                                                  |
@@ -84,6 +95,7 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 | POST   | `/v1/me/assignment` | `{ inviteCode? }`                                     | same as GET                                                              |
 | POST   | `/v1/me/withdraw`   | `{ reason?, confirm: "WITHDRAW" }`                    | `{ at }`                                                                 |
 
+- Consent is built (B2): agreeing to the same version twice keeps the first date; `GET` returns the latest, or `404` before any.
 - The server scores the PHQ-9 and EPQ-R; the app doesn't send scores.
 - EPQ-R scale scores are never returned to the student, matching the app.
 - A `final` PHQ-9 is only accepted once Session 8 is complete, and each kind is accepted once.
@@ -262,7 +274,7 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B2    | RefreshToken       | userId, tokenHash, familyId, expiresAt, revokedAt                                                                                            |
 | B2    | EmailCode          | userId, purpose (verify email or reset password), codeHash, expiresAt, attempts, usedAt                                                      |
 | B2    | Invite             | email, name, tokenHash, invitedById, expiresAt, acceptedAt, revokedAt                                                                        |
-| B3    | Consent            | studentId, version, agreedAt                                                                                                                 |
+| B2    | Consent            | studentId, version, agreedAt                                                                                                                 |
 | B3    | Phq9Result         | studentId, kind, answers, score, at                                                                                                          |
 | B3    | EpqrResult         | studentId, answers, scores, at                                                                                                               |
 | B3    | Assignment         | studentId, researcherId, method, assignedAt                                                                                                  |
