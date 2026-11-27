@@ -144,9 +144,9 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ### B2.5 Student profile and settings
 
-- [ ] Profile fields: name, date of birth, undergraduate, avatar
-- [ ] Notification settings
-- [ ] `GET/PATCH /v1/me/profile`, `GET/PATCH /v1/me/preferences`
+- [x] Profile fields: name, date of birth, undergraduate, avatar (migration `student_profile`)
+- [x] Notification settings as columns with defaults (all on, mood reminder 18:00)
+- [x] `GET/PATCH /v1/me/profile`, `GET/PATCH /v1/me/preferences` (students only)
 
 ### B2.6 App switch-over
 
@@ -161,6 +161,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [ ] `src/events/`: PHQ-9 and EPQ-R submitted
 - [ ] Alerts on the server: question 9, EPQ-R 76, final rise of 5+, severe score
 - [ ] Assignment: random, max 10 per researcher
+- [ ] Study week counts from the consent date, as the app does (B2.5 uses the sign-up date until consent exists)
 - [ ] App: consent, both PHQ-9s, EPQ-R, assignment, withdrawal switched over
 
 ## B4 Sessions and student tools · `feat/student-sync`

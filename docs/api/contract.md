@@ -62,8 +62,14 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 | GET    | `/v1/me/preferences` |                                                           | `preferences` |
 | PATCH  | `/v1/me/preferences` | any of the preference fields                              | `preferences` |
 
-- `profile`: `{ name, dateOfBirth, isUndergraduate, avatarId, studyWeek, joinedAt }`. `studyWeek` (1 to 8) is worked out on the server from `joinedAt`.
-- `preferences`: `{ notifySessions, notifyMood, moodReminderTime, notifyMessages, notifyCheckIns }`. Vibration and the reminder-asked flag stay on the phone.
+- Student accounts only; anyone else gets `403 FORBIDDEN`.
+- `profile`: `{ name, dateOfBirth, isUndergraduate, avatarId, studyWeek, joinedAt }`. Empty fields are `null`.
+  - `name`: 1 to 60 characters, trimmed.
+  - `dateOfBirth`: `YYYY-MM-DD`, a real date in the past.
+  - `avatarId`: one of the app's avatars, `avatar-01` to `avatar-08`.
+  - `studyWeek` (1 to 8) is worked out on the server from `joinedAt` (sign-up for now; B3 switches it to the consent date, as the app does).
+- `preferences`: `{ notifySessions, notifyMood, moodReminderTime, notifyMessages, notifyCheckIns }`. All notifications start on; `moodReminderTime` is `08:00`, `12:00`, `18:00` (default) or `21:00`. Vibration and the reminder-asked flag stay on the phone.
+- `PATCH` takes any of the fields and refuses an empty body.
 
 ### 3.2 Study entry: consent, assessments, assignment
 
@@ -247,41 +253,41 @@ Quick replies are saved on the researcher's phone; the server doesn't need them.
 
 One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`, `createdAt` and `updatedAt` unless noted. Synced tables also have `deletedAt`.
 
-| Phase | Model              | Main fields                                                                                               |
-| ----- | ------------------ | --------------------------------------------------------------------------------------------------------- |
-| B0    | User               | email, passwordHash (B2.1), role, status, emailVerifiedAt (B2.3)                                          |
-| B0    | AuditLog           | actorId, action, targetType, targetId, metadata, requestId (append-only)                                  |
-| B2    | StudentProfile     | userId, joinedAt; name, dateOfBirth, isUndergraduate, avatarId, preferences (JSON) in B2.5                |
-| B2    | ResearcherProfile  | userId, name, title, bio, capacity, accepting, inviteCode; photoUrl, hours and notify in B5               |
-| B2    | RefreshToken       | userId, tokenHash, familyId, expiresAt, revokedAt                                                         |
-| B2    | EmailCode          | userId, purpose (verify email or reset password), codeHash, expiresAt, attempts, usedAt                   |
-| B2    | Invite             | email, name, tokenHash, invitedById, expiresAt, acceptedAt, revokedAt                                     |
-| B3    | Consent            | studentId, version, agreedAt                                                                              |
-| B3    | Phq9Result         | studentId, kind, answers, score, at                                                                       |
-| B3    | EpqrResult         | studentId, answers, scores, at                                                                            |
-| B3    | Assignment         | studentId, researcherId, method, assignedAt                                                               |
-| B3    | Withdrawal         | studentId, reason, at                                                                                     |
-| B3    | Alert              | studentId, researcherId, kind, urgent, title, quote, detail, sourceId, at                                 |
-| B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt                                                   |
-| B4    | MoodEntry          | studentId, mood, note, at                                                                                 |
-| B4    | JournalEntry       | studentId, prompt, text (encrypted), mood, sessionId, at, editedAt                                        |
-| B4    | ThoughtRecord      | studentId, situation, thought, feeling, action, traps, sessionId, balanced, beliefBefore, beliefAfter, at |
-| B4    | PlannedActivity    | studentId, date, slot, label, predicted, sessionId, doneAt, enjoy, achieve                                |
-| B4    | ToolkitItem        | studentId, cardId                                                                                         |
-| B4    | ToolUse            | studentId, cardId, helped, at                                                                             |
-| B4    | StressEntry        | studentId, situation, level, helped, at                                                                   |
-| B4    | PositiveEntry      | studentId, kind, text, at                                                                                 |
-| B4    | WellPlan           | studentId, triggers, signs, actions, people, note, goal (JSON)                                            |
-| B4    | HomeworkTick       | studentId, sessionId, date                                                                                |
-| B4    | CrisisPlanProgress | studentId, partsFilled                                                                                    |
-| B5    | AlertEvent         | alertId, actorId, type, text, at                                                                          |
-| B5    | CheckIn            | studentId, researcherId, startsAt, durationMin, note, seriesId, cancelledAt                               |
-| B5    | CallNote           | checkInId, attended, minutes, outcome, note (encrypted)                                                   |
-| B5    | CallFeedback       | checkInId, rating, note, callSeconds                                                                      |
-| B5    | EmergencyContact   | studentId, name, relationship, phone (all encrypted)                                                      |
-| B6    | Message            | studentId, researcherId, from, text, sentAt, readAt, flagged                                              |
-| B6    | Conversation       | studentId, researcherId, followUp, researcherReadAt                                                       |
-| B6    | PushToken          | userId, token, platform                                                                                   |
+| Phase | Model              | Main fields                                                                                                                                  |
+| ----- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| B0    | User               | email, passwordHash (B2.1), role, status, emailVerifiedAt (B2.3)                                                                             |
+| B0    | AuditLog           | actorId, action, targetType, targetId, metadata, requestId (append-only)                                                                     |
+| B2    | StudentProfile     | userId, name, dateOfBirth, isUndergraduate, avatarId, notifySessions, notifyMood, moodReminderTime, notifyMessages, notifyCheckIns, joinedAt |
+| B2    | ResearcherProfile  | userId, name, title, bio, capacity, accepting, inviteCode; photoUrl, hours and notify in B5                                                  |
+| B2    | RefreshToken       | userId, tokenHash, familyId, expiresAt, revokedAt                                                                                            |
+| B2    | EmailCode          | userId, purpose (verify email or reset password), codeHash, expiresAt, attempts, usedAt                                                      |
+| B2    | Invite             | email, name, tokenHash, invitedById, expiresAt, acceptedAt, revokedAt                                                                        |
+| B3    | Consent            | studentId, version, agreedAt                                                                                                                 |
+| B3    | Phq9Result         | studentId, kind, answers, score, at                                                                                                          |
+| B3    | EpqrResult         | studentId, answers, scores, at                                                                                                               |
+| B3    | Assignment         | studentId, researcherId, method, assignedAt                                                                                                  |
+| B3    | Withdrawal         | studentId, reason, at                                                                                                                        |
+| B3    | Alert              | studentId, researcherId, kind, urgent, title, quote, detail, sourceId, at                                                                    |
+| B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt                                                                                      |
+| B4    | MoodEntry          | studentId, mood, note, at                                                                                                                    |
+| B4    | JournalEntry       | studentId, prompt, text (encrypted), mood, sessionId, at, editedAt                                                                           |
+| B4    | ThoughtRecord      | studentId, situation, thought, feeling, action, traps, sessionId, balanced, beliefBefore, beliefAfter, at                                    |
+| B4    | PlannedActivity    | studentId, date, slot, label, predicted, sessionId, doneAt, enjoy, achieve                                                                   |
+| B4    | ToolkitItem        | studentId, cardId                                                                                                                            |
+| B4    | ToolUse            | studentId, cardId, helped, at                                                                                                                |
+| B4    | StressEntry        | studentId, situation, level, helped, at                                                                                                      |
+| B4    | PositiveEntry      | studentId, kind, text, at                                                                                                                    |
+| B4    | WellPlan           | studentId, triggers, signs, actions, people, note, goal (JSON)                                                                               |
+| B4    | HomeworkTick       | studentId, sessionId, date                                                                                                                   |
+| B4    | CrisisPlanProgress | studentId, partsFilled                                                                                                                       |
+| B5    | AlertEvent         | alertId, actorId, type, text, at                                                                                                             |
+| B5    | CheckIn            | studentId, researcherId, startsAt, durationMin, note, seriesId, cancelledAt                                                                  |
+| B5    | CallNote           | checkInId, attended, minutes, outcome, note (encrypted)                                                                                      |
+| B5    | CallFeedback       | checkInId, rating, note, callSeconds                                                                                                         |
+| B5    | EmergencyContact   | studentId, name, relationship, phone (all encrypted)                                                                                         |
+| B6    | Message            | studentId, researcherId, from, text, sentAt, readAt, flagged                                                                                 |
+| B6    | Conversation       | studentId, researcherId, followUp, researcherReadAt                                                                                          |
+| B6    | PushToken          | userId, token, platform                                                                                                                      |
 
 ## 6. Who sees what
 

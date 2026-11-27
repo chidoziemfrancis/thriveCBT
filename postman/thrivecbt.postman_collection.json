@@ -184,7 +184,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"9jdn1Lc.v18I1vIYdy.MG7hS+'2rx.yD-y+A.M5qpSi0Hjj.iHl2.OC.7vk_j.670nswY76u.03pdFqfsZH_@0-.sCBr4KM.ro.XT82.VlGzbSZ\",\n  \"role\": \"researcher\",\n  \"status\": \"withdrawn\",\n  \"emailVerified\": false,\n  \"createdAt\": \"1314-01-06T10:49:26Z\"\n}",
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"qrk.9snwvlqQsmn.Cz3PVk.Tk.gqKQ.SuW@7Ns3P-vAd.gaqbASBa.QswHsN.DN40.lkrQ.Vs6gG.NDcn7k.NfDBcBdGJeN\",\n  \"role\": \"lead\",\n  \"status\": \"suspended\",\n  \"emailVerified\": true,\n  \"createdAt\": \"5115-08-21T21:43:39.37704008976Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -263,6 +263,924 @@
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           }
+        },
+        {
+          "name": "The student’s profile and study week",
+          "request": {
+            "name": "The student’s profile and study week",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "profile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "The profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"dateOfBirth\": \"4560-02-24\",\n  \"isUndergraduate\": true,\n  \"avatarId\": \"string\",\n  \"studyWeek\": 4,\n  \"joinedAt\": \"9350-02-18T23:36:18.5892Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHENTICATED\",\n    \"message\": \"Please log in again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"FORBIDDEN\",\n    \"message\": \"You don’t have access to this.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "NOT_FOUND",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"We couldn’t find that.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Change name, date of birth, undergraduate answer or avatar",
+          "request": {
+            "name": "Change name, date of birth, undergraduate answer or avatar",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "profile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"strin\",\n  \"dateOfBirth\": \"9600-02-29\",\n  \"isUndergraduate\": false,\n  \"avatarId\": \"avatar-54\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "The updated profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"strin\",\n  \"dateOfBirth\": \"9600-02-29\",\n  \"isUndergraduate\": false,\n  \"avatarId\": \"avatar-54\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"dateOfBirth\": \"4560-02-24\",\n  \"isUndergraduate\": true,\n  \"avatarId\": \"string\",\n  \"studyWeek\": 4,\n  \"joinedAt\": \"9350-02-18T23:36:18.5892Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "VALIDATION_FAILED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"strin\",\n  \"dateOfBirth\": \"9600-02-29\",\n  \"isUndergraduate\": false,\n  \"avatarId\": \"avatar-54\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_FAILED\",\n    \"message\": \"Some fields are missing or invalid.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"strin\",\n  \"dateOfBirth\": \"9600-02-29\",\n  \"isUndergraduate\": false,\n  \"avatarId\": \"avatar-54\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHENTICATED\",\n    \"message\": \"Please log in again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"strin\",\n  \"dateOfBirth\": \"9600-02-29\",\n  \"isUndergraduate\": false,\n  \"avatarId\": \"avatar-54\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"FORBIDDEN\",\n    \"message\": \"You don’t have access to this.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "NOT_FOUND",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"strin\",\n  \"dateOfBirth\": \"9600-02-29\",\n  \"isUndergraduate\": false,\n  \"avatarId\": \"avatar-54\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"We couldn’t find that.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "The student’s notification settings",
+          "request": {
+            "name": "The student’s notification settings",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "The settings",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"notifySessions\": false,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHENTICATED\",\n    \"message\": \"Please log in again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"FORBIDDEN\",\n    \"message\": \"You don’t have access to this.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "NOT_FOUND",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"We couldn’t find that.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Change notification settings",
+          "request": {
+            "name": "Change notification settings",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notifySessions\": true,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "The updated settings",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notifySessions\": true,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"notifySessions\": false,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "VALIDATION_FAILED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notifySessions\": true,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_FAILED\",\n    \"message\": \"Some fields are missing or invalid.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notifySessions\": true,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHENTICATED\",\n    \"message\": \"Please log in again.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notifySessions\": true,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"FORBIDDEN\",\n    \"message\": \"You don’t have access to this.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "NOT_FOUND",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "preferences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notifySessions\": true,\n  \"notifyMood\": false,\n  \"moodReminderTime\": \"08:00\",\n  \"notifyMessages\": false,\n  \"notifyCheckIns\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"We couldn’t find that.\",\n    \"requestId\": \"0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         }
       ],
       "event": []
@@ -305,7 +1223,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"ceFe4llxtdE.I_if-J'P+.ept.Rhsc-j.qpgOd7vk0.e.8OfS.UTSWU@z4paITNc.bKzGhqP.rK89I.vSIMAhrU.Mb7.wP.vvxFd\",\n  \"password\": \"        \"\n}",
+              "raw": "{\n  \"email\": \"SIjkaU.SN7H5G.O1.NzRV617IiAp.u-Q4l._zk.absIE4g.OLdL.z_'VM6-@55ymTN.6.YlQ54z.IcQg5.vu-mrsivQez.K0rNh6If.Qw\",\n  \"password\": \"        \"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -338,7 +1256,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"ceFe4llxtdE.I_if-J'P+.ept.Rhsc-j.qpgOd7vk0.e.8OfS.UTSWU@z4paITNc.bKzGhqP.rK89I.vSIMAhrU.Mb7.wP.vvxFd\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"SIjkaU.SN7H5G.O1.NzRV617IiAp.u-Q4l._zk.absIE4g.OLdL.z_'VM6-@55ymTN.6.YlQ54z.IcQg5.vu-mrsivQez.K0rNh6If.Qw\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -354,7 +1272,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"U_2UulaV.cgibo7Zq1.kJ8a5Z.ZUIPx4hQqez.QB+jtpjBF@lz1.M7iNZB8.UZ.dxSfL9kVt0j.clHGm36FL.g6.OK.vC19sHGp.TSQXWYD\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"emailVerified\": false,\n    \"createdAt\": \"6000-02-29T06:14:12.81Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"d65d30DE-cD05-69DA-aF5F-4f1B4b7772ce\",\n    \"email\": \"4JamXtt._AuyfsE.ELjzEEOftd.M1JGAbcGaP.iE+akZFN.07YHW.Am6V.s.M+we.RXOsWOY@rDHxm.RW.n.G7FJ1k0.Pf2.2axwsBLl0mS.XXppxf47Y.YR.4glZ.ll1lc0AjGW.Jbhuu16u.hEMKYEEZzHx\",\n    \"role\": \"lead\",\n    \"status\": \"active\",\n    \"emailVerified\": true,\n    \"createdAt\": \"9404-02-29T20:49:30Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -382,7 +1300,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"ceFe4llxtdE.I_if-J'P+.ept.Rhsc-j.qpgOd7vk0.e.8OfS.UTSWU@z4paITNc.bKzGhqP.rK89I.vSIMAhrU.Mb7.wP.vvxFd\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"SIjkaU.SN7H5G.O1.NzRV617IiAp.u-Q4l._zk.absIE4g.OLdL.z_'VM6-@55ymTN.6.YlQ54z.IcQg5.vu-mrsivQez.K0rNh6If.Qw\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -426,7 +1344,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"ceFe4llxtdE.I_if-J'P+.ept.Rhsc-j.qpgOd7vk0.e.8OfS.UTSWU@z4paITNc.bKzGhqP.rK89I.vSIMAhrU.Mb7.wP.vvxFd\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"SIjkaU.SN7H5G.O1.NzRV617IiAp.u-Q4l._zk.absIE4g.OLdL.z_'VM6-@55ymTN.6.YlQ54z.IcQg5.vu-mrsivQez.K0rNh6If.Qw\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -470,7 +1388,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"ceFe4llxtdE.I_if-J'P+.ept.Rhsc-j.qpgOd7vk0.e.8OfS.UTSWU@z4paITNc.bKzGhqP.rK89I.vSIMAhrU.Mb7.wP.vvxFd\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"SIjkaU.SN7H5G.O1.NzRV617IiAp.u-Q4l._zk.absIE4g.OLdL.z_'VM6-@55ymTN.6.YlQ54z.IcQg5.vu-mrsivQez.K0rNh6If.Qw\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -539,7 +1457,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"Pli57.OpyhL.xI1QwS_qGR.W1ChyF.F8.xG.xrfpb_@fI9c.JUoC4gd.U.lyPzcEV.Xwz.4KA7diL.FZwVb828.FQvWk488nhf.KP3IzU2ADsq.cgGbCedzs\",\n  \"password\": \"string\"\n}",
+              "raw": "{\n  \"email\": \"CV-5dWCMnG.b.tdjgiF1W.A1y.0d'qIf.+psqJId5Mq.bROs8.3@rw9.0q7.q7.tTuC6L.h3qAKFzLwF.vZpiFhpOA\",\n  \"password\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -572,7 +1490,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Pli57.OpyhL.xI1QwS_qGR.W1ChyF.F8.xG.xrfpb_@fI9c.JUoC4gd.U.lyPzcEV.Xwz.4KA7diL.FZwVb828.FQvWk488nhf.KP3IzU2ADsq.cgGbCedzs\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"CV-5dWCMnG.b.tdjgiF1W.A1y.0d'qIf.+psqJId5Mq.bROs8.3@rw9.0q7.q7.tTuC6L.h3qAKFzLwF.vZpiFhpOA\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -588,7 +1506,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"U_2UulaV.cgibo7Zq1.kJ8a5Z.ZUIPx4hQqez.QB+jtpjBF@lz1.M7iNZB8.UZ.dxSfL9kVt0j.clHGm36FL.g6.OK.vC19sHGp.TSQXWYD\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"emailVerified\": false,\n    \"createdAt\": \"6000-02-29T06:14:12.81Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"d65d30DE-cD05-69DA-aF5F-4f1B4b7772ce\",\n    \"email\": \"4JamXtt._AuyfsE.ELjzEEOftd.M1JGAbcGaP.iE+akZFN.07YHW.Am6V.s.M+we.RXOsWOY@rDHxm.RW.n.G7FJ1k0.Pf2.2axwsBLl0mS.XXppxf47Y.YR.4glZ.ll1lc0AjGW.Jbhuu16u.hEMKYEEZzHx\",\n    \"role\": \"lead\",\n    \"status\": \"active\",\n    \"emailVerified\": true,\n    \"createdAt\": \"9404-02-29T20:49:30Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -616,7 +1534,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Pli57.OpyhL.xI1QwS_qGR.W1ChyF.F8.xG.xrfpb_@fI9c.JUoC4gd.U.lyPzcEV.Xwz.4KA7diL.FZwVb828.FQvWk488nhf.KP3IzU2ADsq.cgGbCedzs\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"CV-5dWCMnG.b.tdjgiF1W.A1y.0d'qIf.+psqJId5Mq.bROs8.3@rw9.0q7.q7.tTuC6L.h3qAKFzLwF.vZpiFhpOA\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -660,7 +1578,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Pli57.OpyhL.xI1QwS_qGR.W1ChyF.F8.xG.xrfpb_@fI9c.JUoC4gd.U.lyPzcEV.Xwz.4KA7diL.FZwVb828.FQvWk488nhf.KP3IzU2ADsq.cgGbCedzs\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"CV-5dWCMnG.b.tdjgiF1W.A1y.0d'qIf.+psqJId5Mq.bROs8.3@rw9.0q7.q7.tTuC6L.h3qAKFzLwF.vZpiFhpOA\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -704,7 +1622,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Pli57.OpyhL.xI1QwS_qGR.W1ChyF.F8.xG.xrfpb_@fI9c.JUoC4gd.U.lyPzcEV.Xwz.4KA7diL.FZwVb828.FQvWk488nhf.KP3IzU2ADsq.cgGbCedzs\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"CV-5dWCMnG.b.tdjgiF1W.A1y.0d'qIf.+psqJId5Mq.bROs8.3@rw9.0q7.q7.tTuC6L.h3qAKFzLwF.vZpiFhpOA\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -748,7 +1666,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Pli57.OpyhL.xI1QwS_qGR.W1ChyF.F8.xG.xrfpb_@fI9c.JUoC4gd.U.lyPzcEV.Xwz.4KA7diL.FZwVb828.FQvWk488nhf.KP3IzU2ADsq.cgGbCedzs\",\n  \"password\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"CV-5dWCMnG.b.tdjgiF1W.A1y.0d'qIf.+psqJId5Mq.bROs8.3@rw9.0q7.q7.tTuC6L.h3qAKFzLwF.vZpiFhpOA\",\n  \"password\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1193,7 +2111,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"code\": \"746099\"\n}",
+              "raw": "{\n  \"code\": \"140104\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1226,7 +2144,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"code\": \"746099\"\n}",
+                  "raw": "{\n  \"code\": \"140104\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1242,7 +2160,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"9jdn1Lc.v18I1vIYdy.MG7hS+'2rx.yD-y+A.M5qpSi0Hjj.iHl2.OC.7vk_j.670nswY76u.03pdFqfsZH_@0-.sCBr4KM.ro.XT82.VlGzbSZ\",\n  \"role\": \"researcher\",\n  \"status\": \"withdrawn\",\n  \"emailVerified\": false,\n  \"createdAt\": \"1314-01-06T10:49:26Z\"\n}",
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"qrk.9snwvlqQsmn.Cz3PVk.Tk.gqKQ.SuW@7Ns3P-vAd.gaqbASBa.QswHsN.DN40.lkrQ.Vs6gG.NDcn7k.NfDBcBdGJeN\",\n  \"role\": \"lead\",\n  \"status\": \"suspended\",\n  \"emailVerified\": true,\n  \"createdAt\": \"5115-08-21T21:43:39.37704008976Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -1270,7 +2188,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"code\": \"746099\"\n}",
+                  "raw": "{\n  \"code\": \"140104\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1314,7 +2232,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"code\": \"746099\"\n}",
+                  "raw": "{\n  \"code\": \"140104\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1358,7 +2276,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"code\": \"746099\"\n}",
+                  "raw": "{\n  \"code\": \"140104\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1532,7 +2450,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"bL.TmUXB8Z1@nMc39mPW8I8.NCMFshIwN6y.1jDNp.F-8A3J.9c.E8aPS6HkA.dMfDWKBBHE\"\n}",
+              "raw": "{\n  \"email\": \"PTy8nxtbk.PwkjaKpvior.d.R2zdSe.Q_3-Gr2O7.yPLhKX.sIwnz.Tj3Q4BcMKzB.JzACk@JLcA3eMd.2s.u29qKNplZB.rluW8rl-N.GeY.dACB.T.Mx3FA-A60.DM6.aze43qEUOg.AbJ\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1566,7 +2484,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"bL.TmUXB8Z1@nMc39mPW8I8.NCMFshIwN6y.1jDNp.F-8A3J.9c.E8aPS6HkA.dMfDWKBBHE\"\n}",
+                  "raw": "{\n  \"email\": \"PTy8nxtbk.PwkjaKpvior.d.R2zdSe.Q_3-Gr2O7.yPLhKX.sIwnz.Tj3Q4BcMKzB.JzACk@JLcA3eMd.2s.u29qKNplZB.rluW8rl-N.GeY.dACB.T.Mx3FA-A60.DM6.aze43qEUOg.AbJ\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1611,7 +2529,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"bL.TmUXB8Z1@nMc39mPW8I8.NCMFshIwN6y.1jDNp.F-8A3J.9c.E8aPS6HkA.dMfDWKBBHE\"\n}",
+                  "raw": "{\n  \"email\": \"PTy8nxtbk.PwkjaKpvior.d.R2zdSe.Q_3-Gr2O7.yPLhKX.sIwnz.Tj3Q4BcMKzB.JzACk@JLcA3eMd.2s.u29qKNplZB.rluW8rl-N.GeY.dACB.T.Mx3FA-A60.DM6.aze43qEUOg.AbJ\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1669,7 +2587,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"utJLR_.qWxKe.tTmbHV3RI.UfLb4tGDjD6.QZsO.Ou-5@8tJxgC.LDnh.rZG.jd8J.y5PVEw9G6U3.gdsC.BcmVLwXRupxy\",\n  \"code\": \"678563\",\n  \"password\": \"        \"\n}",
+              "raw": "{\n  \"email\": \"eSK3jVqKLA.4B6tJO@e4Uq6YD9S.CgN7.q.rFbanlefaljy\",\n  \"code\": \"941122\",\n  \"password\": \"        \"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1703,7 +2621,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"utJLR_.qWxKe.tTmbHV3RI.UfLb4tGDjD6.QZsO.Ou-5@8tJxgC.LDnh.rZG.jd8J.y5PVEw9G6U3.gdsC.BcmVLwXRupxy\",\n  \"code\": \"678563\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"eSK3jVqKLA.4B6tJO@e4Uq6YD9S.CgN7.q.rFbanlefaljy\",\n  \"code\": \"941122\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1748,7 +2666,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"utJLR_.qWxKe.tTmbHV3RI.UfLb4tGDjD6.QZsO.Ou-5@8tJxgC.LDnh.rZG.jd8J.y5PVEw9G6U3.gdsC.BcmVLwXRupxy\",\n  \"code\": \"678563\",\n  \"password\": \"        \"\n}",
+                  "raw": "{\n  \"email\": \"eSK3jVqKLA.4B6tJO@e4Uq6YD9S.CgN7.q.rFbanlefaljy\",\n  \"code\": \"941122\",\n  \"password\": \"        \"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1856,7 +2774,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"U_2UulaV.cgibo7Zq1.kJ8a5Z.ZUIPx4hQqez.QB+jtpjBF@lz1.M7iNZB8.UZ.dxSfL9kVt0j.clHGm36FL.g6.OK.vC19sHGp.TSQXWYD\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"emailVerified\": false,\n    \"createdAt\": \"6000-02-29T06:14:12.81Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"d65d30DE-cD05-69DA-aF5F-4f1B4b7772ce\",\n    \"email\": \"4JamXtt._AuyfsE.ELjzEEOftd.M1JGAbcGaP.iE+akZFN.07YHW.Am6V.s.M+we.RXOsWOY@rDHxm.RW.n.G7FJ1k0.Pf2.2axwsBLl0mS.XXppxf47Y.YR.4glZ.ll1lc0AjGW.Jbhuu16u.hEMKYEEZzHx\",\n    \"role\": \"lead\",\n    \"status\": \"active\",\n    \"emailVerified\": true,\n    \"createdAt\": \"9404-02-29T20:49:30Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -2050,7 +2968,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+              "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2083,7 +3001,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2099,7 +3017,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n  \"email\": \"zfRrf.0WlavuLiPF.j667pA8rkJ-.J.NPPh.j+Dk2jYz@BBLwGUMzE9F.I61SH0YY.c2.oxZ2RVD.FzKr.d.afXx02EG8.eKe.QR\",\n  \"name\": \"string\",\n  \"expiresAt\": \"9616-02-29T15:45:24Z\"\n}",
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"R.bZxmRR.usZ._RO4aCB8ba.ioz.i+@X0TCrCLaI.bBf.nHFcEpSYQDj\",\n  \"name\": \"string\",\n  \"expiresAt\": \"4408-02-29T21:18:51Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -2127,7 +3045,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2171,7 +3089,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2215,7 +3133,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2259,7 +3177,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2303,7 +3221,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2411,7 +3329,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"00000000-0000-0000-0000-000000000000\",\n    \"email\": \"U_2UulaV.cgibo7Zq1.kJ8a5Z.ZUIPx4hQqez.QB+jtpjBF@lz1.M7iNZB8.UZ.dxSfL9kVt0j.clHGm36FL.g6.OK.vC19sHGp.TSQXWYD\",\n    \"role\": \"researcher\",\n    \"status\": \"suspended\",\n    \"emailVerified\": false,\n    \"createdAt\": \"6000-02-29T06:14:12.81Z\"\n  }\n}",
+              "body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"user\": {\n    \"id\": \"d65d30DE-cD05-69DA-aF5F-4f1B4b7772ce\",\n    \"email\": \"4JamXtt._AuyfsE.ELjzEEOftd.M1JGAbcGaP.iE+akZFN.07YHW.Am6V.s.M+we.RXOsWOY@rDHxm.RW.n.G7FJ1k0.Pf2.2axwsBLl0mS.XXppxf47Y.YR.4glZ.ll1lc0AjGW.Jbhuu16u.hEMKYEEZzHx\",\n    \"role\": \"lead\",\n    \"status\": \"active\",\n    \"emailVerified\": true,\n    \"createdAt\": \"9404-02-29T20:49:30Z\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -2605,7 +3523,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+              "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2638,7 +3556,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2654,7 +3572,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n  \"email\": \"zfRrf.0WlavuLiPF.j667pA8rkJ-.J.NPPh.j+Dk2jYz@BBLwGUMzE9F.I61SH0YY.c2.oxZ2RVD.FzKr.d.afXx02EG8.eKe.QR\",\n  \"name\": \"string\",\n  \"expiresAt\": \"9616-02-29T15:45:24Z\"\n}",
+              "body": "{\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\n  \"email\": \"R.bZxmRR.usZ._RO4aCB8ba.ioz.i+@X0TCrCLaI.bBf.nHFcEpSYQDj\",\n  \"name\": \"string\",\n  \"expiresAt\": \"4408-02-29T21:18:51Z\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
@@ -2682,7 +3600,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2726,7 +3644,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2770,7 +3688,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2814,7 +3732,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2858,7 +3776,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"Mlqo@gzUh4.H2tVdM.qGO.cTwyeh.TX4qbXIFFR.XpokiWdv\",\n  \"name\": \"string\"\n}",
+                  "raw": "{\n  \"email\": \"IKNW5P.ArZAOCq-4+.n7F.zH8UUNFrdRk.Uidv5cplA.pXAX2NFow.s5xRZaoW37H@Ns6l0hisKw.MGTFZuVd\",\n  \"name\": \"string\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
