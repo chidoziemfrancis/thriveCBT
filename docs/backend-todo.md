@@ -108,19 +108,48 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Map of the app's storage keys to endpoints
 - [ ] Team sign-off
 
-## B2 Accounts and login · `feat/accounts`
+## B2 Accounts and login
 
-- [ ] Models: StudentProfile, ResearcherProfile, RefreshToken, PasswordReset, Invite
-- [ ] `users` module: `students/`, `researchers/`
-- [ ] `auth` module: `login/`, `password-reset/`, `invites/`
-- [ ] `integrations/email/`
-- [ ] Guards and decorators: auth, roles, `@CurrentUser()`, `@Roles()`, `@Public()`
-- [ ] Strict rate limits on login and password reset
-- [ ] Cookie login for the browser (for the web admin later)
-- [ ] `scripts/create-lead.ts`
-- [ ] Postman: login saves tokens; requests use `{{accessToken}}`
-- [ ] App: `mobile/src/lib/api/` client, tokens in secure storage, automatic refresh
-- [ ] App: sign-up, login, password reset switched over
+### B2.1 Sign-up and login · `feat/accounts`
+
+- [x] Models: password on User, StudentProfile, RefreshToken; migration `auth_login`
+- [x] `users` module, `accounts/` feature: account lookup, `GET /v1/me`
+- [x] `auth` module, `login/` feature: register, login, refresh, logout
+- [x] Login tokens: 15-minute access, 30-day refresh, hashed, replaced on every refresh, reuse ends the login
+- [x] Password hashing (argon2id); same error and timing for wrong password and unknown email
+- [x] Seed accounts get a test password
+- [x] Unit tests: tokens, register and login, the guard, password hashing
+
+### B2.2 Guards and roles
+
+- [ ] Login required on every route unless marked `@Public()`
+- [ ] Roles: `@Roles('student' | 'researcher' | 'lead')` and a roles guard
+- [ ] Strict rate limits on register, login, refresh and password reset
+
+### B2.3 Email codes
+
+- [ ] `integrations/email/`: printed to the log locally; choose a provider before launch
+- [ ] EmailCode model: 6-digit codes, hashed, 15 minutes, 5 tries
+- [ ] Verify email after sign-up, and resend
+- [ ] Password reset: request and confirm with a code
+
+### B2.4 Researcher invites
+
+- [ ] ResearcherProfile and Invite models
+- [ ] `scripts/create-lead` and `scripts/invite-researcher` (no web admin yet)
+- [ ] Accept an invite and set a password
+
+### B2.5 Student profile and settings
+
+- [ ] Profile fields: name, date of birth, undergraduate, avatar
+- [ ] Notification settings
+- [ ] `GET/PATCH /v1/me/profile`, `GET/PATCH /v1/me/preferences`
+
+### B2.6 App switch-over
+
+- [ ] `mobile/src/lib/api/` client: tokens in secure storage, automatic refresh
+- [ ] Sign-up, verify email, login, forgot and reset password, researcher invite and logout use the API
+- [ ] Remove the mock accounts
 
 ## B3 Study core · `feat/study-core`
 

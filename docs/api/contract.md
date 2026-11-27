@@ -18,26 +18,31 @@ Common error codes, possible on any endpoint: `VALIDATION_FAILED` (400), `UNAUTH
 
 ## 2. Shared: login and accounts
 
-| Method | Path                              | Who                         | Body                  | Returns                               |
-| ------ | --------------------------------- | --------------------------- | --------------------- | ------------------------------------- |
-| POST   | `/v1/auth/register`               | Anyone                      | `{ email, password }` | `{ user, accessToken, refreshToken }` |
-| POST   | `/v1/auth/login`                  | Anyone                      | `{ email, password }` | `{ user, accessToken, refreshToken }` |
-| POST   | `/v1/auth/refresh`                | Anyone with a refresh token | `{ refreshToken }`    | `{ accessToken, refreshToken }`       |
-| POST   | `/v1/auth/logout`                 | Logged in                   | `{ refreshToken }`    | `204`                                 |
-| POST   | `/v1/auth/password-reset/request` | Anyone                      | `{ email }`           | `204`, even if the email is unknown   |
-| POST   | `/v1/auth/password-reset/confirm` | Anyone                      | `{ token, password }` | `204`                                 |
-| POST   | `/v1/auth/invites/accept`         | Invited researcher          | `{ token, password }` | `{ user, accessToken, refreshToken }` |
-| GET    | `/v1/me`                          | Logged in                   |                       | `user`                                |
-| POST   | `/v1/me/push-tokens`              | Logged in                   | `{ token, platform }` | `204`                                 |
-| DELETE | `/v1/me/push-tokens/:token`       | Logged in                   |                       | `204`                                 |
+| Method | Path                              | Who                         | Body                        | Returns                                   | Phase |
+| ------ | --------------------------------- | --------------------------- | --------------------------- | ----------------------------------------- | ----- |
+| POST   | `/v1/auth/register`               | Anyone (students only)      | `{ email, password }`       | `201 { user, accessToken, refreshToken }` | B2.1  |
+| POST   | `/v1/auth/login`                  | Anyone                      | `{ email, password }`       | `{ user, accessToken, refreshToken }`     | B2.1  |
+| POST   | `/v1/auth/refresh`                | Anyone with a refresh token | `{ refreshToken }`          | `{ accessToken, refreshToken }`           | B2.1  |
+| POST   | `/v1/auth/logout`                 | Anyone with a refresh token | `{ refreshToken }`          | `204`                                     | B2.1  |
+| GET    | `/v1/me`                          | Logged in                   |                             | `user`                                    | B2.1  |
+| POST   | `/v1/auth/verify-email`           | Logged in                   | `{ code }`                  | `user`                                    | B2.3  |
+| POST   | `/v1/auth/verify-email/resend`    | Logged in                   |                             | `204`                                     | B2.3  |
+| POST   | `/v1/auth/password-reset/request` | Anyone                      | `{ email }`                 | `204`, even if the email is unknown       | B2.3  |
+| POST   | `/v1/auth/password-reset/confirm` | Anyone                      | `{ email, code, password }` | `204`                                     | B2.3  |
+| POST   | `/v1/auth/invites/accept`         | Invited researcher          | `{ token, password }`       | `{ user, accessToken, refreshToken }`     | B2.4  |
+| POST   | `/v1/me/push-tokens`              | Logged in                   | `{ token, platform }`       | `204`                                     | B6    |
+| DELETE | `/v1/me/push-tokens/:token`       | Logged in                   |                             | `204`                                     | B6    |
 
-`user` is `{ id, email, role: "student" | "researcher" | "lead", status, createdAt }`.
+`user` is `{ id, email, role: "student" | "researcher" | "lead", status: "active" | "suspended" | "withdrawn", createdAt }`. B2.3 adds `emailVerified`.
 
-- Access tokens last 15 minutes. Refresh tokens last 30 days and are replaced on every refresh; reusing an old one logs out every device.
-- Passwords: at least 8 characters.
+- Emails are trimmed and lowercased.
+- Passwords: 8 to 128 characters, with at least one letter and one number (the same rule as the app).
+- Access tokens last 15 minutes. Refresh tokens last 30 days, are stored only as a hash, and are replaced on every refresh. Reusing an old refresh token ends that whole login on every device. Logout ends the login the token belongs to.
+- A wrong password and an unknown email give the same error and take the same time.
+- Email verification and password reset use the 6-digit codes the app's screens expect. Codes are stored hashed, last 15 minutes and allow 5 tries.
 - The app PIN never leaves the phone.
 
-Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_RESET_INVALID` (400), `AUTH_INVITE_INVALID` (400), `AUTH_ACCOUNT_SUSPENDED` (403).
+Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_INVALID` (401), `AUTH_TOKEN_EXPIRED` (401), `AUTH_TOKEN_REUSED` (401), `AUTH_ACCOUNT_SUSPENDED` (403), `AUTH_CODE_INVALID` (400), `AUTH_CODE_EXPIRED` (400), `AUTH_CODE_TOO_MANY_TRIES` (429), `AUTH_INVITE_INVALID` (400).
 
 ## 3. Student operations
 
@@ -237,12 +242,12 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 
 | Phase | Model              | Main fields                                                                                               |
 | ----- | ------------------ | --------------------------------------------------------------------------------------------------------- |
-| B0    | User               | email, role, status                                                                                       |
+| B0    | User               | email, passwordHash (B2.1), role, status, emailVerifiedAt (B2.3)                                          |
 | B0    | AuditLog           | actorId, action, targetType, targetId, metadata, requestId (append-only)                                  |
-| B2    | StudentProfile     | userId, name, dateOfBirth, isUndergraduate, avatarId, joinedAt, preferences (JSON)                        |
+| B2    | StudentProfile     | userId, joinedAt; name, dateOfBirth, isUndergraduate, avatarId, preferences (JSON) in B2.5                |
 | B2    | ResearcherProfile  | userId, name, title, bio, photoUrl, capacity, accepting, inviteCode, hours (JSON), notify (JSON)          |
 | B2    | RefreshToken       | userId, tokenHash, familyId, expiresAt, revokedAt                                                         |
-| B2    | PasswordReset      | userId, tokenHash, expiresAt, usedAt                                                                      |
+| B2    | EmailCode          | userId, purpose (verify email or reset password), codeHash, expiresAt, attempts, usedAt                   |
 | B2    | Invite             | email, tokenHash, invitedById, expiresAt, acceptedAt                                                      |
 | B3    | Consent            | studentId, version, agreedAt                                                                              |
 | B3    | Phq9Result         | studentId, kind, answers, score, at                                                                       |

@@ -3,7 +3,7 @@ import { promisify } from 'node:util';
 
 import converter from 'openapi-to-postmanv2';
 
-const TOKEN_ROUTES = ['/auth/login', '/auth/refresh'];
+const TOKEN_ROUTES = ['/auth/register', '/auth/login', '/auth/refresh'];
 const SAVE_TOKENS = [
   'const body = pm.response.json();',
   'if (body.accessToken) pm.environment.set("accessToken", body.accessToken);',
