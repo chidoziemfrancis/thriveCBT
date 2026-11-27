@@ -8,11 +8,11 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
+import { homeFor, useCheckEmail, useLogin } from '@/features/auth';
+import FormError from '@/features/auth/components/FormError';
 import { isEmail } from '@/features/auth/email';
-import { accountExists, signIn } from '@/features/auth/mockAccounts';
 import { hasPin } from '@/features/auth/pinStore';
-import { homeFor } from '@/features/auth/roles';
-import { setUserSession } from '@/features/auth/userSession';
+import { pullStudentToPhone, resumeRoute } from '@/features/onboarding';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
@@ -21,14 +21,14 @@ export default function SignInScreen() {
   const params = useLocalSearchParams<{ email?: string }>();
   const [email, setEmail] = useState(params.email ?? '');
   const [password, setPassword] = useState('');
-  const [hasAccount, setHasAccount] = useState(() =>
-    Boolean(params.email && accountExists(params.email))
-  );
+  const [hasAccount, setHasAccount] = useState(Boolean(params.email));
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const checkEmail = useCheckEmail();
+  const login = useLogin();
+  const busy = checkEmail.isPending || login.isPending;
   const emailValid = isEmail(email);
-  const canSubmit = emailValid && (!hasAccount || password.length > 0);
+  const canSubmit = emailValid && (!hasAccount || password.length > 0) && !busy;
 
   function handleEmailChange(value: string) {
     setEmail(value);
@@ -43,33 +43,46 @@ export default function SignInScreen() {
     const trimmed = email.trim();
 
     if (!hasAccount) {
-      if (accountExists(trimmed)) {
-        setHasAccount(true);
-        return;
+      checkEmail.mutate(trimmed, {
+        onSuccess: ({ exists }) => {
+          if (exists) setHasAccount(true);
+          else router.push({ pathname: '/auth/create-password', params: { email: trimmed } });
+        },
+        onError: (apiError) => setError(apiError.message),
+      });
+      return;
+    }
+
+    login.mutate(
+      { email: trimmed, password },
+      {
+        onSuccess: async (user) => {
+          haptics.success();
+          if (user.role === 'student') {
+            await pullStudentToPhone();
+            const resume = await resumeRoute();
+            if (resume) return router.replace(resume);
+          }
+          // A new device has no PIN yet, so set one up once before going in.
+          router.replace(hasPin() ? homeFor(user.role) : '/auth/create-pin');
+        },
+        onError: (apiError) => {
+          haptics.error();
+          setError(
+            apiError.code === 'AUTH_INVALID_CREDENTIALS'
+              ? 'That password isn’t right. Try again or reset it.'
+              : apiError.message
+          );
+        },
       }
-      setUserSession({ email: trimmed, role: 'student' });
-      router.push({ pathname: '/auth/create-password', params: { email: trimmed } });
-      return;
-    }
-
-    const role = signIn(trimmed, password);
-    if (!role) {
-      haptics.error();
-      setError('That password isn’t right. Try again or reset it.');
-      return;
-    }
-
-    haptics.success();
-    setUserSession({ email: trimmed, role });
-    // A new device has no PIN yet, so set one up once before going in.
-    router.replace(hasPin() ? homeFor(role) : '/auth/create-pin');
+    );
   }
 
   return (
     <Screen
       footer={
         <Button disabled={!canSubmit} onPress={handleSubmit}>
-          {hasAccount ? 'Sign in' : 'Continue'}
+          {busy ? 'One moment…' : hasAccount ? 'Sign in' : 'Continue'}
         </Button>
       }
     >
@@ -130,15 +143,7 @@ export default function SignInScreen() {
             </Animated.View>
           )}
 
-          {error && (
-            <Animated.Text
-              entering={FadeIn.duration(200)}
-              style={styles.error}
-              accessibilityLiveRegion="assertive"
-            >
-              {error}
-            </Animated.Text>
-          )}
+          <FormError message={error} />
         </Animated.View>
 
         {hasAccount && (
@@ -168,7 +173,6 @@ const styles = StyleSheet.create({
   inputError: { borderColor: colors.danger },
   toggle: { position: 'absolute', right: 18, bottom: 19 },
   toggleLabel: { fontFamily: fonts.bold, fontSize: 14, color: colors.primary },
-  error: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 20, color: colors.danger },
   forgot: { alignSelf: 'flex-start' },
   forgotLabel: { fontFamily: fonts.bold, fontSize: 15, color: colors.primary },
 });

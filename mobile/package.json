@@ -5,6 +5,8 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo/ui": "~58.0.24",
+    "@tanstack/react-query": "5.107.1",
+    "axios": "1.21.1",
     "expo": "~58.0.20",
     "expo-camera": "~58.0.14",
     "expo-clipboard": "~58.0.4",
@@ -36,7 +38,9 @@
     "react-native-screens": "~4.30.0",
     "react-native-svg": "15.16.0",
     "react-native-web": "~0.21.4",
-    "react-native-worklets": "0.13.0"
+    "react-native-worklets": "0.13.0",
+    "zod": "4.6.7",
+    "zustand": "5.1.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
@@ -58,7 +62,8 @@
     "format": "prettier --write src test",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "build": "expo export --platform ios --platform android"
+    "build": "expo export --platform ios --platform android",
+    "api:types": "npx --yes -p openapi-typescript@7.13.0 -p typescript@5.9.3 openapi-typescript ../docs/api/openapi.json -o src/types/api.ts"
   },
   "private": true,
   "jest": {

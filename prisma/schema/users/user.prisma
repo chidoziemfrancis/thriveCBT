@@ -1,0 +1,37 @@
+model User {
+  id              String     @id @default(uuid(7)) @db.Uuid
+  email           String     @unique
+  passwordHash    String     @map("password_hash")
+  role            UserRole
+  status          UserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?  @map("email_verified_at")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  studentProfile    StudentProfile?
+  researcherProfile ResearcherProfile?
+  invitesSent       Invite[]           @relation("InvitesSent")
+  refreshTokens     RefreshToken[]
+  emailCodes        EmailCode[]
+  auditLogs         AuditLog[]
+  consents          Consent[]
+
+  @@index([role])
+  @@map("users")
+}
+
+enum UserRole {
+  STUDENT
+  RESEARCHER
+  LEAD
+
+  @@map("user_role")
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  WITHDRAWN
+
+  @@map("user_status")
+}

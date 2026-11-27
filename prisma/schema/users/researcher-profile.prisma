@@ -1,0 +1,16 @@
+model ResearcherProfile {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  userId     String   @unique @map("user_id") @db.Uuid
+  name       String
+  title      String?
+  bio        String?
+  capacity   Int      @default(10)
+  accepting  Boolean  @default(true)
+  inviteCode String   @unique @map("invite_code")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("researcher_profiles")
+}

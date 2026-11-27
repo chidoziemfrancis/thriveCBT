@@ -6,7 +6,9 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
-import { getOnboardingData, setOnboardingData } from '@/features/onboarding/onboardingStore';
+import FormError from '@/features/auth/components/FormError';
+import { getOnboardingData } from '@/features/onboarding/onboardingStore';
+import { useUpdateProfile } from '@/features/profile';
 import { haptics } from '@/lib/haptics';
 import { type } from '@/theme';
 
@@ -14,20 +16,28 @@ export default function EditNameScreen() {
   const [original] = useState(() => getOnboardingData().name ?? '');
   const [name, setName] = useState(original);
   const trimmed = name.trim();
-  const canSave = trimmed.length > 0 && trimmed !== original;
+  const update = useUpdateProfile();
+  const canSave = trimmed.length > 0 && trimmed !== original && !update.isPending;
 
   function save() {
     if (!canSave) return;
-    setOnboardingData({ name: trimmed });
-    haptics.success();
-    router.back();
+    update.mutate(
+      { name: trimmed },
+      {
+        onSuccess: () => {
+          haptics.success();
+          router.back();
+        },
+        onError: () => haptics.error(),
+      }
+    );
   }
 
   return (
     <Screen
       footer={
         <Button disabled={!canSave} onPress={save}>
-          Save
+          {update.isPending ? 'Saving…' : 'Save'}
         </Button>
       }
     >
@@ -49,6 +59,7 @@ export default function EditNameScreen() {
           returnKeyType="done"
           onSubmitEditing={save}
         />
+        <FormError message={update.error?.message} />
       </View>
     </Screen>
   );

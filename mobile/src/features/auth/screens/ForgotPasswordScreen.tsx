@@ -6,24 +6,31 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
+import { useRequestReset } from '@/features/auth';
+import FormError from '@/features/auth/components/FormError';
 import { isEmail } from '@/features/auth/email';
 import { type } from '@/theme';
 
 export default function ForgotPasswordScreen() {
   const params = useLocalSearchParams<{ email?: string }>();
   const [email, setEmail] = useState(params.email ?? '');
-  const valid = isEmail(email);
+  const request = useRequestReset();
+  const valid = isEmail(email) && !request.isPending;
 
   function sendCode() {
     if (!valid) return;
-    router.push({ pathname: '/auth/reset-password', params: { email: email.trim() } });
+    const trimmed = email.trim();
+    request.mutate(trimmed, {
+      onSuccess: () =>
+        router.push({ pathname: '/auth/reset-password', params: { email: trimmed } }),
+    });
   }
 
   return (
     <Screen
       footer={
         <Button disabled={!valid} onPress={sendCode}>
-          Send code
+          {request.isPending ? 'Sending…' : 'Send code'}
         </Button>
       }
     >
@@ -36,7 +43,10 @@ export default function ForgotPasswordScreen() {
           <TextField
             label="Email"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(value) => {
+              setEmail(value);
+              request.reset();
+            }}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
@@ -47,6 +57,7 @@ export default function ForgotPasswordScreen() {
             onSubmitEditing={sendCode}
           />
         </View>
+        <FormError message={request.error?.message} />
       </View>
     </Screen>
   );

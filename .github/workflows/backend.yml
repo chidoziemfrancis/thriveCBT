@@ -1,0 +1,33 @@
+name: Backend
+
+on:
+  push:
+    branches: [dev, main]
+    paths-ignore: ['mobile/**', 'pwa/**']
+  pull_request:
+    paths-ignore: ['mobile/**', 'pwa/**']
+
+env:
+  DATABASE_URL: postgresql://thrivecbt:thrivecbt@localhost:5432/thrivecbt
+  FIELD_ENCRYPTION_KEY: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+  JWT_ACCESS_SECRET: ci-only-jwt-secret-not-used-anywhere-real
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run prisma:validate
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm run test
+      - name: API docs are up to date
+        run: |
+          npm run docs
+          git diff --exit-code docs/api/openapi.json postman/thrivecbt.postman_collection.json

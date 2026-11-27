@@ -7,9 +7,10 @@ import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
 import { useSplashRevealed } from '@/components/splash/AnimatedSplash';
 import { hasPin } from '@/features/auth/pinStore';
-import { getUserSession } from '@/features/auth/userSession';
+import { resumeRoute } from '@/features/onboarding';
 import Screen from '@/components/ui/Screen';
 import { haptics } from '@/lib/haptics';
+import { useSessionStore } from '@/stores/session.store';
 import { colors, fonts, type } from '@/theme';
 
 // Lands the heartbeat as Sprout's spring-in settles.
@@ -17,7 +18,13 @@ const MASCOT_LANDS_MS = 450;
 
 export default function WelcomeScreen() {
   const revealed = useSplashRevealed();
-  const [signedIn] = useState(() => hasPin() && Boolean(getUserSession().email));
+  const [signedIn] = useState(() => hasPin() && Boolean(useSessionStore.getState().user));
+
+  // Logged in but no PIN yet means onboarding wasn't finished, so carry on from that step.
+  useEffect(() => {
+    if (signedIn || useSessionStore.getState().user?.role !== 'student') return;
+    void resumeRoute().then((route) => route && router.replace(route));
+  }, [signedIn]);
 
   useEffect(() => {
     if (!revealed || signedIn) return;

@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
-import { getUserSession } from '@/features/auth/userSession';
 import { readJson, writeJson } from '@/lib/storage';
+import { useSessionStore } from '@/stores/session.store';
 
 import { defaultAvatarId } from './avatars';
 
@@ -18,7 +18,7 @@ function subscribe(listener: () => void) {
 }
 
 function current() {
-  return chosen ?? defaultAvatarId(getUserSession().email ?? 'student');
+  return chosen ?? defaultAvatarId(useSessionStore.getState().user?.email ?? 'student');
 }
 
 /** The student's avatar, live, so Home and Profile change the moment a new one is picked. */

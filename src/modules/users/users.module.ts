@@ -1,0 +1,25 @@
+import { Module } from '@nestjs/common';
+
+import { ConsentModule } from '../consent/consent.module.js';
+import { MeController } from './accounts/controllers/me.controller.js';
+import { AccountsRepository } from './accounts/repositories/accounts.repository.js';
+import { AccountsService } from './accounts/services/accounts.service.js';
+import { OnboardingController } from './onboarding/controllers/onboarding.controller.js';
+import { OnboardingService } from './onboarding/services/onboarding.service.js';
+import { StudentsController } from './students/controllers/students.controller.js';
+import { StudentsRepository } from './students/repositories/students.repository.js';
+import { StudentsService } from './students/services/students.service.js';
+
+@Module({
+  imports: [ConsentModule],
+  controllers: [MeController, StudentsController, OnboardingController],
+  providers: [
+    AccountsService,
+    AccountsRepository,
+    StudentsService,
+    StudentsRepository,
+    OnboardingService,
+  ],
+  exports: [AccountsService],
+})
+export class UsersModule {}

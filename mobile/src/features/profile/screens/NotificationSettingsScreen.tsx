@@ -3,7 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
-import { MoodReminderTime, setPreference, usePreferences } from '@/lib/preferences';
+import { useSaveSetting } from '@/features/profile';
+import FormError from '@/features/auth/components/FormError';
+import { MoodReminderTime, usePreferences } from '@/lib/preferences';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -16,6 +18,7 @@ const TIMES: { value: MoodReminderTime; label: string }[] = [
 
 export default function NotificationSettingsScreen() {
   const preferences = usePreferences();
+  const { saveSetting, error } = useSaveSetting();
 
   return (
     <Screen>
@@ -31,7 +34,7 @@ export default function NotificationSettingsScreen() {
             label="New sessions"
             detail="When this week’s session opens"
             on={preferences.notifySessions}
-            onChange={(value) => setPreference('notifySessions', value)}
+            onChange={(value) => saveSetting('notifySessions', value)}
           />
           <SettingsRow
             kind="toggle"
@@ -39,7 +42,7 @@ export default function NotificationSettingsScreen() {
             label="Daily mood check"
             detail="A gentle nudge to log how you feel"
             on={preferences.notifyMood}
-            onChange={(value) => setPreference('notifyMood', value)}
+            onChange={(value) => saveSetting('notifyMood', value)}
           />
           {preferences.notifyMood && (
             <View
@@ -57,7 +60,7 @@ export default function NotificationSettingsScreen() {
                     accessibilityState={{ selected }}
                     onPress={() => {
                       haptics.tick();
-                      setPreference('moodReminderTime', value);
+                      saveSetting('moodReminderTime', value);
                     }}
                     style={[styles.time, selected && styles.timeSelected]}
                   >
@@ -81,7 +84,7 @@ export default function NotificationSettingsScreen() {
             label="Messages"
             detail="When your researcher replies"
             on={preferences.notifyMessages}
-            onChange={(value) => setPreference('notifyMessages', value)}
+            onChange={(value) => saveSetting('notifyMessages', value)}
           />
           <SettingsRow
             kind="toggle"
@@ -89,10 +92,13 @@ export default function NotificationSettingsScreen() {
             label="Check-in reminders"
             detail="The day before and 10 minutes before"
             on={preferences.notifyCheckIns}
-            onChange={(value) => setPreference('notifyCheckIns', value)}
+            onChange={(value) => saveSetting('notifyCheckIns', value)}
           />
         </SettingsGroup>
 
+        <FormError
+          message={error && 'That change didn’t save. Check your connection and try again.'}
+        />
         <Text style={type.caption}>
           Notifications never show what you wrote or how you feel, just a short reminder.
         </Text>

@@ -9,7 +9,8 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import CodeInput, { CODE_LENGTH } from '@/features/auth/components/CodeInput';
 import NewPasswordField from '@/features/auth/components/NewPasswordField';
-import { resetPassword } from '@/features/auth/mockAccounts';
+import { useConfirmReset } from '@/features/auth';
+import FormError from '@/features/auth/components/FormError';
 import { isPasswordValid } from '@/features/auth/password';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
@@ -19,14 +20,21 @@ export default function ResetPasswordScreen() {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
   const [done, setDone] = useState(false);
-  const ready = code.length === CODE_LENGTH && isPasswordValid(password);
+  const confirm = useConfirmReset();
+  const ready = code.length === CODE_LENGTH && isPasswordValid(password) && !confirm.isPending;
 
   function reset() {
     if (!ready) return;
-    // Whether the account exists isn't shown, so the screen can't be used to find accounts.
-    resetPassword(email, password);
-    haptics.success();
-    setDone(true);
+    confirm.mutate(
+      { email, code, password },
+      {
+        onSuccess: () => {
+          haptics.success();
+          setDone(true);
+        },
+        onError: () => haptics.error(),
+      }
+    );
   }
 
   function signIn() {
@@ -53,7 +61,7 @@ export default function ResetPasswordScreen() {
     <Screen
       footer={
         <Button disabled={!ready} onPress={reset}>
-          Reset password
+          {confirm.isPending ? 'Saving…' : 'Reset password'}
         </Button>
       }
     >
@@ -73,6 +81,7 @@ export default function ResetPasswordScreen() {
           onChange={setPassword}
           onSubmit={reset}
         />
+        <FormError message={confirm.error?.message} />
       </View>
     </Screen>
   );

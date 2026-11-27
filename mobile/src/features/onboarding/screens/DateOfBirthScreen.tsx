@@ -8,7 +8,9 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import StepHeader from '@/components/ui/StepHeader';
 import BirthdayWheel, { Birthday } from '@/features/onboarding/components/BirthdayWheel';
-import { getOnboardingData, setOnboardingData } from '@/features/onboarding/onboardingStore';
+import FormError from '@/features/auth/components/FormError';
+import { getOnboardingData } from '@/features/onboarding/onboardingStore';
+import { useUpdateProfile } from '@/features/profile';
 import { calculateAge, parseIsoDate, toIsoDate } from '@/lib/dates';
 import { colors, fonts, radius, type } from '@/theme';
 
@@ -30,17 +32,21 @@ export default function OnboardingDobScreen() {
 
   const date = new Date(birthday.year, birthday.month, birthday.day);
 
+  const save = useUpdateProfile();
+
   function handleContinue() {
-    if (!touched) return;
-    setOnboardingData({ dateOfBirth: toIsoDate(date) });
-    router.push('/onboarding/eligibility');
+    if (!touched || save.isPending) return;
+    save.mutate(
+      { dateOfBirth: toIsoDate(date) },
+      { onSuccess: () => router.push('/onboarding/eligibility') }
+    );
   }
 
   return (
     <Screen
       footer={
-        <Button disabled={!touched} onPress={handleContinue}>
-          Continue
+        <Button disabled={!touched || save.isPending} onPress={handleContinue}>
+          {save.isPending ? 'Saving…' : 'Continue'}
         </Button>
       }
     >
@@ -65,6 +71,7 @@ export default function OnboardingDobScreen() {
         <Text style={[type.caption, styles.hint]}>
           {touched ? 'It won’t be shown publicly.' : 'Scroll each wheel to your birthday.'}
         </Text>
+        <FormError message={save.error?.message} />
       </View>
     </Screen>
   );

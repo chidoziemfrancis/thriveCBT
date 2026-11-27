@@ -7,10 +7,11 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useState } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import AnimatedSplash, { SplashRevealedProvider } from '@/components/splash/AnimatedSplash';
 import { useRelockOnResume } from '@/features/auth/useRelockOnResume';
+import { useSessionWatch } from '@/features/auth/useSessionWatch';
+import AppProvider from '@/providers/AppProvider';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -27,13 +28,14 @@ export default function RootLayout() {
   const revealApp = useCallback(() => setSplashRevealed(true), []);
   const finishSplash = useCallback(() => setSplashDone(true), []);
   useRelockOnResume();
+  useSessionWatch();
 
   // A font that fails to load falls back to the system font rather than holding the
   // native splash on screen forever.
   if (!fontsLoaded && !fontError) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <AppProvider>
       <StatusBar style={splashRevealed ? 'dark' : 'light'} />
       <SplashRevealedProvider value={splashRevealed}>
         <Stack
@@ -74,6 +76,6 @@ export default function RootLayout() {
         </Stack>
       </SplashRevealedProvider>
       {!splashDone && <AnimatedSplash onReveal={revealApp} onFinish={finishSplash} />}
-    </GestureHandlerRootView>
+    </AppProvider>
   );
 }

@@ -10,9 +10,9 @@ import { PIN_LENGTH } from '@/features/auth/pin';
 import { checkPin } from '@/features/auth/pinStore';
 import { homeFor } from '@/features/auth/roles';
 import { signOut } from '@/features/auth/signOut';
-import { getUserSession } from '@/features/auth/userSession';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { haptics } from '@/lib/haptics';
+import { useSessionStore } from '@/stores/session.store';
 import { colors, fonts, type } from '@/theme';
 
 export default function UnlockScreen() {
@@ -20,7 +20,7 @@ export default function UnlockScreen() {
   const { mode } = useLocalSearchParams<{ mode?: 'resume' }>();
   const [{ name, role }] = useState(() => ({
     name: getOnboardingData().name,
-    role: getUserSession().role ?? 'student',
+    role: useSessionStore.getState().user?.role ?? 'student',
   }));
   const [pin, setPin] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -33,9 +33,9 @@ export default function UnlockScreen() {
     return () => sub.remove();
   }, []);
 
+  // Signing out sends everyone back to the start (see useSessionWatch).
   async function goToSignIn() {
     await signOut();
-    router.replace('/auth/sign-in');
   }
 
   async function handleComplete(entered: string) {

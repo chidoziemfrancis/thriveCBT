@@ -9,12 +9,14 @@ import Screen from '@/components/ui/Screen';
 import { AVATARS } from '@/features/avatar/avatars';
 import { chooseAvatar, useAvatarId } from '@/features/avatar/avatarStore';
 import UserAvatar from '@/features/avatar/components/UserAvatar';
+import { useUpdateProfile } from '@/features/profile';
 import { haptics } from '@/lib/haptics';
 import { colors, type } from '@/theme';
 
 const SIZE = 88;
 
 export default function AvatarPickerScreen() {
+  const saveAvatar = useUpdateProfile();
   const current = useAvatarId();
 
   return (
@@ -41,6 +43,7 @@ export default function AvatarPickerScreen() {
               onPress={() => {
                 haptics.tick();
                 chooseAvatar(avatar.id);
+                saveAvatar.mutate({ avatarId: avatar.id });
               }}
               style={({ pressed }) => [styles.cell, pressed && { transform: [{ scale: 0.94 }] }]}
             >
