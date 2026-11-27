@@ -1,9 +1,18 @@
 model StudentProfile {
-  id        String   @id @default(uuid(7)) @db.Uuid
-  userId    String   @unique @map("user_id") @db.Uuid
-  joinedAt  DateTime @default(now()) @map("joined_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id               String    @id @default(uuid(7)) @db.Uuid
+  userId           String    @unique @map("user_id") @db.Uuid
+  name             String?
+  dateOfBirth      DateTime? @map("date_of_birth") @db.Date
+  isUndergraduate  Boolean?  @map("is_undergraduate")
+  avatarId         String?   @map("avatar_id")
+  notifySessions   Boolean   @default(true) @map("notify_sessions")
+  notifyMood       Boolean   @default(true) @map("notify_mood")
+  moodReminderTime String    @default("18:00") @map("mood_reminder_time")
+  notifyMessages   Boolean   @default(true) @map("notify_messages")
+  notifyCheckIns   Boolean   @default(true) @map("notify_check_ins")
+  joinedAt         DateTime  @default(now()) @map("joined_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
