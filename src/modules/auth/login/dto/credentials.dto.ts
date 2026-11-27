@@ -23,6 +23,12 @@ export const loginSchema = z.object({
 });
 export type LoginBody = z.infer<typeof loginSchema>;
 
+export const checkEmailSchema = z.object({ email: emailSchema });
+export type CheckEmailBody = z.infer<typeof checkEmailSchema>;
+
+export const checkEmailResultSchema = z.object({ exists: z.boolean() });
+export type CheckEmailResult = z.infer<typeof checkEmailResultSchema>;
+
 export const refreshSchema = z.object({
   refreshToken: z.string().min(20).max(200),
 });

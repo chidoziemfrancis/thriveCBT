@@ -9,7 +9,11 @@ import { AppError } from '../../../../shared/errors/app-error.js';
 import { AUTH_ERRORS } from '../../../../shared/errors/codes/auth.errors.js';
 import { toUserDto } from '../../../users/accounts/dto/user.dto.js';
 import { AccountsService } from '../../../users/accounts/services/accounts.service.js';
-import type { LoginBody, RegisterBody } from '../dto/credentials.dto.js';
+import type {
+  CheckEmailResult,
+  LoginBody,
+  RegisterBody,
+} from '../dto/credentials.dto.js';
 import type { SessionDto } from '../dto/session.dto.js';
 import { VerifyEmailService } from '../../verify-email/services/verify-email.service.js';
 import { TokensService } from './tokens.service.js';
@@ -33,6 +37,12 @@ export class LoginService {
     private readonly tokens: TokensService,
     private readonly verifyEmail: VerifyEmailService,
   ) {}
+
+  // The app asks for the email first, then shows log in or create password. Sign-up already
+  // reveals a taken email, so this adds nothing new; the strict rate limit slows guessing.
+  async checkEmail(email: string): Promise<CheckEmailResult> {
+    return { exists: Boolean(await this.accounts.findByEmail(email)) };
+  }
 
   async register({ email, password }: RegisterBody): Promise<SessionDto> {
     if (await this.accounts.findByEmail(email))

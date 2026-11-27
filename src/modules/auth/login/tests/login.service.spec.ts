@@ -76,6 +76,18 @@ describe('LoginService.register', () => {
   });
 });
 
+describe('LoginService.checkEmail', () => {
+  it('says whether an email has an account, ignoring case', async () => {
+    const { service } = await setup({});
+    await expect(service.checkEmail('Ada@Uni.edu')).resolves.toEqual({
+      exists: true,
+    });
+    await expect(service.checkEmail('new@uni.edu')).resolves.toEqual({
+      exists: false,
+    });
+  });
+});
+
 describe('LoginService.login', () => {
   it('logs in with the right password', async () => {
     const { service } = await setup({});

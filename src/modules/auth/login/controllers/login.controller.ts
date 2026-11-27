@@ -16,6 +16,10 @@ import {
 } from '../../../../shared/openapi/zod-openapi.js';
 import { ZodValidationPipe } from '../../../../shared/pipes/zod-validation.pipe.js';
 import {
+  type CheckEmailBody,
+  type CheckEmailResult,
+  checkEmailResultSchema,
+  checkEmailSchema,
   loginSchema,
   refreshSchema,
   registerSchema,
@@ -40,6 +44,26 @@ export class LoginController {
     private readonly login: LoginService,
     private readonly tokens: TokensService,
   ) {}
+
+  @Post('check-email')
+  @HttpCode(HttpStatus.OK)
+  @Throttle(STRICT_RATE_LIMIT)
+  @ApiOperation({
+    operationId: 'checkEmail',
+    summary: 'Whether an email already has an account',
+  })
+  @ApiZodBody(checkEmailSchema)
+  @ApiZodResponse(
+    200,
+    checkEmailResultSchema,
+    'exists: log in; otherwise: create a password',
+  )
+  @ApiErrors(COMMON_ERRORS.VALIDATION_FAILED, COMMON_ERRORS.RATE_LIMITED)
+  checkEmail(
+    @Body(new ZodValidationPipe(checkEmailSchema)) body: CheckEmailBody,
+  ): Promise<CheckEmailResult> {
+    return this.login.checkEmail(body.email);
+  }
 
   @Post('register')
   @Throttle(STRICT_RATE_LIMIT)
