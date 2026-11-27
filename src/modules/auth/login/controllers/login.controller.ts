@@ -1,6 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 
+import {
+  REFRESH_RATE_LIMIT,
+  STRICT_RATE_LIMIT,
+} from '../../../../shared/constants/rate-limits.js';
 import { Public } from '../../../../shared/decorators/public.decorator.js';
 import { AUTH_ERRORS } from '../../../../shared/errors/codes/auth.errors.js';
 import { COMMON_ERRORS } from '../../../../shared/errors/error-codes.js';
@@ -37,13 +42,18 @@ export class LoginController {
   ) {}
 
   @Post('register')
+  @Throttle(STRICT_RATE_LIMIT)
   @ApiOperation({
     operationId: 'register',
     summary: 'Create a student account and log in',
   })
   @ApiZodBody(registerSchema)
   @ApiZodResponse(201, sessionSchema, 'Account created and logged in')
-  @ApiErrors(COMMON_ERRORS.VALIDATION_FAILED, AUTH_ERRORS.EMAIL_TAKEN)
+  @ApiErrors(
+    COMMON_ERRORS.VALIDATION_FAILED,
+    AUTH_ERRORS.EMAIL_TAKEN,
+    COMMON_ERRORS.RATE_LIMITED,
+  )
   register(
     @Body(new ZodValidationPipe(registerSchema)) body: RegisterBody,
   ): Promise<SessionDto> {
@@ -51,6 +61,7 @@ export class LoginController {
   }
 
   @Post('login')
+  @Throttle(STRICT_RATE_LIMIT)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     operationId: 'login',
@@ -62,6 +73,7 @@ export class LoginController {
     COMMON_ERRORS.VALIDATION_FAILED,
     AUTH_ERRORS.INVALID_CREDENTIALS,
     AUTH_ERRORS.ACCOUNT_SUSPENDED,
+    COMMON_ERRORS.RATE_LIMITED,
   )
   logIn(
     @Body(new ZodValidationPipe(loginSchema)) body: LoginBody,
@@ -70,6 +82,7 @@ export class LoginController {
   }
 
   @Post('refresh')
+  @Throttle(REFRESH_RATE_LIMIT)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     operationId: 'refresh',
@@ -87,6 +100,7 @@ export class LoginController {
     AUTH_ERRORS.TOKEN_EXPIRED,
     AUTH_ERRORS.TOKEN_REUSED,
     AUTH_ERRORS.ACCOUNT_SUSPENDED,
+    COMMON_ERRORS.RATE_LIMITED,
   )
   refresh(
     @Body(new ZodValidationPipe(refreshSchema)) body: RefreshBody,
