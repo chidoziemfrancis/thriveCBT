@@ -172,13 +172,21 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Invite code always goes to that researcher; otherwise random among researchers with space (10 each), fewest first
 - [x] Email the researcher when a student joins with their code
 
+### B3.2 PHQ-9 and alerts · `feat/phq9-alerts`
+
+- [x] Phq9Result and Alert models; `@nestjs/event-emitter` for module events
+- [x] `GET` and `POST /v1/me/phq9`: scored on the server, band and `needsSupport` returned; final needs the baseline; sending again returns the saved result
+- [x] Alerts: question 9 (urgent), final rise of 5+ (urgent), severe score; saved in the same request, never lost silently
+- [x] Urgent alerts emailed to the researcher, or to the study lead when the student isn't matched; waiting alerts move to the researcher on matching
+- [ ] Final PHQ-9 only after Session 8 (needs sessions, B4)
+
 ### Still to do in B3
 
-- [ ] Models: Phq9Result, EpqrResult, Withdrawal, Alert (Consent done in B2.5b, Assignment in B3.1)
+- [ ] Models: EpqrResult, Withdrawal (Consent done in B2.5b, Assignment in B3.1, Phq9Result and Alert in B3.2)
 - [ ] `assessments` (`phq9/`, `epqr/`), `withdrawal`, `alerts` modules; `CONSENT_REQUIRED` on data routes
 - [ ] Onboarding status gains `phq9`, `epqr` and `assignment`
-- [ ] `src/events/`: PHQ-9 and EPQ-R submitted
-- [ ] Alerts on the server: question 9, EPQ-R 76, final rise of 5+, severe score
+- [ ] EPQ-R question 76 alert (B3.3)
+- [ ] Proposed emails, awaiting a decision: password changed (student), random match (researcher), withdrawal (researcher), every researcher full (study lead)
 - [ ] Study week counts from the consent date, as the app does (B2.5 uses the sign-up date until consent exists)
 - [ ] App: consent, both PHQ-9s, EPQ-R, assignment, withdrawal switched over
 
@@ -200,6 +208,8 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [ ] App: researcher side switched from the mock caseload to the API
 
 ## B6 Live features · `feat/live`
+
+- [ ] Push for every row marked B6 in the contract's "Emails and notifications" table, respecting each person's reminder settings (urgent alerts always send)
 
 - [ ] Models: Message, PushToken, NotificationPreference
 - [ ] `chat` module with WebSocket gateway; risk words flagged on the server

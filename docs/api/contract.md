@@ -99,12 +99,12 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 - Consent is built (B2): agreeing to the same version twice keeps the first date; `GET` returns the latest, or `404` before any.
 - The server scores the PHQ-9 and EPQ-R; the app doesn't send scores.
 - EPQ-R scale scores are never returned to the student, matching the app.
-- A `final` PHQ-9 is only accepted once Session 8 is complete, and each kind is accepted once.
-- PHQ-9 question 9 above zero, or EPQ-R question 76 answered Yes, raises an urgent researcher alert in the same request. If raising the alert fails, the request fails.
+- PHQ-9 (built in B3.2): answers are nine numbers from 0 to 3; the server scores it and returns `{ id, kind, score, band, needsSupport, takenAt }`, where `needsSupport` is true when question 9 is above zero. A `final` needs the baseline first (`PHQ9_BASELINE_FIRST`); the "only after Session 8" check arrives with sessions in B4. Sending the same kind again returns the saved result unchanged and re-checks its alerts, so a retry after a dropped connection never loses an alert.
+- PHQ-9 question 9 above zero (urgent), a final PHQ-9 at least 5 above the baseline (urgent), and a score of 20 or more raise alerts in the same request; EPQ-R question 76 follows in B3.3. If an alert can't be saved, the request fails. An unmatched student's alerts go to the study lead and move to the researcher when the student is matched.
 - Assignment (built in B3.1): an invite code (from the join link or typed, spaces and case ignored) always goes to that researcher, as in the app. Without a code, the student goes at random to a researcher who is accepting students and has space (10 each), preferring the fewest students. Asking again returns the same match. When a student joins with a code, that researcher gets an email; a failed email never undoes the match.
 - `GET /v1/invite-codes/:code` uses the strict rate limit, so codes can't be guessed in bulk.
 
-Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_ALREADY_SUBMITTED` (409), `PHQ9_FINAL_NOT_OPEN` (409), `EPQR_ALREADY_SUBMITTED` (409), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400).
+Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_BASELINE_FIRST` (409), `EPQR_ALREADY_SUBMITTED` (409), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400).
 
 ### 3.3 Sessions
 
@@ -263,6 +263,35 @@ Errors: `CHECKIN_OUTSIDE_HOURS` (409), `CHECKIN_OVERLAP` (409), `CHECKIN_IN_PAST
 
 Quick replies are saved on the researcher's phone; the server doesn't need them.
 
+## 4b. Emails and notifications
+
+**Email** is sent through Unosend. **Push** arrives in B6. Emails and pushes never contain names, answers, scores or message text: generic words, then "open the app". Reminder settings are respected, except urgent safety alerts, which always send. A failed email never undoes the action that sent it.
+
+| Who        | When                                                               | Email                                   | Push | Status                                   |
+| ---------- | ------------------------------------------------------------------ | --------------------------------------- | ---- | ---------------------------------------- |
+| Student    | Signs up, or asks for a new code                                   | Verification code                       |      | Built (B2.3)                             |
+| Student    | Forgot password                                                    | Reset code                              |      | Built (B2.3)                             |
+| Student    | Password changed                                                   | "Your password was changed"             |      | Proposed                                 |
+| Student    | Matched with a researcher                                          |                                         | Yes  | B6                                       |
+| Student    | New weekly session opens (`notifySessions`)                        |                                         | Yes  | B6                                       |
+| Student    | Daily mood check at the chosen time (`notifyMood`)                 |                                         | Yes  | B6                                       |
+| Student    | Check-in booked, moved or cancelled (`notifyCheckIns`)             |                                         | Yes  | B6                                       |
+| Student    | Check-in in 1 hour, and when Join opens                            |                                         | Yes  | B6                                       |
+| Student    | New message from the researcher (`notifyMessages`), never the text |                                         | Yes  | B6                                       |
+| Student    | Final PHQ-9 due after Session 8                                    |                                         | Yes  | B6                                       |
+| Student    | Question 9, EPQ-R 76 or risk words                                 |                                         |      | The app shows the support screen at once |
+| Researcher | Invited by the study lead                                          | Invite link                             |      | Built (B2.4)                             |
+| Researcher | A student joins with their code                                    | "Kemi accepted your invite"             | B6   | Email built (B3.1)                       |
+| Researcher | A student is matched at random                                     | Same email                              | B6   | Proposed                                 |
+| Researcher | Urgent alert (question 9, EPQ-R 76, risk words, final PHQ-9 up 5+) | "An urgent alert needs your attention"  | B6   | Email built (B3.2)                       |
+| Researcher | Alerts waiting from before the student was matched                 | Same urgent email                       | B6   | Built (B3.2)                             |
+| Researcher | Non-urgent alert (severe score, inactive 5 days)                   |                                         | B6   | In app only                              |
+| Researcher | New message from a student (`notify.messages`)                     |                                         | Yes  | B6                                       |
+| Researcher | Their check-in is about to start (`notify.calls`)                  |                                         | Yes  | B6                                       |
+| Researcher | A student withdraws                                                | Yes                                     | B6   | Proposed (B3.4)                          |
+| Study lead | Urgent alert for a student with no researcher yet                  | Same urgent email                       |      | Built (B3.2)                             |
+| Study lead | Matching fails because every researcher is full                    | "A student is waiting for a researcher" |      | Proposed                                 |
+
 ## 5. Tables
 
 One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`, `createdAt` and `updatedAt` unless noted. Synced tables also have `deletedAt`.
@@ -277,11 +306,11 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B2    | EmailCode          | userId, purpose (verify email or reset password), codeHash, expiresAt, attempts, usedAt                                                      |
 | B2    | Invite             | email, name, tokenHash, invitedById, expiresAt, acceptedAt, revokedAt                                                                        |
 | B2    | Consent            | studentId, version, agreedAt                                                                                                                 |
-| B3    | Phq9Result         | studentId, kind, answers, score, at                                                                                                          |
+| B3    | Phq9Result         | studentId, kind (baseline or final, one each), answers, score, item9, takenAt                                                                |
 | B3    | EpqrResult         | studentId, answers, scores, at                                                                                                               |
 | B3    | Assignment         | studentId, researcherId, method, assignedAt                                                                                                  |
 | B3    | Withdrawal         | studentId, reason, at                                                                                                                        |
-| B3    | Alert              | studentId, researcherId, kind, urgent, title, quote, detail, sourceId, at                                                                    |
+| B3    | Alert              | studentId, researcherId (empty until matched), kind, urgent, title, quote, detail, sourceId (one alert per kind and source), raisedAt        |
 | B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt                                                                                      |
 | B4    | MoodEntry          | studentId, mood, note, at                                                                                                                    |
 | B4    | JournalEntry       | studentId, prompt, text (encrypted), mood, sessionId, at, editedAt                                                                           |
