@@ -2,9 +2,10 @@ import { router, usePathname } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 
+import { useSessionStore } from '@/stores/session.store';
+
 import { shouldRelock } from './pin';
 import { hasPin } from './pinStore';
-import { getUserSession } from './userSession';
 
 /** Asks for the PIN again when a signed-in user returns after being away a while. */
 export function useRelockOnResume() {
@@ -30,7 +31,7 @@ export function useRelockOnResume() {
       const path = currentPath.current;
       // Not while signing in or on the welcome screen, which handle the PIN themselves.
       const onAuthScreen = path === '/' || path.startsWith('/auth');
-      if (away && !onAuthScreen && hasPin() && getUserSession().email) {
+      if (away && !onAuthScreen && hasPin() && useSessionStore.getState().user) {
         router.push({ pathname: '/auth/unlock', params: { mode: 'resume' } });
       }
     });

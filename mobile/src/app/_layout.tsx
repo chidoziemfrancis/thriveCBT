@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 
 import AnimatedSplash, { SplashRevealedProvider } from '@/components/splash/AnimatedSplash';
 import { useRelockOnResume } from '@/features/auth/useRelockOnResume';
+import { useSessionWatch } from '@/features/auth/useSessionWatch';
 import AppProvider from '@/providers/AppProvider';
 import { colors } from '@/theme';
 
@@ -27,6 +28,7 @@ export default function RootLayout() {
   const revealApp = useCallback(() => setSplashRevealed(true), []);
   const finishSplash = useCallback(() => setSplashDone(true), []);
   useRelockOnResume();
+  useSessionWatch();
 
   // A font that fails to load falls back to the system font rather than holding the
   // native splash on screen forever.

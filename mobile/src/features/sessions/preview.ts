@@ -1,6 +1,6 @@
-import { isTestAccount } from '@/features/auth/mockAccounts';
-import { getUserSession } from '@/features/auth/userSession';
+import { isTestAccount } from '@/features/auth';
 import { getPreferences } from '@/lib/preferences';
+import { useSessionStore } from '@/stores/session.store';
 
 import { SESSIONS } from './sessions';
 
@@ -10,7 +10,7 @@ export const OPEN_ALL_SESSIONS_FOR_TESTING = true;
 
 /** Only test accounts and development builds can open sessions ahead of their week. */
 export function canPreviewSessions(): boolean {
-  return __DEV__ || isTestAccount(getUserSession().email);
+  return __DEV__ || isTestAccount(useSessionStore.getState().user?.email);
 }
 
 /** The last session the student can open: their week, or every session when previewing. */

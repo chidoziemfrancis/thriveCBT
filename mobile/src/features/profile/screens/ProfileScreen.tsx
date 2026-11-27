@@ -11,7 +11,6 @@ import { firstName } from '@/features/assignment/assign';
 import { getAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
 import { signOut } from '@/features/auth/signOut';
-import { getUserSession } from '@/features/auth/userSession';
 import UserAvatar from '@/features/avatar/components/UserAvatar';
 import { getConsent } from '@/features/consent/consentStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
@@ -21,13 +20,14 @@ import { useEmergencyContact } from '@/features/profile/emergencyContactStore';
 import { OPEN_ALL_SESSIONS_FOR_TESTING, canPreviewSessions } from '@/features/sessions/preview';
 import { SESSIONS } from '@/features/sessions/sessions';
 import { setPreference, usePreferences } from '@/lib/preferences';
+import { useSessionStore } from '@/stores/session.store';
 import { colors, fonts } from '@/theme';
 
 function readProfile() {
   const assignment = getAssignment();
   return {
     name: getOnboardingData().name ?? '',
-    email: getUserSession().email ?? '',
+    email: useSessionStore.getState().user?.email ?? '',
     week: currentStudyWeek(),
     researcher: MOCK_RESEARCHERS.find((r) => r.id === assignment?.researcherId),
     consent: getConsent(),
@@ -57,10 +57,9 @@ export default function ProfileScreen() {
       {
         text: 'Log out',
         style: 'destructive',
-        onPress: async () => {
-          await signOut();
-          router.dismissAll();
-          router.replace('/');
+        // Signing out sends everyone back to the start (see useSessionWatch).
+        onPress: () => {
+          void signOut();
         },
       },
     ]);

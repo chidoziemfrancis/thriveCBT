@@ -10,8 +10,8 @@ import PinBoxes from '@/features/auth/components/PinBoxes';
 import { PIN_LENGTH, isWeakPin } from '@/features/auth/pin';
 import { savePin } from '@/features/auth/pinStore';
 import { homeFor } from '@/features/auth/roles';
-import { getUserSession } from '@/features/auth/userSession';
 import { haptics } from '@/lib/haptics';
+import { useSessionStore } from '@/stores/session.store';
 import { colors, fonts, type } from '@/theme';
 
 type Step = 'create' | 'confirm';
@@ -56,7 +56,7 @@ export default function CreatePinScreen() {
     await savePin(entered);
     haptics.success();
     if (mode === 'change') router.back();
-    else router.replace(homeFor(getUserSession().role ?? 'student'));
+    else router.replace(homeFor(useSessionStore.getState().user?.role ?? 'student'));
   }
 
   function handleDigit(digit: string) {

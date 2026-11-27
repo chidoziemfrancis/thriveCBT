@@ -3,8 +3,7 @@ import { useCallback, useState } from 'react';
 
 import { MAX_CASELOAD } from '@/features/assignment/assign';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
-import { researcherIdFor } from '@/features/auth/mockAccounts';
-import { getUserSession } from '@/features/auth/userSession';
+import { useSessionStore } from '@/stores/session.store';
 
 import { mockCaseload } from './caseload';
 import { handledIds } from './alerts';
@@ -16,7 +15,8 @@ import { useSchedule } from './scheduleStore';
 import { useResearcherSettings } from './settingsStore';
 
 function read(now = new Date()) {
-  const id = researcherIdFor(getUserSession().email);
+  // The researcher side still runs on mock data until B5: every researcher sees Grace's students.
+  const id = useSessionStore.getState().user?.role === 'student' ? null : 'r-grace';
   const researcher = MOCK_RESEARCHERS.find((r) => r.id === id) ?? null;
   // Only Grace has mock students; anyone else starts empty until the backend exists.
   const caseload = id === 'r-grace' ? mockCaseload(now) : { students: [], calls: [] };
