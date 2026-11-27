@@ -5,6 +5,7 @@ import { MeController } from './accounts/controllers/me.controller.js';
 import { AccountsRepository } from './accounts/repositories/accounts.repository.js';
 import { AccountsService } from './accounts/services/accounts.service.js';
 import { OnboardingController } from './onboarding/controllers/onboarding.controller.js';
+import { OnboardingRepository } from './onboarding/repositories/onboarding.repository.js';
 import { OnboardingService } from './onboarding/services/onboarding.service.js';
 import { StudentsController } from './students/controllers/students.controller.js';
 import { StudentsRepository } from './students/repositories/students.repository.js';
@@ -19,6 +20,7 @@ import { StudentsService } from './students/services/students.service.js';
     StudentsService,
     StudentsRepository,
     OnboardingService,
+    OnboardingRepository,
   ],
   exports: [AccountsService, StudentsService],
 })

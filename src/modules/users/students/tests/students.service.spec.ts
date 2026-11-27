@@ -1,3 +1,4 @@
+import type { ConsentService } from '../../../consent/services/consent.service.js';
 import type { StudentProfile } from '../../../../generated/prisma/client.js';
 import {
   updatePreferencesSchema,
@@ -9,7 +10,7 @@ import { StudentsService, studyWeek } from '../services/students.service.js';
 const JOINED = new Date('2026-11-01T09:00:00Z');
 const day = (n: number) => new Date(JOINED.getTime() + n * 86_400_000);
 
-function setup(exists = true) {
+function setup(exists = true, startedAt: Date | null = null) {
   let profile = {
     userId: 'u1',
     name: null,
@@ -31,7 +32,10 @@ function setup(exists = true) {
     ),
   };
   return {
-    service: new StudentsService(repository as unknown as StudentsRepository),
+    service: new StudentsService(
+      repository as unknown as StudentsRepository,
+      { startedAt: vi.fn(async () => startedAt) } as unknown as ConsentService,
+    ),
     repository,
   };
 }
@@ -49,6 +53,15 @@ describe('studyWeek', () => {
 });
 
 describe('StudentsService', () => {
+  it('counts the study week from the day the student consented, as the app does', async () => {
+    const { service } = setup(true, day(10));
+    await expect(service.getProfile('u1', day(17))).resolves.toMatchObject({
+      studyWeek: 2,
+      joinedAt: JOINED.toISOString(),
+      startedAt: day(10).toISOString(),
+    });
+  });
+
   it('returns an empty profile with the study week', async () => {
     const { service } = setup();
     await expect(service.getProfile('u1', day(8))).resolves.toEqual({
@@ -58,6 +71,7 @@ describe('StudentsService', () => {
       avatarId: null,
       studyWeek: 2,
       joinedAt: JOINED.toISOString(),
+      startedAt: null,
     });
   });
 

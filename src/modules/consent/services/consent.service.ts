@@ -18,6 +18,11 @@ export class ConsentService {
     return this.repository.latest(userId);
   }
 
+  // The study starts on the first agreement; agreeing to a newer version later doesn't restart it.
+  async startedAt(userId: string): Promise<Date | null> {
+    return (await this.repository.first(userId))?.agreedAt ?? null;
+  }
+
   async get(userId: string): Promise<ConsentDto> {
     const consent = await this.repository.latest(userId);
     if (!consent) throw new AppError(COMMON_ERRORS.NOT_FOUND);

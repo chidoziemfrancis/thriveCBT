@@ -6,6 +6,9 @@ export const ONBOARDING_STEPS = [
   'profile',
   'eligibility',
   'not-eligible',
+  'phq9',
+  'epqr',
+  'assignment',
   'done',
 ] as const;
 export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
@@ -16,5 +19,8 @@ export const onboardingSchema = z.object({
   consented: z.boolean(),
   profileComplete: z.boolean(),
   isUndergraduate: z.boolean().nullable(),
+  phq9Done: z.boolean(),
+  epqrDone: z.boolean(),
+  matched: z.boolean(),
 });
 export type OnboardingDto = z.infer<typeof onboardingSchema>;

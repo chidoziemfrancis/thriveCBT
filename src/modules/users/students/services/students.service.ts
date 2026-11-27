@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import type { StudentProfile } from '../../../../generated/prisma/client.js';
+import { ConsentService } from '../../../consent/services/consent.service.js';
 import { AppError } from '../../../../shared/errors/app-error.js';
 import { COMMON_ERRORS } from '../../../../shared/errors/error-codes.js';
 import type {
@@ -19,7 +20,11 @@ export function studyWeek(joinedAt: Date, now = new Date()): number {
   return Math.min(Math.max(week, 1), STUDY_WEEKS);
 }
 
-function toProfileDto(profile: StudentProfile, now: Date): StudentProfileDto {
+function toProfileDto(
+  profile: StudentProfile,
+  startedAt: Date | null,
+  now: Date,
+): StudentProfileDto {
   return {
     name: profile.name,
     dateOfBirth: profile.dateOfBirth
@@ -27,8 +32,9 @@ function toProfileDto(profile: StudentProfile, now: Date): StudentProfileDto {
       : null,
     isUndergraduate: profile.isUndergraduate,
     avatarId: profile.avatarId,
-    studyWeek: studyWeek(profile.joinedAt, now),
+    studyWeek: studyWeek(startedAt ?? profile.joinedAt, now),
     joinedAt: profile.joinedAt.toISOString(),
+    startedAt: startedAt?.toISOString() ?? null,
   };
 }
 
@@ -45,13 +51,20 @@ function toPreferencesDto(profile: StudentProfile): PreferencesDto {
 
 @Injectable()
 export class StudentsService {
-  constructor(private readonly repository: StudentsRepository) {}
+  constructor(
+    private readonly repository: StudentsRepository,
+    private readonly consent: ConsentService,
+  ) {}
 
   async getProfile(
     userId: string,
     now = new Date(),
   ): Promise<StudentProfileDto> {
-    return toProfileDto(await this.find(userId), now);
+    const [profile, startedAt] = await Promise.all([
+      this.find(userId),
+      this.consent.startedAt(userId),
+    ]);
+    return toProfileDto(profile, startedAt, now);
   }
 
   async updateProfile(
@@ -67,7 +80,7 @@ export class StudentsService {
         ? { dateOfBirth: new Date(`${dateOfBirth}T00:00:00Z`) }
         : {}),
     });
-    return toProfileDto(profile, now);
+    return toProfileDto(profile, await this.consent.startedAt(userId), now);
   }
 
   async getPreferences(userId: string): Promise<PreferencesDto> {

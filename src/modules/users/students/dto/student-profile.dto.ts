@@ -9,6 +9,7 @@ export const studentProfileSchema = z.object({
   avatarId: z.string().nullable(),
   studyWeek: z.number().int().min(1).max(8),
   joinedAt: z.iso.datetime(),
+  startedAt: z.iso.datetime().nullable(),
 });
 export type StudentProfileDto = z.infer<typeof studentProfileSchema>;
 
