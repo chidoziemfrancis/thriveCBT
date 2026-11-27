@@ -101,11 +101,11 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ## B1 Data contract · `feat/data-contract`
 
-- [ ] `docs/api/` page per module: models, fields, endpoints, requests, responses, error codes
-- [ ] Admin endpoints (`/v1/admin/...`) included for the web side
-- [ ] Privacy table confirmed by the study team
-- [ ] Sync rules written in full
-- [ ] Map of the app's ~40 storage keys to endpoints
+- [x] `docs/api/contract.md`: tables, student and researcher endpoints, requests, responses, error codes
+- [ ] Admin endpoints (`/v1/admin/...`) for the web side (parked with the web)
+- [~] Privacy table written; waiting on the study team to confirm
+- [x] Sync rules written
+- [x] Map of the app's storage keys to endpoints
 - [ ] Team sign-off
 
 ## B2 Accounts and login · `feat/accounts`

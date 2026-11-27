@@ -30,4 +30,4 @@ Three views of the same API, all coming from the code.
 
 ## Data contract (B1)
 
-Phase B1 adds one page per module here: models, fields, endpoints, requests, responses, error codes and who can see what. That's the document the team signs off before building B2 onwards.
+[contract.md](contract.md) lists every endpoint, split into student and researcher operations, plus the tables, who sees what, how each phone storage key maps to the server, and the offline sync rules. It's signed off by the team before B2 onwards is built.
