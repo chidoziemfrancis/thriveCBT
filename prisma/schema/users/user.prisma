@@ -23,6 +23,8 @@ model User {
   sessionProgress   SessionProgress[]
   moodEntries       MoodEntry[]
   journalEntries    JournalEntry[]
+  thoughtRecords    ThoughtRecord[]
+  positiveEntries   PositiveEntry[]
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 

@@ -1,0 +1,26 @@
+/// A thought record the student wrote. The id comes from the phone. Situation, thought, action
+/// and balanced thought are encrypted with the field key; deleting empties them and leaves a
+/// marker. `updatedAt` is the phone's change time (newest wins); `syncedAt` is the server's.
+model ThoughtRecord {
+  id           String    @id @db.Uuid
+  studentId    String    @map("student_id") @db.Uuid
+  situation    String?
+  thought      String?
+  feeling      String[]
+  action       String?
+  traps        String[]
+  sessionId    Int?      @map("session_id")
+  balanced     String?
+  beliefBefore Int?      @map("belief_before")
+  beliefAfter  Int?      @map("belief_after")
+  at           DateTime
+  updatedAt    DateTime  @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+  syncedAt     DateTime  @updatedAt @map("synced_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, syncedAt])
+  @@map("thought_records")
+}
