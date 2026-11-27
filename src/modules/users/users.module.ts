@@ -20,6 +20,6 @@ import { StudentsService } from './students/services/students.service.js';
     StudentsRepository,
     OnboardingService,
   ],
-  exports: [AccountsService],
+  exports: [AccountsService, StudentsService],
 })
 export class UsersModule {}
