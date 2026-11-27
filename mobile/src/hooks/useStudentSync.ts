@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import '@/features/mood';
 import '@/features/sessions';
 import { startSync } from '@/lib/sync';
 import { useSessionStore } from '@/stores/session.store';

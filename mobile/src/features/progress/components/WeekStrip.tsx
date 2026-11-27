@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import MoodFace from '@/features/mood/components/MoodFace';
-import { MOODS } from '@/features/mood/moods';
+import { MOODS } from '@/features/mood/constants/moods';
 import type { WeekDay } from '@/features/progress/progressLogic';
 import { colors, fonts } from '@/theme';
 

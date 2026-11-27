@@ -1,4 +1,4 @@
-import { moodOnDay } from '@/features/mood/moodLog';
+import { moodOnDay } from '@/features/mood/utils/moodLog';
 
 import type { Call, CaseloadStudent } from './caseload';
 import { openAlerts } from './alerts';

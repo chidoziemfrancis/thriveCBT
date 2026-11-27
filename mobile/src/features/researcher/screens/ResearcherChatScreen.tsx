@@ -19,8 +19,8 @@ import { ChatRow, toChatRows } from '@/features/chat/chatLogic';
 import ChatComposer from '@/features/chat/components/ChatComposer';
 import MessageBubble from '@/features/chat/components/MessageBubble';
 import MoodFace from '@/features/mood/components/MoodFace';
-import { MOODS } from '@/features/mood/moods';
-import { moodOnDay } from '@/features/mood/moodLog';
+import { MOODS } from '@/features/mood/constants/moods';
+import { moodOnDay } from '@/features/mood/utils/moodLog';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { QUICK_REPLIES, threadFor, unansweredRisk } from '@/features/researcher/messagesLogic';
 import {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { moodOnDay } from '@/features/mood/moodLog';
-import { MOODS } from '@/features/mood/moods';
+import { moodOnDay } from '@/features/mood/utils/moodLog';
+import { MOODS } from '@/features/mood/constants/moods';
 
 const count = MOODS.length;
 

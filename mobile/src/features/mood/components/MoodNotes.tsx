@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import MoodFace from '@/features/mood/components/MoodFace';
-import { type MoodEntry, moodNotes } from '@/features/mood/moodLog';
-import { MOODS } from '@/features/mood/moods';
+import { type MoodEntry, moodNotes } from '@/features/mood/utils/moodLog';
+import { MOODS } from '@/features/mood/constants/moods';
 import { colors, fonts } from '@/theme';
 
 function day(iso: string) {

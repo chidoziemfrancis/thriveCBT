@@ -1,4 +1,12 @@
-export type MoodEntry = { mood: number; at: string; note?: string };
+export type MoodEntry = {
+  /** Made on the phone, so an entry logged offline keeps the same id on the server. */
+  id?: string;
+  mood: number;
+  at: string;
+  note?: string;
+  /** When the phone last changed it; the newest change wins when syncing. */
+  updatedAt?: string;
+};
 
 function sameDay(a: Date, b: Date) {
   return (

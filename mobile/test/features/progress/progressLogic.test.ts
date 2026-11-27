@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import type { MoodEntry } from '@/features/mood/moodLog';
+import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import {
   currentWeek,
   dailyMoods,

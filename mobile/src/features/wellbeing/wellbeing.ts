@@ -1,7 +1,7 @@
 import type { PlannedActivity } from '@/features/activities/activities';
 import type { PositiveEntry } from '@/features/beliefs/beliefs';
 import type { StressEntry } from '@/features/coping/copingStore';
-import type { MoodEntry } from '@/features/mood/moodLog';
+import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
 import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { TRAPS } from '@/features/sessions/constants/traps';

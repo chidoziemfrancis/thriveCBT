@@ -1,4 +1,4 @@
-import { MoodEntry, moodOnDay } from '@/features/mood/moodLog';
+import { MoodEntry, moodOnDay } from '@/features/mood/utils/moodLog';
 import { MoodDay, mostCommonMood } from '@/features/progress/progressLogic';
 
 export type MoodWeek = {

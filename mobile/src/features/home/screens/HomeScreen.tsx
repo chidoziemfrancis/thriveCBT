@@ -15,7 +15,7 @@ import WeekTiles from '@/features/home/components/WeekTiles';
 import HomeworkCard from '@/features/homework/components/HomeworkCard';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
-import { logMood, setTodaysMoodNote, todaysMood } from '@/features/mood/moodStore';
+import { logMood, setTodaysMoodNote, todaysMood } from '@/features/mood/store/moodStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { sessionContent } from '@/features/sessions/content';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';

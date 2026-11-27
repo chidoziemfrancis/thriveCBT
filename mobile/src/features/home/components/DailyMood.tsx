@@ -5,8 +5,8 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { PlusIcon } from '@/components/icons';
 import TextField from '@/components/ui/TextField';
 import MoodFace from '@/features/mood/components/MoodFace';
-import type { MoodEntry } from '@/features/mood/moodLog';
-import { MOODS } from '@/features/mood/moods';
+import type { MoodEntry } from '@/features/mood/utils/moodLog';
+import { MOODS } from '@/features/mood/constants/moods';
 import { colors, fonts, radius } from '@/theme';
 
 const FACE = 54;

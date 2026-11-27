@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import MoodFace from '@/features/mood/components/MoodFace';
 import MoodNotes from '@/features/mood/components/MoodNotes';
-import { MOODS } from '@/features/mood/moods';
+import { MOODS } from '@/features/mood/constants/moods';
 import MoodTrend from '@/features/progress/components/MoodTrend';
 import { moodWeeks } from '@/features/researcher/moodHistory';
 import { useResearcher } from '@/features/researcher/useResearcher';

@@ -7,7 +7,7 @@ import { checkInPhase } from '@/features/checkin/checkinLogic';
 import { getNextCheckIn } from '@/features/checkin/checkinStore';
 import { getConsent } from '@/features/consent/consentStore';
 import { currentStudyWeek } from '@/features/home/currentWeek';
-import { todaysMood } from '@/features/mood/moodStore';
+import { todaysMood } from '@/features/mood/store/moodStore';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { readJson, writeJson } from '@/lib/storage';

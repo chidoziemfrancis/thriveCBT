@@ -1,6 +1,6 @@
 import Svg, { Circle, Path } from 'react-native-svg';
 
-import { MOODS } from '@/features/mood/moods';
+import { MOODS } from '@/features/mood/constants/moods';
 import { colors } from '@/theme';
 
 // Mouths run from a deep frown (0) to a big open smile (4).

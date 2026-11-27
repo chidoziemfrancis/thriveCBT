@@ -1,7 +1,7 @@
 import { type PlannedActivity, dayKey } from '@/features/activities/activities';
 import type { PositiveEntry } from '@/features/beliefs/beliefs';
 import type { StressEntry, ToolUse } from '@/features/coping/copingStore';
-import type { MoodEntry } from '@/features/mood/moodLog';
+import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import type { ThoughtRecord } from '@/features/thoughts/thoughtLog';
 
 /** Everything in the app that can count as doing a week's practice. */

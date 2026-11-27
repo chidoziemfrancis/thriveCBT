@@ -5,8 +5,8 @@ import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import Svg, { Circle, Line, Path } from 'react-native-svg';
 
 import MoodFace from '@/features/mood/components/MoodFace';
-import type { MoodEntry } from '@/features/mood/moodLog';
-import { MOODS } from '@/features/mood/moods';
+import type { MoodEntry } from '@/features/mood/utils/moodLog';
+import { MOODS } from '@/features/mood/constants/moods';
 import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';

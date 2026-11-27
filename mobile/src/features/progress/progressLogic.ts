@@ -1,4 +1,4 @@
-import { MoodEntry, moodOnDay } from '@/features/mood/moodLog';
+import { MoodEntry, moodOnDay } from '@/features/mood/utils/moodLog';
 
 export type MoodDay = { date: Date; mood: number | null };
 

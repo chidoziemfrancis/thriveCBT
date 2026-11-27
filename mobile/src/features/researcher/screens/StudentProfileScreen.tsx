@@ -9,7 +9,7 @@ import Screen from '@/components/ui/Screen';
 import { epqrSummary, severityBand } from '@/features/assessment';
 import { phq9Outcome } from '@/features/endOfStudy/endOfStudy';
 import { daysAgoLabel } from '@/features/journal/journalLogic';
-import { MOODS } from '@/features/mood/moods';
+import { MOODS } from '@/features/mood/constants/moods';
 import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
 import { callCounts, sessionsCompleted } from '@/features/researcher/caseload';
 import StudentAvatar from '@/features/researcher/components/StudentAvatar';

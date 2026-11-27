@@ -8,8 +8,8 @@ import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import { ResearcherPhoto, type ResearcherCard } from '@/features/assignment';
 import MoodFace from '@/features/mood/components/MoodFace';
-import { logMood } from '@/features/mood/moodStore';
-import { MOODS } from '@/features/mood/moods';
+import { logMood } from '@/features/mood/store/moodStore';
+import { MOODS } from '@/features/mood/constants/moods';
 import type { AppNotification } from '@/features/notifications/buildNotifications';
 import {
   getLastSeenNotifications,

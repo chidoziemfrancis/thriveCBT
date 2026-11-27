@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { type MoodEntry, moodNotes } from '@/features/mood/moodLog';
-import { getMoodLog, logMood, setTodaysMoodNote, todaysMood } from '@/features/mood/moodStore';
+import { type MoodEntry, moodNotes } from '@/features/mood/utils/moodLog';
+import {
+  getMoodLog,
+  logMood,
+  setTodaysMoodNote,
+  todaysMood,
+} from '@/features/mood/store/moodStore';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({

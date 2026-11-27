@@ -11,7 +11,7 @@ import { firstName, getMyResearcher } from '@/features/assignment';
 import { formatDuration } from '@/features/checkin/checkinLogic';
 import { completeCheckIn, getNextCheckIn } from '@/features/checkin/checkinStore';
 import MoodFace from '@/features/mood/components/MoodFace';
-import { MOODS } from '@/features/mood/moods';
+import { MOODS } from '@/features/mood/constants/moods';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 
