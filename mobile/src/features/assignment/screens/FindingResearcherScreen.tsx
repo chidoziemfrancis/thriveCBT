@@ -17,7 +17,7 @@ import Screen from '@/components/ui/Screen';
 import { assignResearcher } from '@/features/assignment/assign';
 import { getAssignment, saveAssignment } from '@/features/assignment/assignmentStore';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
-import { getUserSession } from '@/features/auth/userSession';
+import { getUserSession } from '@/features/auth/store/userSession';
 import { colors, type } from '@/theme';
 import { afterMatching } from '@/features/onboarding/reminders';
 

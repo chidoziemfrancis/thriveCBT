@@ -9,7 +9,7 @@ import {
   isPasswordValid,
   passwordChecks,
   passwordStrength,
-} from '@/features/auth/password';
+} from '@/features/auth/utils/password';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

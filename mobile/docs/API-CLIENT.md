@@ -36,13 +36,16 @@ src/
 ├── stores/
 │   └── session.store.ts     Zustand: signed in or out, the user, the access token (memory)
 ├── features/<feature>/
-│   ├── api/<feature>.service.ts   plain functions that call `api`
-│   ├── hooks/               useQuery / useMutation hooks: use<Thing>, use<Action>
-│   ├── schemas/             Zod checks for forms
-│   ├── types/               feature types, narrowed from src/types/api.ts
-│   ├── store/               Zustand, only for phone-only state
+│   ├── api/<feature>.service.ts   plain functions that call `api`, plus query keys
 │   ├── components/
+│   ├── hooks/               React hooks: use<Thing>, use<Action>, and screen-wide hooks
+│   ├── schemas/             Zod checks for forms
 │   ├── screens/             imported by the route files in src/app
+│   ├── types/               feature types, narrowed from src/types/api.ts
+│   ├── utils/               pure helpers (formatting, rules, small calculations)
+│   ├── store/               phone storage for this feature (Zustand or kv-store)
+│   ├── constants/           fixed values and lists
+│   ├── <action>.ts          a feature-wide action used by several screens, e.g. signOut.ts
 │   └── index.ts             what other features may import
 ├── components/ui/  components/shared/   building blocks used across features
 ├── hooks/                   hooks used across features
@@ -51,7 +54,7 @@ src/
     └── api-helpers.ts       ResponseOf<path, method>, BodyOf<path, method>
 ```
 
-Features gain `api/`, `hooks/`, `schemas/`, `types/` and `index.ts` when they connect to the backend. Features still on phone storage keep their current files until their phase.
+Every feature uses this layout. Loose files at the feature's root are only `index.ts` and a feature-wide action like `signOut.ts`; everything else goes in the matching folder. A folder is created when its first file arrives. Features still on phone storage are moved into this layout when they're next changed.
 
 ## Rules
 

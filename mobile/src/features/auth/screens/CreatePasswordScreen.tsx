@@ -8,7 +8,7 @@ import Screen from '@/components/ui/Screen';
 import { useRegister } from '@/features/auth';
 import FormError from '@/features/auth/components/FormError';
 import NewPasswordField from '@/features/auth/components/NewPasswordField';
-import { isPasswordValid } from '@/features/auth/password';
+import { isPasswordValid } from '@/features/auth/utils/password';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 

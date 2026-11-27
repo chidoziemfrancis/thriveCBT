@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { PIN_LENGTH } from '@/features/auth/pin';
+import { PIN_LENGTH } from '@/features/auth/utils/pin';
 import { colors, radius } from '@/theme';
 
 const BOX = 64;

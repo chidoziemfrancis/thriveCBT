@@ -84,25 +84,27 @@ Errors: `AUTH_EMAIL_TAKEN` (409), `AUTH_INVALID_CREDENTIALS` (401), `AUTH_TOKEN_
 
 ### 3.2 Study entry: consent, assessments, assignment
 
-| Method | Path                | Body                                                  | Returns                                                                  |
-| ------ | ------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------ |
-| POST   | `/v1/me/consent`    | `{ version }`                                         | `{ version, agreedAt }`                                                  |
-| GET    | `/v1/me/consent`    |                                                       | `{ version, agreedAt }` or `404`                                         |
-| POST   | `/v1/me/phq9`       | `{ kind: "baseline" \| "final", answers: [0-3 × 9] }` | `{ id, kind, score, band, at }`                                          |
-| GET    | `/v1/me/phq9`       |                                                       | `items` of the above                                                     |
-| POST   | `/v1/me/epqr`       | `{ answers: [true/false × 100] }`                     | `{ id, at }`                                                             |
-| GET    | `/v1/me/assignment` |                                                       | `{ researcher: { id, name, title, bio, photoUrl }, method, assignedAt }` |
-| POST   | `/v1/me/assignment` | `{ inviteCode? }`                                     | same as GET                                                              |
-| POST   | `/v1/me/withdraw`   | `{ reason?, confirm: "WITHDRAW" }`                    | `{ at }`                                                                 |
+| Method | Path                     | Body                                                  | Returns                                                                                               |
+| ------ | ------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| POST   | `/v1/me/consent`         | `{ version }`                                         | `{ version, agreedAt }`                                                                               |
+| GET    | `/v1/me/consent`         |                                                       | `{ version, agreedAt }` or `404`                                                                      |
+| POST   | `/v1/me/phq9`            | `{ kind: "baseline" \| "final", answers: [0-3 × 9] }` | `{ id, kind, score, band, at }`                                                                       |
+| GET    | `/v1/me/phq9`            |                                                       | `items` of the above                                                                                  |
+| POST   | `/v1/me/epqr`            | `{ answers: [true/false × 100] }`                     | `{ id, at }`                                                                                          |
+| GET    | `/v1/me/assignment`      |                                                       | `{ researcher: { id, name, title, bio, photoUrl }, method, assignedAt }`                              |
+| GET    | `/v1/invite-codes/:code` |                                                       | `{ id, name, title, bio }` of the researcher behind the code, so the invite screen can show who it is |
+| POST   | `/v1/me/assignment`      | `{ inviteCode? }`                                     | same as GET                                                                                           |
+| POST   | `/v1/me/withdraw`        | `{ reason?, confirm: "WITHDRAW" }`                    | `{ at }`                                                                                              |
 
 - Consent is built (B2): agreeing to the same version twice keeps the first date; `GET` returns the latest, or `404` before any.
 - The server scores the PHQ-9 and EPQ-R; the app doesn't send scores.
 - EPQ-R scale scores are never returned to the student, matching the app.
 - A `final` PHQ-9 is only accepted once Session 8 is complete, and each kind is accepted once.
 - PHQ-9 question 9 above zero, or EPQ-R question 76 answered Yes, raises an urgent researcher alert in the same request. If raising the alert fails, the request fails.
-- Assignment: an invite code goes to that researcher; otherwise random among researchers with space, at most 10 students each.
+- Assignment (built in B3.1): an invite code (from the join link or typed, spaces and case ignored) always goes to that researcher, as in the app. Without a code, the student goes at random to a researcher who is accepting students and has space (10 each), preferring the fewest students. Asking again returns the same match. When a student joins with a code, that researcher gets an email; a failed email never undoes the match.
+- `GET /v1/invite-codes/:code` uses the strict rate limit, so codes can't be guessed in bulk.
 
-Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_ALREADY_SUBMITTED` (409), `PHQ9_FINAL_NOT_OPEN` (409), `EPQR_ALREADY_SUBMITTED` (409), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_INVITE_INVALID` (400), `WITHDRAW_CONFIRM_MISMATCH` (400).
+Errors: `CONSENT_REQUIRED` (403, on any `/v1/me/...` data call before consent), `PHQ9_ALREADY_SUBMITTED` (409), `PHQ9_FINAL_NOT_OPEN` (409), `EPQR_ALREADY_SUBMITTED` (409), `ASSIGNMENT_NO_RESEARCHER` (503, nobody has space), `ASSIGNMENT_CODE_NOT_FOUND` (404), `WITHDRAW_CONFIRM_MISMATCH` (400).
 
 ### 3.3 Sessions
 

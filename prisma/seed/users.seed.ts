@@ -5,6 +5,22 @@ import { UserRole } from '../../src/generated/prisma/enums.js';
 
 export const SEED_PASSWORD = 'Password123';
 
+const RESEARCHER_PROFILES: Record<
+  string,
+  { name: string; title: string; inviteCode: string }
+> = {
+  'grace.researcher@thrivecbt.test': {
+    name: 'Grace Bello',
+    title: 'Clinical psychology PhD student',
+    inviteCode: 'GRACE1',
+  },
+  'tunde.researcher@thrivecbt.test': {
+    name: 'Tunde Adeyemi',
+    title: 'Counselling psychologist',
+    inviteCode: 'TUNDE1',
+  },
+};
+
 const USERS = [
   { email: 'lead@thrivecbt.test', role: UserRole.LEAD },
   { email: 'grace.researcher@thrivecbt.test', role: UserRole.RESEARCHER },
@@ -28,6 +44,14 @@ export async function seedUsers(prisma: PrismaClient) {
           ? { studentProfile: { create: {} } }
           : {}),
       },
+    });
+  }
+  for (const [email, profile] of Object.entries(RESEARCHER_PROFILES)) {
+    const user = await prisma.user.findUniqueOrThrow({ where: { email } });
+    await prisma.researcherProfile.upsert({
+      where: { userId: user.id },
+      update: {},
+      create: { userId: user.id, ...profile },
     });
   }
   return USERS.length;

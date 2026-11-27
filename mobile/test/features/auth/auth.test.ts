@@ -5,9 +5,9 @@ jest.mock('@/lib/axios', () => ({ api: { post: (...args: unknown[]) => mockPost(
 jest.mock('expo-crypto', () => ({ randomUUID: () => 'id' }));
 
 import { authService } from '@/features/auth/api/auth.service';
-import { homeFor } from '@/features/auth/roles';
+import { homeFor } from '@/features/auth/utils/roles';
 import { passwordSchema, codeSchema } from '@/features/auth/schemas/auth.schema';
-import { isTestAccount } from '@/features/auth/testAccounts';
+import { isTestAccount } from '@/features/auth/constants/testAccounts';
 
 beforeEach(() => {
   mockPost.mockReset().mockResolvedValue({ data: { ok: true } });

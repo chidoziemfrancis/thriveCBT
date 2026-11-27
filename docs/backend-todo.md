@@ -163,15 +163,22 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [ ] Student join link (`join/[code]`): the code stays on the phone until B3 sends it to `POST /v1/me/assignment`
 - [ ] Remove the mock accounts
 
-## B3 Study core · `feat/study-core`
+## B3 Study core
 
-- [ ] Models: Phq9Result, EpqrResult, Assignment, Withdrawal, Alert (Consent done in B2.5b)
-- [ ] `assessments` (`phq9/`, `epqr/`), `assignment`, `withdrawal`, `alerts` modules; `CONSENT_REQUIRED` on data routes
+### B3.1 Assignment · `feat/assignment`
+
+- [x] Assignment model and `assignment` module; seed researchers get profiles with codes `GRACE1` and `TUNDE1`
+- [x] `GET /v1/invite-codes/:code`, `GET` and `POST /v1/me/assignment`
+- [x] Invite code always goes to that researcher; otherwise random among researchers with space (10 each), fewest first
+- [x] Email the researcher when a student joins with their code
+
+### Still to do in B3
+
+- [ ] Models: Phq9Result, EpqrResult, Withdrawal, Alert (Consent done in B2.5b, Assignment in B3.1)
+- [ ] `assessments` (`phq9/`, `epqr/`), `withdrawal`, `alerts` modules; `CONSENT_REQUIRED` on data routes
 - [ ] Onboarding status gains `phq9`, `epqr` and `assignment`
 - [ ] `src/events/`: PHQ-9 and EPQ-R submitted
 - [ ] Alerts on the server: question 9, EPQ-R 76, final rise of 5+, severe score
-- [ ] Assignment: random, max 10 per researcher
-- [ ] When a student joins with a researcher's invite link or code, email that researcher that the student accepted (Unosend)
 - [ ] Study week counts from the consent date, as the app does (B2.5 uses the sign-up date until consent exists)
 - [ ] App: consent, both PHQ-9s, EPQ-R, assignment, withdrawal switched over
 
