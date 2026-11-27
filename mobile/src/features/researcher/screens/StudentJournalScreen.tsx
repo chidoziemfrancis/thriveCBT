@@ -5,7 +5,7 @@ import { ChevronRightIcon } from '@/components/icons';
 import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import { excerpt, groupByWeek } from '@/features/journal/journalLogic';
+import { excerpt, groupByWeek } from '@/features/journal/utils/journalLogic';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { haptics } from '@/lib/haptics';

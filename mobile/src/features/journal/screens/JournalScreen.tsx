@@ -10,14 +10,14 @@ import { dayKey } from '@/features/activities/activities';
 import { usePlannedActivities } from '@/features/activities/activityStore';
 import { usePositiveLog } from '@/features/beliefs/positiveLogStore';
 import { useToolkit } from '@/features/coping/copingStore';
-import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/journalLogic';
-import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
+import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/utils/journalLogic';
+import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/constants/journalPrompts';
 import {
   JournalEntry,
   clearJournalDraft,
   getJournalDraft,
   useJournal,
-} from '@/features/journal/journalStore';
+} from '@/features/journal/store/journalStore';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { trapCounts } from '@/features/thoughts/thoughtLog';
 import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/journalLogic';
-import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPrompts';
-import type { JournalEntry } from '@/features/journal/journalStore';
+import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/utils/journalLogic';
+import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/constants/journalPrompts';
+import type { JournalEntry } from '@/features/journal/store/journalStore';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({
@@ -14,9 +14,9 @@ jest.mock('@/lib/storage', () => ({
 
 // The store reads storage when it loads, so each test gets a fresh copy.
 function loadStore() {
-  let store!: typeof import('@/features/journal/journalStore');
+  let store!: typeof import('@/features/journal/store/journalStore');
   jest.isolateModules(() => {
-    store = require('@/features/journal/journalStore');
+    store = require('@/features/journal/store/journalStore');
   });
   return store;
 }

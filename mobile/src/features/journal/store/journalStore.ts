@@ -1,6 +1,11 @@
+import * as Crypto from 'expo-crypto';
 import { useSyncExternalStore } from 'react';
 
 import { readJson, removeKey, writeJson } from '@/lib/storage';
+import { queueChange, registerSyncKind } from '@/lib/sync';
+
+import { JOURNAL_PATH, journalPath } from '../api/journal.service';
+import type { SaveJournalBody, ServerJournalEntry } from '../types/journal.types';
 
 const STORAGE_KEY = 'journal';
 const DRAFT_KEY = 'journal_draft';
@@ -15,11 +20,27 @@ export type JournalEntry = {
   sessionId?: number;
   at: string;
   editedAt?: string;
+  /** When the phone last changed it; the newest change wins when syncing. */
+  updatedAt?: string;
 };
 
 export type JournalDraft = { prompt?: string; text: string; mood?: number };
 
-let entries: JournalEntry[] = readJson<JournalEntry[]>(STORAGE_KEY, []);
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Entries saved before sync had ids like `entry-1730000000000`; the server needs a UUID, so
+// they get one the first time the store loads.
+function load(): JournalEntry[] {
+  const saved = readJson<JournalEntry[]>(STORAGE_KEY, []);
+  if (saved.every((entry) => UUID.test(entry.id))) return saved;
+  const fixed = saved.map((entry) =>
+    UUID.test(entry.id) ? entry : { ...entry, id: Crypto.randomUUID() }
+  );
+  writeJson(STORAGE_KEY, fixed);
+  return fixed;
+}
+
+let entries: JournalEntry[] = load();
 const listeners = new Set<() => void>();
 
 function save(next: JournalEntry[]) {
@@ -48,9 +69,41 @@ export function getJournalEntry(id: string): JournalEntry | undefined {
   return entries.find((entry) => entry.id === id);
 }
 
-export function addJournalEntry(entry: Omit<JournalEntry, 'id' | 'at'>, now = new Date()) {
-  const created: JournalEntry = { ...entry, id: `entry-${now.getTime()}`, at: now.toISOString() };
+function toServer(entry: JournalEntry): SaveJournalBody {
+  return {
+    prompt: entry.prompt ?? null,
+    text: entry.text,
+    mood: entry.mood ?? null,
+    sessionId: entry.sessionId ?? null,
+    at: entry.at,
+    editedAt: entry.editedAt ?? null,
+    updatedAt: entry.updatedAt ?? new Date().toISOString(),
+  };
+}
+
+// Saved on the phone first, so it works offline; the sync engine sends it when it can.
+function send(entry: JournalEntry) {
+  queueChange({
+    key: `journal:${entry.id}`,
+    kind: 'journal',
+    method: 'PUT',
+    path: journalPath(entry.id),
+    body: toServer(entry),
+  });
+}
+
+export function addJournalEntry(
+  entry: Omit<JournalEntry, 'id' | 'at' | 'updatedAt'>,
+  now = new Date()
+) {
+  const created: JournalEntry = {
+    ...entry,
+    id: Crypto.randomUUID(),
+    at: now.toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
   save([...entries, created]);
+  send(created);
   return created;
 }
 
@@ -59,11 +112,21 @@ export function updateJournalEntry(
   patch: Pick<JournalEntry, 'text' | 'mood'>,
   now = new Date()
 ) {
-  save(entries.map((e) => (e.id === id ? { ...e, ...patch, editedAt: now.toISOString() } : e)));
+  const current = getJournalEntry(id);
+  if (!current) return;
+  const updated: JournalEntry = {
+    ...current,
+    ...patch,
+    editedAt: now.toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  save(entries.map((e) => (e.id === id ? updated : e)));
+  send(updated);
 }
 
 export function deleteJournalEntry(id: string) {
   save(entries.filter((entry) => entry.id !== id));
+  queueChange({ key: `journal:${id}`, kind: 'journal', method: 'DELETE', path: journalPath(id) });
 }
 
 // A new entry is saved as a draft while typing, so leaving the app or the screen never loses it.
@@ -78,3 +141,48 @@ export function saveJournalDraft(draft: JournalDraft) {
 export function clearJournalDraft() {
   removeKey(DRAFT_KEY);
 }
+
+const isNewer = (a: string, b: string | undefined) => !b || a >= b;
+
+/** Takes the server's entries where they're newer, and removes ones deleted elsewhere. */
+export function applyServerJournal(items: ServerJournalEntry[]) {
+  const byId = new Map(entries.map((entry) => [entry.id, entry]));
+  for (const item of items) {
+    if (item.deletedAt) {
+      byId.delete(item.id);
+      continue;
+    }
+    const local = byId.get(item.id);
+    if (local && !isNewer(item.updatedAt, local.updatedAt)) continue;
+    byId.set(item.id, {
+      id: item.id,
+      text: item.text,
+      at: item.at,
+      ...(item.prompt ? { prompt: item.prompt } : {}),
+      ...(item.mood !== null ? { mood: item.mood } : {}),
+      ...(item.sessionId !== null ? { sessionId: item.sessionId } : {}),
+      ...(item.editedAt ? { editedAt: item.editedAt } : {}),
+      updatedAt: item.updatedAt,
+    });
+  }
+  save([...byId.values()].sort((a, b) => a.at.localeCompare(b.at)));
+}
+
+/** Sends entries written before sync existed, unless the server already has them. */
+export function uploadLocalJournal(serverItems: ServerJournalEntry[]) {
+  const onServer = new Set(serverItems.map((item) => item.id));
+  for (const entry of entries) if (!onServer.has(entry.id)) send(entry);
+}
+
+export function clearLocalJournal() {
+  save([]);
+  removeKey(DRAFT_KEY);
+}
+
+registerSyncKind<ServerJournalEntry>({
+  name: 'journal',
+  path: JOURNAL_PATH,
+  applyServerItems: applyServerJournal,
+  uploadLocal: uploadLocalJournal,
+  clearLocal: clearLocalJournal,
+});

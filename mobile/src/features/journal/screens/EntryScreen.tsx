@@ -4,7 +4,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { deleteJournalEntry, useJournal } from '@/features/journal/journalStore';
+import { deleteJournalEntry, useJournal } from '@/features/journal/store/journalStore';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { MOODS } from '@/features/mood/constants/moods';
 import { haptics } from '@/lib/haptics';

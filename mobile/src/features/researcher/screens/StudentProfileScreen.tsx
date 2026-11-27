@@ -8,7 +8,7 @@ import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import { epqrSummary, severityBand } from '@/features/assessment';
 import { phq9Outcome } from '@/features/endOfStudy/endOfStudy';
-import { daysAgoLabel } from '@/features/journal/journalLogic';
+import { daysAgoLabel } from '@/features/journal/utils/journalLogic';
 import { MOODS } from '@/features/mood/constants/moods';
 import { dailyMoods, mostCommonMood } from '@/features/progress/progressLogic';
 import { callCounts, sessionsCompleted } from '@/features/researcher/caseload';

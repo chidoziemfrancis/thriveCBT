@@ -1,7 +1,7 @@
 import type { Message } from '@/features/chat/chatLogic';
 import type { Assignment } from '@/features/assignment';
 import { containsRiskLanguage } from '@/features/chat/riskLanguage';
-import type { JournalEntry } from '@/features/journal/journalStore';
+import type { JournalEntry } from '@/features/journal/store/journalStore';
 import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
 import type { SessionRecord } from '@/features/sessions/utils/sessionLogic';

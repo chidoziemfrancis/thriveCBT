@@ -23,7 +23,7 @@ import { addPlans } from '@/features/activities/activityStore';
 import { addPositive } from '@/features/beliefs/positiveLogStore';
 import { crisisPlanFrom } from '@/features/coping/coping';
 import { saveCrisisPlan, saveTools } from '@/features/coping/copingStore';
-import { addJournalEntry } from '@/features/journal/journalStore';
+import { addJournalEntry } from '@/features/journal/store/journalStore';
 import { wellPlanFrom } from '@/features/wellbeing/wellbeing';
 import { saveWellPlan } from '@/features/wellbeing/wellPlanStore';
 import { sessionContent } from '@/features/sessions/content';

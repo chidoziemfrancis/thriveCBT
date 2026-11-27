@@ -21,7 +21,7 @@ import {
   getJournalEntry,
   saveJournalDraft,
   updateJournalEntry,
-} from '@/features/journal/journalStore';
+} from '@/features/journal/store/journalStore';
 import MoodFace from '@/features/mood/components/MoodFace';
 import { MOODS } from '@/features/mood/constants/moods';
 import { haptics } from '@/lib/haptics';

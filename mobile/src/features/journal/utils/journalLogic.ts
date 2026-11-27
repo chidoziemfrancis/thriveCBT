@@ -1,4 +1,4 @@
-import type { JournalEntry } from './journalStore';
+import type { JournalEntry } from '../store/journalStore';
 
 export type EntryGroup = { title: string; entries: JournalEntry[] };
 

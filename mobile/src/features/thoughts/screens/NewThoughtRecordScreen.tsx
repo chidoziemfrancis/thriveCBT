@@ -1,4 +1,4 @@
-import { addJournalEntry } from '@/features/journal/journalStore';
+import { addJournalEntry } from '@/features/journal/store/journalStore';
 import { diaryText } from '@/features/sessions/utils/sessionLogic';
 import StepFlow from '@/features/thoughts/components/StepFlow';
 import { RECORD_RECAP, RECORD_STEPS } from '@/features/thoughts/recordSteps';

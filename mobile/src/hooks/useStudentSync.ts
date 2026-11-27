@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import '@/features/journal';
 import '@/features/mood';
 import '@/features/sessions';
 import { startSync } from '@/lib/sync';
