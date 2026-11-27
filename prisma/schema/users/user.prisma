@@ -8,10 +8,12 @@ model User {
   createdAt       DateTime   @default(now()) @map("created_at")
   updatedAt       DateTime   @updatedAt @map("updated_at")
 
-  studentProfile StudentProfile?
-  refreshTokens  RefreshToken[]
-  emailCodes     EmailCode[]
-  auditLogs      AuditLog[]
+  studentProfile    StudentProfile?
+  researcherProfile ResearcherProfile?
+  invitesSent       Invite[]           @relation("InvitesSent")
+  refreshTokens     RefreshToken[]
+  emailCodes        EmailCode[]
+  auditLogs         AuditLog[]
 
   @@index([role])
   @@map("users")
