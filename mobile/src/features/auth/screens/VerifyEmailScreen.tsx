@@ -41,8 +41,8 @@ export default function VerifyEmailScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!ready} onPress={handleVerify}>
-          {verify.isPending ? 'Checking…' : 'Verify'}
+        <Button disabled={!ready} onPress={handleVerify} loading={verify.isPending}>
+          Verify
         </Button>
       }
     >

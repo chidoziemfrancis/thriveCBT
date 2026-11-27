@@ -29,8 +29,8 @@ export default function ForgotPasswordScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!valid} onPress={sendCode}>
-          {request.isPending ? 'Sending…' : 'Send code'}
+        <Button disabled={!valid} onPress={sendCode} loading={request.isPending}>
+          Send code
         </Button>
       }
     >

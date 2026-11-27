@@ -36,8 +36,8 @@ export default function EditNameScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!canSave} onPress={save}>
-          {update.isPending ? 'Saving…' : 'Save'}
+        <Button disabled={!canSave} onPress={save} loading={update.isPending}>
+          Save
         </Button>
       }
     >

@@ -25,8 +25,8 @@ export default function OnboardingNameScreen() {
   return (
     <Screen
       footer={
-        <Button disabled={!canContinue} onPress={handleContinue}>
-          {save.isPending ? 'Saving…' : 'Continue'}
+        <Button disabled={!canContinue} onPress={handleContinue} loading={save.isPending}>
+          Continue
         </Button>
       }
     >

@@ -65,7 +65,12 @@ Every feature uses this layout. Loose files at the feature's root are only `inde
 5. **A mutation refreshes what it changed**: set or invalidate the affected query keys in `onSuccess`.
 6. **Retries:** queries retry once, only when offline or timed out; never on a 4xx. Mutations never retry automatically.
 7. **Errors are `ApiError`.** Screens decide what to do from `error.code`, never the wording; the server's `message` is safe to show. Field errors from `VALIDATION_FAILED` go under their inputs through `fieldErrors()`. `NETWORK_ERROR` and `TIMEOUT` are the app's own codes.
-8. **Buttons show progress and are disabled while a mutation runs**, so a double tap never sends twice.
+8. **Loading states** (components in `src/components/ui/`):
+   - **A mutation** (save, send, log in): `<Button loading={mutation.isPending}>` shows a spinner in place of the label and blocks a second tap.
+   - **A query's first load**: `Skeleton`, `SkeletonText` and `SkeletonCircle` in the shape of the content that's coming, never a blank screen.
+   - **A refresh in the background**: no loader; the saved data stays on screen.
+   - **Nothing to show and no known layout** (for example while working out where to resume): `PageLoader`, a centred `Spinner` with an optional message.
+   - Skeletons stay still when the phone asks for reduced motion.
 9. **Login tokens:** the refresh token lives only in secure storage; the access token only in memory. Nothing else stores either, and neither is ever logged.
 10. **Signing out** goes through `endSession()`: it clears the refresh token, the query cache and the session store, then tells the server.
 11. **A 401 refreshes once and repeats the request once**, with one refresh shared by every request that failed together. If the login can't be renewed, the app signs out. If the phone is offline, it stays signed in.
