@@ -12,6 +12,7 @@ import { homeFor, useCheckEmail, useLogin } from '@/features/auth';
 import FormError from '@/features/auth/components/FormError';
 import { isEmail } from '@/features/auth/email';
 import { hasPin } from '@/features/auth/pinStore';
+import { pullStudentToPhone, resumeRoute } from '@/features/onboarding';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 
@@ -55,8 +56,13 @@ export default function SignInScreen() {
     login.mutate(
       { email: trimmed, password },
       {
-        onSuccess: (user) => {
+        onSuccess: async (user) => {
           haptics.success();
+          if (user.role === 'student') {
+            await pullStudentToPhone();
+            const resume = await resumeRoute();
+            if (resume) return router.replace(resume);
+          }
           // A new device has no PIN yet, so set one up once before going in.
           router.replace(hasPin() ? homeFor(user.role) : '/auth/create-pin');
         },

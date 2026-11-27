@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 
+import { pullStudentToPhone } from '@/features/onboarding';
 import { restoreSession } from '@/lib/session';
 import { useSessionStore } from '@/stores/session.store';
 
@@ -13,7 +14,9 @@ import { clearUserSession } from './userSession';
  */
 export function useSessionWatch() {
   useEffect(() => {
-    void restoreSession();
+    void restoreSession().then(() => {
+      if (useSessionStore.getState().user?.role === 'student') void pullStudentToPhone();
+    });
     return useSessionStore.subscribe((state, previous) => {
       if (state.status !== 'signedOut' || previous.user === null) return;
       clearUserSession();
