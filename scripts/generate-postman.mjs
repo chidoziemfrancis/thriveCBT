@@ -14,9 +14,12 @@ const openapi = JSON.parse(readFileSync('docs/api/openapi.json', 'utf8'));
 const convert = promisify(converter.convert);
 const result = await convert(
   { type: 'json', data: openapi },
+  // Type placeholders instead of made-up values, so the same code always gives the same file
+  // and CI can tell when someone forgot to regenerate.
   {
     folderStrategy: 'Tags',
-    requestParametersResolution: 'Example',
+    requestParametersResolution: 'Schema',
+    exampleParametersResolution: 'Schema',
     includeAuthInfoInExample: false,
   },
 );
