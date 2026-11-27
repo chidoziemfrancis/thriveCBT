@@ -196,7 +196,13 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ### Still to do in B3
 
-- [ ] B3.5 App: consent, both PHQ-9s, EPQ-R, assignment and withdrawal switched over; the app handles `CONSENT_REQUIRED`, `STUDY_WITHDRAWN` and `AUTH_ACCOUNT_WITHDRAWN`, and resumes at the new onboarding steps
+### B3.5 App switch-over · `feat/app-study-entry`
+
+- [x] Both PHQ-9s, the EPQ-R, matching, the invite code check and withdrawal call the backend; their phone copies are written only from the server's answers and the student-side mock researchers are gone
+- [x] Safety answers are sent as soon as the last screen opens, so alerts don't depend on tapping Continue
+- [x] `CONSENT_REQUIRED`, `STUDY_WITHDRAWN` and `AUTH_ACCOUNT_WITHDRAWN` handled once for the whole app
+- [x] Sign-in on a new phone pulls the PHQ-9 scores and the researcher, and resumes at `phq9`, `epqr` or `assignment`
+- [x] Fix: the withdraw `reason` is described properly in the API docs
 
 ## B4 Sessions and student tools · `feat/student-sync`
 
