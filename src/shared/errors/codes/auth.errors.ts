@@ -33,4 +33,19 @@ export const AUTH_ERRORS = {
     status: HttpStatus.FORBIDDEN,
     message: 'This account is paused. Please contact the research team.',
   },
+  CODE_INVALID: {
+    code: 'AUTH_CODE_INVALID',
+    status: HttpStatus.BAD_REQUEST,
+    message: 'That code isn’t right. Check the email and try again.',
+  },
+  CODE_EXPIRED: {
+    code: 'AUTH_CODE_EXPIRED',
+    status: HttpStatus.BAD_REQUEST,
+    message: 'That code has expired. Ask for a new one.',
+  },
+  CODE_TOO_MANY_TRIES: {
+    code: 'AUTH_CODE_TOO_MANY_TRIES',
+    status: HttpStatus.TOO_MANY_REQUESTS,
+    message: 'Too many wrong codes. Ask for a new one.',
+  },
 } as const;

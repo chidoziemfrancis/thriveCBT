@@ -68,6 +68,10 @@ export class TokensService {
     return this.issue(user, record.familyId, now);
   }
 
+  revokeAllForUser(userId: string, now = new Date()): Promise<void> {
+    return this.repository.revokeAllForUser(userId, now);
+  }
+
   async revoke(refreshToken: string, now = new Date()): Promise<void> {
     const record = await this.repository.findByHash(hashToken(refreshToken));
     if (record) await this.repository.revokeFamily(record.familyId, now);

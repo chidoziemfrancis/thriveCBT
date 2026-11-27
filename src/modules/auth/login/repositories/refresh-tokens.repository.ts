@@ -28,6 +28,13 @@ export class RefreshTokensRepository {
     return count === 1;
   }
 
+  async revokeAllForUser(userId: string, now: Date): Promise<void> {
+    await this.prisma.refreshToken.updateMany({
+      where: { userId, revokedAt: null },
+      data: { revokedAt: now },
+    });
+  }
+
   async revokeFamily(familyId: string, now: Date): Promise<void> {
     await this.prisma.refreshToken.updateMany({
       where: { familyId, revokedAt: null },

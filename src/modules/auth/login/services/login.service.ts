@@ -11,6 +11,7 @@ import { toUserDto } from '../../../users/accounts/dto/user.dto.js';
 import { AccountsService } from '../../../users/accounts/services/accounts.service.js';
 import type { LoginBody, RegisterBody } from '../dto/credentials.dto.js';
 import type { SessionDto } from '../dto/session.dto.js';
+import { VerifyEmailService } from '../../verify-email/services/verify-email.service.js';
 import { TokensService } from './tokens.service.js';
 
 let dummyHash: Promise<string> | undefined;
@@ -30,6 +31,7 @@ export class LoginService {
   constructor(
     private readonly accounts: AccountsService,
     private readonly tokens: TokensService,
+    private readonly verifyEmail: VerifyEmailService,
   ) {}
 
   async register({ email, password }: RegisterBody): Promise<SessionDto> {
@@ -43,6 +45,8 @@ export class LoginService {
           ? new AppError(AUTH_ERRORS.EMAIL_TAKEN, { cause: error })
           : error;
       });
+    // A failed send is logged by EmailService; the student can ask for a new code.
+    await this.verifyEmail.sendCode(user).catch(() => undefined);
     return { user: toUserDto(user), ...(await this.tokens.issue(user)) };
   }
 

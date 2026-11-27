@@ -15,6 +15,24 @@ export class AccountsRepository {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  markEmailVerified(id: string, at: Date): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: { emailVerifiedAt: at },
+    });
+  }
+
+  setPassword(
+    id: string,
+    passwordHash: string,
+    verifiedAt: Date,
+  ): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: { passwordHash, emailVerifiedAt: verifiedAt },
+    });
+  }
+
   createStudent(email: string, passwordHash: string): Promise<User> {
     return this.prisma.user.create({
       data: {

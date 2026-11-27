@@ -3,6 +3,7 @@ import { hashPassword } from '../../../../shared/crypto/password.js';
 import type { AccountsService } from '../../../users/accounts/services/accounts.service.js';
 import { loginSchema, registerSchema } from '../dto/credentials.dto.js';
 import { LoginService } from '../services/login.service.js';
+import type { VerifyEmailService } from '../../verify-email/services/verify-email.service.js';
 import type { TokensService } from '../services/tokens.service.js';
 
 const tokens = {
@@ -11,6 +12,7 @@ const tokens = {
     refreshToken: 'refresh',
   })),
 };
+const verifyEmail = { sendCode: vi.fn(async () => undefined) };
 
 async function setup(existing?: Partial<User>) {
   const user = existing && {
@@ -38,6 +40,7 @@ async function setup(existing?: Partial<User>) {
   const service = new LoginService(
     accounts as unknown as AccountsService,
     tokens as unknown as TokensService,
+    verifyEmail as unknown as VerifyEmailService,
   );
   return { service, accounts };
 }
@@ -57,6 +60,9 @@ describe('LoginService.register', () => {
     });
     expect(accounts.createStudent.mock.calls[0][1]).toMatch(/^\$argon2id\$/);
     expect(session.user).not.toHaveProperty('passwordHash');
+    expect(verifyEmail.sendCode).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'new' }),
+    );
   });
 
   it('refuses an email that already has an account', async () => {

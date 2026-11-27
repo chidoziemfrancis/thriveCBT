@@ -8,6 +8,7 @@ export const userSchema = z.object({
   email: z.email(),
   role: z.enum(['student', 'researcher', 'lead']),
   status: z.enum(['active', 'suspended', 'withdrawn']),
+  emailVerified: z.boolean(),
   createdAt: z.iso.datetime(),
 });
 
@@ -19,6 +20,7 @@ export function toUserDto(user: User): UserDto {
     email: user.email,
     role: user.role.toLowerCase() as AuthRole,
     status: user.status.toLowerCase() as UserDto['status'],
+    emailVerified: user.emailVerifiedAt !== null,
     createdAt: user.createdAt.toISOString(),
   };
 }

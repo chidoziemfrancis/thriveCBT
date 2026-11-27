@@ -23,6 +23,20 @@ export class AccountsService {
     return user;
   }
 
+  async markEmailVerified(user: User, now = new Date()): Promise<User> {
+    if (user.emailVerifiedAt) return user;
+    return this.repository.markEmailVerified(user.id, now);
+  }
+
+  // Resetting with an emailed code also proves the student owns the address.
+  setPassword(
+    userId: string,
+    passwordHash: string,
+    now = new Date(),
+  ): Promise<User> {
+    return this.repository.setPassword(userId, passwordHash, now);
+  }
+
   createStudent(email: string, passwordHash: string): Promise<User> {
     return this.repository.createStudent(normaliseEmail(email), passwordHash);
   }
