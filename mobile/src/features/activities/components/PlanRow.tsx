@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon, CloseIcon } from '@/components/icons';
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { activityIcon } from '@/features/activities/activities';
+import { activityIcon } from '@/features/activities/utils/activities';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 

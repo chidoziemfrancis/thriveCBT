@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon } from '@/components/icons';
-import { dayKey, shortDay, weekDays } from '@/features/activities/activities';
+import { dayKey, shortDay, weekDays } from '@/features/activities/utils/activities';
 import { colors, fonts } from '@/theme';
 
 /** Monday to Sunday with a tick on each day the practice was done. */

@@ -14,13 +14,13 @@ import {
   predictionGap,
   toPlanned,
   weekDays,
-} from '@/features/activities/activities';
+} from '@/features/activities/utils/activities';
 import {
   addPlans,
   completeActivity,
   removeActivity,
   usePlannedActivities,
-} from '@/features/activities/activityStore';
+} from '@/features/activities/store/activityStore';
 import PlanForm from '@/features/activities/components/PlanForm';
 import PlanRow from '@/features/activities/components/PlanRow';
 import ScoreRow from '@/features/activities/components/ScoreRow';

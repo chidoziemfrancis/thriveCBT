@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { CheckIcon, CloseIcon, PlusIcon } from '@/components/icons';
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { ACTIVITIES, GROUPS } from '@/features/activities/activities';
+import { ACTIVITIES, GROUPS } from '@/features/activities/utils/activities';
 import type { ActivitiesStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';

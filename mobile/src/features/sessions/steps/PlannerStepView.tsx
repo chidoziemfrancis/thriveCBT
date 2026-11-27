@@ -9,7 +9,7 @@ import {
   nextSevenDays,
   readPlan,
   writePlan,
-} from '@/features/activities/activities';
+} from '@/features/activities/utils/activities';
 import PlanForm from '@/features/activities/components/PlanForm';
 import PlanRow from '@/features/activities/components/PlanRow';
 import WeekStrip, { type DayMark } from '@/features/activities/components/WeekStrip';

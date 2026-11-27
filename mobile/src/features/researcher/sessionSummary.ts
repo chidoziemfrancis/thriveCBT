@@ -1,4 +1,4 @@
-import { readPlan, readRatings } from '@/features/activities/activities';
+import { readPlan, readRatings } from '@/features/activities/utils/activities';
 import { readArrow } from '@/features/beliefs/utils/beliefs';
 import { readGoal } from '@/features/wellbeing/wellbeing';
 import { copingCard, readTriggers, spotLabels } from '@/features/coping/coping';

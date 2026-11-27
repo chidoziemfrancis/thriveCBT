@@ -1,4 +1,4 @@
-import type { PlannedActivity } from '@/features/activities/activities';
+import type { PlannedActivity } from '@/features/activities/utils/activities';
 import type { PositiveEntry } from '@/features/beliefs/utils/beliefs';
 import type { StressEntry } from '@/features/coping/copingStore';
 import type { MoodEntry } from '@/features/mood/utils/moodLog';

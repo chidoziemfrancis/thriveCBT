@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { usePlannedActivities } from '@/features/activities/activityStore';
+import { usePlannedActivities } from '@/features/activities/store/activityStore';
 import { usePositiveLog } from '@/features/beliefs/store/positiveLogStore';
 import { useStressLog, useToolkit } from '@/features/coping/copingStore';
 import { getMoodLog } from '@/features/mood/store/moodStore';

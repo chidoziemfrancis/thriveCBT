@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import '@/features/activities';
 import '@/features/beliefs';
 import '@/features/journal';
 import '@/features/mood';

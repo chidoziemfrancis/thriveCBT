@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { CloseIcon, PlusIcon } from '@/components/icons';
-import { dayKey, nextSevenDays } from '@/features/activities/activities';
+import { dayKey, nextSevenDays } from '@/features/activities/utils/activities';
 import WeekStrip from '@/features/activities/components/WeekStrip';
 import type { GoalStep } from '@/features/sessions/content/types';
 import { GOAL_AREAS, readGoal, writeGoal } from '@/features/wellbeing/wellbeing';

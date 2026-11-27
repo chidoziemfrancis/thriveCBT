@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { activityIcon, readRatings, writeRatings } from '@/features/activities/activities';
+import { activityIcon, readRatings, writeRatings } from '@/features/activities/utils/activities';
 import ScoreRow from '@/features/activities/components/ScoreRow';
 import type { PleasureStep } from '@/features/sessions/content/types';
 import { colors, fonts } from '@/theme';

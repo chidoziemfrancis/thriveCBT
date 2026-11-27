@@ -11,7 +11,7 @@ import {
   weekDays,
   writePlan,
   writeRatings,
-} from '@/features/activities/activities';
+} from '@/features/activities/utils/activities';
 import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_5 } from '@/features/sessions/content/session5';
@@ -27,9 +27,9 @@ jest.mock('@/lib/storage', () => ({
 }));
 
 function loadStore() {
-  let store!: typeof import('@/features/activities/activityStore');
+  let store!: typeof import('@/features/activities/store/activityStore');
   jest.isolateModules(() => {
-    store = require('@/features/activities/activityStore');
+    store = require('@/features/activities/store/activityStore');
   });
   return store;
 }

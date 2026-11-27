@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon, ChevronRightIcon } from '@/components/icons';
-import { dayKey } from '@/features/activities/activities';
+import { dayKey } from '@/features/activities/utils/activities';
 import { AUTO_TICK, practiceDays } from '@/features/homework/homework';
 import { toggleTick } from '@/features/homework/homeworkStore';
 import { usePracticeData } from '@/features/homework/usePracticeData';

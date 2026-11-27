@@ -1,4 +1,4 @@
-import { dayKey } from '@/features/activities/activities';
+import { dayKey } from '@/features/activities/utils/activities';
 import { createStore } from '@/lib/createStore';
 
 const ticks = createStore<Record<string, string[]>>('homework_ticks', {});

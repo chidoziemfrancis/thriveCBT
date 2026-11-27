@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon } from '@/components/icons';
-import { dayKey, shortDay } from '@/features/activities/activities';
+import { dayKey, shortDay } from '@/features/activities/utils/activities';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

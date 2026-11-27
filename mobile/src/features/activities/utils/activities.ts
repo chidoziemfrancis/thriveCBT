@@ -81,8 +81,48 @@ export function readPlan(answer: unknown): PlanItem[] {
 }
 
 /** The same plan always gets the same id, so saving a part twice doesn't double it. */
+/** Four 32-bit hashes of a string (cyrb128), enough for a stable 128-bit id. */
+function hash128(text: string): number[] {
+  let h1 = 1779033703;
+  let h2 = 3144134277;
+  let h3 = 1013904242;
+  let h4 = 2773480762;
+  for (let i = 0; i < text.length; i++) {
+    const k = text.charCodeAt(i);
+    h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+    h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+    h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+    h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+  }
+  h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+  h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+  h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+  h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+  h1 ^= h2 ^ h3 ^ h4;
+  h2 ^= h1;
+  h3 ^= h1;
+  h4 ^= h1;
+  return [h1, h2, h3, h4].map((h) => h >>> 0);
+}
+
+/**
+ * A plan's id comes from its day, slot and activity, so the same plan made twice (in Session 5
+ * and again in My week, or on two phones) is one plan, not two. It's shaped as a UUID (version
+ * 8, for ids made this way) because the server stores ids as UUIDs.
+ */
 export function planId({ date, slot, label }: PlanItem) {
-  return `plan-${date}-${slot}-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  const key = `plan|${date}|${slot}|${label.trim().toLowerCase()}`;
+  const hex = hash128(key)
+    .map((h) => h.toString(16).padStart(8, '0'))
+    .join('');
+  const variant = ((parseInt(hex[16], 16) & 0x3) | 0x8).toString(16);
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    `8${hex.slice(13, 16)}`,
+    `${variant}${hex.slice(17, 20)}`,
+    hex.slice(20, 32),
+  ].join('-');
 }
 
 export function addDays(date: Date, days: number) {
@@ -121,6 +161,8 @@ export type PlannedActivity = PlanItem & {
   /** How it actually felt, 0 to 10, rated when ticked off. */
   enjoy?: number;
   achieve?: number;
+  /** When the phone last changed it; the newest change wins when syncing. */
+  updatedAt?: string;
 };
 
 export function toPlanned(item: PlanItem, sessionId?: number): PlannedActivity {

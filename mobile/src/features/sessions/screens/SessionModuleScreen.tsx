@@ -18,8 +18,8 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ChevronLeftIcon } from '@/components/icons';
-import { readPlan, toPlanned } from '@/features/activities/activities';
-import { addPlans } from '@/features/activities/activityStore';
+import { readPlan, toPlanned } from '@/features/activities/utils/activities';
+import { addPlans } from '@/features/activities/store/activityStore';
 import { addPositive } from '@/features/beliefs/store/positiveLogStore';
 import { crisisPlanFrom } from '@/features/coping/coping';
 import { saveCrisisPlan, saveTools } from '@/features/coping/copingStore';

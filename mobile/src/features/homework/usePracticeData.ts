@@ -1,4 +1,4 @@
-import { usePlannedActivities } from '@/features/activities/activityStore';
+import { usePlannedActivities } from '@/features/activities/store/activityStore';
 import { usePositiveLog } from '@/features/beliefs/store/positiveLogStore';
 import { useStressLog, useToolUses } from '@/features/coping/copingStore';
 import { getMoodLog } from '@/features/mood/store/moodStore';
