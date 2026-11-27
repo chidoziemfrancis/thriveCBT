@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { isPasswordValid, passwordChecks, passwordStrength } from '@/features/auth/password';
+import { isPasswordValid, passwordChecks, passwordStrength } from '@/features/auth/utils/password';
 
 describe('passwordChecks', () => {
   it('ticks each rule independently as it is met', () => {

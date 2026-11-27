@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MIN_PASSWORD_LENGTH } from '../password';
+import { MIN_PASSWORD_LENGTH } from '../utils/password';
 
 export const emailSchema = z.email().max(254);
 

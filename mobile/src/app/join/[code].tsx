@@ -1,6 +1,6 @@
 import { Redirect, useLocalSearchParams } from 'expo-router';
 
-import { setUserSession } from '@/features/auth/userSession';
+import { setUserSession } from '@/features/auth/store/userSession';
 
 // An invite link only carries the code; the sign-up flow picks it up from the session.
 export default function JoinWithCode() {

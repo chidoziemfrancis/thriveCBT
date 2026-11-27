@@ -10,7 +10,7 @@ import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
 import { researcherForCode } from '@/features/assignment/assign';
 import { MOCK_RESEARCHERS } from '@/features/assignment/mockResearchers';
-import { getUserSession, setUserSession } from '@/features/auth/userSession';
+import { getUserSession, setUserSession } from '@/features/auth/store/userSession';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 

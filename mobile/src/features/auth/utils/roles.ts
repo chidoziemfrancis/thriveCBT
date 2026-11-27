@@ -1,6 +1,6 @@
 import type { Href } from 'expo-router';
 
-import type { Role } from './types/auth.types';
+import type { Role } from '../types/auth.types';
 
 export type { Role };
 

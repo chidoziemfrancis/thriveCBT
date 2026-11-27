@@ -11,7 +11,7 @@ import CodeInput, { CODE_LENGTH } from '@/features/auth/components/CodeInput';
 import NewPasswordField from '@/features/auth/components/NewPasswordField';
 import { useConfirmReset } from '@/features/auth';
 import FormError from '@/features/auth/components/FormError';
-import { isPasswordValid } from '@/features/auth/password';
+import { isPasswordValid } from '@/features/auth/utils/password';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 

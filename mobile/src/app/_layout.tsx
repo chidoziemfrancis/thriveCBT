@@ -9,8 +9,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useCallback, useState } from 'react';
 
 import AnimatedSplash, { SplashRevealedProvider } from '@/components/splash/AnimatedSplash';
-import { useRelockOnResume } from '@/features/auth/useRelockOnResume';
-import { useSessionWatch } from '@/features/auth/useSessionWatch';
+import { useRelockOnResume } from '@/features/auth/hooks/useRelockOnResume';
+import { useSessionWatch } from '@/features/auth/hooks/useSessionWatch';
 import AppProvider from '@/providers/AppProvider';
 import { colors } from '@/theme';
 

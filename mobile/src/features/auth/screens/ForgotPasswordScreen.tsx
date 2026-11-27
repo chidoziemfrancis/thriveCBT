@@ -8,7 +8,7 @@ import Screen from '@/components/ui/Screen';
 import TextField from '@/components/ui/TextField';
 import { useRequestReset } from '@/features/auth';
 import FormError from '@/features/auth/components/FormError';
-import { isEmail } from '@/features/auth/email';
+import { isEmail } from '@/features/auth/utils/email';
 import { type } from '@/theme';
 
 export default function ForgotPasswordScreen() {

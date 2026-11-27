@@ -6,7 +6,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import Button from '@/components/ui/Button';
 import Mascot from '@/components/mascot/Mascot';
 import { useSplashRevealed } from '@/components/splash/AnimatedSplash';
-import { hasPin } from '@/features/auth/pinStore';
+import { hasPin } from '@/features/auth/store/pinStore';
 import { resumeRoute } from '@/features/onboarding';
 import Screen from '@/components/ui/Screen';
 import { haptics } from '@/lib/haptics';

@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { MAX_PIN_ATTEMPTS, RELOCK_AFTER_MS, isWeakPin, shouldRelock } from '@/features/auth/pin';
-import { checkPin, clearPin, hasPin, savePin } from '@/features/auth/pinStore';
+import {
+  MAX_PIN_ATTEMPTS,
+  RELOCK_AFTER_MS,
+  isWeakPin,
+  shouldRelock,
+} from '@/features/auth/utils/pin';
+import { checkPin, clearPin, hasPin, savePin } from '@/features/auth/store/pinStore';
 
 const mockKeychain = new Map<string, string>();
 jest.mock('expo-secure-store', () => ({

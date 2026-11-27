@@ -4,8 +4,8 @@ import { AppState } from 'react-native';
 
 import { useSessionStore } from '@/stores/session.store';
 
-import { shouldRelock } from './pin';
-import { hasPin } from './pinStore';
+import { shouldRelock } from '../utils/pin';
+import { hasPin } from '../store/pinStore';
 
 /** Asks for the PIN again when a signed-in user returns after being away a while. */
 export function useRelockOnResume() {

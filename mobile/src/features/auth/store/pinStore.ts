@@ -1,7 +1,7 @@
 import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
 
-import { MAX_PIN_ATTEMPTS } from './pin';
+import { MAX_PIN_ATTEMPTS } from '../utils/pin';
 
 const PIN_KEY = 'pin_hash';
 const ATTEMPTS_KEY = 'pin_failed_attempts';

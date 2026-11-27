@@ -5,8 +5,8 @@ import { pullStudentToPhone } from '@/features/onboarding';
 import { restoreSession } from '@/lib/session';
 import { useSessionStore } from '@/stores/session.store';
 
-import { clearPin } from './pinStore';
-import { clearUserSession } from './userSession';
+import { clearPin } from '../store/pinStore';
+import { clearUserSession } from '../store/userSession';
 
 /**
  * Renews the login when the app opens, and sends everyone back to the start when a login
