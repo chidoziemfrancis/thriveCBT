@@ -13,6 +13,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { CryptoModule } from './shared/crypto/crypto.module.js';
 import { AllExceptionsFilter } from './shared/errors/all-exceptions.filter.js';
 import { AuthGuard } from './shared/guards/auth.guard.js';
+import { RolesGuard } from './shared/guards/roles.guard.js';
 import { loggingConfig } from './shared/logging/logging.config.js';
 
 const RATE_LIMIT = { ttl: 60_000, limit: 100 };
@@ -44,6 +45,7 @@ const ACCESS_TOKEN_TTL = '15m';
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
 export class AppModule {}
