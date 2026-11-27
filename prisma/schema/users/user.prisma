@@ -1,14 +1,16 @@
 model User {
-  id           String     @id @default(uuid(7)) @db.Uuid
-  email        String     @unique
-  passwordHash String     @map("password_hash")
-  role         UserRole
-  status       UserStatus @default(ACTIVE)
-  createdAt    DateTime   @default(now()) @map("created_at")
-  updatedAt    DateTime   @updatedAt @map("updated_at")
+  id              String     @id @default(uuid(7)) @db.Uuid
+  email           String     @unique
+  passwordHash    String     @map("password_hash")
+  role            UserRole
+  status          UserStatus @default(ACTIVE)
+  emailVerifiedAt DateTime?  @map("email_verified_at")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
 
   studentProfile StudentProfile?
   refreshTokens  RefreshToken[]
+  emailCodes     EmailCode[]
   auditLogs      AuditLog[]
 
   @@index([role])
