@@ -33,6 +33,12 @@ export const AUTH_ERRORS = {
     status: HttpStatus.FORBIDDEN,
     message: 'This account is paused. Please contact the research team.',
   },
+  ACCOUNT_WITHDRAWN: {
+    code: 'AUTH_ACCOUNT_WITHDRAWN',
+    status: HttpStatus.FORBIDDEN,
+    message:
+      'You’ve left the study, so this account is closed. Thank you for taking part.',
+  },
   CODE_INVALID: {
     code: 'AUTH_CODE_INVALID',
     status: HttpStatus.BAD_REQUEST,

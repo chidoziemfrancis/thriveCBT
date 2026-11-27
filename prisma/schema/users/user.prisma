@@ -19,6 +19,7 @@ model User {
   caseload          Assignment[]       @relation("ResearcherCaseload")
   phq9Results       Phq9Result[]
   epqrResult        EpqrResult?
+  withdrawal        Withdrawal?
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 

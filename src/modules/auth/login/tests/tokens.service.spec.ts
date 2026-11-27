@@ -128,6 +128,15 @@ describe('TokensService', () => {
     expect(rows.every((r) => r.revokedAt)).toBe(true);
   });
 
+  it('refuses to refresh after the student withdraws', async () => {
+    const { service, rows } = setup({ ...student, status: 'WITHDRAWN' });
+    const pair = await service.issue(student);
+    await expect(service.rotate(pair.refreshToken)).rejects.toMatchObject({
+      code: 'AUTH_ACCOUNT_WITHDRAWN',
+    });
+    expect(rows.every((r) => r.revokedAt)).toBe(true);
+  });
+
   it('logs out by retiring the login, and ignores unknown tokens', async () => {
     const { service, rows } = setup();
     const pair = await service.issue(student);

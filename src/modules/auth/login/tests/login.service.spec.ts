@@ -120,6 +120,15 @@ describe('LoginService.login', () => {
       code: 'AUTH_ACCOUNT_SUSPENDED',
     });
   });
+
+  it('refuses an account closed by withdrawing from the study', async () => {
+    const { service } = await setup({ status: 'WITHDRAWN' });
+    await expect(
+      service.login({ email: 'ada@uni.edu', password: 'Password123' }),
+    ).rejects.toMatchObject({
+      code: 'AUTH_ACCOUNT_WITHDRAWN',
+    });
+  });
 });
 
 describe('credential checks', () => {

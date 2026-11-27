@@ -71,6 +71,8 @@ export class LoginService {
     }
     if (user.status === UserStatus.SUSPENDED)
       throw new AppError(AUTH_ERRORS.ACCOUNT_SUSPENDED);
+    if (user.status === UserStatus.WITHDRAWN)
+      throw new AppError(AUTH_ERRORS.ACCOUNT_WITHDRAWN);
     return { user: toUserDto(user), ...(await this.tokens.issue(user)) };
   }
 }

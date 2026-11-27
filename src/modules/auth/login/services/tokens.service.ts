@@ -65,6 +65,10 @@ export class TokensService {
       await this.repository.revokeFamily(record.familyId, now);
       throw new AppError(AUTH_ERRORS.ACCOUNT_SUSPENDED);
     }
+    if (user.status === UserStatus.WITHDRAWN) {
+      await this.repository.revokeFamily(record.familyId, now);
+      throw new AppError(AUTH_ERRORS.ACCOUNT_WITHDRAWN);
+    }
     return this.issue(user, record.familyId, now);
   }
 
