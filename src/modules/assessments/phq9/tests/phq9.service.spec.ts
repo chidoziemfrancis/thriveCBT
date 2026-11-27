@@ -2,6 +2,7 @@ import type { EventEmitter2 } from '@nestjs/event-emitter';
 
 import type { Phq9Result } from '../../../../generated/prisma/client.js';
 import { submitPhq9Schema } from '../dto/phq9.dto.js';
+import type { SessionsService } from '../../../sessions/services/sessions.service.js';
 import type { Phq9Repository } from '../repositories/phq9.repository.js';
 import { phq9Alerts, phq9Band, Phq9Service } from '../services/phq9.service.js';
 
@@ -19,7 +20,7 @@ const answers = (score: number, item9 = 0) => {
   return list;
 };
 
-function setup() {
+function setup(session8Done = true) {
   const rows: Phq9Result[] = [];
   const repository = {
     find: vi.fn(
@@ -39,6 +40,9 @@ function setup() {
   const service = new Phq9Service(
     repository as unknown as Phq9Repository,
     events as unknown as EventEmitter2,
+    {
+      hasFinished: vi.fn(async () => session8Done),
+    } as unknown as SessionsService,
   );
   const kinds = () =>
     events.emitAsync.mock.calls
@@ -106,6 +110,14 @@ describe('Phq9Service.submit', () => {
     await service.submit('s1', { kind: 'baseline', answers: answers(8) }, NOW);
     await service.submit('s1', { kind: 'final', answers: answers(13) }, NOW);
     expect(kinds()).toEqual(['PHQ9_RISE']);
+  });
+
+  it('opens the final check-in only once Session 8 is finished', async () => {
+    const { service } = setup(false);
+    await service.submit('s1', { kind: 'baseline', answers: answers(8) }, NOW);
+    await expect(
+      service.submit('s1', { kind: 'final', answers: answers(9) }, NOW),
+    ).rejects.toMatchObject({ code: 'PHQ9_FINAL_NOT_OPEN' });
   });
 
   it('returns the saved result when sent again, and re-checks its alerts', async () => {

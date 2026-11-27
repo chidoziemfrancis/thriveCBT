@@ -17,6 +17,10 @@ import {
   type Phq9ResultDto,
   type SubmitPhq9,
 } from '../dto/phq9.dto.js';
+import {
+  FINAL_SESSION,
+  SessionsService,
+} from '../../../sessions/services/sessions.service.js';
 import { Phq9Repository } from '../repositories/phq9.repository.js';
 
 export const QUESTION_9 =
@@ -114,6 +118,7 @@ export class Phq9Service {
   constructor(
     private readonly repository: Phq9Repository,
     private readonly events: EventEmitter2,
+    private readonly sessions: SessionsService,
   ) {}
 
   async list(studentId: string): Promise<Phq9ResultDto[]> {
@@ -135,8 +140,16 @@ export class Phq9Service {
     if (kind === Phq9Kind.FINAL && !baseline)
       throw new AppError(PHQ9_ERRORS.BASELINE_FIRST);
 
+    const existing = await this.repository.find(studentId, kind);
+    if (
+      kind === Phq9Kind.FINAL &&
+      !existing &&
+      !(await this.sessions.hasFinished(studentId, FINAL_SESSION))
+    )
+      throw new AppError(PHQ9_ERRORS.FINAL_NOT_OPEN);
+
     const result =
-      (await this.repository.find(studentId, kind)) ??
+      existing ??
       (await this.repository.create({
         studentId,
         kind,
