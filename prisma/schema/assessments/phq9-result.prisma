@@ -1,0 +1,23 @@
+model Phq9Result {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  studentId String   @map("student_id") @db.Uuid
+  kind      Phq9Kind
+  answers   Int[]
+  score     Int
+  item9     Int      @map("item_9")
+  takenAt   DateTime @default(now()) @map("taken_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, kind])
+  @@map("phq9_results")
+}
+
+enum Phq9Kind {
+  BASELINE
+  FINAL
+
+  @@map("phq9_kind")
+}

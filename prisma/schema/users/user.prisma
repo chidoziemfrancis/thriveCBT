@@ -17,6 +17,9 @@ model User {
   consents          Consent[]
   assignment        Assignment?        @relation("StudentAssignment")
   caseload          Assignment[]       @relation("ResearcherCaseload")
+  phq9Results       Phq9Result[]
+  alerts            Alert[]            @relation("StudentAlerts")
+  alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 
   @@index([role])
   @@map("users")

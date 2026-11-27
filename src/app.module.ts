@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
@@ -28,6 +29,7 @@ const ACCESS_TOKEN_TTL = '15m';
       useFactory: loggingConfig,
     }),
     ThrottlerModule.forRoot([RATE_LIMIT]),
+    EventEmitterModule.forRoot(),
     JwtModule.registerAsync({
       global: true,
       inject: [ConfigService],
