@@ -11,7 +11,7 @@ This says what the backend stores and which endpoints the mobile app calls. It's
 - Success is plain JSON. Lists return `{ "items": [...], "nextCursor": "…" | null }`.
 - Errors are always `{ "error": { "code", "message", "details?", "requestId" } }`. The app reacts to `code`, never to `message`.
 - Times are ISO 8601 in UTC. Dates without a time (a planned day) are `YYYY-MM-DD`.
-- IDs are UUID v7. Student records that sync (section 3.4) get their ID from the phone.
+- IDs are UUID v7. Student records that sync (section 3.4) get their ID from the phone, which may be any UUID.
 - A researcher can only reach students assigned to them. Asking for anyone else returns `404 NOT_FOUND`, so the API never confirms another student exists.
 - Every route needs a login unless it's marked open (health, docs, and the `/v1/auth/...` routes). A logged-in user calling a route for another role gets `403 FORBIDDEN`.
 - Rate limits per device address: 100 requests a minute overall; 5 a minute for sign-up, login and password reset; 20 a minute for refresh. Over the limit returns `429 RATE_LIMITED`.
@@ -159,10 +159,12 @@ Sync rules:
 
 1. The phone keeps the server's `serverTime` from its last successful pull and sends it as `since`; the server compares it with when it saved each change, so a phone with the wrong clock still gets everything.
 2. Changes made offline wait in a queue on the phone and are sent oldest first when back online, retrying with growing gaps.
-3. `PUT` with the same `id` twice is safe; the second just updates.
-4. Every `PUT` carries `updatedAt`, when the phone made the change. If the phone and server both changed an item, the newer `updatedAt` wins.
-5. Synced data belongs to one student: if someone else signs in on the phone, its waiting changes and copies are cleared before anything is sent.
-6. After sending its queue, the phone pulls with `since`, then stores `serverTime` for next time.
+3. `PUT` with the same `id` twice is safe; the second just updates. Another student's `id` answers `NOT_FOUND`, never a clash.
+4. A deleted item stays deleted: its marker comes back in pulls with its private fields (notes, text) cleared, a later `PUT` gets `SYNC_STALE_UPDATE` with the marker, and deleting something the server never saw, or twice, is a `204`.
+5. Built so far: `moods` (B4.2a). The others follow in B4.2b to B4.4.
+6. Every `PUT` carries `updatedAt`, when the phone made the change. If the phone and server both changed an item, the newer `updatedAt` wins.
+7. Synced data belongs to one student: if someone else signs in on the phone, its waiting changes and copies are cleared before anything is sent.
+8. After sending its queue, the phone pulls with `since`, then stores `serverTime` for next time.
 
 Errors: `SYNC_STALE_UPDATE` (409, an older edit arrived after a newer one; the response holds the current item).
 
@@ -319,7 +321,7 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B3    | Withdrawal         | studentId (one each), reason, withdrawnAt; kept after the account closes                                                                     |
 | B3    | Alert              | studentId, researcherId (empty until matched), kind, urgent, title, quote, detail, sourceId (one alert per kind and source), raisedAt        |
 | B4    | SessionProgress    | studentId, sessionId, done, answers (JSON), completedAt, updatedAt (the phone's change time), syncedAt (the server's save time)              |
-| B4    | MoodEntry          | studentId, mood, note, at                                                                                                                    |
+| B4    | MoodEntry          | id (from the phone), studentId, mood, note, at, updatedAt, deletedAt, syncedAt                                                               |
 | B4    | JournalEntry       | studentId, prompt, text (encrypted), mood, sessionId, at, editedAt                                                                           |
 | B4    | ThoughtRecord      | studentId, situation, thought, feeling, action, traps, sessionId, balanced, beliefBefore, beliefAfter, at                                    |
 | B4    | PlannedActivity    | studentId, date, slot, label, predicted, sessionId, doneAt, enjoy, achieve                                                                   |

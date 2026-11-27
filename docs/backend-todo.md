@@ -215,10 +215,16 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] App: session progress synced; progress saved before sync is uploaded once
 - [x] App: home counts the study week from the server's `startedAt`
 
+### B4.2a Mood · `feat/mood-sync`
+
+- [x] Shared item rules: phone ids, another student's id is not found, deleted items keep a marker and stay deleted
+- [x] MoodEntry model; `GET /v1/me/moods?since=`, `PUT` and `DELETE /v1/me/moods/:id`
+- [x] App: moods synced, with ids given to moods saved before sync; deletions from other phones applied
+
 ### Still to do in B4
 
-- [ ] Models: MoodEntry, JournalEntry, ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
-- [ ] Modules: `mood`, `journal`, `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
+- [ ] Models: JournalEntry, ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
+- [ ] Modules: `journal`, `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
 - [ ] Journal text encrypted
 - [ ] App: each store switched over
 
