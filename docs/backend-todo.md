@@ -180,13 +180,18 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Urgent alerts emailed to the researcher, or to the study lead when the student isn't matched; waiting alerts move to the researcher on matching
 - [ ] Final PHQ-9 only after Session 8 (needs sessions, B4)
 
+### B3.3 EPQ-R and the agreed emails · `feat/epqr`
+
+- [x] EpqrResult model; `GET` and `POST /v1/me/epqr`, scored on the server; the student never gets the scale scores
+- [x] Yes to question 76 raises an urgent alert in the same request; sending again returns the first result
+- [x] Emails agreed from the notifications table: password changed (student), matched at random (researcher), every researcher full (study lead)
+
 ### Still to do in B3
 
-- [ ] Models: EpqrResult, Withdrawal (Consent done in B2.5b, Assignment in B3.1, Phq9Result and Alert in B3.2)
+- [ ] Models: Withdrawal (Consent done in B2.5b, Assignment in B3.1, Phq9Result and Alert in B3.2, EpqrResult in B3.3)
 - [ ] `assessments` (`phq9/`, `epqr/`), `withdrawal`, `alerts` modules; `CONSENT_REQUIRED` on data routes
 - [ ] Onboarding status gains `phq9`, `epqr` and `assignment`
-- [ ] EPQ-R question 76 alert (B3.3)
-- [ ] Proposed emails, awaiting a decision: password changed (student), random match (researcher), withdrawal (researcher), every researcher full (study lead)
+- [ ] Withdrawal email to the researcher (agreed)
 - [ ] Study week counts from the consent date, as the app does (B2.5 uses the sign-up date until consent exists)
 - [ ] App: consent, both PHQ-9s, EPQ-R, assignment, withdrawal switched over
 

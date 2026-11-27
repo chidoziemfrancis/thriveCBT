@@ -5838,6 +5838,421 @@
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           }
+        },
+        {
+          "name": "Whether the student has answered the EPQ-R; scores are never returned",
+          "request": {
+            "name": "Whether the student has answered the EPQ-R; scores are never returned",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "epqr"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "The saved result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<uuid>\",\n  \"needsSupport\": \"<boolean>\",\n  \"takenAt\": \"<dateTime>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "EPQR_NOT_TAKEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "Save the 100 EPQ-R answers; scored on the server; question 76 Yes alerts the researcher",
+          "request": {
+            "name": "Save the 100 EPQ-R answers; scored on the server; question 76 Yes alerts the researcher",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "me",
+                "epqr"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "The saved result; sending again returns the first one",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answers\": [\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"<uuid>\",\n  \"needsSupport\": \"<boolean>\",\n  \"takenAt\": \"<dateTime>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "VALIDATION_FAILED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answers\": [\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "UNAUTHENTICATED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answers\": [\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "FORBIDDEN",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "me",
+                    "epqr"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"answers\": [\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\",\n    \"<boolean>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"requestId\": \"<string>\",\n    \"details\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         }
       ],
       "event": []
