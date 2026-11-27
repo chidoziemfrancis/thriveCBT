@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button';
 import PageLoader from '@/components/ui/PageLoader';
 import Screen from '@/components/ui/Screen';
 import { haptics } from '@/lib/haptics';
+import { syncNow } from '@/lib/sync';
 import { colors, fonts, radius, type } from '@/theme';
 
 import SupportCard from '../components/SupportCard';
@@ -32,10 +33,13 @@ export default function Phq9ResultsScreen() {
 
   // Saved as soon as the screen opens, so the researcher is alerted even if the student closes
   // the app on the support screen. Sending again is safe: the server keeps the first result.
-  const save = useCallback(
-    () => mutate({ kind: final ? 'final' : 'baseline', answers }),
-    [mutate, final, answers]
-  );
+  // The final check-in opens once Session 8 is finished on the server, so session progress
+  // still waiting on the phone is sent first.
+  const save = useCallback(() => {
+    const body = { kind: final ? ('final' as const) : ('baseline' as const), answers };
+    if (final) void syncNow().then(() => mutate(body));
+    else mutate(body);
+  }, [mutate, final, answers]);
   useEffect(save, [save]);
 
   // The crisis screen stays still on purpose: a celebratory buzz there would feel wrong.

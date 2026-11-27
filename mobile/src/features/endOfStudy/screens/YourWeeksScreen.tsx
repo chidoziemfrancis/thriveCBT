@@ -9,7 +9,7 @@ import Screen from '@/components/ui/Screen';
 import { getCheckInHistory } from '@/features/checkin/checkinStore';
 import { allPracticeDays, sessionsFinished } from '@/features/endOfStudy/endOfStudy';
 import { usePracticeData } from '@/features/homework/usePracticeData';
-import { useSessionProgress } from '@/features/sessions/progressStore';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 

@@ -7,7 +7,11 @@ import CrisisPlanView from '@/features/coping/components/CrisisPlanView';
 import WellPlanView from '@/features/wellbeing/components/WellPlanView';
 import { wellPlanFrom } from '@/features/wellbeing/wellbeing';
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { compassionLines, diaryAnswers, reframeAnswers } from '@/features/sessions/sessionLogic';
+import {
+  compassionLines,
+  diaryAnswers,
+  reframeAnswers,
+} from '@/features/sessions/utils/sessionLogic';
 import { colors, fonts } from '@/theme';
 
 import { stepText } from './stepText';

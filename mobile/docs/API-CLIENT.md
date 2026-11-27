@@ -32,7 +32,8 @@ src/
 │   ├── session.ts           startSession, endSession, restoreSession, refreshTokens
 │   ├── secure-storage.ts    the refresh token (expo-secure-store only)
 │   ├── zustand-storage.ts   kv-store adapter for persisted Zustand stores
-│   └── storage.ts           kv-store helpers (existing)
+│   ├── storage.ts           kv-store helpers (existing)
+│   └── sync/                the offline sync engine: queue.ts (waiting changes), engine.ts (send, pull, retry)
 ├── stores/
 │   └── session.store.ts     Zustand: signed in or out, the user, the access token (memory)
 ├── features/<feature>/
@@ -48,7 +49,7 @@ src/
 │   ├── <action>.ts          a feature-wide action used by several screens, e.g. signOut.ts
 │   └── index.ts             what other features may import
 ├── components/ui/  components/shared/   building blocks used across features
-├── hooks/                   hooks used across features
+├── hooks/                   hooks used across features, e.g. useStudentSync
 └── types/
     ├── api.ts               generated; never edited by hand
     └── api-helpers.ts       ResponseOf<path, method>, BodyOf<path, method>
@@ -81,6 +82,7 @@ Every feature uses this layout. Loose files at the feature's root are only `inde
 16. **Resuming onboarding:** after login, and when a logged-in student without a PIN opens the app, `resumeRoute()` asks `GET /me/onboarding` for the next step and opens that screen, through the PHQ-9, EPQ-R and matching. Offline, the app carries on as it was.
 17. **Errors that mean the same everywhere** are handled once, in `useSessionWatch`, for every query and mutation: `STUDY_WITHDRAWN` and `AUTH_ACCOUNT_WITHDRAWN` sign the student out and open the withdrawn screen; `CONSENT_REQUIRED` opens the study information. Screens only handle their own errors.
 18. **Safety answers are saved the moment the last screen opens**, not when the student taps Continue: the PHQ-9 results and the EPQ-R done screen send the answers straight away, so an alert reaches the researcher even if the app is closed on the support screen. The support screen shows at once from the phone's answers; Continue waits for the save and offers Try again if it failed. Sending again is safe because the server keeps the first result.
+19. **Synced student data** (sessions now, the B4 tools next) never goes through TanStack Query. The feature's phone store saves first, so it works offline, then calls `queueChange()` with the whole item and the time of the change; the engine sends waiting changes oldest first, retries with growing gaps (5 seconds up to 5 minutes), and pulls with the last `serverTime`. Each kind registers itself with `registerSyncKind()` (`applyServerItems`, `uploadLocal` for data saved before sync, `clearLocal`), and `src/hooks/useStudentSync.ts` imports the feature so it's registered. Sync runs on sign-in, when the app comes back to the front, and whenever a change is waiting. If a different student signs in on the phone, the previous student's waiting changes and copies are cleared first.
 
 ## Running against the backend
 

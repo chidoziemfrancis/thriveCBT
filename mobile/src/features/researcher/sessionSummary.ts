@@ -7,15 +7,15 @@ import {
   type SessionContent,
   type StepAnswer,
 } from '@/features/sessions/content/types';
-import { emotionLabel } from '@/features/sessions/emotions';
-import { trapLabels } from '@/features/sessions/traps';
+import { emotionLabel } from '@/features/sessions/constants/emotions';
+import { trapLabels } from '@/features/sessions/constants/traps';
 import {
   FLIPPED,
   type SessionRecord,
   balancedText,
   readEvidence,
   sortProgress,
-} from '@/features/sessions/sessionLogic';
+} from '@/features/sessions/utils/sessionLogic';
 
 export type SummaryLine = { label: string; value: string };
 

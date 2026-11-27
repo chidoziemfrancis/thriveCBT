@@ -9,15 +9,15 @@ import Screen from '@/components/ui/Screen';
 import { currentStudyWeek, studyStart } from '@/features/home/currentWeek';
 import { opensLabel, sessionOpensOn } from '@/features/home/studyWeek';
 import { sessionContent } from '@/features/sessions/content';
-import { unlockedThrough } from '@/features/sessions/preview';
-import { useSessionProgress } from '@/features/sessions/progressStore';
+import { unlockedThrough } from '@/features/sessions/utils/preview';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import {
   type SessionRecord,
   type SessionStatus,
   modulesDone,
   sessionStatus,
-} from '@/features/sessions/sessionLogic';
-import { SESSIONS, type Session } from '@/features/sessions/sessions';
+} from '@/features/sessions/utils/sessionLogic';
+import { SESSIONS, type Session } from '@/features/sessions/constants/sessions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

@@ -16,7 +16,7 @@ import { CheckIcon } from '@/components/icons';
 import BalanceScale from '@/features/sessions/art/BalanceScale';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import type { SortStep } from '@/features/sessions/content/types';
-import { MISS, sortProgress } from '@/features/sessions/sessionLogic';
+import { MISS, sortProgress } from '@/features/sessions/utils/sessionLogic';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

@@ -9,7 +9,7 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { POSITIVE_KINDS, type PositiveKind, positiveKind } from '@/features/beliefs/beliefs';
 import { addPositive, removePositive, usePositiveLog } from '@/features/beliefs/positiveLogStore';
-import { useSessionProgress } from '@/features/sessions/progressStore';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

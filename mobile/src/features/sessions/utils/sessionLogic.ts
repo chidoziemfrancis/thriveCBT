@@ -10,9 +10,9 @@ import type {
   SessionStep,
   SortStep,
   StepAnswer,
-} from './content/types';
-import { emotionLabel } from './emotions';
-import { trapLabels } from './traps';
+} from '../content/types';
+import { emotionLabel } from '../constants/emotions';
+import { trapLabels } from '../constants/traps';
 
 const list = (value: unknown): string[] => (Array.isArray(value) ? (value as string[]) : []);
 
@@ -21,6 +21,8 @@ export type SessionRecord = {
   /** Each step's answer, keyed by step id. */
   answers?: Record<string, StepAnswer>;
   completedAt?: string;
+  /** When the phone last changed it; the newest change wins when syncing. */
+  updatedAt?: string;
 };
 
 export type SessionStatus = 'done' | 'current' | 'available' | 'locked';

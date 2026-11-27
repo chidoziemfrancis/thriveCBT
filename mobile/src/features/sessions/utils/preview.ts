@@ -2,7 +2,7 @@ import { isTestAccount } from '@/features/auth';
 import { getPreferences } from '@/lib/preferences';
 import { useSessionStore } from '@/stores/session.store';
 
-import { SESSIONS } from './sessions';
+import { SESSIONS } from '../constants/sessions';
 
 // While the app is being tested, every session is open for every account. Set this back to
 // false before real students use the app, so sessions open one per study week again.

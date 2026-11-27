@@ -1,7 +1,7 @@
 import type { Phq9Result } from '@/features/assessment';
 import { type PracticeData, practiceDays } from '@/features/homework/homework';
-import type { SessionRecord } from '@/features/sessions/sessionLogic';
-import { SESSIONS } from '@/features/sessions/sessions';
+import type { SessionRecord } from '@/features/sessions/utils/sessionLogic';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 
 /** The usual line for a real change on the PHQ-9. Smaller moves count as "about the same". */
 export const REAL_CHANGE = 5;

@@ -18,9 +18,9 @@ import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/journalPr
 import { logMood, setTodaysMoodNote, todaysMood } from '@/features/mood/moodStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import { sessionContent } from '@/features/sessions/content';
-import { useSessionProgress } from '@/features/sessions/progressStore';
-import { modulesDone } from '@/features/sessions/sessionLogic';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
+import { modulesDone } from '@/features/sessions/utils/sessionLogic';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 

@@ -1,5 +1,5 @@
 import { addJournalEntry } from '@/features/journal/journalStore';
-import { diaryText } from '@/features/sessions/sessionLogic';
+import { diaryText } from '@/features/sessions/utils/sessionLogic';
 import StepFlow from '@/features/thoughts/components/StepFlow';
 import { RECORD_RECAP, RECORD_STEPS } from '@/features/thoughts/recordSteps';
 import { recordFromDiary } from '@/features/thoughts/thoughtLog';

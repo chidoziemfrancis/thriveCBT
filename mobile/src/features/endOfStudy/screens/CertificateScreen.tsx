@@ -10,7 +10,7 @@ import Screen from '@/components/ui/Screen';
 import { getBaselinePhq9, getFinalPhq9 } from '@/features/assessment';
 import Rosette from '@/features/endOfStudy/components/Rosette';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

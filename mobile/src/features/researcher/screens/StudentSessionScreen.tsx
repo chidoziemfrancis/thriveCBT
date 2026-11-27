@@ -7,7 +7,7 @@ import Screen from '@/components/ui/Screen';
 import { summariseSession } from '@/features/researcher/sessionSummary';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { sessionContent } from '@/features/sessions/content';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { colors, fonts, radius, type } from '@/theme';
 
 function longDate(iso: string) {

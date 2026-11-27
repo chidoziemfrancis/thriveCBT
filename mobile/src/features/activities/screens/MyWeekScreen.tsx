@@ -25,7 +25,7 @@ import PlanForm from '@/features/activities/components/PlanForm';
 import PlanRow from '@/features/activities/components/PlanRow';
 import ScoreRow from '@/features/activities/components/ScoreRow';
 import WeekStrip, { type DayMark } from '@/features/activities/components/WeekStrip';
-import { useSessionProgress } from '@/features/sessions/progressStore';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

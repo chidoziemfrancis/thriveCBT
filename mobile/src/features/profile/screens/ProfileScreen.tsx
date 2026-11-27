@@ -15,8 +15,11 @@ import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import SettingsRow, { SettingsGroup } from '@/features/profile/components/SettingsRow';
 import { useEmergencyContact } from '@/features/profile/store/emergencyContactStore';
-import { OPEN_ALL_SESSIONS_FOR_TESTING, canPreviewSessions } from '@/features/sessions/preview';
-import { SESSIONS } from '@/features/sessions/sessions';
+import {
+  OPEN_ALL_SESSIONS_FOR_TESTING,
+  canPreviewSessions,
+} from '@/features/sessions/utils/preview';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { setPreference, usePreferences } from '@/lib/preferences';
 import { useSessionStore } from '@/stores/session.store';
 import { colors, fonts } from '@/theme';

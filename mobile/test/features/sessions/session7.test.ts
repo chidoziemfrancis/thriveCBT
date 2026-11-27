@@ -5,7 +5,7 @@ import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_7 } from '@/features/sessions/content/session7';
 import type { RecapStep } from '@/features/sessions/content/types';
-import { compassionLines, isStepReady } from '@/features/sessions/sessionLogic';
+import { compassionLines, isStepReady } from '@/features/sessions/utils/sessionLogic';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({

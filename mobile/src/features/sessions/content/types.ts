@@ -5,7 +5,7 @@ import type { BodySpot } from '@/features/sessions/art/BodyFigure';
 import type { WellSection } from '@/features/wellbeing/wellbeing';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
 import type { StoryScene } from '@/features/sessions/art/StoryArt';
-import type { PhotoKey } from '@/features/sessions/photos';
+import type { PhotoKey } from '@/features/sessions/constants/photos';
 
 // Each session is data poured into a handful of reusable step templates, so adding sessions
 // 2–8 means writing content, not new screens. Every step is one idea on one screen, and most

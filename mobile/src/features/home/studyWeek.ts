@@ -1,4 +1,4 @@
-import { SESSIONS } from '@/features/sessions/sessions';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

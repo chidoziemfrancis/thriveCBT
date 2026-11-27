@@ -6,6 +6,8 @@ type OnboardingData = {
   name?: string;
   dateOfBirth?: string;
   isUndergraduate?: boolean;
+  /** When the study started: the first consent, from the server. */
+  startedAt?: string;
 };
 
 export function getOnboardingData(): OnboardingData {

@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 import { Glyph } from '@/components/icons/FeatureIcon';
-import { PHOTO_ALT, PHOTOS, type PhotoKey } from '@/features/sessions/photos';
+import { PHOTO_ALT, PHOTOS, type PhotoKey } from '@/features/sessions/constants/photos';
 import { colors, fonts, radius } from '@/theme';
 
 /** A session photo, or a soft labelled stand-in until that photo is chosen. */

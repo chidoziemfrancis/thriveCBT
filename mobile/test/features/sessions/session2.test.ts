@@ -4,14 +4,14 @@ import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_2 } from '@/features/sessions/content/session2';
 import type { RecapStep, SortStep, StepAnswer } from '@/features/sessions/content/types';
-import { emotionLabel } from '@/features/sessions/emotions';
+import { emotionLabel } from '@/features/sessions/constants/emotions';
 import {
   FLIPPED,
   MISS,
   diaryText,
   isStepReady,
   sortProgress,
-} from '@/features/sessions/sessionLogic';
+} from '@/features/sessions/utils/sessionLogic';
 
 const steps = SESSION_2.modules.flatMap((m) => m.steps);
 const find = (id: string) => steps.find((s) => s.id === id)!;

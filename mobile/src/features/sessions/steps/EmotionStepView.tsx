@@ -4,7 +4,7 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import PercentSlider from '@/features/sessions/components/PercentSlider';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import type { EmotionStep } from '@/features/sessions/content/types';
-import { EMOTION_FAMILIES, readEmotion } from '@/features/sessions/emotions';
+import { EMOTION_FAMILIES, readEmotion } from '@/features/sessions/constants/emotions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

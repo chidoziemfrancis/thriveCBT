@@ -8,7 +8,7 @@ import { practiceDays } from '@/features/homework/homework';
 import { usePracticeData } from '@/features/homework/usePracticeData';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import { sessionContent } from '@/features/sessions/content';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { colors, fonts, type } from '@/theme';
 
 /** Each week's practice so far, with how many days it was done. */

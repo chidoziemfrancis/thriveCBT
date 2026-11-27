@@ -10,7 +10,7 @@ import {
   readEvidence,
   reframeText,
   writeEvidence,
-} from '@/features/sessions/sessionLogic';
+} from '@/features/sessions/utils/sessionLogic';
 import { CHALLENGE_RECAP, CHALLENGE_STEPS } from '@/features/thoughts/challengeSteps';
 import { recordFromReframe } from '@/features/thoughts/thoughtLog';
 

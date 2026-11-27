@@ -11,7 +11,7 @@ import {
   nextModuleId,
   sessionStatus,
   stepPosition,
-} from '@/features/sessions/sessionLogic';
+} from '@/features/sessions/utils/sessionLogic';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({
@@ -136,14 +136,18 @@ describe('progress store', () => {
   it('records each part once and completes the session once', () => {
     jest.isolateModules(() => {
       const store =
-        require('@/features/sessions/progressStore') as typeof import('@/features/sessions/progressStore');
+        require('@/features/sessions/store/progressStore') as typeof import('@/features/sessions/store/progressStore');
       store.completeModule(1, 'lesson');
       store.completeModule(1, 'lesson');
       store.completeSession(1, new Date('2026-10-29T10:00:00Z'));
       store.completeSession(1, new Date('2026-11-05T10:00:00Z'));
 
       expect(mockMemory.get('session_progress')).toEqual({
-        1: { done: ['lesson'], completedAt: '2026-10-29T10:00:00.000Z' },
+        1: {
+          done: ['lesson'],
+          completedAt: '2026-10-29T10:00:00.000Z',
+          updatedAt: expect.any(String),
+        },
       });
     });
   });

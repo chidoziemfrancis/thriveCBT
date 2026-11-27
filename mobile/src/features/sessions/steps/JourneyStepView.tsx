@@ -6,7 +6,7 @@ import { usePositiveLog } from '@/features/beliefs/positiveLogStore';
 import { useStressLog, useToolkit } from '@/features/coping/copingStore';
 import { getMoodLog } from '@/features/mood/moodStore';
 import type { JourneyStep } from '@/features/sessions/content/types';
-import { useSessionProgress } from '@/features/sessions/progressStore';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { useThoughtLog } from '@/features/thoughts/thoughtLogStore';
 import { journeyLines } from '@/features/wellbeing/wellbeing';
 import { colors, fonts } from '@/theme';

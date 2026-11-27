@@ -1,6 +1,6 @@
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { reframeAnswers } from '@/features/sessions/sessionLogic';
-import { NOT_SURE, TRAPS } from '@/features/sessions/traps';
+import { reframeAnswers } from '@/features/sessions/utils/sessionLogic';
+import { NOT_SURE, TRAPS } from '@/features/sessions/constants/traps';
 
 export type ThoughtRecord = {
   id: string;

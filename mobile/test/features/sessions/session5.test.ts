@@ -16,7 +16,7 @@ import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_5 } from '@/features/sessions/content/session5';
 import type { PlannerStep, StepAnswer } from '@/features/sessions/content/types';
-import { isStepReady, plannerSuggestions } from '@/features/sessions/sessionLogic';
+import { isStepReady, plannerSuggestions } from '@/features/sessions/utils/sessionLogic';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({

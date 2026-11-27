@@ -15,7 +15,7 @@ import { CRISIS_STEPS, crisisAnswers } from '@/features/coping/copingSteps';
 import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_6 } from '@/features/sessions/content/session6';
-import { isStepReady } from '@/features/sessions/sessionLogic';
+import { isStepReady } from '@/features/sessions/utils/sessionLogic';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({

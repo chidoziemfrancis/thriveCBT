@@ -11,10 +11,10 @@ import Screen from '@/components/ui/Screen';
 import { currentStudyWeek } from '@/features/home/currentWeek';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import { sessionContent } from '@/features/sessions/content';
-import { unlockedThrough } from '@/features/sessions/preview';
-import { useSessionProgress } from '@/features/sessions/progressStore';
-import { nextModuleId, sessionStatus } from '@/features/sessions/sessionLogic';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { unlockedThrough } from '@/features/sessions/utils/preview';
+import { useSessionProgress } from '@/features/sessions/store/progressStore';
+import { nextModuleId, sessionStatus } from '@/features/sessions/utils/sessionLogic';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { colors, fonts, type } from '@/theme';
 
 function Placeholder({ title, body }: { title: string; body: string }) {

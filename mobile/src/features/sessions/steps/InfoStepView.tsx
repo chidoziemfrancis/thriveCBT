@@ -8,7 +8,7 @@ import { currentStudyWeek } from '@/features/home/currentWeek';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import type { InfoStep } from '@/features/sessions/content/types';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { colors, fonts } from '@/theme';
 
 import StepArt from './StepArt';

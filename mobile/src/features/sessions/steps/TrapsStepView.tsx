@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { CheckIcon } from '@/components/icons';
 import SessionPhoto from '@/features/sessions/components/SessionPhoto';
 import type { TrapsStep } from '@/features/sessions/content/types';
-import { NOT_SURE, TRAPS } from '@/features/sessions/traps';
+import { NOT_SURE, TRAPS } from '@/features/sessions/constants/traps';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

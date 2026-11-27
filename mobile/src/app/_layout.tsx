@@ -11,6 +11,7 @@ import { useCallback, useState } from 'react';
 import AnimatedSplash, { SplashRevealedProvider } from '@/components/splash/AnimatedSplash';
 import { useRelockOnResume } from '@/features/auth/hooks/useRelockOnResume';
 import { useSessionWatch } from '@/features/auth/hooks/useSessionWatch';
+import { useStudentSync } from '@/hooks/useStudentSync';
 import AppProvider from '@/providers/AppProvider';
 import { colors } from '@/theme';
 
@@ -29,6 +30,7 @@ export default function RootLayout() {
   const finishSplash = useCallback(() => setSplashDone(true), []);
   useRelockOnResume();
   useSessionWatch();
+  useStudentSync();
 
   // A font that fails to load falls back to the system font rather than holding the
   // native splash on screen forever.

@@ -28,7 +28,11 @@ import { wellPlanFrom } from '@/features/wellbeing/wellbeing';
 import { saveWellPlan } from '@/features/wellbeing/wellPlanStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { completeModule, saveAnswer, useSessionProgress } from '@/features/sessions/progressStore';
+import {
+  completeModule,
+  saveAnswer,
+  useSessionProgress,
+} from '@/features/sessions/store/progressStore';
 import {
   compassionLines,
   diaryText,
@@ -36,7 +40,7 @@ import {
   isStepReady,
   nextModuleId,
   stepPosition,
-} from '@/features/sessions/sessionLogic';
+} from '@/features/sessions/utils/sessionLogic';
 import StepBody from '@/features/sessions/steps/StepBody';
 import { recordFromDiary, recordFromReframe } from '@/features/thoughts/thoughtLog';
 import { addThoughtRecord } from '@/features/thoughts/thoughtLogStore';

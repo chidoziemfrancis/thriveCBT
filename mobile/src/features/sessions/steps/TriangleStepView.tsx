@@ -10,7 +10,7 @@ import Svg, { Path } from 'react-native-svg';
 
 import { RefreshIcon } from '@/components/icons';
 import type { CbtPart, TriangleStep } from '@/features/sessions/content/types';
-import { FLIPPED } from '@/features/sessions/sessionLogic';
+import { FLIPPED } from '@/features/sessions/utils/sessionLogic';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

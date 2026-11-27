@@ -7,8 +7,8 @@ import Screen from '@/components/ui/Screen';
 import { sessionsCompleted } from '@/features/researcher/caseload';
 import { useResearcher } from '@/features/researcher/useResearcher';
 import { sessionContent } from '@/features/sessions/content';
-import { modulesDone, sessionStatus } from '@/features/sessions/sessionLogic';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { modulesDone, sessionStatus } from '@/features/sessions/utils/sessionLogic';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 

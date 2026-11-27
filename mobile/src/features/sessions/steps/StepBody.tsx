@@ -1,7 +1,7 @@
 import { readArrow } from '@/features/beliefs/beliefs';
 import { SKILLS } from '@/features/wellbeing/wellbeing';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { plannerSuggestions } from '@/features/sessions/sessionLogic';
+import { plannerSuggestions } from '@/features/sessions/utils/sessionLogic';
 
 import ActivitiesStepView from './ActivitiesStepView';
 import ArrowStepView from './ArrowStepView';

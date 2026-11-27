@@ -4,8 +4,8 @@ import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_3 } from '@/features/sessions/content/session3';
 import type { RecapStep, SortStep, StepAnswer } from '@/features/sessions/content/types';
-import { diaryText, isStepReady, sortProgress } from '@/features/sessions/sessionLogic';
-import { NOT_SURE, TRAPS, trapLabels } from '@/features/sessions/traps';
+import { diaryText, isStepReady, sortProgress } from '@/features/sessions/utils/sessionLogic';
+import { NOT_SURE, TRAPS, trapLabels } from '@/features/sessions/constants/traps';
 
 const steps = SESSION_3.modules.flatMap((m) => m.steps);
 const find = (id: string) => steps.find((s) => s.id === id)!;

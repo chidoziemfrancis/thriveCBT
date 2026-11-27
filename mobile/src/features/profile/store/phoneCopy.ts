@@ -11,6 +11,7 @@ export function saveProfileOnPhone(profile: Profile) {
     name: profile.name ?? undefined,
     dateOfBirth: profile.dateOfBirth ?? undefined,
     isUndergraduate: profile.isUndergraduate ?? undefined,
+    startedAt: profile.startedAt ?? undefined,
   });
   if (profile.avatarId) chooseAvatar(profile.avatarId);
 }

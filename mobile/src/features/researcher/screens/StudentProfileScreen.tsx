@@ -16,7 +16,7 @@ import StudentAvatar from '@/features/researcher/components/StudentAvatar';
 import { activeLabel, nextCallFor } from '@/features/researcher/studentsLogic';
 import { needsYou } from '@/features/researcher/todayLogic';
 import { useResearcher } from '@/features/researcher/useResearcher';
-import { SESSIONS } from '@/features/sessions/sessions';
+import { SESSIONS } from '@/features/sessions/constants/sessions';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

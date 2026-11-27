@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import type { BalancedStep, StepAnswer } from '@/features/sessions/content/types';
-import { balancedText, readEvidence } from '@/features/sessions/sessionLogic';
+import { balancedText, readEvidence } from '@/features/sessions/utils/sessionLogic';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

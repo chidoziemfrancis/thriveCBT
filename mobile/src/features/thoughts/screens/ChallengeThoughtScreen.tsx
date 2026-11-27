@@ -1,5 +1,5 @@
 import { addJournalEntry } from '@/features/journal/journalStore';
-import { reframeText } from '@/features/sessions/sessionLogic';
+import { reframeText } from '@/features/sessions/utils/sessionLogic';
 import { CHALLENGE_RECAP, CHALLENGE_STEPS } from '@/features/thoughts/challengeSteps';
 import StepFlow from '@/features/thoughts/components/StepFlow';
 import { recordFromReframe } from '@/features/thoughts/thoughtLog';

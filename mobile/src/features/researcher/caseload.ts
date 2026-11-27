@@ -4,7 +4,7 @@ import { containsRiskLanguage } from '@/features/chat/riskLanguage';
 import type { JournalEntry } from '@/features/journal/journalStore';
 import type { MoodEntry } from '@/features/mood/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
-import type { SessionRecord } from '@/features/sessions/sessionLogic';
+import type { SessionRecord } from '@/features/sessions/utils/sessionLogic';
 
 import type { CallOutcome } from './callLog';
 

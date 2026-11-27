@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeftIcon } from '@/components/icons';
 import Button from '@/components/ui/Button';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
-import { isStepReady } from '@/features/sessions/sessionLogic';
+import { isStepReady } from '@/features/sessions/utils/sessionLogic';
 import StepBody from '@/features/sessions/steps/StepBody';
 import { haptics } from '@/lib/haptics';
 import { colors, radius } from '@/theme';

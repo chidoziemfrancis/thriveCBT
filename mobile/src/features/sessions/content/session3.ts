@@ -1,6 +1,6 @@
 import { RECORD_STEPS } from '@/features/thoughts/recordSteps';
 
-import { TRAPS } from '../traps';
+import { TRAPS } from '../constants/traps';
 import type { SessionContent } from './types';
 
 // Session 3, "Recognizing Negative Thinking Patterns", from the study's CBT intervention
