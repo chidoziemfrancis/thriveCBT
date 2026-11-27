@@ -18,6 +18,7 @@ model User {
   assignment        Assignment?        @relation("StudentAssignment")
   caseload          Assignment[]       @relation("ResearcherCaseload")
   phq9Results       Phq9Result[]
+  epqrResult        EpqrResult?
   alerts            Alert[]            @relation("StudentAlerts")
   alertsToHandle    Alert[]            @relation("ResearcherAlerts")
 

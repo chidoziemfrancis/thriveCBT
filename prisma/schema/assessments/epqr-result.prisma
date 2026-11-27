@@ -1,0 +1,17 @@
+model EpqrResult {
+  id           String    @id @default(uuid(7)) @db.Uuid
+  studentId    String    @unique @map("student_id") @db.Uuid
+  answers      Boolean[]
+  psychoticism Int
+  extraversion Int
+  neuroticism  Int
+  lie          Int
+  wishedDead   Boolean   @map("wished_dead")
+  takenAt      DateTime  @default(now()) @map("taken_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("epqr_results")
+}
