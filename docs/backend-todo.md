@@ -140,7 +140,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] ResearcherProfile and Invite models; invite codes like `GRACE1`
 - [x] `npm run lead:create -- <email>` makes the first lead; leads invite with `POST /v1/admin/researcher-invites` (Postman until the web admin)
 - [x] Accept an invite and set a password; email link opens the app
-- [ ] App: build the R2 accept-invite screen for `thrivecbt://researcher/accept-invite?token=…` (B2.6)
+- [ ] Researchers accept invites on the web admin (parked); the app has no accept-invite screen. The link base becomes the web address then
 
 ### B2.5 Student profile and settings
 
@@ -157,7 +157,10 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 ### B2.6 App switch-over
 
 - [x] App API foundation: axios client, TanStack Query, Zustand session store, generated types, rules in `mobile/docs/API-CLIENT.md`
-- [ ] Sign-up, verify email, login, forgot and reset password, researcher invite and logout use the API
+- [x] Sign-up (email first), verify email with resend, login, forgot and reset password and logout use the API; mock accounts removed (B2.6a)
+- [ ] Try the app on a phone against the local backend (`mobile/.env` with the Mac's address)
+- [ ] Onboarding (consent, name, date of birth, eligibility, reminders, resume) and profile use the API (B2.6b)
+- [ ] Student join link (`join/[code]`): the code stays on the phone until B3 sends it to `POST /v1/me/assignment`
 - [ ] Remove the mock accounts
 
 ## B3 Study core · `feat/study-core`
@@ -168,6 +171,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [ ] `src/events/`: PHQ-9 and EPQ-R submitted
 - [ ] Alerts on the server: question 9, EPQ-R 76, final rise of 5+, severe score
 - [ ] Assignment: random, max 10 per researcher
+- [ ] When a student joins with a researcher's invite link or code, email that researcher that the student accepted (Unosend)
 - [ ] Study week counts from the consent date, as the app does (B2.5 uses the sign-up date until consent exists)
 - [ ] App: consent, both PHQ-9s, EPQ-R, assignment, withdrawal switched over
 
