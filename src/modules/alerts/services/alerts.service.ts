@@ -10,6 +10,7 @@ import {
   StudentAssignedEvent,
 } from '../../../events/student-assigned.event.js';
 import { EmailService } from '../../../integrations/email/email.service.js';
+import { AccountsService } from '../../users/accounts/services/accounts.service.js';
 import { AlertsRepository } from '../repositories/alerts.repository.js';
 
 // Emails never carry names, answers or what the alert is about; the details stay in the app.
@@ -20,6 +21,7 @@ export class AlertsService {
   constructor(
     private readonly repository: AlertsRepository,
     private readonly email: EmailService,
+    private readonly accounts: AccountsService,
   ) {}
 
   // Errors are not suppressed: if the alert can't be saved, the request that raised it fails.
@@ -57,7 +59,7 @@ export class AlertsService {
         .catch(() => undefined);
       return;
     }
-    for (const to of await this.repository.leadEmails()) {
+    for (const to of await this.accounts.leadEmails()) {
       await this.email
         .send({
           to,

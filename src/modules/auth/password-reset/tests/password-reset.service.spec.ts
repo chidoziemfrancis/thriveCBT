@@ -75,6 +75,19 @@ describe('PasswordResetService.confirm', () => {
     expect(tokens.revokeAllForUser).toHaveBeenCalledWith('u1');
   });
 
+  it('tells the account owner their password changed, and keeps the change if that email fails', async () => {
+    const { service, email, accounts } = setup();
+    email.send.mockRejectedValueOnce(new Error('Unosend down'));
+    await expect(service.confirm(body)).resolves.toBeUndefined();
+    expect(accounts.setPassword).toHaveBeenCalled();
+    expect(email.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'ada@uni.edu',
+        subject: 'Your ThriveCBT password was changed',
+      }),
+    );
+  });
+
   it('gives the same code error for an unknown email', async () => {
     const { service, accounts } = setup(null);
     await expect(service.confirm(body)).rejects.toMatchObject({

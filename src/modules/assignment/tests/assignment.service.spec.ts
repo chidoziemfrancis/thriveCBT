@@ -1,6 +1,7 @@
 import type { EventEmitter2 } from '@nestjs/event-emitter';
 
 import type { EmailService } from '../../../integrations/email/email.service.js';
+import type { AccountsService } from '../../users/accounts/services/accounts.service.js';
 import type { StudentsService } from '../../users/students/services/students.service.js';
 import { assignSchema } from '../dto/assignment.dto.js';
 import type { AssignmentRepository } from '../repositories/assignment.repository.js';
@@ -59,11 +60,13 @@ function setup(
     send: vi.fn(async (_message: { to: string; text: string }) => undefined),
   };
   const events = { emitAsync: vi.fn(async () => []) };
+  const accounts = { leadEmails: vi.fn(async () => ['lead@thrivecbt.test']) };
   const service = new AssignmentService(
     repository as unknown as AssignmentRepository,
     students as unknown as StudentsService,
     email as unknown as EmailService,
     events as unknown as EventEmitter2,
+    accounts as unknown as AccountsService,
   );
   return { service, repository, email, events };
 }
@@ -115,7 +118,7 @@ describe('AssignmentService', () => {
     });
   });
 
-  it('matches at random without emailing when there is no code', async () => {
+  it('matches at random when there is no code, and tells that researcher', async () => {
     const { service, email } = setup({
       open: [{ userId: 'r-tunde', capacity: 10, students: 1 }],
     });
@@ -123,7 +126,13 @@ describe('AssignmentService', () => {
       researcher: { id: 'r-tunde' },
       method: 'random',
     });
-    expect(email.send).not.toHaveBeenCalled();
+    expect(email.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: expect.stringContaining(
+          'Kemi joined ThriveCBT and was matched with you',
+        ),
+      }),
+    );
   });
 
   it('returns the same match when asked again', async () => {
@@ -134,13 +143,20 @@ describe('AssignmentService', () => {
   });
 
   it('refuses an unknown code, and says when every researcher is full', async () => {
-    const { service } = setup();
+    const { service, email } = setup();
     await expect(service.assign('s1', 'NOPE12', NOW)).rejects.toMatchObject({
       code: 'ASSIGNMENT_CODE_NOT_FOUND',
     });
     await expect(service.assign('s1', undefined, NOW)).rejects.toMatchObject({
       code: 'ASSIGNMENT_NO_RESEARCHER',
     });
+    expect(email.send).toHaveBeenCalledTimes(1);
+    expect(email.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'lead@thrivecbt.test',
+        subject: 'A student is waiting for a researcher',
+      }),
+    );
   });
 
   it('previews a code, and has nothing before a match', async () => {

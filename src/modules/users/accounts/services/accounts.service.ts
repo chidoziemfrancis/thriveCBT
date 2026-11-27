@@ -36,6 +36,10 @@ function randomCode() {
 export class AccountsService {
   constructor(private readonly repository: AccountsRepository) {}
 
+  leadEmails(): Promise<string[]> {
+    return this.repository.leadEmails();
+  }
+
   findByEmail(email: string): Promise<User | null> {
     return this.repository.findByEmail(normaliseEmail(email));
   }

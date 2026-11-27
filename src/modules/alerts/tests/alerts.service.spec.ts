@@ -1,5 +1,6 @@
 import type { Alert } from '../../../generated/prisma/client.js';
 import type { EmailService } from '../../../integrations/email/email.service.js';
+import type { AccountsService } from '../../users/accounts/services/accounts.service.js';
 import { AlertRequestedEvent } from '../../../events/alert-requested.event.js';
 import { StudentAssignedEvent } from '../../../events/student-assigned.event.js';
 import type { AlertsRepository } from '../repositories/alerts.repository.js';
@@ -45,7 +46,6 @@ function setup(researcherId: string | null) {
       email: 'grace@uni.edu',
       researcherProfile: { name: 'Grace Bello' },
     })),
-    leadEmails: vi.fn(async () => ['lead@thrivecbt.test']),
   };
   const email = {
     send: vi.fn(
@@ -53,9 +53,11 @@ function setup(researcherId: string | null) {
         undefined,
     ),
   };
+  const accounts = { leadEmails: vi.fn(async () => ['lead@thrivecbt.test']) };
   const service = new AlertsService(
     repository as unknown as AlertsRepository,
     email as unknown as EmailService,
+    accounts as unknown as AccountsService,
   );
   return { service, repository, email, saved };
 }

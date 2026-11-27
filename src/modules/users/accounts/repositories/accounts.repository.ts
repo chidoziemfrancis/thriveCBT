@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserRole, type User } from '../../../../generated/prisma/client.js';
+import {
+  UserRole,
+  UserStatus,
+  type User,
+} from '../../../../generated/prisma/client.js';
 import { PrismaService } from '../../../../prisma/prisma.service.js';
 
 @Injectable()
@@ -13,6 +17,15 @@ export class AccountsRepository {
 
   findById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  leadEmails(): Promise<string[]> {
+    return this.prisma.user
+      .findMany({
+        where: { role: UserRole.LEAD, status: UserStatus.ACTIVE },
+        select: { email: true },
+      })
+      .then((rows) => rows.map((row) => row.email));
   }
 
   markEmailVerified(id: string, at: Date): Promise<User> {

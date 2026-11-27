@@ -49,5 +49,12 @@ export class PasswordResetService {
     await this.codes.consume(user.id, EmailCodePurpose.RESET_PASSWORD, code);
     await this.accounts.setPassword(user.id, await hashPassword(password));
     await this.tokens.revokeAllForUser(user.id);
+    await this.email
+      .send({
+        to: user.email,
+        subject: 'Your ThriveCBT password was changed',
+        text: 'Your ThriveCBT password was just changed, and you’ve been signed out on your other devices.\n\nIf this wasn’t you, reset your password from the sign-in screen and contact the study team straight away.',
+      })
+      .catch(() => undefined);
   }
 }

@@ -10,6 +10,7 @@ import { EmailService } from '../../../integrations/email/email.service.js';
 import { AppError } from '../../../shared/errors/app-error.js';
 import { ASSIGNMENT_ERRORS } from '../../../shared/errors/codes/assignment.errors.js';
 import { COMMON_ERRORS } from '../../../shared/errors/error-codes.js';
+import { AccountsService } from '../../users/accounts/services/accounts.service.js';
 import { StudentsService } from '../../users/students/services/students.service.js';
 import type { AssignmentDto, ResearcherCard } from '../dto/assignment.dto.js';
 import {
@@ -57,6 +58,7 @@ export class AssignmentService {
     private readonly students: StudentsService,
     private readonly email: EmailService,
     private readonly events: EventEmitter2,
+    private readonly accounts: AccountsService,
   ) {}
 
   async preview(inviteCode: string): Promise<ResearcherCard> {
@@ -98,7 +100,10 @@ export class AssignmentService {
       );
       method = AssignmentMethod.RANDOM;
     }
-    if (!researcherId) throw new AppError(ASSIGNMENT_ERRORS.NO_RESEARCHER);
+    if (!researcherId) {
+      await this.tellLeadsEveryoneIsFull();
+      throw new AppError(ASSIGNMENT_ERRORS.NO_RESEARCHER);
+    }
 
     let assignment: AssignmentWithResearcher;
     try {
@@ -116,8 +121,7 @@ export class AssignmentService {
       STUDENT_ASSIGNED,
       new StudentAssignedEvent(studentId, researcherId),
     );
-    if (method === AssignmentMethod.INVITE)
-      await this.tellResearcher(studentId, assignment);
+    await this.tellResearcher(studentId, assignment);
     return toDto(assignment);
   }
 
@@ -130,12 +134,30 @@ export class AssignmentService {
     const researcherName =
       assignment.researcher.researcherProfile?.name ?? 'there';
     const student = profile?.name ?? 'A new student';
+    const invited = assignment.method === AssignmentMethod.INVITE;
     await this.email
       .send({
         to: assignment.researcher.email,
-        subject: `${student} joined with your invite`,
-        text: `Hello ${researcherName},\n\n${student} accepted your invite and joined ThriveCBT. They’re now in your caseload. Open the app to say hello.`,
+        subject: invited
+          ? `${student} joined with your invite`
+          : `${student} was matched with you`,
+        text: invited
+          ? `Hello ${researcherName},\n\n${student} accepted your invite and joined ThriveCBT. They’re now in your caseload. Open the app to say hello.`
+          : `Hello ${researcherName},\n\n${student} joined ThriveCBT and was matched with you. They’re now in your caseload. Open the app to say hello.`,
       })
       .catch(() => undefined);
+  }
+
+  private async tellLeadsEveryoneIsFull() {
+    const leads = await this.accounts.leadEmails().catch(() => []);
+    for (const to of leads) {
+      await this.email
+        .send({
+          to,
+          subject: 'A student is waiting for a researcher',
+          text: 'A student finished signing up for ThriveCBT, but every researcher is full or not taking students. Please raise a researcher’s capacity or invite another researcher so they can be matched.',
+        })
+        .catch(() => undefined);
+    }
   }
 }
