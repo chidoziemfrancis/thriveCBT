@@ -221,11 +221,16 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] MoodEntry model; `GET /v1/me/moods?since=`, `PUT` and `DELETE /v1/me/moods/:id`
 - [x] App: moods synced, with ids given to moods saved before sync; deletions from other phones applied
 
+### B4.2b Journal · `feat/journal-sync`
+
+- [x] JournalEntry model; `GET /v1/me/journal?since=`, `PUT` and `DELETE /v1/me/journal/:id`
+- [x] Journal text encrypted on the server; a test checks it's never stored readable; deleting erases it
+- [x] App: journal synced, deletes included; entries from before sync get a UUID
+
 ### Still to do in B4
 
-- [ ] Models: JournalEntry, ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
-- [ ] Modules: `journal`, `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
-- [ ] Journal text encrypted
+- [ ] Models: ThoughtRecord, PlannedActivity, ToolkitItem, ToolUse, StressEntry, PositiveEntry, WellPlan, HomeworkTick
+- [ ] Modules: `thoughts`, `activities`, `coping` (`toolkit/`, `stress-log/`), `beliefs`, `wellbeing`, `homework`
 - [ ] App: each store switched over
 
 ## B5 Researcher side · `feat/researcher-api`
