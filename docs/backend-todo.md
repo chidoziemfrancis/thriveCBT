@@ -156,7 +156,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 ### B2.6 App switch-over
 
-- [ ] `mobile/src/lib/api/` client: tokens in secure storage, automatic refresh
+- [x] App API foundation: axios client, TanStack Query, Zustand session store, generated types, rules in `mobile/docs/API-CLIENT.md`
 - [ ] Sign-up, verify email, login, forgot and reset password, researcher invite and logout use the API
 - [ ] Remove the mock accounts
 
