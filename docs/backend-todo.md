@@ -246,10 +246,16 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Fix: synced items are keyed by student and id, so content-based ids (plans, toolkit cards) never clash between students
 - [x] App: toolkit, tool uses, stress log and crisis-plan progress synced; the crisis plan itself stays on the phone and only its count is sent
 
+### B4.4b-1 Staying-well plan and emergency contact · `feat/wellplan-contact`
+
+- [x] WellPlan and EmergencyContact models; `GET ?since=` and `PUT /v1/me/well-plan`; `GET ?since=`, `PUT` and `DELETE /v1/me/emergency-contact`
+- [x] Both stored encrypted; a removed contact is erased and can be added again
+- [ ] App: staying-well plan and emergency contact synced (built, waiting for the go-ahead)
+
 ### Still to do in B4
 
-- [ ] Models: WellPlan, HomeworkTick
-- [ ] Modules: `wellbeing`, `homework`
+- [ ] Models: HomeworkTick
+- [ ] Modules: `homework`
 - [ ] App: each store switched over
 
 ## B5 Researcher side · `feat/researcher-api`

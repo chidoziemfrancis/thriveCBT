@@ -147,13 +147,13 @@ These work offline. The phone creates each item's `id`, saves locally first, the
 | `positive-entries`   | `kind` (`strength`, `win`, `kind`, `other`), `text`, `at`                                                                                     |
 | `homework-ticks`     | `sessionId`, `date` (`YYYY-MM-DD`)                                                                                                            |
 
-Single records, replaced whole:
+Single records, replaced whole (built in B4.4b-1 on the server). `GET ?since=` answers in the same `{ items, serverTime }` shape as the lists, with at most one item and none if unchanged, so the phone syncs them the same way; the newest `updatedAt` wins:
 
-| Method   | Path                          | Body                                                 | Notes                                         |
-| -------- | ----------------------------- | ---------------------------------------------------- | --------------------------------------------- |
-| GET, PUT | `/v1/me/well-plan`            | `{ triggers, signs, actions, people, note?, goal? }` | `goal` is `{ area, goal, steps, date, done }` |
-| GET, PUT | `/v1/me/emergency-contact`    | `{ name, relationship, phone }`                      | encrypted on the server                       |
-| PUT      | `/v1/me/crisis-plan-progress` | `{ partsFilled }` (0-6)                              | the crisis plan itself stays on the phone     |
+| Method           | Path                          | Body                                                            | Notes                                                                                                |
+| ---------------- | ----------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| GET, PUT         | `/v1/me/well-plan`            | `{ triggers, signs, actions, people, note?, goal?, updatedAt }` | `goal` is `{ area, goal, steps, date, done }`; the whole plan is stored encrypted                    |
+| GET, PUT, DELETE | `/v1/me/emergency-contact`    | `{ name, relationship, phone, updatedAt }`                      | encrypted on the server; DELETE erases it and leaves a marker; adding one again later brings it back |
+| PUT              | `/v1/me/crisis-plan-progress` | `{ partsFilled }` (0-6)                                         | the crisis plan itself stays on the phone                                                            |
 
 Sync rules:
 
@@ -331,14 +331,14 @@ One Prisma model per file under `prisma/schema/<module>/`. Every table has `id`,
 | B4    | ToolUse            | studentId and id (from the phone), cardId, helped (0-2), at, updatedAt, deletedAt, syncedAt                                                                                |
 | B4    | StressEntry        | studentId and id (from the phone), situation and helped (encrypted), level (0-100), at, updatedAt, deletedAt, syncedAt                                                     |
 | B4    | PositiveEntry      | id (from the phone), studentId, kind, text (encrypted), at, updatedAt, deletedAt, syncedAt                                                                                 |
-| B4    | WellPlan           | studentId, triggers, signs, actions, people, note, goal (JSON)                                                                                                             |
+| B4    | WellPlan           | studentId, data (the whole plan, encrypted), updatedAt, syncedAt                                                                                                           |
 | B4    | HomeworkTick       | studentId, sessionId, date                                                                                                                                                 |
 | B4    | CrisisPlanProgress | studentId, partsFilled (0-6), updatedAt, syncedAt; the plan itself stays on the phone                                                                                      |
 | B5    | AlertEvent         | alertId, actorId, type, text, at                                                                                                                                           |
 | B5    | CheckIn            | studentId, researcherId, startsAt, durationMin, note, seriesId, cancelledAt                                                                                                |
 | B5    | CallNote           | checkInId, attended, minutes, outcome, note (encrypted)                                                                                                                    |
 | B5    | CallFeedback       | checkInId, rating, note, callSeconds                                                                                                                                       |
-| B5    | EmergencyContact   | studentId, name, relationship, phone (all encrypted)                                                                                                                       |
+| B4    | EmergencyContact   | studentId, data (name, relationship and phone, encrypted), updatedAt, deletedAt, syncedAt                                                                                  |
 | B6    | Message            | studentId, researcherId, from, text, sentAt, readAt, flagged                                                                                                               |
 | B6    | Conversation       | studentId, researcherId, followUp, researcherReadAt                                                                                                                        |
 | B6    | PushToken          | userId, token, platform                                                                                                                                                    |
