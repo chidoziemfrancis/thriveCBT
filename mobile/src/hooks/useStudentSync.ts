@@ -6,7 +6,7 @@ import '@/features/assignment';
 import '@/features/beliefs';
 import '@/features/consent/consentStore';
 import '@/features/coping/store/copingStore';
-import '@/features/homework/homeworkStore';
+import '@/features/homework/store/homeworkStore';
 import '@/features/journal';
 import '@/features/mood';
 import '@/features/onboarding/onboardingStore';

@@ -1,5 +1,5 @@
 import type { Phq9Result } from '@/features/assessment';
-import { type PracticeData, practiceDays } from '@/features/homework/homework';
+import { type PracticeData, practiceDays } from '@/features/homework/utils/homework';
 import type { SessionRecord } from '@/features/sessions/utils/sessionLogic';
 import { SESSIONS } from '@/features/sessions/constants/sessions';
 

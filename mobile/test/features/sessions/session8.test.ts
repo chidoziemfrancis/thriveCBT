@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { countIn, practiceDays, type PracticeData } from '@/features/homework/homework';
+import { countIn, practiceDays, type PracticeData } from '@/features/homework/utils/homework';
 import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_8 } from '@/features/sessions/content/session8';
@@ -178,8 +178,8 @@ describe('homework tracker', () => {
   });
 
   it('toggles a hand tick', () => {
-    const store = load<typeof import('@/features/homework/homeworkStore')>(
-      '@/features/homework/homeworkStore'
+    const store = load<typeof import('@/features/homework/store/homeworkStore')>(
+      '@/features/homework/store/homeworkStore'
     );
     store.toggleTick(8, '2026-11-18');
     expect(store.getHomeworkTicks()[8]).toEqual(['2026-11-18']);

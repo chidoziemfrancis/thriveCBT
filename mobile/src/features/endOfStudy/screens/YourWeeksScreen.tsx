@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { getCheckInHistory } from '@/features/checkin/checkinStore';
 import { allPracticeDays, sessionsFinished } from '@/features/endOfStudy/endOfStudy';
-import { usePracticeData } from '@/features/homework/usePracticeData';
+import { usePracticeData } from '@/features/homework/hooks/usePracticeData';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';

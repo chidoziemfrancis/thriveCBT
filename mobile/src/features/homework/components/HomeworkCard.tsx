@@ -3,9 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon, ChevronRightIcon } from '@/components/icons';
 import { dayKey } from '@/features/activities/utils/activities';
-import { AUTO_TICK, practiceDays } from '@/features/homework/homework';
-import { toggleTick } from '@/features/homework/homeworkStore';
-import { usePracticeData } from '@/features/homework/usePracticeData';
+import { AUTO_TICK, practiceDays } from '@/features/homework/utils/homework';
+import { toggleTick } from '@/features/homework/store/homeworkStore';
+import { usePracticeData } from '@/features/homework/hooks/usePracticeData';
 import { sessionContent } from '@/features/sessions/content';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';

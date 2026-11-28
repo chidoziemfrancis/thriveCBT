@@ -4,8 +4,8 @@ import { useStressLog, useToolUses } from '@/features/coping/store/copingStore';
 import { getMoodLog } from '@/features/mood/store/moodStore';
 import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
 
-import type { PracticeData } from './homework';
-import { useHomeworkTicks } from './homeworkStore';
+import type { PracticeData } from '../utils/homework';
+import { useHomeworkTicks } from '../store/homeworkStore';
 
 /** Everything that counts towards practice. Moods aren't a live store, so they're read each render. */
 export function usePracticeData(): PracticeData {

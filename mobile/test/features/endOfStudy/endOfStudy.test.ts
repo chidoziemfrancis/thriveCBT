@@ -15,7 +15,7 @@ import {
   phq9Outcome,
   sessionsFinished,
 } from '@/features/endOfStudy/endOfStudy';
-import type { PracticeData } from '@/features/homework/homework';
+import type { PracticeData } from '@/features/homework/utils/homework';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({
