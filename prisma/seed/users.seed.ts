@@ -40,12 +40,18 @@ export async function seedUsers(prisma: PrismaClient) {
       create: {
         ...user,
         passwordHash,
+        emailVerifiedAt: new Date(),
         ...(user.role === UserRole.STUDENT
           ? { studentProfile: { create: {} } }
           : {}),
       },
     });
   }
+  // Test accounts are ready to sign in to, so testers don't wait for a code they never asked for.
+  await prisma.user.updateMany({
+    where: { email: { in: USERS.map((u) => u.email) }, emailVerifiedAt: null },
+    data: { emailVerifiedAt: new Date() },
+  });
   for (const [email, profile] of Object.entries(RESEARCHER_PROFILES)) {
     const user = await prisma.user.findUniqueOrThrow({ where: { email } });
     await prisma.researcherProfile.upsert({
