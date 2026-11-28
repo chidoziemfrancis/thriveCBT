@@ -244,7 +244,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] ToolkitItem, ToolUse, StressEntry and CrisisPlanProgress models; `toolkit`, `tool-uses` and `stress-entries` sync routes; `PUT /v1/me/crisis-plan-progress`
 - [x] Stress entries encrypt what happened and what helped; the crisis plan never leaves the phone
 - [x] Fix: synced items are keyed by student and id, so content-based ids (plans, toolkit cards) never clash between students
-- [ ] App: toolkit, tool uses, stress log and crisis-plan progress synced
+- [x] App: toolkit, tool uses, stress log and crisis-plan progress synced; the crisis plan itself stays on the phone and only its count is sent
 
 ### Still to do in B4
 
