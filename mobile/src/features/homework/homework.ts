@@ -1,6 +1,6 @@
 import { type PlannedActivity, dayKey } from '@/features/activities/utils/activities';
 import type { PositiveEntry } from '@/features/beliefs/utils/beliefs';
-import type { StressEntry, ToolUse } from '@/features/coping/copingStore';
+import type { StressEntry, ToolUse } from '@/features/coping/store/copingStore';
 import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import type { ThoughtRecord } from '@/features/thoughts/utils/thoughtLog';
 

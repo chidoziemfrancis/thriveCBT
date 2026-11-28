@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { CheckIcon, CloseIcon } from '@/components/icons';
-import { crisisPlanFrom } from '@/features/coping/coping';
+import { crisisPlanFrom } from '@/features/coping/utils/coping';
 import CrisisPlanView from '@/features/coping/components/CrisisPlanView';
 import WellPlanView from '@/features/wellbeing/components/WellPlanView';
 import { wellPlanFrom } from '@/features/wellbeing/wellbeing';

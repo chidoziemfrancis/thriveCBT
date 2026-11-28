@@ -7,7 +7,7 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import Mascot from '@/components/mascot/Mascot';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { useCrisisPlan } from '@/features/coping/copingStore';
+import { useCrisisPlan } from '@/features/coping/store/copingStore';
 import { SUPPORT_OPTIONS } from '@/features/support/supportOptions';
 import { useWellPlan } from '@/features/wellbeing/wellPlanStore';
 import { haptics } from '@/lib/haptics';

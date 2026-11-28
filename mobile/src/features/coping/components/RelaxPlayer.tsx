@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { CheckIcon } from '@/components/icons';
-import { type Exercise, STRESS_SPOTS } from '@/features/coping/coping';
+import { type Exercise, STRESS_SPOTS } from '@/features/coping/utils/coping';
 import BodyFigure, { FIGURE } from '@/features/sessions/art/BodyFigure';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';

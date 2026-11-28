@@ -6,7 +6,7 @@ import { Glyph } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { useStressLog } from '@/features/coping/copingStore';
+import { useStressLog } from '@/features/coping/store/copingStore';
 import { colors, fonts, radius, type } from '@/theme';
 
 function day(iso: string) {

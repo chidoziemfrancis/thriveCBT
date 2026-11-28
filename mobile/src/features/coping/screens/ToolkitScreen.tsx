@@ -6,7 +6,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { COPING_CARDS, copingCard } from '@/features/coping/coping';
+import { COPING_CARDS, copingCard } from '@/features/coping/utils/coping';
 import CopingCardRow from '@/features/coping/components/CopingCardRow';
 import HelpedChoice from '@/features/coping/components/HelpedChoice';
 import {
@@ -15,7 +15,7 @@ import {
   useToolUses,
   useToolkit,
   type ToolUse,
-} from '@/features/coping/copingStore';
+} from '@/features/coping/store/copingStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

@@ -1,6 +1,6 @@
-import { crisisPlanFrom } from '@/features/coping/coping';
-import { getCrisisPlan, saveCrisisPlan } from '@/features/coping/copingStore';
-import { CRISIS_STEPS, crisisAnswers } from '@/features/coping/copingSteps';
+import { crisisPlanFrom } from '@/features/coping/utils/coping';
+import { getCrisisPlan, saveCrisisPlan } from '@/features/coping/store/copingStore';
+import { CRISIS_STEPS, crisisAnswers } from '@/features/coping/constants/copingSteps';
 import StepFlow from '@/features/thoughts/components/StepFlow';
 
 export default function EditCrisisPlanScreen() {

@@ -10,8 +10,8 @@ import {
   spotLabels,
   writeContact,
   writeTriggers,
-} from '@/features/coping/coping';
-import { CRISIS_STEPS, crisisAnswers } from '@/features/coping/copingSteps';
+} from '@/features/coping/utils/coping';
+import { CRISIS_STEPS, crisisAnswers } from '@/features/coping/constants/copingSteps';
 import { summariseSession } from '@/features/researcher/sessionSummary';
 import { sessionContent } from '@/features/sessions/content';
 import { SESSION_6 } from '@/features/sessions/content/session6';
@@ -26,9 +26,9 @@ jest.mock('@/lib/storage', () => ({
 }));
 
 function loadStore() {
-  let store!: typeof import('@/features/coping/copingStore');
+  let store!: typeof import('@/features/coping/store/copingStore');
   jest.isolateModules(() => {
-    store = require('@/features/coping/copingStore');
+    store = require('@/features/coping/store/copingStore');
   });
   return store;
 }

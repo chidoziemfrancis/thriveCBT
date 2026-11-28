@@ -1,7 +1,12 @@
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { PhoneIcon } from '@/components/icons';
-import { type CrisisPlan, HELPLINES, SAFETY_SECTIONS, readContact } from '@/features/coping/coping';
+import {
+  type CrisisPlan,
+  HELPLINES,
+  SAFETY_SECTIONS,
+  readContact,
+} from '@/features/coping/utils/coping';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

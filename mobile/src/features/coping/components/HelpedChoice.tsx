@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import type { ToolUse } from '@/features/coping/copingStore';
+import type { ToolUse } from '@/features/coping/store/copingStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

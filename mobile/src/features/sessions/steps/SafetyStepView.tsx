@@ -8,8 +8,8 @@ import {
   copingCard,
   readContact,
   writeContact,
-} from '@/features/coping/coping';
-import { useToolkit } from '@/features/coping/copingStore';
+} from '@/features/coping/utils/coping';
+import { useToolkit } from '@/features/coping/store/copingStore';
 import type { SafetyStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';

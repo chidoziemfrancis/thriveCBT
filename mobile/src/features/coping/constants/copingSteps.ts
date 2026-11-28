@@ -5,7 +5,7 @@ import type {
   StepAnswer,
 } from '@/features/sessions/content/types';
 
-import type { CrisisPlan } from './coping';
+import type { CrisisPlan } from '../utils/coping';
 
 // The crisis plan, shared by Session 6 and the plan's own edit screen. Based on the
 // Stanley-Brown safety plan; wording should be reviewed by the research team.

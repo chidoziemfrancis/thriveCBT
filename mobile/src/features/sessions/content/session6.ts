@@ -1,4 +1,4 @@
-import { CRISIS_STEPS } from '@/features/coping/copingSteps';
+import { CRISIS_STEPS } from '@/features/coping/constants/copingSteps';
 
 import type { SessionContent } from './types';
 

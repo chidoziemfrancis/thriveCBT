@@ -9,7 +9,7 @@ import Screen from '@/components/ui/Screen';
 import { dayKey } from '@/features/activities/utils/activities';
 import { usePlannedActivities } from '@/features/activities/store/activityStore';
 import { usePositiveLog } from '@/features/beliefs/store/positiveLogStore';
-import { useToolkit } from '@/features/coping/copingStore';
+import { useToolkit } from '@/features/coping/store/copingStore';
 import { daysAgoLabel, excerpt, groupByWeek } from '@/features/journal/utils/journalLogic';
 import { JOURNAL_PROMPTS, promptIndexForDay } from '@/features/journal/constants/journalPrompts';
 import {

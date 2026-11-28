@@ -41,6 +41,8 @@ beforeEach(() => {
 describe('plan ids', () => {
   it('are proper UUIDs, the same for the same day, slot and activity', () => {
     expect(isUuid(planId(walk))).toBe(true);
+    // Pinned: changing how ids are made would split every saved plan from its server copy.
+    expect(planId(walk)).toBe('8eae270e-8079-8706-8b21-fe957f790203');
     expect(planId({ ...walk, predicted: 9 })).toBe(planId(walk));
     expect(planId({ ...walk, label: ' take a walk on CAMPUS ' })).toBe(planId(walk));
     expect(planId({ ...walk, slot: 'evening' })).not.toBe(planId(walk));

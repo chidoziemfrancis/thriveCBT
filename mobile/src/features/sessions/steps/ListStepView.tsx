@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { CloseIcon, PlusIcon } from '@/components/icons';
-import { copingCard, readContact, readTriggers, spotLabels } from '@/features/coping/coping';
-import { useCrisisPlan, useToolkit } from '@/features/coping/copingStore';
+import { copingCard, readContact, readTriggers, spotLabels } from '@/features/coping/utils/coping';
+import { useCrisisPlan, useToolkit } from '@/features/coping/store/copingStore';
 import type { ListStep } from '@/features/sessions/content/types';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { WELL_SECTIONS } from '@/features/wellbeing/wellbeing';

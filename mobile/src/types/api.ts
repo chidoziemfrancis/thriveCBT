@@ -593,6 +593,128 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/me/toolkit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The coping cards the student keeps, or only what changed since the last pull */
+        get: operations["listToolkit"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/toolkit/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Keep a card; the phone makes the id from the card, and keeping it again brings it back */
+        put: operations["saveToolkitItem"];
+        post?: never;
+        /** Take a card out of the toolkit */
+        delete: operations["deleteToolkitItem"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/tool-uses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Each time the student used a card and how much it helped */
+        get: operations["listToolUses"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/tool-uses/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Record a use of a card; the id comes from the phone */
+        put: operations["saveToolUse"];
+        post?: never;
+        /** Delete a recorded use */
+        delete: operations["deleteToolUse"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/stress-entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The student’s stress log, or only what changed since the last pull (deletions included) */
+        get: operations["listStressEntries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/stress-entries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Create or update a stress entry; their own words are encrypted; the id comes from the phone and the newest change wins */
+        put: operations["saveStressEntry"];
+        post?: never;
+        /** Delete a stress entry; its writing is erased and a marker stays so other phones remove it too */
+        delete: operations["deleteStressEntry"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/crisis-plan-progress": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** How many of the crisis plan’s six parts are filled in; the plan stays on the phone */
+        put: operations["saveCrisisPlanProgress"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -5908,6 +6030,1226 @@ export interface operations {
                      *       "error": {
                      *         "code": "NOT_FOUND",
                      *         "message": "We couldn’t find that.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    listToolkit: {
+        parameters: {
+            query?: {
+                /** @description `serverTime` from the last pull */
+                since?: unknown;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cards changed since `since`, and the server time */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: date-time */
+                            deletedAt: string | null;
+                            cardId: string;
+                        }[];
+                        /** Format: date-time */
+                        serverTime: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    saveToolkitItem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    cardId: string;
+                    /** Format: date-time */
+                    updatedAt: string;
+                };
+            };
+        };
+        responses: {
+            /** @description The saved card */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: date-time */
+                        updatedAt: string;
+                        /** Format: date-time */
+                        deletedAt: string | null;
+                        cardId: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description SYNC_STALE_UPDATE */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "SYNC_STALE_UPDATE",
+                     *         "message": "A newer change was already saved, so this one was skipped.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    deleteToolkitItem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Removed, or already gone */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    listToolUses: {
+        parameters: {
+            query?: {
+                /** @description `serverTime` from the last pull */
+                since?: unknown;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Uses changed since `since`, and the server time */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: date-time */
+                            deletedAt: string | null;
+                            cardId: string;
+                            helped: number;
+                            /** Format: date-time */
+                            at: string;
+                        }[];
+                        /** Format: date-time */
+                        serverTime: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    saveToolUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    cardId: string;
+                    helped: number;
+                    /** Format: date-time */
+                    at: string;
+                    /** Format: date-time */
+                    updatedAt: string;
+                };
+            };
+        };
+        responses: {
+            /** @description The saved use */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: date-time */
+                        updatedAt: string;
+                        /** Format: date-time */
+                        deletedAt: string | null;
+                        cardId: string;
+                        helped: number;
+                        /** Format: date-time */
+                        at: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description SYNC_STALE_UPDATE */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "SYNC_STALE_UPDATE",
+                     *         "message": "A newer change was already saved, so this one was skipped.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    deleteToolUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted, or already gone */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    listStressEntries: {
+        parameters: {
+            query?: {
+                /** @description `serverTime` from the last pull */
+                since?: unknown;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Entries changed since `since`, and the server time */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: date-time */
+                            deletedAt: string | null;
+                            situation: string;
+                            level: number | null;
+                            helped: string | null;
+                            /** Format: date-time */
+                            at: string;
+                        }[];
+                        /** Format: date-time */
+                        serverTime: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    saveStressEntry: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    situation: string;
+                    level?: number | null;
+                    helped?: string | null;
+                    /** Format: date-time */
+                    at: string;
+                    /** Format: date-time */
+                    updatedAt: string;
+                };
+            };
+        };
+        responses: {
+            /** @description The saved entry */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: date-time */
+                        updatedAt: string;
+                        /** Format: date-time */
+                        deletedAt: string | null;
+                        situation: string;
+                        level: number | null;
+                        helped: string | null;
+                        /** Format: date-time */
+                        at: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "NOT_FOUND",
+                     *         "message": "We couldn’t find that.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description SYNC_STALE_UPDATE */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "SYNC_STALE_UPDATE",
+                     *         "message": "A newer change was already saved, so this one was skipped.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    deleteStressEntry: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted, or already gone */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description NOT_FOUND */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "NOT_FOUND",
+                     *         "message": "We couldn’t find that.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    saveCrisisPlanProgress: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    partsFilled: number;
+                    /** Format: date-time */
+                    updatedAt: string;
+                };
+            };
+        };
+        responses: {
+            /** @description The saved count */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        partsFilled: number;
+                        /** Format: date-time */
+                        updatedAt: string;
+                    };
+                };
+            };
+            /** @description VALIDATION_FAILED */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "VALIDATION_FAILED",
+                     *         "message": "Some fields are missing or invalid.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description UNAUTHENTICATED */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "UNAUTHENTICATED",
+                     *         "message": "Please log in again.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description CONSENT_REQUIRED, STUDY_WITHDRAWN, FORBIDDEN */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "CONSENT_REQUIRED",
+                     *         "message": "Please read and agree to the study information first.",
+                     *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        error: {
+                            code: string;
+                            message: string;
+                            details?: unknown;
+                            requestId: string;
+                        };
+                    };
+                };
+            };
+            /** @description SYNC_STALE_UPDATE */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "SYNC_STALE_UPDATE",
+                     *         "message": "A newer change was already saved, so this one was skipped.",
                      *         "requestId": "0193c3c1-6c2d-7b51-9b6e-2f4a6c8d9e10"
                      *       }
                      *     }

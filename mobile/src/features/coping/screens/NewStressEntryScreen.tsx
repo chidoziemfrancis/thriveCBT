@@ -1,5 +1,5 @@
-import { addStressEntry } from '@/features/coping/copingStore';
-import { STRESS_STEPS } from '@/features/coping/copingSteps';
+import { addStressEntry } from '@/features/coping/store/copingStore';
+import { STRESS_STEPS } from '@/features/coping/constants/copingSteps';
 import StepFlow from '@/features/thoughts/components/StepFlow';
 
 /** What happened, how stressed it felt, and what helped. */

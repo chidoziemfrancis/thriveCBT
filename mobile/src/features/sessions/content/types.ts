@@ -1,6 +1,6 @@
 import type { FeatureIconName, FeatureIconTone } from '@/components/icons/FeatureIcon';
 import type { PositiveKind } from '@/features/beliefs/utils/beliefs';
-import type { Exercise, SafetySection } from '@/features/coping/coping';
+import type { Exercise, SafetySection } from '@/features/coping/utils/coping';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
 import type { WellSection } from '@/features/wellbeing/wellbeing';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';

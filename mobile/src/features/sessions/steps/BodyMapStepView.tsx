@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { CheckIcon } from '@/components/icons';
-import { NOT_IN_BODY, STRESS_SPOTS } from '@/features/coping/coping';
+import { NOT_IN_BODY, STRESS_SPOTS } from '@/features/coping/utils/coping';
 import BodyFigure, { FIGURE } from '@/features/sessions/art/BodyFigure';
 import type { BodyMapStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';

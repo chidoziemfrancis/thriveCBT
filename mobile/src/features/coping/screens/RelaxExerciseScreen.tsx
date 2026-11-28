@@ -6,10 +6,10 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
-import { EXERCISES } from '@/features/coping/coping';
+import { EXERCISES } from '@/features/coping/utils/coping';
 import HelpedChoice from '@/features/coping/components/HelpedChoice';
 import RelaxPlayer from '@/features/coping/components/RelaxPlayer';
-import { logToolUse } from '@/features/coping/copingStore';
+import { logToolUse } from '@/features/coping/store/copingStore';
 import { colors, fonts, type } from '@/theme';
 
 export default function RelaxExerciseScreen() {

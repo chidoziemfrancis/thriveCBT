@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { PlusIcon } from '@/components/icons';
 import ScoreRow from '@/features/activities/components/ScoreRow';
-import { TRIGGERS, readTriggers, writeTriggers } from '@/features/coping/coping';
+import { TRIGGERS, readTriggers, writeTriggers } from '@/features/coping/utils/coping';
 import type { TriggersStep } from '@/features/sessions/content/types';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';

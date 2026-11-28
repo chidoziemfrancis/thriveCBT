@@ -5,7 +5,7 @@ import { ChevronRightIcon } from '@/components/icons';
 import FeatureIcon, { type FeatureIconName } from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
-import { EXERCISES, type Exercise } from '@/features/coping/coping';
+import { EXERCISES, type Exercise } from '@/features/coping/utils/coping';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, type } from '@/theme';
 

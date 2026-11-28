@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon, PlusIcon } from '@/components/icons';
 import FeatureIcon from '@/components/icons/FeatureIcon';
-import { COPING_GROUPS, type CopingCard } from '@/features/coping/coping';
+import { COPING_GROUPS, type CopingCard } from '@/features/coping/utils/coping';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

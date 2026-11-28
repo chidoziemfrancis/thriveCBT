@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { COPING_CARDS, COPING_GROUPS } from '@/features/coping/coping';
+import { COPING_CARDS, COPING_GROUPS } from '@/features/coping/utils/coping';
 import CopingCardRow from '@/features/coping/components/CopingCardRow';
 import type { ToolkitStep } from '@/features/sessions/content/types';
 import { colors, fonts } from '@/theme';

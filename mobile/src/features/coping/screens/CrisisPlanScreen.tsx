@@ -6,7 +6,7 @@ import BackButton from '@/components/ui/BackButton';
 import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import CrisisPlanView from '@/features/coping/components/CrisisPlanView';
-import { useCrisisPlan } from '@/features/coping/copingStore';
+import { useCrisisPlan } from '@/features/coping/store/copingStore';
 import { colors, fonts, radius, type } from '@/theme';
 
 /** The student's own plan for the hardest moments, worked down from step 1. */

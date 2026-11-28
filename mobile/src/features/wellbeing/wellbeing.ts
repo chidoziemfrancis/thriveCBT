@@ -1,6 +1,6 @@
 import type { PlannedActivity } from '@/features/activities/utils/activities';
 import type { PositiveEntry } from '@/features/beliefs/utils/beliefs';
-import type { StressEntry } from '@/features/coping/copingStore';
+import type { StressEntry } from '@/features/coping/store/copingStore';
 import type { MoodEntry } from '@/features/mood/utils/moodLog';
 import type { StepAnswer } from '@/features/sessions/content/types';
 import { SESSIONS } from '@/features/sessions/constants/sessions';

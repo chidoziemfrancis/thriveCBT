@@ -3,7 +3,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { usePlannedActivities } from '@/features/activities/store/activityStore';
 import { usePositiveLog } from '@/features/beliefs/store/positiveLogStore';
-import { useStressLog, useToolkit } from '@/features/coping/copingStore';
+import { useStressLog, useToolkit } from '@/features/coping/store/copingStore';
 import { getMoodLog } from '@/features/mood/store/moodStore';
 import type { JourneyStep } from '@/features/sessions/content/types';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
