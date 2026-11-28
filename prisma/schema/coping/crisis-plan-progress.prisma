@@ -1,0 +1,13 @@
+/// How many of the crisis plan's six parts the student has filled in. The plan itself stays on
+/// the phone; this lets the researcher see whether there is one without seeing what it says.
+model CrisisPlanProgress {
+  studentId   String   @id @map("student_id") @db.Uuid
+  partsFilled Int      @map("parts_filled")
+  updatedAt   DateTime @map("updated_at")
+  syncedAt    DateTime @updatedAt @map("synced_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("crisis_plan_progress")
+}

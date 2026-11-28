@@ -8,26 +8,30 @@ model User {
   createdAt       DateTime   @default(now()) @map("created_at")
   updatedAt       DateTime   @updatedAt @map("updated_at")
 
-  studentProfile    StudentProfile?
-  researcherProfile ResearcherProfile?
-  invitesSent       Invite[]           @relation("InvitesSent")
-  refreshTokens     RefreshToken[]
-  emailCodes        EmailCode[]
-  auditLogs         AuditLog[]
-  consents          Consent[]
-  assignment        Assignment?        @relation("StudentAssignment")
-  caseload          Assignment[]       @relation("ResearcherCaseload")
-  phq9Results       Phq9Result[]
-  epqrResult        EpqrResult?
-  withdrawal        Withdrawal?
-  sessionProgress   SessionProgress[]
-  moodEntries       MoodEntry[]
-  journalEntries    JournalEntry[]
-  thoughtRecords    ThoughtRecord[]
-  positiveEntries   PositiveEntry[]
-  plannedActivities PlannedActivity[]
-  alerts            Alert[]            @relation("StudentAlerts")
-  alertsToHandle    Alert[]            @relation("ResearcherAlerts")
+  studentProfile     StudentProfile?
+  researcherProfile  ResearcherProfile?
+  invitesSent        Invite[]            @relation("InvitesSent")
+  refreshTokens      RefreshToken[]
+  emailCodes         EmailCode[]
+  auditLogs          AuditLog[]
+  consents           Consent[]
+  assignment         Assignment?         @relation("StudentAssignment")
+  caseload           Assignment[]        @relation("ResearcherCaseload")
+  phq9Results        Phq9Result[]
+  epqrResult         EpqrResult?
+  withdrawal         Withdrawal?
+  sessionProgress    SessionProgress[]
+  moodEntries        MoodEntry[]
+  journalEntries     JournalEntry[]
+  thoughtRecords     ThoughtRecord[]
+  positiveEntries    PositiveEntry[]
+  plannedActivities  PlannedActivity[]
+  toolkitItems       ToolkitItem[]
+  toolUses           ToolUse[]
+  stressEntries      StressEntry[]
+  crisisPlanProgress CrisisPlanProgress?
+  alerts             Alert[]             @relation("StudentAlerts")
+  alertsToHandle     Alert[]             @relation("ResearcherAlerts")
 
   @@index([role])
   @@map("users")

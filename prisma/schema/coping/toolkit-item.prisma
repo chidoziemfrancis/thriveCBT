@@ -1,0 +1,36 @@
+/// A coping card the student keeps in their toolkit. The phone makes the id from the card, so
+/// it's only unique within one student; keeping a card again after removing it brings it back.
+model ToolkitItem {
+  id        String    @db.Uuid
+  studentId String    @map("student_id") @db.Uuid
+  cardId    String    @map("card_id")
+  updatedAt DateTime  @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  syncedAt  DateTime  @updatedAt @map("synced_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@id([studentId, id])
+  @@index([studentId, syncedAt])
+  @@map("toolkit_items")
+}
+
+/// Each time the student used a coping card, and whether it helped (0 no, 1 a bit, 2 a lot).
+model ToolUse {
+  id        String    @db.Uuid
+  studentId String    @map("student_id") @db.Uuid
+  cardId    String    @map("card_id")
+  helped    Int
+  at        DateTime
+  updatedAt DateTime  @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  syncedAt  DateTime  @updatedAt @map("synced_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@id([studentId, id])
+  @@index([studentId, syncedAt])
+  @@map("tool_uses")
+}
