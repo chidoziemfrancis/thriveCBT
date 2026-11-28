@@ -19,6 +19,7 @@ import { JournalModule } from './modules/journal/journal.module.js';
 import { MoodModule } from './modules/mood/mood.module.js';
 import { SessionsModule } from './modules/sessions/sessions.module.js';
 import { ThoughtsModule } from './modules/thoughts/thoughts.module.js';
+import { WellbeingModule } from './modules/wellbeing/wellbeing.module.js';
 import { WithdrawalModule } from './modules/withdrawal/withdrawal.module.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
@@ -65,6 +66,7 @@ const ACCESS_TOKEN_TTL = '15m';
     BeliefsModule,
     ActivitiesModule,
     CopingModule,
+    WellbeingModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

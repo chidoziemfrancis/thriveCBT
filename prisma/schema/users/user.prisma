@@ -30,6 +30,8 @@ model User {
   toolUses           ToolUse[]
   stressEntries      StressEntry[]
   crisisPlanProgress CrisisPlanProgress?
+  wellPlan           WellPlan?
+  emergencyContact   EmergencyContact?
   alerts             Alert[]             @relation("StudentAlerts")
   alertsToHandle     Alert[]             @relation("ResearcherAlerts")
 
