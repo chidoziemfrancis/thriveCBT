@@ -250,7 +250,7 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 
 - [x] WellPlan and EmergencyContact models; `GET ?since=` and `PUT /v1/me/well-plan`; `GET ?since=`, `PUT` and `DELETE /v1/me/emergency-contact`
 - [x] Both stored encrypted; a removed contact is erased and can be added again
-- [ ] App: staying-well plan and emergency contact synced (built, waiting for the go-ahead)
+- [x] App: staying-well plan and emergency contact synced as single records
 
 ### Still to do in B4
 

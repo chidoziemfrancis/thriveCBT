@@ -147,7 +147,7 @@ These work offline. The phone creates each item's `id`, saves locally first, the
 | `positive-entries`   | `kind` (`strength`, `win`, `kind`, `other`), `text`, `at`                                                                                     |
 | `homework-ticks`     | `sessionId`, `date` (`YYYY-MM-DD`)                                                                                                            |
 
-Single records, replaced whole (built in B4.4b-1 on the server). `GET ?since=` answers in the same `{ items, serverTime }` shape as the lists, with at most one item and none if unchanged, so the phone syncs them the same way; the newest `updatedAt` wins:
+Single records, replaced whole (built in B4.4b-1). `GET ?since=` answers in the same `{ items, serverTime }` shape as the lists, with at most one item and none if unchanged, so the phone syncs them the same way; the newest `updatedAt` wins:
 
 | Method           | Path                          | Body                                                            | Notes                                                                                                |
 | ---------------- | ----------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
