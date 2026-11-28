@@ -12,9 +12,15 @@ const T2 = '2026-11-28T19:00:00.000Z';
 
 function setup() {
   const rows = new Map<string, PlannedActivity>();
+  const key = (studentId: string, id: string) => `${studentId}:${id}`;
   const repository = {
-    find: vi.fn(async (id: string) => rows.get(id) ?? null),
-    changedSince: vi.fn(async () => [...rows.values()]),
+    find: vi.fn(
+      async (studentId: string, id: string) =>
+        rows.get(key(studentId, id)) ?? null,
+    ),
+    changedSince: vi.fn(async (studentId: string) =>
+      [...rows.values()].filter((r) => r.studentId === studentId),
+    ),
     save: vi.fn(
       async (id: string, studentId: string, data: PlannedActivityData) => {
         const row = {
@@ -23,13 +29,17 @@ function setup() {
           ...data,
           syncedAt: new Date(),
         } as PlannedActivity;
-        rows.set(id, row);
+        rows.set(key(studentId, id), row);
         return row;
       },
     ),
-    markDeleted: vi.fn(async (id: string, now: Date) => {
-      const row = { ...rows.get(id)!, deletedAt: now, updatedAt: now };
-      rows.set(id, row);
+    markDeleted: vi.fn(async (studentId: string, id: string, now: Date) => {
+      const row = {
+        ...rows.get(key(studentId, id))!,
+        deletedAt: now,
+        updatedAt: now,
+      };
+      rows.set(key(studentId, id), row);
       return row;
     }),
   };
@@ -61,7 +71,7 @@ describe('PlannedActivitiesService', () => {
       doneAt: null,
       enjoy: null,
     });
-    expect(rows.get(ID)!.slot).toBe('MORNING');
+    expect(rows.get(`s1:${ID}`)!.slot).toBe('MORNING');
     await expect(
       service.save('s1', ID, {
         ...plan,
@@ -97,15 +107,26 @@ describe('PlannedActivitiesService', () => {
     ).resolves.toMatchObject({ deletedAt: null, label: plan.label });
   });
 
-  it('deletes with a marker and hides another student’s plan', async () => {
+  it('deletes with a marker, without touching another student’s plan', async () => {
     const { service } = setup();
     await service.save('s1', ID, plan);
-    await expect(service.remove('s2', ID)).rejects.toMatchObject({
-      code: 'NOT_FOUND',
-    });
+    await service.remove('s2', ID);
     await service.remove('s1', ID, new Date(T2));
     await expect(service.list('s1', {})).resolves.toMatchObject({
       items: [{ id: ID, deletedAt: T2 }],
+    });
+  });
+});
+
+describe('two students', () => {
+  it('can plan the same thing for the same day and slot, with the same id', async () => {
+    const { service } = setup();
+    await service.save('s1', ID, plan);
+    await expect(
+      service.save('s2', ID, { ...plan, predicted: 9 }),
+    ).resolves.toMatchObject({ id: ID, predicted: 9 });
+    await expect(service.list('s1', {})).resolves.toMatchObject({
+      items: [{ predicted: 4 }],
     });
   });
 });

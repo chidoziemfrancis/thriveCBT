@@ -12,8 +12,10 @@ export type PlannedActivityData = Omit<
 export class PlannedActivitiesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  find(id: string): Promise<PlannedActivity | null> {
-    return this.prisma.plannedActivity.findUnique({ where: { id } });
+  find(studentId: string, id: string): Promise<PlannedActivity | null> {
+    return this.prisma.plannedActivity.findUnique({
+      where: { studentId_id: { studentId, id } },
+    });
   }
 
   changedSince(studentId: string, since?: Date): Promise<PlannedActivity[]> {
@@ -29,15 +31,19 @@ export class PlannedActivitiesRepository {
     data: PlannedActivityData,
   ): Promise<PlannedActivity> {
     return this.prisma.plannedActivity.upsert({
-      where: { id },
+      where: { studentId_id: { studentId, id } },
       update: data,
       create: { id, studentId, ...data },
     });
   }
 
-  markDeleted(id: string, now: Date): Promise<PlannedActivity> {
+  markDeleted(
+    studentId: string,
+    id: string,
+    now: Date,
+  ): Promise<PlannedActivity> {
     return this.prisma.plannedActivity.update({
-      where: { id },
+      where: { studentId_id: { studentId, id } },
       data: { deletedAt: now, updatedAt: now },
     });
   }

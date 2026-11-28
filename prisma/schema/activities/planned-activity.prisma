@@ -1,5 +1,5 @@
 model PlannedActivity {
-  id        String       @id @db.Uuid
+  id        String       @db.Uuid
   studentId String       @map("student_id") @db.Uuid
   date      String
   slot      ActivitySlot
@@ -16,6 +16,8 @@ model PlannedActivity {
 
   student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
+  // The id comes from the plan's content, so it's only unique within one student.
+  @@id([studentId, id])
   @@index([studentId, syncedAt])
   @@index([studentId, date])
   @@map("planned_activities")

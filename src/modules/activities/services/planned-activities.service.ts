@@ -4,8 +4,6 @@ import {
   ActivitySlot,
   type PlannedActivity,
 } from '../../../generated/prisma/client.js';
-import { AppError } from '../../../shared/errors/app-error.js';
-import { COMMON_ERRORS } from '../../../shared/errors/error-codes.js';
 import { assertCanChange } from '../../../shared/sync/sync.js';
 import { type SinceQuery, syncMeta } from '../../../shared/sync/sync.dto.js';
 import type {
@@ -39,6 +37,8 @@ function toDto(row: PlannedActivity): PlannedActivityDto {
   };
 }
 
+// Ids are only unique within one student: two students can plan the same thing for the same
+// day and slot, and the phone makes both ids from that content.
 // A plan is made first and filled in later (done, then rated), so the phone sends the whole
 // plan each time and the newest change wins.
 @Injectable()
@@ -62,7 +62,7 @@ export class PlannedActivitiesService {
     id: string,
     body: SavePlannedActivity,
   ): Promise<PlannedActivityDto> {
-    const saved = await this.repository.find(id);
+    const saved = await this.repository.find(studentId, id);
     const updatedAt = new Date(body.updatedAt);
     // The phone makes a plan's id from its day, slot and activity, so planning the same thing
     // again after removing it brings the old plan back rather than being refused.
@@ -86,10 +86,8 @@ export class PlannedActivitiesService {
   }
 
   async remove(studentId: string, id: string, now = new Date()): Promise<void> {
-    const saved = await this.repository.find(id);
+    const saved = await this.repository.find(studentId, id);
     if (!saved || saved.deletedAt) return;
-    if (saved.studentId !== studentId)
-      throw new AppError(COMMON_ERRORS.NOT_FOUND);
-    await this.repository.markDeleted(id, now);
+    await this.repository.markDeleted(studentId, id, now);
   }
 }
