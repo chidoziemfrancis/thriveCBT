@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CheckIcon } from '@/components/icons';
-import { WELL_SECTIONS, type WellPlan } from '@/features/wellbeing/wellbeing';
+import { WELL_SECTIONS, type WellPlan } from '@/features/wellbeing/utils/wellbeing';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

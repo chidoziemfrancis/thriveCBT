@@ -24,8 +24,8 @@ import { addPositive } from '@/features/beliefs/store/positiveLogStore';
 import { crisisPlanFrom } from '@/features/coping/utils/coping';
 import { saveCrisisPlan, saveTools } from '@/features/coping/store/copingStore';
 import { addJournalEntry } from '@/features/journal/store/journalStore';
-import { wellPlanFrom } from '@/features/wellbeing/wellbeing';
-import { saveWellPlan } from '@/features/wellbeing/wellPlanStore';
+import { wellPlanFrom } from '@/features/wellbeing/utils/wellbeing';
+import { saveWellPlan } from '@/features/wellbeing/store/wellPlanStore';
 import { sessionContent } from '@/features/sessions/content';
 import type { SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import {

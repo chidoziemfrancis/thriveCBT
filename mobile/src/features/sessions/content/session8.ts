@@ -1,4 +1,4 @@
-import { SKILLS, WELL_IDS } from '@/features/wellbeing/wellbeing';
+import { SKILLS, WELL_IDS } from '@/features/wellbeing/utils/wellbeing';
 
 import type { SessionContent } from './types';
 

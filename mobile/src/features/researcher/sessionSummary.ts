@@ -1,6 +1,6 @@
 import { readPlan, readRatings } from '@/features/activities/utils/activities';
 import { readArrow } from '@/features/beliefs/utils/beliefs';
-import { readGoal } from '@/features/wellbeing/wellbeing';
+import { readGoal } from '@/features/wellbeing/utils/wellbeing';
 import { copingCard, readTriggers, spotLabels } from '@/features/coping/utils/coping';
 import {
   CHECKLIST_NONE,

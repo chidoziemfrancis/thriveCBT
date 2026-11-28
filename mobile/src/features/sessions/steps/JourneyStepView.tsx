@@ -8,7 +8,7 @@ import { getMoodLog } from '@/features/mood/store/moodStore';
 import type { JourneyStep } from '@/features/sessions/content/types';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
 import { useThoughtLog } from '@/features/thoughts/store/thoughtLogStore';
-import { journeyLines } from '@/features/wellbeing/wellbeing';
+import { journeyLines } from '@/features/wellbeing/utils/wellbeing';
 import { colors, fonts } from '@/theme';
 
 import { stepText } from './stepText';

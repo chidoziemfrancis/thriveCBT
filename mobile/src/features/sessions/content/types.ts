@@ -2,7 +2,7 @@ import type { FeatureIconName, FeatureIconTone } from '@/components/icons/Featur
 import type { PositiveKind } from '@/features/beliefs/utils/beliefs';
 import type { Exercise, SafetySection } from '@/features/coping/utils/coping';
 import type { BodySpot } from '@/features/sessions/art/BodyFigure';
-import type { WellSection } from '@/features/wellbeing/wellbeing';
+import type { WellSection } from '@/features/wellbeing/utils/wellbeing';
 import type { ScaleArtName } from '@/features/sessions/art/ScaleArt';
 import type { StoryScene } from '@/features/sessions/art/StoryArt';
 import type { PhotoKey } from '@/features/sessions/constants/photos';

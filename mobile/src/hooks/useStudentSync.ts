@@ -13,7 +13,7 @@ import '@/features/onboarding/onboardingStore';
 import '@/features/profile/store/emergencyContactStore';
 import '@/features/sessions';
 import '@/features/thoughts';
-import '@/features/wellbeing/wellPlanStore';
+import '@/features/wellbeing/store/wellPlanStore';
 import { startSync } from '@/lib/sync';
 import { useSessionStore } from '@/stores/session.store';
 

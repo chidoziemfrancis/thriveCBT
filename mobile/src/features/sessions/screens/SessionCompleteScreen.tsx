@@ -13,7 +13,7 @@ import SunRise from '@/features/sessions/art/SunRise';
 import { sessionContent } from '@/features/sessions/content';
 import { completeSession, useSessionProgress } from '@/features/sessions/store/progressStore';
 import { SESSIONS } from '@/features/sessions/constants/sessions';
-import { SKILLS } from '@/features/wellbeing/wellbeing';
+import { SKILLS } from '@/features/wellbeing/utils/wellbeing';
 import { haptics } from '@/lib/haptics';
 import { getPreferences, setPreference } from '@/lib/preferences';
 import { colors, fonts, radius, type } from '@/theme';

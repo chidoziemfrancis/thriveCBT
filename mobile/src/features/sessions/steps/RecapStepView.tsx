@@ -5,7 +5,7 @@ import { CheckIcon, CloseIcon } from '@/components/icons';
 import { crisisPlanFrom } from '@/features/coping/utils/coping';
 import CrisisPlanView from '@/features/coping/components/CrisisPlanView';
 import WellPlanView from '@/features/wellbeing/components/WellPlanView';
-import { wellPlanFrom } from '@/features/wellbeing/wellbeing';
+import { wellPlanFrom } from '@/features/wellbeing/utils/wellbeing';
 import type { RecapStep, SessionStep, StepAnswer } from '@/features/sessions/content/types';
 import {
   compassionLines,

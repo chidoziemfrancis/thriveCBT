@@ -4,7 +4,7 @@ import FeatureIcon from '@/components/icons/FeatureIcon';
 import BackButton from '@/components/ui/BackButton';
 import Screen from '@/components/ui/Screen';
 import WellPlanView from '@/features/wellbeing/components/WellPlanView';
-import { toggleGoalStep, useWellPlan } from '@/features/wellbeing/wellPlanStore';
+import { toggleGoalStep, useWellPlan } from '@/features/wellbeing/store/wellPlanStore';
 import { colors, fonts, type } from '@/theme';
 
 /** The plan from Session 8, for when things start to slip, with the goal's steps to tick off. */

@@ -6,7 +6,7 @@ import { CloseIcon, PlusIcon } from '@/components/icons';
 import { dayKey, nextSevenDays } from '@/features/activities/utils/activities';
 import WeekStrip from '@/features/activities/components/WeekStrip';
 import type { GoalStep } from '@/features/sessions/content/types';
-import { GOAL_AREAS, readGoal, writeGoal } from '@/features/wellbeing/wellbeing';
+import { GOAL_AREAS, readGoal, writeGoal } from '@/features/wellbeing/utils/wellbeing';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

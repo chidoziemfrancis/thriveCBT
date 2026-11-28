@@ -9,7 +9,7 @@ import Button from '@/components/ui/Button';
 import Screen from '@/components/ui/Screen';
 import { useCrisisPlan } from '@/features/coping/store/copingStore';
 import { SUPPORT_OPTIONS } from '@/features/support/supportOptions';
-import { useWellPlan } from '@/features/wellbeing/wellPlanStore';
+import { useWellPlan } from '@/features/wellbeing/store/wellPlanStore';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius, type } from '@/theme';
 

@@ -11,7 +11,7 @@ import {
   wellPlanFrom,
   writeGoal,
   type JourneyData,
-} from '@/features/wellbeing/wellbeing';
+} from '@/features/wellbeing/utils/wellbeing';
 
 const mockMemory = new Map<string, unknown>();
 jest.mock('@/lib/storage', () => ({
@@ -122,8 +122,8 @@ describe('the staying-well plan', () => {
   });
 
   it('keeps ticked goal steps when the plan is saved again', () => {
-    const store = load<typeof import('@/features/wellbeing/wellPlanStore')>(
-      '@/features/wellbeing/wellPlanStore'
+    const store = load<typeof import('@/features/wellbeing/store/wellPlanStore')>(
+      '@/features/wellbeing/store/wellPlanStore'
     );
     store.saveWellPlan({ goal });
     store.toggleGoalStep(0);

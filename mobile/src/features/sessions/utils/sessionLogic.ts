@@ -1,7 +1,7 @@
 import { readPlan, readRatings } from '@/features/activities/utils/activities';
 import { readArrow } from '@/features/beliefs/utils/beliefs';
 import { readTriggers } from '@/features/coping/utils/coping';
-import { goalReady, readGoal } from '@/features/wellbeing/wellbeing';
+import { goalReady, readGoal } from '@/features/wellbeing/utils/wellbeing';
 
 import type {
   PlannerStep,

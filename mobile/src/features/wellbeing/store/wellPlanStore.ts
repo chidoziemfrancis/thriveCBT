@@ -1,7 +1,7 @@
 import { createStore } from '@/lib/createStore';
 import { onStudentChange } from '@/lib/sync';
 
-import type { WellPlan } from './wellbeing';
+import type { WellPlan } from '../utils/wellbeing';
 
 const plan = createStore<WellPlan | null>('wellbeing_plan', null);
 

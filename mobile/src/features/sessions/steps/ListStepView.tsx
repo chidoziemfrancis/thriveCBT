@@ -6,7 +6,7 @@ import { copingCard, readContact, readTriggers, spotLabels } from '@/features/co
 import { useCrisisPlan, useToolkit } from '@/features/coping/store/copingStore';
 import type { ListStep } from '@/features/sessions/content/types';
 import { useSessionProgress } from '@/features/sessions/store/progressStore';
-import { WELL_SECTIONS } from '@/features/wellbeing/wellbeing';
+import { WELL_SECTIONS } from '@/features/wellbeing/utils/wellbeing';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 
