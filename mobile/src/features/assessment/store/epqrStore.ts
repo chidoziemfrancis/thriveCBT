@@ -1,4 +1,5 @@
 import { readJson, removeKey, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 import type { ServerEpqr } from '../types/assessment.types';
 
@@ -32,3 +33,9 @@ export function getEpqrResult(): ServerEpqr | null {
 export function saveEpqrOnPhone(result: ServerEpqr) {
   writeJson(RESULT_KEY, result);
 }
+
+// Answers in progress, and whether this student already sent theirs, belong to one student.
+onStudentChange(() => {
+  removeKey(ANSWERS_KEY);
+  removeKey(RESULT_KEY);
+});

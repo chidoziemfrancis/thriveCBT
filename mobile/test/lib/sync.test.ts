@@ -31,7 +31,7 @@ jest.mock('@/lib/axios', () => ({
 }));
 
 import { ApiError } from '@/lib/api-error';
-import { queueChange, registerSyncKind, syncNow } from '@/lib/sync';
+import { onStudentChange, queueChange, registerSyncKind, syncNow } from '@/lib/sync';
 import { readQueue, retryDelay } from '@/lib/sync/queue';
 import { useSessionStore } from '@/stores/session.store';
 
@@ -39,6 +39,10 @@ const memory = (jest.requireMock('@/lib/storage') as { memory: Map<string, unkno
 const applied: unknown[][] = [];
 const uploaded: unknown[][] = [];
 let cleared = 0;
+let phoneOnlyCleared = 0;
+onStudentChange(() => {
+  phoneOnlyCleared += 1;
+});
 
 registerSyncKind<{ id: string }>({
   name: 'things',
@@ -75,6 +79,7 @@ beforeEach(() => {
   applied.length = 0;
   uploaded.length = 0;
   cleared = 0;
+  phoneOnlyCleared = 0;
   mockPut.mockReset().mockResolvedValue({ data: {} });
   mockDelete.mockReset().mockResolvedValue({ data: {} });
   mockGet.mockReset().mockResolvedValue({ data: { items: [], serverTime: 'T1' } });
@@ -179,6 +184,7 @@ describe('syncNow', () => {
     signIn('s2');
     await syncNow();
     expect(cleared).toBe(1);
+    expect(phoneOnlyCleared).toBe(1);
     expect(mockPut).not.toHaveBeenCalled();
     expect(uploaded).toHaveLength(2);
   });

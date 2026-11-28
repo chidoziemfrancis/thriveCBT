@@ -1,5 +1,6 @@
 import { dayKey } from '@/features/activities/utils/activities';
 import { createStore } from '@/lib/createStore';
+import { onStudentChange } from '@/lib/sync';
 
 const ticks = createStore<Record<string, string[]>>('homework_ticks', {});
 
@@ -15,3 +16,5 @@ export function toggleTick(sessionId: number, day = dayKey(new Date())) {
     [sessionId]: current.includes(day) ? current.filter((d) => d !== day) : [...current, day],
   });
 }
+
+onStudentChange(() => ticks.set({}));

@@ -1,4 +1,5 @@
 import { createStore } from '@/lib/createStore';
+import { onStudentChange } from '@/lib/sync';
 
 import type { CrisisPlan } from './coping';
 
@@ -53,3 +54,11 @@ export function addStressEntry(entry: Omit<StressEntry, 'id' | 'at'>, now = new 
 export function saveCrisisPlan(plan: CrisisPlan) {
   crisisPlan.set(plan);
 }
+
+// Until these sync (B4.4), they live only on the phone and belong to one student.
+onStudentChange(() => {
+  toolkit.set([]);
+  uses.set([]);
+  stressLog.set([]);
+  crisisPlan.set(null);
+});

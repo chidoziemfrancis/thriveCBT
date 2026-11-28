@@ -1,4 +1,5 @@
 import { createStore } from '@/lib/createStore';
+import { onStudentChange } from '@/lib/sync';
 
 import type { WellPlan } from './wellbeing';
 
@@ -25,3 +26,5 @@ export function toggleGoalStep(index: number) {
     },
   });
 }
+
+onStudentChange(() => plan.set(null));

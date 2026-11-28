@@ -24,6 +24,7 @@ const mockGet = jest.fn<(url: string) => Promise<{ data: unknown }>>();
 jest.mock('@/lib/axios', () => ({ api: { get: (url: string) => mockGet(url) } }));
 
 import { getPhq9Scores } from '@/features/assessment';
+import { ApiError } from '@/lib/api-error';
 import { getMyResearcher } from '@/features/assignment';
 import { getConsent } from '@/features/consent/consentStore';
 import { getOnboardingData } from '@/features/onboarding/onboardingStore';
@@ -127,6 +128,20 @@ describe('pullStudentToPhone', () => {
     });
     expect(getPhq9Scores()).toEqual([{ score: 9, at: '2026-11-27T08:00:00.000Z' }]);
     expect(getMyResearcher()).toMatchObject({ id: 'r1', name: 'Grace Bello' });
+  });
+
+  it('forgets the researcher when the server says there isn’t one', async () => {
+    mockMemory.set('researcher_match', {
+      researcher: { id: 'r1', name: 'Old match', title: null, bio: null },
+      method: 'random',
+      assignedAt: '2026-11-27T08:10:00.000Z',
+    });
+    mockGet.mockImplementation(async (url) => {
+      if (url === '/me/assignment') throw new ApiError('NOT_FOUND', 'Not found', 404);
+      throw new ApiError('NETWORK_ERROR', 'offline');
+    });
+    await pullStudentToPhone();
+    expect(getMyResearcher()).toBeUndefined();
   });
 
   it('keeps what is on the phone when the server can’t be reached', async () => {

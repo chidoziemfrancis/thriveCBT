@@ -31,6 +31,15 @@ export type SyncKind<Item> = {
 type SyncList<Item> = { items: Item[]; serverTime: string };
 
 const kinds = new Map<string, SyncKind<unknown>>();
+const phoneOnly = new Set<() => void>();
+
+/**
+ * For a student's data that lives only on the phone (answers in progress, phone copies of
+ * server data, things not synced yet): cleared when a different student signs in here.
+ */
+export function onStudentChange(clear: () => void) {
+  phoneOnly.add(clear);
+}
 
 export function registerSyncKind<Item>(kind: SyncKind<Item>) {
   kinds.set(kind.name, kind as SyncKind<unknown>);
@@ -70,6 +79,7 @@ function claimPhoneFor(studentId: string) {
     removeKey(sinceKey(kind.name));
     kind.clearLocal();
   }
+  phoneOnly.forEach((clear) => clear());
   writeJson(OWNER_KEY, studentId);
 }
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import Button from '@/components/ui/Button';
-  import { SLOTS, type Slot } from '@/features/activities/utils/activities';
+import { SLOTS, type Slot } from '@/features/activities/utils/activities';
 import { haptics } from '@/lib/haptics';
 import { colors, fonts, radius } from '@/theme';
 

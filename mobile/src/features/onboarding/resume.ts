@@ -1,7 +1,12 @@
 import type { Href } from 'expo-router';
 
 import { assessmentService, savePhq9ScoresOnPhone } from '@/features/assessment';
-import { assignmentService, saveAssignmentOnPhone } from '@/features/assignment';
+import {
+  assignmentService,
+  forgetAssignmentOnPhone,
+  saveAssignmentOnPhone,
+} from '@/features/assignment';
+import { toApiError } from '@/lib/api-error';
 import { recordConsent } from '@/features/consent/consentStore';
 import { profileService, savePreferencesOnPhone, saveProfileOnPhone } from '@/features/profile';
 import { queryClient } from '@/lib/query-client';
@@ -59,4 +64,5 @@ export async function pullStudentToPhone() {
   }
   if (phq9.status === 'fulfilled') savePhq9ScoresOnPhone(phq9.value);
   if (assignment.status === 'fulfilled') saveAssignmentOnPhone(assignment.value);
+  else if (toApiError(assignment.reason).code === 'NOT_FOUND') forgetAssignmentOnPhone();
 }

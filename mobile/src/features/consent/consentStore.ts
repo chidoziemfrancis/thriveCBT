@@ -1,4 +1,5 @@
-import { readJson, writeJson } from '@/lib/storage';
+import { readJson, removeKey, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 const STORAGE_KEY = 'consent';
 
@@ -11,3 +12,5 @@ export function getConsent(): ConsentRecord | null {
 export function recordConsent(version: string, now = new Date()) {
   writeJson(STORAGE_KEY, { version, agreedAt: now.toISOString() } satisfies ConsentRecord);
 }
+
+onStudentChange(() => removeKey(STORAGE_KEY));

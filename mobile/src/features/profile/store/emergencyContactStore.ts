@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
 import { readJson, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 const CONTACT_KEY = 'emergency_contact';
 const DISMISSED_KEY = 'emergency_contact_card_dismissed';
@@ -48,3 +49,5 @@ export function removeEmergencyContact() {
 export function dismissEmergencyContactCard() {
   set({ ...state, cardDismissed: true });
 }
+
+onStudentChange(() => set({ contact: null, cardDismissed: false }));

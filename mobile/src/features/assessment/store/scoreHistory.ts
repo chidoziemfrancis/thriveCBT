@@ -1,4 +1,5 @@
 import { readJson, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 import type { ServerPhq9 } from '../types/assessment.types';
 
@@ -38,3 +39,5 @@ export function getBaselinePhq9(): Phq9Result | undefined {
 export function getFinalPhq9(): Phq9Result | undefined {
   return getPhq9Scores().find((r) => r.kind === 'final');
 }
+
+onStudentChange(() => writeJson(STORAGE_KEY, []));

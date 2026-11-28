@@ -1,4 +1,5 @@
-import { readJson, writeJson } from '@/lib/storage';
+import { readJson, removeKey, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 const STORAGE_KEY = 'onboarding';
 
@@ -17,3 +18,5 @@ export function getOnboardingData(): OnboardingData {
 export function setOnboardingData(patch: Partial<OnboardingData>) {
   writeJson(STORAGE_KEY, { ...getOnboardingData(), ...patch });
 }
+
+onStudentChange(() => removeKey(STORAGE_KEY));

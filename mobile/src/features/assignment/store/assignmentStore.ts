@@ -1,4 +1,5 @@
-import { readJson, writeJson } from '@/lib/storage';
+import { readJson, removeKey, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 import type { Assignment, ResearcherCard } from '../types/assignment.types';
 
@@ -18,3 +19,10 @@ export function getMyResearcher(): ResearcherCard | undefined {
 export function saveAssignmentOnPhone(assignment: Assignment) {
   writeJson(STORAGE_KEY, assignment);
 }
+
+/** The server says this student has no researcher (yet, or any more). */
+export function forgetAssignmentOnPhone() {
+  removeKey(STORAGE_KEY);
+}
+
+onStudentChange(forgetAssignmentOnPhone);

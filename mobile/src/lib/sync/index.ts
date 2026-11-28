@@ -1,4 +1,5 @@
 export {
+  onStudentChange,
   queueChange,
   registerSyncKind,
   startSync,

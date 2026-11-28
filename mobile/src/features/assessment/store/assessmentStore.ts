@@ -1,4 +1,5 @@
 import { readJson, removeKey, writeJson } from '@/lib/storage';
+import { onStudentChange } from '@/lib/sync';
 
 const STORAGE_KEY = 'phq9_answers';
 const MODE_KEY = 'phq9_mode';
@@ -30,3 +31,6 @@ export function startPhq9(mode: Phq9Mode) {
   removeKey(STORAGE_KEY);
   writeJson(MODE_KEY, mode);
 }
+
+// Answers in progress belong to one student.
+onStudentChange(clearAnswers);
