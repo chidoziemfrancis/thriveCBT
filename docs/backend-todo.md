@@ -239,10 +239,17 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] A removed plan comes back when the same plan is made again
 - [x] App: My week synced (plans keep one id per day, slot and activity, so the same plan never doubles up); old plans get that id too
 
+### B4.4a Coping · `feat/coping-sync`
+
+- [x] ToolkitItem, ToolUse, StressEntry and CrisisPlanProgress models; `toolkit`, `tool-uses` and `stress-entries` sync routes; `PUT /v1/me/crisis-plan-progress`
+- [x] Stress entries encrypt what happened and what helped; the crisis plan never leaves the phone
+- [x] Fix: synced items are keyed by student and id, so content-based ids (plans, toolkit cards) never clash between students
+- [ ] App: toolkit, tool uses, stress log and crisis-plan progress synced
+
 ### Still to do in B4
 
-- [ ] Models: ToolkitItem, ToolUse, StressEntry, WellPlan, HomeworkTick
-- [ ] Modules: `coping` (`toolkit/`, `stress-log/`), `wellbeing`, `homework`
+- [ ] Models: WellPlan, HomeworkTick
+- [ ] Modules: `wellbeing`, `homework`
 - [ ] App: each store switched over
 
 ## B5 Researcher side · `feat/researcher-api`
