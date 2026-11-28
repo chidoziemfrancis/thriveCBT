@@ -252,11 +252,14 @@ Every app feature that needs the server, split by who uses it. The phase in brac
 - [x] Both stored encrypted; a removed contact is erased and can be added again
 - [x] App: staying-well plan and emergency contact synced as single records
 
+### B4.4b-2 Homework ticks · `feat/homework-ticks`
+
+- [x] HomeworkTick model; `GET /v1/me/homework-ticks?since=`, `PUT` and `DELETE /v1/me/homework-ticks/:id`
+- [ ] App: homework ticks synced (waiting for the go-ahead)
+
 ### Still to do in B4
 
-- [ ] Models: HomeworkTick
-- [ ] Modules: `homework`
-- [ ] App: each store switched over
+- [ ] Homework ticks in the app (B4.4b-2), the last store still on the phone only
 
 ## B5 Researcher side · `feat/researcher-api`
 
